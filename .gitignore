@@ -1,0 +1,26 @@
+# Ignore all dot files except
+.*
+!.gitattributes
+!.gitignore
+
+######################
+# Python
+######################
+venv/
+build/
+
+######################
+# Node
+######################
+node_modules/
+
+######################
+# Intellij Idea
+######################
+*.iml
+.idea/
+
+######################
+# Visual Studio Code
+######################
+.vscode/
