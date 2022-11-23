@@ -25,15 +25,15 @@ $> npm run generate
 v3: true
 python: true
 title: KuFlow
-override-client-name: KuFlowClient
+override-client-name: KuFlowRestClient
 
-input-file: /Users/kuflow/Projects/kuflow-openapi/specs/api.kuflow.com/v2022-10-08/openapi.yaml
-output-folder: ../../kuflow/client/_generated
+input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/550af4e4b55a60b32a4170d0f07d45e4a357131b/specs/api.kuflow.com/v2022-10-08/openapi.yaml
+output-folder: ../../kuflow/rest/client/_generated
 
 openapi-type: data-plane
 add-credential: true
 package-name: kuflow-rest-client
-namespace: kuflow.client
+namespace: kuflow.rest.client
 package-version: '0.0.1'
 no-namespace-folders: true
 combine-operation-files: false

@@ -7,8 +7,8 @@
   },
   "scripts": {
     "autorest": "autorest",
-    "generate": "npm run generate:autorest && npm run generate:back",
+    "generate": "npm run generate:autorest && npm run generate:black",
     "generate:autorest": "autorest --version=3.9.3 readme.md",
-    "generate:back": "cd ../../ && black kuflow"
+    "generate:black": "cd ../../ && black kuflow"
   }
 }

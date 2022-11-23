@@ -26,13 +26,13 @@
 
 import sys
 
-from client import KuFlowClient, models
+from kuflow.rest.client import KuFlowRestClient, models
 
 
 def main() -> int:
     """Echo the input arguments to standard output"""
 
-    client = KuFlowClient(
+    client = KuFlowRestClient(
         username="1e96158f-3dfd-4c4c-8aa2-4c61a7127bcf",
         password="*pn8BMkt-KI0/08",
         endpoint="http://localhost:8080/apis/external/v2022-10-08",
