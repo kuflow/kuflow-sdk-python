@@ -58,7 +58,7 @@ modelerfour:
 
 ```yaml
 directive:
-  - from: openapi-document-old
+  - from: openapi-document
     where: $.paths[*][*]
     transform: |
       if ($.operationId.indexOf($.tags[1] + '_') === -1) {
