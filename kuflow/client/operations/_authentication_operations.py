@@ -1,8 +1,6 @@
 # coding=utf-8
 from typing import Any
 
-from azure.core.tracing.decorator import distributed_trace
-
 from .._generated import (
     models as _models,
     KuFlowClient as KuFlowClientGenerated
@@ -20,9 +18,8 @@ class AuthenticationOperations:
     """
 
     def __init__(self, kuflow_client: KuFlowClientGenerated):
-        self.kuflow_client = kuflow_client
+        self.__kuflow_client = kuflow_client
 
-    @distributed_trace
     def create_authentication(
         self, authentication: _models.Authentication, **kwargs: Any
     ) -> _models.Authentication:
@@ -41,4 +38,4 @@ class AuthenticationOperations:
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
-        return self.kuflow_client.authentication.create_authentication(authentication=authentication, **kwargs)
+        return self.__kuflow_client.authentication.create_authentication(authentication=authentication, **kwargs)

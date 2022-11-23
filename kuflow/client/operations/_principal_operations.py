@@ -1,8 +1,6 @@
 # coding=utf-8
 from typing import Any, List, Optional, Union
 
-from azure.core.tracing.decorator import distributed_trace
-
 from .._generated import (
     models as _models,
     KuFlowClient as KuFlowClientGenerated
@@ -20,9 +18,8 @@ class PrincipalOperations:
     """
 
     def __init__(self, kuflow_client: KuFlowClientGenerated):
-        self.kuflow_client = kuflow_client
+        self.__kuflow_client = kuflow_client
 
-    @distributed_trace
     def find_principals(
             self,
             size: int = 25,
@@ -65,7 +62,7 @@ class PrincipalOperations:
         if group_id is not None and isinstance(group_id, str):
             group_id = [group_id]
 
-        return self.kuflow_client.principal.find_principals(
+        return self.__kuflow_client.principal.find_principals(
             size=size,
             page=page,
             sort=sort,
@@ -74,7 +71,6 @@ class PrincipalOperations:
             **kwargs
         )
 
-    @distributed_trace
     def retrieve_principal(self, id: str, **kwargs: Any) -> _models.Principal:
         """Get a Principal by ID.
 
@@ -86,7 +82,7 @@ class PrincipalOperations:
         :rtype: ~kuflow.client.models.Principal
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.kuflow_client.principal.retrieve_principal(
+        return self.__kuflow_client.principal.retrieve_principal(
             id=id,
             **kwargs
         )

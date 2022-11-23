@@ -29,13 +29,51 @@ def main() -> int:
     print(authentication)
 
     process = models.Process(
-        id='28abe67f-9462-4343-b58e-c8b3344eb865',
+        id="28abe67f-9462-4343-b58e-c8b3344eb865",
         process_definition=models.ProcessDefinitionSummary(
-            id='be35212b-deb8-4719-a10d-b8550219d156'
+            id="be35212b-deb8-4719-a10d-b8550219d156"
         )
     )
     process = client.process.create_process(process)
     print(process)
+
+    task = models.Task(
+        id="4bbdf1ef-5350-4abf-b0c1-58a0c57aacdb",
+        process_id=process.id,
+        task_definition=models.TasksDefinitionSummary(
+            code="TASK_0001"
+        ),
+        element_values={
+            "TEXT_001": [
+                models.TaskElementValueString(
+                    value="texto"
+                )
+            ],
+            "TEXT_002": [
+                models.TaskElementValueString(
+                    value="texto 2 1"
+                ),
+                models.TaskElementValueString(
+                    value="texto 2 2"
+                )
+            ]
+        }
+    )
+    task = client.task.create_task(task)
+    print(task)
+
+    # client.task.actions_task_claim(task.id)
+
+    file = models.Document(
+        file_mame="bugs-bunny.png",
+        content_type="image/png",
+        file_content=open("/Users/kuflow/Downloads/bugs-bunny.png", "rb")
+    )
+    command = models.TaskSaveElementValueDocumentCommand(
+        element_definition_code="DOC_001"
+    )
+    task = client.task.actions_task_save_element_value_document(id=task.id, file=file, command=command)
+    print(task)
 
     return 0
 

@@ -1,9 +1,6 @@
-# pylint: disable=too-many-lines
 # coding=utf-8
 
-from typing import Any, IO, List, Optional, Union, overload
-
-from azure.core.tracing.decorator import distributed_trace
+from typing import Any, IO, List, Optional, Union
 
 from .._generated import (
     KuFlowClient as KuFlowClientGenerated
@@ -23,11 +20,10 @@ class ProcessOperations:
     """
 
     def __init__(self, kuflow_client: KuFlowClientGenerated):
-        self.kuflow_client = kuflow_client
+        self.__kuflow_client = kuflow_client
 
-    @distributed_trace
     def find_processes(
-        self, size: int = 25, page: int = 0, sort:Optional[Union[str, List[str]]] = None, **kwargs: Any
+        self, size: int = 25, page: int = 0, sort: Optional[Union[str, List[str]]] = None, **kwargs: Any
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
 
@@ -53,9 +49,8 @@ class ProcessOperations:
         if sort is not None and isinstance(sort, str):
             sort = [sort]
 
-        return self.kuflow_client.process.find_processes(size=size, page=page, sort=sort **kwargs)
+        return self.__kuflow_client.process.find_processes(size=size, page=page, sort=sort ** kwargs)
 
-    @distributed_trace
     def create_process(self, process: _models.Process, **kwargs: Any) -> _models.Process:
         """Create a new process.
 
@@ -79,9 +74,8 @@ class ProcessOperations:
         :rtype: ~kuflow.client.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.kuflow_client.process.create_process(process=process, **kwargs)
+        return self.__kuflow_client.process.create_process(process=process, **kwargs)
 
-    @distributed_trace
     def retrieve_process(self, id: str, **kwargs: Any) -> _models.Process:
         """Get a Process by ID.
 
@@ -93,9 +87,8 @@ class ProcessOperations:
         :rtype: ~kuflow.client.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.kuflow_client.process.retrieve_process(id=id, **kwargs)
+        return self.__kuflow_client.process.retrieve_process(id=id, **kwargs)
 
-    @distributed_trace
     def actions_process_change_initiator(
         self, id: str, command: _models.ProcessChangeInitiatorCommand, **kwargs: Any
     ) -> _models.Process:
@@ -116,9 +109,8 @@ class ProcessOperations:
         :rtype: ~kuflow.client.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.kuflow_client.process.actions_process_change_initiator(id=id, command=command, **kwargs)
+        return self.__kuflow_client.process.actions_process_change_initiator(id=id, command=command, **kwargs)
 
-    @distributed_trace
     def actions_process_save_element(
         self, id: str, command: _models.ProcessSaveElementCommand, **kwargs: Any
     ) -> _models.Process:
@@ -140,9 +132,8 @@ class ProcessOperations:
         :rtype: ~kuflow.client.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.kuflow_client.process.actions_process_save_element(id=id, command=command, **kwargs)
+        return self.__kuflow_client.process.actions_process_save_element(id=id, command=command, **kwargs)
 
-    @distributed_trace
     def actions_process_delete_element(
         self, id: str, command: _models.ProcessDeleteElementCommand, **kwargs: Any
     ) -> _models.Process:
@@ -160,9 +151,8 @@ class ProcessOperations:
         :rtype: ~kuflow.client.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.kuflow_client.process.actions_process_delete_element(id=id, command=command, **kwargs)
+        return self.__kuflow_client.process.actions_process_delete_element(id=id, command=command, **kwargs)
 
-    @distributed_trace
     def actions_process_complete(self, id: str, **kwargs: Any) -> _models.Process:
         """Complete a Process.
 
@@ -176,9 +166,8 @@ class ProcessOperations:
         :rtype: ~kuflow.client.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.kuflow_client.process.actions_process_complete(id=id, **kwargs)
+        return self.__kuflow_client.process.actions_process_complete(id=id, **kwargs)
 
-    @distributed_trace
     def actions_process_cancel(self, id: str, **kwargs: Any) -> _models.Process:
         """Cancel a Process.
 
@@ -194,9 +183,8 @@ class ProcessOperations:
         :rtype: ~kuflow.client.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.kuflow_client.process.actions_process_cancel(id=id, **kwargs)
+        return self.__kuflow_client.process.actions_process_cancel(id=id, **kwargs)
 
-    @distributed_trace
     def actions_process_save_user_action_value_document(
         self, id: str, file: _models.Document, command: _models.ProcessSaveUserActionValueDocumentCommand, **kwargs: Any
     ) -> Optional[_models.Process]:
@@ -214,7 +202,7 @@ class ProcessOperations:
         :rtype: ~kuflow.client.models.Process or None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.kuflow_client.process.actions_process_save_user_action_value_document(
+        return self.__kuflow_client.process.actions_process_save_user_action_value_document(
             id=id,
             file=file.file_content,
             file_content_type=file.content_type,

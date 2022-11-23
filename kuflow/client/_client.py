@@ -15,7 +15,8 @@ from ._generated import (
 from .operations import (
     AuthenticationOperations,
     PrincipalOperations,
-    ProcessOperations
+    ProcessOperations,
+    TaskOperations
 )
 
 
@@ -156,6 +157,7 @@ class KuFlowClient:  # pylint: disable=client-accepts-api-version-keyword
         self.authentication = AuthenticationOperations(self._kuflow_client)
         self.principal = PrincipalOperations(self._kuflow_client)
         self.process = ProcessOperations(self._kuflow_client)
+        self.task = TaskOperations(self._kuflow_client)
 
 
     def __enter__(self):
