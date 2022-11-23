@@ -1,4 +1,28 @@
 # coding=utf-8
+#
+# MIT License
+#
+# Copyright (c) 2022 KuFlow
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
 
 import sys
 import base64
@@ -7,33 +31,24 @@ from typing import Any, Optional
 from azure.core.credentials import AccessToken
 from azure.core.pipeline.policies import SansIOHTTPPolicy
 
-from ._generated import (
-    VERSION,
-    KuFlowClient as KuFlowClientGenerated
-)
+from ._generated import VERSION, KuFlowClient as KuFlowClientGenerated
 
-from .operations import (
-    AuthenticationOperations,
-    PrincipalOperations,
-    ProcessOperations,
-    TaskOperations
-)
+from .operations import AuthenticationOperations, PrincipalOperations, ProcessOperations, TaskOperations
 
 
 class KuFlowClientTokenCredential:
-
     def __init__(
-            self,
-            username: str,
-            password: str,
+        self,
+        username: str,
+        password: str,
     ) -> None:
         self.username = username
         self.password = password
 
-        self.token = base64.b64encode("{}:{}".format(username, password).encode('utf-8')).decode('utf-8')
+        self.token = base64.b64encode("{}:{}".format(username, password).encode("utf-8")).decode("utf-8")
 
     def get_token(
-            self, *scopes: str, claims: Optional[str] = None, tenant_id: Optional[str] = None, **kwargs: Any
+        self, *scopes: str, claims: Optional[str] = None, tenant_id: Optional[str] = None, **kwargs: Any
     ) -> AccessToken:
         """Request an access token for `scopes`.
 
@@ -50,8 +65,7 @@ class KuFlowClientTokenCredential:
 
 
 class AllowHttpPolicy(SansIOHTTPPolicy):
-    """A simple policy that allows http requestes adding "enforce_https" to the request context.
-    """
+    """A simple policy that allows http requestes adding "enforce_https" to the request context."""
 
     def on_request(self, request):
         # type: (PipelineRequest) -> None
@@ -135,12 +149,12 @@ class KuFlowClient:  # pylint: disable=client-accepts-api-version-keyword
     """
 
     def __init__(
-            self,
-            username: str,
-            password: str,
-            endpoint: str = "https://api.kuflow.com/v2022-10-08",
-            allow_insecure_connection: bool = False,
-            **kwargs: Any
+        self,
+        username: str,
+        password: str,
+        endpoint: str = "https://api.kuflow.com/v2022-10-08",
+        allow_insecure_connection: bool = False,
+        **kwargs: Any,
     ) -> None:
         per_call_policies = []
         if allow_insecure_connection:
@@ -151,14 +165,13 @@ class KuFlowClient:  # pylint: disable=client-accepts-api-version-keyword
             endpoint=endpoint,
             api_version=kwargs.pop("api_version", VERSION),
             credential_scopes="https://api.kuflow.com//v2022-10-08/.default",
-            per_call_policies=per_call_policies
+            per_call_policies=per_call_policies,
         )
 
         self.authentication = AuthenticationOperations(self._kuflow_client)
         self.principal = PrincipalOperations(self._kuflow_client)
         self.process = ProcessOperations(self._kuflow_client)
         self.task = TaskOperations(self._kuflow_client)
-
 
     def __enter__(self):
         self._kuflow_client.__enter__()  # pylint:disable=no-member

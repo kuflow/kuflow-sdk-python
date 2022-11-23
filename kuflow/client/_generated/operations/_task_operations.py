@@ -39,7 +39,7 @@ def build_find_tasks_request(
     process_id: Optional[List[str]] = None,
     state: Optional[List[Union[str, _models.TaskState]]] = None,
     task_definition_code: Optional[List[str]] = None,
-    **kwargs: Any
+    **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
@@ -61,7 +61,9 @@ def build_find_tasks_request(
     if state is not None:
         _params["state"] = _SERIALIZER.query("state", state, "[str]", div=",")
     if task_definition_code is not None:
-        _params["taskDefinitionCode"] = _SERIALIZER.query("task_definition_code", task_definition_code, "[str]", div=",")  # KF touched
+        _params["taskDefinitionCode"] = _SERIALIZER.query(
+            "task_definition_code", task_definition_code, "[str]", div=","
+        )  # KF touched
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -182,7 +184,7 @@ def build_actions_task_save_element_value_document_request(
     content: IO,
     element_value_id: Optional[str] = None,
     element_value_valid: bool = True,
-    **kwargs: Any
+    **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
@@ -379,7 +381,7 @@ class TaskOperations:
         process_id: Optional[List[str]] = None,
         state: Optional[List[Union[str, _models.TaskState]]] = None,
         task_definition_code: Optional[List[str]] = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.TaskPage:
         """Find all accessible Tasks.
 
@@ -460,7 +462,7 @@ class TaskOperations:
         *,
         activity_token: Optional[str] = None,
         content_type: str = "application/json",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Task:
         """Create a new Task in the selected Process.
 
@@ -975,7 +977,7 @@ class TaskOperations:
         element_definition_code: str,
         element_value_id: Optional[str] = None,
         element_value_valid: bool = True,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Task:
         """Save an element document.
 
@@ -1057,7 +1059,7 @@ class TaskOperations:
         command: _models.TaskDeleteElementCommand,
         *,
         content_type: str = "application/json",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Task:
         """Delete an element by code.
 
@@ -1177,7 +1179,7 @@ class TaskOperations:
         command: _models.TaskDeleteElementValueDocumentCommand,
         *,
         content_type: str = "application/json",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Task:
         """Delete an element document value.
 

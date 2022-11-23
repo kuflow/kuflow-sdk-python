@@ -70,7 +70,7 @@ class TaskOperations:
         process_id: Optional[List[str]] = None,
         state: Optional[List[Union[str, _models.TaskState]]] = None,
         task_definition_code: Optional[List[str]] = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.TaskPage:
         """Find all accessible Tasks.
 
@@ -151,7 +151,7 @@ class TaskOperations:
         *,
         activity_token: Optional[str] = None,
         content_type: str = "application/json",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Task:
         """Create a new Task in the selected Process.
 
@@ -666,7 +666,7 @@ class TaskOperations:
         element_definition_code: str,
         element_value_id: Optional[str] = None,
         element_value_valid: bool = True,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Task:
         """Save an element document.
 
@@ -748,7 +748,7 @@ class TaskOperations:
         command: _models.TaskDeleteElementCommand,
         *,
         content_type: str = "application/json",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Task:
         """Delete an element by code.
 
@@ -868,7 +868,7 @@ class TaskOperations:
         command: _models.TaskDeleteElementValueDocumentCommand,
         *,
         content_type: str = "application/json",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Task:
         """Delete an element document value.
 

@@ -1,11 +1,32 @@
 # coding=utf-8
+#
+# MIT License
+#
+# Copyright (c) 2022 KuFlow
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
 
 from typing import Any, List, Optional, Union
 
-from .._generated import (
-    models as _models,
-    KuFlowClient as KuFlowClientGenerated
-)
+from .._generated import models as _models, KuFlowClient as KuFlowClientGenerated
 
 
 class PrincipalOperations:
@@ -22,13 +43,13 @@ class PrincipalOperations:
         self.__kuflow_client = kuflow_client
 
     def find_principals(
-            self,
-            size: int = 25,
-            page: int = 0,
-            sort: Optional[Union[str, List[str]]] = None,
-            type: Optional[_models.PrincipalType] = None,
-            group_id: Optional[Union[str, List[str]]] = None,
-            **kwargs: Any
+        self,
+        size: int = 25,
+        page: int = 0,
+        sort: Optional[Union[str, List[str]]] = None,
+        type: Optional[_models.PrincipalType] = None,
+        group_id: Optional[Union[str, List[str]]] = None,
+        **kwargs: Any,
     ) -> _models.PrincipalPage:
         """Find all accessible Principals.
 
@@ -64,12 +85,7 @@ class PrincipalOperations:
             group_id = [group_id]
 
         return self.__kuflow_client.principal.find_principals(
-            size=size,
-            page=page,
-            sort=sort,
-            type=type,
-            group_id=group_id,
-            **kwargs
+            size=size, page=page, sort=sort, type=type, group_id=group_id, **kwargs
         )
 
     def retrieve_principal(self, id: str, **kwargs: Any) -> _models.Principal:
@@ -83,7 +99,4 @@ class PrincipalOperations:
         :rtype: ~kuflow.client.models.Principal
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.principal.retrieve_principal(
-            id=id,
-            **kwargs
-        )
+        return self.__kuflow_client.principal.retrieve_principal(id=id, **kwargs)

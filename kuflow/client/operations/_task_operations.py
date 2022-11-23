@@ -1,10 +1,32 @@
 # coding=utf-8
+#
+# MIT License
+#
+# Copyright (c) 2022 KuFlow
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
 
 from typing import Any, IO, Iterator, List, Optional, Union
 
-from .._generated import (
-    KuFlowClient as KuFlowClientGenerated
-)
+from .._generated import KuFlowClient as KuFlowClientGenerated
 
 from .. import models as _models
 
@@ -30,7 +52,7 @@ class TaskOperations:
         process_id: Optional[Union[str, List[str]]] = None,
         state: Optional[Union[_models.TaskState, List[_models.TaskState]]] = None,
         task_definition_code: Optional[Union[str, List[str]]] = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.TaskPage:
         """Find all accessible Tasks.
 
@@ -77,12 +99,10 @@ class TaskOperations:
             process_id=process_id,
             state=state,
             task_definition_code=task_definition_code,
-            **kwargs
+            **kwargs,
         )
 
-    def create_task(
-        self, task: _models.Task, activity_token: Optional[str] = None, **kwargs: Any
-    ) -> _models.Task:
+    def create_task(self, task: _models.Task, activity_token: Optional[str] = None, **kwargs: Any) -> _models.Task:
         """Create a new Task in the selected Process.
 
         Create a Task and optionally fill its elements. We can fill in any type of element except
@@ -140,9 +160,7 @@ class TaskOperations:
         """
         return self.__kuflow_client.task.actions_task_claim(id=id, **kwargs)
 
-    def actions_task_assign(
-        self, id: str, command: _models.TaskAssignCommand, **kwargs: Any
-    ) -> _models.Task:
+    def actions_task_assign(self, id: str, command: _models.TaskAssignCommand, **kwargs: Any) -> _models.Task:
         """Assign a task.
 
         Allow to assign a task to a user or application. Only one option will be necessary.
@@ -184,11 +202,7 @@ class TaskOperations:
         return self.__kuflow_client.task.actions_task_save_element(id=id, command=command, **kwargs)
 
     def actions_task_save_element_value_document(
-        self,
-        id: str,
-        file: _models.Document,
-        command: _models.TaskSaveElementValueDocumentCommand,
-        **kwargs: Any
+        self, id: str, file: _models.Document, command: _models.TaskSaveElementValueDocumentCommand, **kwargs: Any
     ) -> _models.Task:
         """Save an element document.
 
@@ -216,7 +230,7 @@ class TaskOperations:
             element_definition_code=command.element_definition_code,
             element_value_id=command.element_value_id,
             element_value_valid=command.element_value_valid,
-            **kwargs
+            **kwargs,
         )
 
     def actions_task_delete_element(
@@ -237,7 +251,6 @@ class TaskOperations:
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.actions_task_delete_element(id=id, command=command, **kwargs)
-
 
     def actions_task_delete_element_value_document(
         self, id: str, command: _models.TaskDeleteElementValueDocumentCommand, **kwargs: Any
@@ -260,9 +273,7 @@ class TaskOperations:
         """
         return self.__kuflow_client.task.actions_task_delete_element_value_document(id=id, command=command, **kwargs)
 
-    def actions_task_download_element_value_document(
-        self, id: str, document_id: str, **kwargs: Any
-    ) -> Iterator[bytes]:
+    def actions_task_download_element_value_document(self, id: str, document_id: str, **kwargs: Any) -> Iterator[bytes]:
         """Download document.
 
         Given a task, download a document from an element of document type.
@@ -275,7 +286,9 @@ class TaskOperations:
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_download_element_value_document(id=id, document_id=document_id, **kwargs)
+        return self.__kuflow_client.task.actions_task_download_element_value_document(
+            id=id, document_id=document_id, **kwargs
+        )
 
     def actions_task_download_element_value_rendered(
         self, id: str, element_definition_code: str, **kwargs: Any
@@ -296,7 +309,9 @@ class TaskOperations:
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_download_element_value_rendered(id=id, element_definition_code=element_definition_code, **kwargs)
+        return self.__kuflow_client.task.actions_task_download_element_value_rendered(
+            id=id, element_definition_code=element_definition_code, **kwargs
+        )
 
     def actions_task_complete(self, id: str, **kwargs: Any) -> _models.Task:
         """Complete a task.

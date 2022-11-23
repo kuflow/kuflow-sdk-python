@@ -1,10 +1,32 @@
 # coding=utf-8
+#
+# MIT License
+#
+# Copyright (c) 2022 KuFlow
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
 
 from typing import Any, List, Optional, Union
 
-from .._generated import (
-    KuFlowClient as KuFlowClientGenerated
-)
+from .._generated import KuFlowClient as KuFlowClientGenerated
 
 from .. import models as _models
 
@@ -49,7 +71,7 @@ class ProcessOperations:
         if sort is not None and isinstance(sort, str):
             sort = [sort]
 
-        return self.__kuflow_client.process.find_processes(size=size, page=page, sort=sort, ** kwargs)
+        return self.__kuflow_client.process.find_processes(size=size, page=page, sort=sort, **kwargs)
 
     def create_process(self, process: _models.Process, **kwargs: Any) -> _models.Process:
         """Create a new process.
@@ -208,5 +230,5 @@ class ProcessOperations:
             file_content_type=file.content_type,
             file_name=file.file_mame,
             user_action_value_id=command.user_action_value_id,
-            **kwargs
+            **kwargs,
         )

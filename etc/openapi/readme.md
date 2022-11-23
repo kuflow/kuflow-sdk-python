@@ -38,7 +38,7 @@ package-version: '0.0.1'
 no-namespace-folders: true
 combine-operation-files: false
 models-mode: msrest
-black: true
+black: false
 
 # basic-setup-py: true
 # generate-metadata: true
@@ -64,29 +64,4 @@ directive:
       if ($.operationId.indexOf($.tags[1] + '_') === -1) {
         $.operationId = $.tags[1] + '_' + $.operationId;
       }
-#  - from: code-model-v4.yaml-out
-#    where: $.
-#    debug: true
-#    transform: |
-#      $lib.log($);
-#  - from: code-model-v4-no-tags.yaml
-#    where: $.operationGroups[*].operations[*].requests[*].parameters[*]
-#    debug: true
-#    transform: |
-#        $lib.log($)
 ```
-
-- from: openapi-document
-  where: $.paths[*][*].parameters[*]
-  debug: true
-  transform: |
-  if ($.in === 'query' && $.schema.type === 'array') {
-  $lib.log($);
-  $.schema = $.schema.items;
-  }
-
-      $.protocol = {
-        http: {
-          style: 'form'
-        }
-      }

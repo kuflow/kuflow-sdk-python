@@ -318,7 +318,7 @@ class ProcessOperations:
         command: _models.ProcessChangeInitiatorCommand,
         *,
         content_type: str = "application/json",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Process:
         """Change process initiator.
 
@@ -445,7 +445,7 @@ class ProcessOperations:
         command: _models.ProcessSaveElementCommand,
         *,
         content_type: str = "application/json",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Process:
         """Save a process element, aka: metadata.
 
@@ -577,7 +577,7 @@ class ProcessOperations:
         command: _models.ProcessDeleteElementCommand,
         *,
         content_type: str = "application/json",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.Process:
         """Delete an element by code.
 

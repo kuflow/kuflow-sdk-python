@@ -38,7 +38,7 @@ def build_find_principals_request(
     sort: Optional[List[str]] = None,
     type: Optional[Union[str, _models.PrincipalType]] = None,
     group_id: Optional[List[str]] = None,
-    **kwargs: Any
+    **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
@@ -113,7 +113,7 @@ class PrincipalOperations:
         sort: Optional[List[str]] = None,
         type: Optional[Union[str, _models.PrincipalType]] = None,
         group_id: Optional[List[str]] = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.PrincipalPage:
         """Find all accessible Principals.
 

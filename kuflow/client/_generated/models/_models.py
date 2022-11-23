@@ -177,7 +177,7 @@ class DefaultError(_serialization.Model):
         status: int,
         message: str,
         errors: Optional[List["_models.DefaultErrorInfo"]] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword timestamp: Timestamp indicating when the error happened. Required.
@@ -279,7 +279,7 @@ class Log(_serialization.Model):
         message: str,
         level: Union[str, "_models.LogLevel"],
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword id:
@@ -413,7 +413,7 @@ class Principal(_serialization.Model):
         name: Optional[str] = None,
         user: Optional["_models.PrincipalUser"] = None,
         application: Optional["_models.PrincipalApplication"] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword id:
@@ -586,7 +586,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         state: Optional[Union[str, "_models.ProcessState"]] = None,
         element_values: Optional[Dict[str, List["_models.ProcessElementValue"]]] = None,
         initiator: Optional["_models.Principal"] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword id: Process ID.
@@ -871,7 +871,7 @@ class ProcessSaveElementCommand(_serialization.Model):
         *,
         element_definition_code: str,
         element_values: Optional[List["_models.ProcessElementValue"]] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword element_definition_code: Required.
@@ -979,7 +979,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         state: Optional[Union[str, "_models.TaskState"]] = None,
         element_values: Optional[Dict[str, List["_models.TaskElementValue"]]] = None,
         owner: Optional["_models.Principal"] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword id:
@@ -1201,7 +1201,7 @@ class TaskElementValueDocumentItem(_serialization.Model):
         content_path: Optional[str] = None,
         content_type: Optional[str] = None,
         content_length: Optional[int] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword id:
@@ -1366,7 +1366,7 @@ class TaskElementValuePrincipalItem(_serialization.Model):
         id: str,  # pylint: disable=redefined-builtin
         type: Union[str, "_models.PrincipalType"],
         name: Optional[str] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword id: Required.
@@ -1481,7 +1481,7 @@ class TaskSaveElementCommand(_serialization.Model):
         *,
         element_definition_code: str,
         element_values: Optional[List["_models.TaskElementValue"]] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword element_definition_code: Required.
@@ -1523,7 +1523,7 @@ class TaskSaveElementValueDocumentCommand(_serialization.Model):
         element_definition_code: str,
         element_value_id: Optional[str] = None,
         element_value_valid: bool = True,
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword element_definition_code: Required.
@@ -1571,7 +1571,7 @@ class TasksDefinitionSummary(_serialization.Model):
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         version: Optional[str] = None,
         code: Optional[str] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword id:
@@ -1673,7 +1673,7 @@ class WebhookEventProcessStateChanged(WebhookEvent):
         id: str,  # pylint: disable=redefined-builtin
         timestamp: datetime.datetime,
         data: "_models.WebhookEventProcessStateChangedData",
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword id: Required.
@@ -1759,7 +1759,7 @@ class WebhookEventTaskStateChanged(WebhookEvent):
         id: str,  # pylint: disable=redefined-builtin
         timestamp: datetime.datetime,
         data: "_models.WebhookEventTaskStateChangedData",
-        **kwargs
+        **kwargs,
     ):
         """
         :keyword id: Required.

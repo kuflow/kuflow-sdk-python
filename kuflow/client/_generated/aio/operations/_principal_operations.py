@@ -54,7 +54,7 @@ class PrincipalOperations:
         sort: Optional[List[str]] = None,
         type: Optional[Union[str, _models.PrincipalType]] = None,
         group_id: Optional[List[str]] = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _models.PrincipalPage:
         """Find all accessible Principals.
 
