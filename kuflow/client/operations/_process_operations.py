@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from typing import Any, IO, List, Optional, Union
+from typing import Any, List, Optional, Union
 
 from .._generated import (
     KuFlowClient as KuFlowClientGenerated
@@ -49,7 +49,7 @@ class ProcessOperations:
         if sort is not None and isinstance(sort, str):
             sort = [sort]
 
-        return self.__kuflow_client.process.find_processes(size=size, page=page, sort=sort ** kwargs)
+        return self.__kuflow_client.process.find_processes(size=size, page=page, sort=sort, ** kwargs)
 
     def create_process(self, process: _models.Process, **kwargs: Any) -> _models.Process:
         """Create a new process.

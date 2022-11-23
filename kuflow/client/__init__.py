@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from ._generated import VERSION
 from ._client import KuFlowClient
 
