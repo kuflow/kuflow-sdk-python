@@ -27,7 +27,7 @@ python: true
 title: KuFlow
 override-client-name: KuFlowRestClient
 
-input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/550af4e4b55a60b32a4170d0f07d45e4a357131b/specs/api.kuflow.com/v2022-10-08/openapi.yaml
+input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/9ba6d9630606c6108a8a882f8498765c67bdcc8e/specs/api.kuflow.com/v2022-10-08/openapi.yaml
 output-folder: ../../kuflow/rest/client/_generated
 
 openapi-type: data-plane

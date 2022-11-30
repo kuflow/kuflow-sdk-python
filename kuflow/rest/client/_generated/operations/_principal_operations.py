@@ -80,11 +80,11 @@ def build_find_principals_request(
     if page is not None:
         _params["page"] = _SERIALIZER.query("page", page, "int", minimum=0)
     if sort is not None:
-        _params["sort"] = _SERIALIZER.query("sort", sort, "[str]")
+        _params["sort"] = [_SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort]
     if type is not None:
         _params["type"] = _SERIALIZER.query("type", type, "str")
     if group_id is not None:
-        _params["groupId"] = _SERIALIZER.query("group_id", group_id, "[str]")
+        _params["groupId"] = [_SERIALIZER.query("group_id", q, "str") if q is not None else "" for q in group_id]
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")

@@ -74,7 +74,7 @@ def build_find_processes_request(
     if page is not None:
         _params["page"] = _SERIALIZER.query("page", page, "int", minimum=0)
     if sort is not None:
-        _params["sort"] = _SERIALIZER.query("sort", sort, "[str]")
+        _params["sort"] = [_SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort]
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")

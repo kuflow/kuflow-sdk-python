@@ -81,13 +81,15 @@ def build_find_tasks_request(
     if page is not None:
         _params["page"] = _SERIALIZER.query("page", page, "int", minimum=0)
     if sort is not None:
-        _params["sort"] = _SERIALIZER.query("sort", sort, "[str]")
+        _params["sort"] = [_SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort]
     if process_id is not None:
-        _params["processId"] = _SERIALIZER.query("process_id", process_id, "[str]")
+        _params["processId"] = [_SERIALIZER.query("process_id", q, "str") if q is not None else "" for q in process_id]
     if state is not None:
-        _params["state"] = _SERIALIZER.query("state", state, "[str]")
+        _params["state"] = [_SERIALIZER.query("state", q, "str") if q is not None else "" for q in state]
     if task_definition_code is not None:
-        _params["taskDefinitionCode"] = _SERIALIZER.query("task_definition_code", task_definition_code, "[str]")
+        _params["taskDefinitionCode"] = [
+            _SERIALIZER.query("task_definition_code", q, "str") if q is not None else "" for q in task_definition_code
+        ]
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")

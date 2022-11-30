@@ -324,25 +324,25 @@ class Page(_serialization.Model):
 
     All required parameters must be populated in order to send to Azure.
 
+    :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
+     "PROCESS_PAGE", and "TASK_PAGE".
+    :vartype object_type: str or ~kuflow.rest.client.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.client.models.PageMetadata
-    :ivar model_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
-     "PROCESS_PAGE", and "TASK_PAGE".
-    :vartype model_type: str or ~kuflow.rest.client.models.PagedObjectType
     """
 
     _validation = {
+        "object_type": {"required": True},
         "metadata": {"required": True},
-        "model_type": {"required": True},
     }
 
     _attribute_map = {
+        "object_type": {"key": "objectType", "type": "str"},
         "metadata": {"key": "metadata", "type": "PageMetadata"},
-        "model_type": {"key": "modelType", "type": "str"},
     }
 
     _subtype_map = {
-        "model_type": {"PRINCIPAL_PAGE": "PrincipalPage", "PROCESS_PAGE": "ProcessPage", "TASK_PAGE": "TaskPage"}
+        "object_type": {"PRINCIPAL_PAGE": "PrincipalPage", "PROCESS_PAGE": "ProcessPage", "TASK_PAGE": "TaskPage"}
     }
 
     def __init__(self, *, metadata: "_models.PageMetadata", **kwargs):
@@ -351,8 +351,8 @@ class Page(_serialization.Model):
         :paramtype metadata: ~kuflow.rest.client.models.PageMetadata
         """
         super().__init__(**kwargs)
+        self.object_type: Optional[str] = None
         self.metadata = metadata
-        self.model_type: Optional[str] = None
 
 
 class PageMetadata(_serialization.Model):
@@ -362,8 +362,8 @@ class PageMetadata(_serialization.Model):
 
     :ivar size: Required.
     :vartype size: int
-    :ivar number: Required.
-    :vartype number: int
+    :ivar page: Required.
+    :vartype page: int
     :ivar total_elements: Required.
     :vartype total_elements: int
     :ivar total_pages: Required.
@@ -372,24 +372,24 @@ class PageMetadata(_serialization.Model):
 
     _validation = {
         "size": {"required": True, "minimum": 0},
-        "number": {"required": True, "minimum": 0},
+        "page": {"required": True, "minimum": 0},
         "total_elements": {"required": True},
         "total_pages": {"required": True},
     }
 
     _attribute_map = {
         "size": {"key": "size", "type": "int"},
-        "number": {"key": "number", "type": "int"},
+        "page": {"key": "page", "type": "int"},
         "total_elements": {"key": "totalElements", "type": "int"},
         "total_pages": {"key": "totalPages", "type": "int"},
     }
 
-    def __init__(self, *, size: int, number: int, total_elements: int, total_pages: int, **kwargs):
+    def __init__(self, *, size: int, page: int, total_elements: int, total_pages: int, **kwargs):
         """
         :keyword size: Required.
         :paramtype size: int
-        :keyword number: Required.
-        :paramtype number: int
+        :keyword page: Required.
+        :paramtype page: int
         :keyword total_elements: Required.
         :paramtype total_elements: int
         :keyword total_pages: Required.
@@ -397,7 +397,7 @@ class PageMetadata(_serialization.Model):
         """
         super().__init__(**kwargs)
         self.size = size
-        self.number = number
+        self.page = page
         self.total_elements = total_elements
         self.total_pages = total_pages
 
@@ -405,17 +405,25 @@ class PageMetadata(_serialization.Model):
 class Principal(_serialization.Model):
     """Principal.
 
-    :ivar id:
+    All required parameters must be populated in order to send to Azure.
+
+    :ivar id: Required.
     :vartype id: str
-    :ivar type: Known values are: "USER", "APPLICATION", and "SYSTEM".
+    :ivar type: Required. Known values are: "USER", "APPLICATION", and "SYSTEM".
     :vartype type: str or ~kuflow.rest.client.models.PrincipalType
-    :ivar name:
+    :ivar name: Required.
     :vartype name: str
     :ivar user:
     :vartype user: ~kuflow.rest.client.models.PrincipalUser
     :ivar application:
     :vartype application: ~kuflow.rest.client.models.PrincipalApplication
     """
+
+    _validation = {
+        "id": {"required": True},
+        "type": {"required": True},
+        "name": {"required": True},
+    }
 
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
@@ -428,19 +436,19 @@ class Principal(_serialization.Model):
     def __init__(
         self,
         *,
-        id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        type: Optional[Union[str, "_models.PrincipalType"]] = None,
-        name: Optional[str] = None,
+        id: str,  # pylint: disable=redefined-builtin
+        type: Union[str, "_models.PrincipalType"],
+        name: str,
         user: Optional["_models.PrincipalUser"] = None,
         application: Optional["_models.PrincipalApplication"] = None,
         **kwargs,
     ):
         """
-        :keyword id:
+        :keyword id: Required.
         :paramtype id: str
-        :keyword type: Known values are: "USER", "APPLICATION", and "SYSTEM".
+        :keyword type: Required. Known values are: "USER", "APPLICATION", and "SYSTEM".
         :paramtype type: str or ~kuflow.rest.client.models.PrincipalType
-        :keyword name:
+        :keyword name: Required.
         :paramtype name: str
         :keyword user:
         :paramtype user: ~kuflow.rest.client.models.PrincipalUser
@@ -480,24 +488,24 @@ class PrincipalPage(Page):
 
     All required parameters must be populated in order to send to Azure.
 
+    :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
+     "PROCESS_PAGE", and "TASK_PAGE".
+    :vartype object_type: str or ~kuflow.rest.client.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.client.models.PageMetadata
-    :ivar model_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
-     "PROCESS_PAGE", and "TASK_PAGE".
-    :vartype model_type: str or ~kuflow.rest.client.models.PagedObjectType
     :ivar content: Required.
     :vartype content: list[~kuflow.rest.client.models.Principal]
     """
 
     _validation = {
+        "object_type": {"required": True},
         "metadata": {"required": True},
-        "model_type": {"required": True},
         "content": {"required": True},
     }
 
     _attribute_map = {
+        "object_type": {"key": "objectType", "type": "str"},
         "metadata": {"key": "metadata", "type": "PageMetadata"},
-        "model_type": {"key": "modelType", "type": "str"},
         "content": {"key": "content", "type": "[Principal]"},
     }
 
@@ -509,7 +517,7 @@ class PrincipalPage(Page):
         :paramtype content: list[~kuflow.rest.client.models.Principal]
         """
         super().__init__(metadata=metadata, **kwargs)
-        self.model_type: str = "PRINCIPAL_PAGE"
+        self.object_type: str = "PRINCIPAL_PAGE"
         self.content = content
 
 
@@ -833,24 +841,24 @@ class ProcessPage(Page):
 
     All required parameters must be populated in order to send to Azure.
 
+    :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
+     "PROCESS_PAGE", and "TASK_PAGE".
+    :vartype object_type: str or ~kuflow.rest.client.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.client.models.PageMetadata
-    :ivar model_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
-     "PROCESS_PAGE", and "TASK_PAGE".
-    :vartype model_type: str or ~kuflow.rest.client.models.PagedObjectType
     :ivar content: Required.
     :vartype content: list[~kuflow.rest.client.models.Process]
     """
 
     _validation = {
+        "object_type": {"required": True},
         "metadata": {"required": True},
-        "model_type": {"required": True},
         "content": {"required": True},
     }
 
     _attribute_map = {
+        "object_type": {"key": "objectType", "type": "str"},
         "metadata": {"key": "metadata", "type": "PageMetadata"},
-        "model_type": {"key": "modelType", "type": "str"},
         "content": {"key": "content", "type": "[Process]"},
     }
 
@@ -862,7 +870,7 @@ class ProcessPage(Page):
         :paramtype content: list[~kuflow.rest.client.models.Process]
         """
         super().__init__(metadata=metadata, **kwargs)
-        self.model_type: str = "PROCESS_PAGE"
+        self.object_type: str = "PROCESS_PAGE"
         self.content = content
 
 
@@ -1417,24 +1425,24 @@ class TaskPage(Page):
 
     All required parameters must be populated in order to send to Azure.
 
+    :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
+     "PROCESS_PAGE", and "TASK_PAGE".
+    :vartype object_type: str or ~kuflow.rest.client.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.client.models.PageMetadata
-    :ivar model_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
-     "PROCESS_PAGE", and "TASK_PAGE".
-    :vartype model_type: str or ~kuflow.rest.client.models.PagedObjectType
     :ivar content: Required.
     :vartype content: list[~kuflow.rest.client.models.Task]
     """
 
     _validation = {
+        "object_type": {"required": True},
         "metadata": {"required": True},
-        "model_type": {"required": True},
         "content": {"required": True},
     }
 
     _attribute_map = {
+        "object_type": {"key": "objectType", "type": "str"},
         "metadata": {"key": "metadata", "type": "PageMetadata"},
-        "model_type": {"key": "modelType", "type": "str"},
         "content": {"key": "content", "type": "[Task]"},
     }
 
@@ -1446,7 +1454,7 @@ class TaskPage(Page):
         :paramtype content: list[~kuflow.rest.client.models.Task]
         """
         super().__init__(metadata=metadata, **kwargs)
-        self.model_type: str = "TASK_PAGE"
+        self.object_type: str = "TASK_PAGE"
         self.content = content
 
 
