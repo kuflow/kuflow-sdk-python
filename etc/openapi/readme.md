@@ -28,12 +28,12 @@ title: KuFlow
 override-client-name: KuFlowRestClient
 
 input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/9ba6d9630606c6108a8a882f8498765c67bdcc8e/specs/api.kuflow.com/v2022-10-08/openapi.yaml
-output-folder: ../../kuflow/rest/client/_generated
+output-folder: ../../kuflow/rest/_generated
 
 openapi-type: data-plane
 add-credential: true
-package-name: kuflow-rest-client
-namespace: kuflow.rest.client
+package-name: kuflow-rest
+namespace: kuflow.rest
 package-version: '0.0.1'
 no-namespace-folders: true
 combine-operation-files: false

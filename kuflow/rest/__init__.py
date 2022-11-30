@@ -23,4 +23,9 @@
 # SOFTWARE.
 #
 
-__path__ = __import__("pkgutil").extend_path(__path__, __name__)  # type: ignore
+
+from ._generated import VERSION
+from kuflow.rest._kuflow_rest_client import KuFlowRestClient
+
+__all__ = ["KuFlowRestClient"]
+__version__ = VERSION

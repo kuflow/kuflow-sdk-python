@@ -41,26 +41,215 @@ from azure.core.exceptions import (
     map_error,
 )
 from azure.core.pipeline import PipelineResponse
-from azure.core.pipeline.transport import AsyncHttpResponse
+from azure.core.pipeline.transport import HttpResponse
 from azure.core.rest import HttpRequest
-from azure.core.tracing.decorator_async import distributed_trace_async
+from azure.core.tracing.decorator import distributed_trace
 from azure.core.utils import case_insensitive_dict
 
-from ... import models as _models
-from ...operations._process_operations import (
-    build_actions_process_cancel_request,
-    build_actions_process_change_initiator_request,
-    build_actions_process_complete_request,
-    build_actions_process_delete_element_request,
-    build_actions_process_save_element_request,
-    build_actions_process_save_user_action_value_document_request,
-    build_create_process_request,
-    build_find_processes_request,
-    build_retrieve_process_request,
-)
+from .. import models as _models
+from .._serialization import Serializer
+from .._vendor import _format_url_section
 
 T = TypeVar("T")
-ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
+ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
+
+_SERIALIZER = Serializer()
+_SERIALIZER.client_side_validation = False
+
+
+def build_find_processes_request(
+    *, size: int = 25, page: int = 0, sort: Optional[List[str]] = None, **kwargs: Any
+) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+    _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
+
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/processes"
+
+    # Construct parameters
+    if size is not None:
+        _params["size"] = _SERIALIZER.query("size", size, "int", maximum=1000, minimum=0)
+    if page is not None:
+        _params["page"] = _SERIALIZER.query("page", page, "int", minimum=0)
+    if sort is not None:
+        _params["sort"] = [_SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort]
+
+    # Construct headers
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
+
+
+def build_create_process_request(**kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/processes"
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+
+
+def build_retrieve_process_request(id: str, **kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/processes/{id}"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+
+    # Construct headers
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="GET", url=_url, headers=_headers, **kwargs)
+
+
+def build_actions_process_change_initiator_request(id: str, **kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/processes/{id}/~actions/change-initiator"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+
+
+def build_actions_process_save_element_request(id: str, **kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/processes/{id}/~actions/save-element"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+
+
+def build_actions_process_delete_element_request(id: str, **kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/processes/{id}/~actions/delete-element"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+
+
+def build_actions_process_complete_request(id: str, **kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/processes/{id}/~actions/complete"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+
+    # Construct headers
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+
+
+def build_actions_process_cancel_request(id: str, **kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/processes/{id}/~actions/cancel"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+
+    # Construct headers
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+
+
+def build_actions_process_save_user_action_value_document_request(
+    id: str, *, file_content_type: str, file_name: str, user_action_value_id: str, content: IO, **kwargs: Any
+) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+    _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/processes/{id}/~actions/save-user-action-value-document"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+
+    # Construct parameters
+    _params["fileContentType"] = _SERIALIZER.query("file_content_type", file_content_type, "str")
+    _params["fileName"] = _SERIALIZER.query("file_name", file_name, "str")
+    _params["userActionValueId"] = _SERIALIZER.query("user_action_value_id", user_action_value_id, "str")
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, content=content, **kwargs)
 
 
 class ProcessOperations:
@@ -69,21 +258,21 @@ class ProcessOperations:
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
-        :class:`~kuflow.rest.client.aio.KuFlowRestClient`'s
+        :class:`~kuflow.rest.KuFlowRestClient`'s
         :attr:`process` attribute.
     """
 
     models = _models
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs):
         input_args = list(args)
         self._client = input_args.pop(0) if input_args else kwargs.pop("client")
         self._config = input_args.pop(0) if input_args else kwargs.pop("config")
         self._serialize = input_args.pop(0) if input_args else kwargs.pop("serializer")
         self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
-    @distributed_trace_async
-    async def find_processes(
+    @distributed_trace
+    def find_processes(
         self, *, size: int = 25, page: int = 0, sort: Optional[List[str]] = None, **kwargs: Any
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
@@ -104,7 +293,7 @@ class ProcessOperations:
          Please refer to the method description for supported properties. Default value is None.
         :paramtype sort: list[str]
         :return: ProcessPage
-        :rtype: ~kuflow.rest.client.models.ProcessPage
+        :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -129,7 +318,7 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=False, **kwargs
         )
 
@@ -148,7 +337,7 @@ class ProcessOperations:
         return deserialized
 
     @overload
-    async def create_process(
+    def create_process(
         self, process: _models.Process, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Process:
         """Create a new process.
@@ -168,19 +357,17 @@ class ProcessOperations:
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param process: Process to create. Required.
-        :type process: ~kuflow.rest.client.models.Process
+        :type process: ~kuflow.rest.models.Process
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def create_process(
-        self, process: IO, *, content_type: str = "application/json", **kwargs: Any
-    ) -> _models.Process:
+    def create_process(self, process: IO, *, content_type: str = "application/json", **kwargs: Any) -> _models.Process:
         """Create a new process.
 
         Creates a process. This option has direct correspondence to the action of starting a process in
@@ -203,12 +390,12 @@ class ProcessOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
-    @distributed_trace_async
-    async def create_process(self, process: Union[_models.Process, IO], **kwargs: Any) -> _models.Process:
+    @distributed_trace
+    def create_process(self, process: Union[_models.Process, IO], **kwargs: Any) -> _models.Process:
         """Create a new process.
 
         Creates a process. This option has direct correspondence to the action of starting a process in
@@ -226,12 +413,12 @@ class ProcessOperations:
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param process: Process to create. Is either a model type or a IO type. Required.
-        :type process: ~kuflow.rest.client.models.Process or IO
+        :type process: ~kuflow.rest.models.Process or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -265,7 +452,7 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=False, **kwargs
         )
 
@@ -287,8 +474,8 @@ class ProcessOperations:
 
         return deserialized  # type: ignore
 
-    @distributed_trace_async
-    async def retrieve_process(self, id: str, **kwargs: Any) -> _models.Process:
+    @distributed_trace
+    def retrieve_process(self, id: str, **kwargs: Any) -> _models.Process:
         """Get a Process by ID.
 
         Returns the requested Process when has access to do it.
@@ -296,7 +483,7 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -319,7 +506,7 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=False, **kwargs
         )
 
@@ -338,7 +525,7 @@ class ProcessOperations:
         return deserialized
 
     @overload
-    async def actions_process_change_initiator(
+    def actions_process_change_initiator(
         self,
         id: str,
         command: _models.ProcessChangeInitiatorCommand,
@@ -357,17 +544,17 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to change the process initiator. Required.
-        :type command: ~kuflow.rest.client.models.ProcessChangeInitiatorCommand
+        :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def actions_process_change_initiator(
+    def actions_process_change_initiator(
         self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Process:
         """Change process initiator.
@@ -386,12 +573,12 @@ class ProcessOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
-    @distributed_trace_async
-    async def actions_process_change_initiator(
+    @distributed_trace
+    def actions_process_change_initiator(
         self, id: str, command: Union[_models.ProcessChangeInitiatorCommand, IO], **kwargs: Any
     ) -> _models.Process:
         """Change process initiator.
@@ -406,12 +593,12 @@ class ProcessOperations:
         :type id: str
         :param command: Command to change the process initiator. Is either a model type or a IO type.
          Required.
-        :type command: ~kuflow.rest.client.models.ProcessChangeInitiatorCommand or IO
+        :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -446,7 +633,7 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=False, **kwargs
         )
 
@@ -465,7 +652,7 @@ class ProcessOperations:
         return deserialized
 
     @overload
-    async def actions_process_save_element(
+    def actions_process_save_element(
         self,
         id: str,
         command: _models.ProcessSaveElementCommand,
@@ -486,17 +673,17 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to save an element. Required.
-        :type command: ~kuflow.rest.client.models.ProcessSaveElementCommand
+        :type command: ~kuflow.rest.models.ProcessSaveElementCommand
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def actions_process_save_element(
+    def actions_process_save_element(
         self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Process:
         """Save a process element, aka: metadata.
@@ -517,12 +704,12 @@ class ProcessOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
-    @distributed_trace_async
-    async def actions_process_save_element(
+    @distributed_trace
+    def actions_process_save_element(
         self, id: str, command: Union[_models.ProcessSaveElementCommand, IO], **kwargs: Any
     ) -> _models.Process:
         """Save a process element, aka: metadata.
@@ -538,12 +725,12 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to save an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.client.models.ProcessSaveElementCommand or IO
+        :type command: ~kuflow.rest.models.ProcessSaveElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -578,7 +765,7 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=False, **kwargs
         )
 
@@ -597,7 +784,7 @@ class ProcessOperations:
         return deserialized
 
     @overload
-    async def actions_process_delete_element(
+    def actions_process_delete_element(
         self,
         id: str,
         command: _models.ProcessDeleteElementCommand,
@@ -614,17 +801,17 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete an element. Required.
-        :type command: ~kuflow.rest.client.models.ProcessDeleteElementCommand
+        :type command: ~kuflow.rest.models.ProcessDeleteElementCommand
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def actions_process_delete_element(
+    def actions_process_delete_element(
         self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Process:
         """Delete an element by code.
@@ -641,12 +828,12 @@ class ProcessOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
-    @distributed_trace_async
-    async def actions_process_delete_element(
+    @distributed_trace
+    def actions_process_delete_element(
         self, id: str, command: Union[_models.ProcessDeleteElementCommand, IO], **kwargs: Any
     ) -> _models.Process:
         """Delete an element by code.
@@ -658,12 +845,12 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.client.models.ProcessDeleteElementCommand or IO
+        :type command: ~kuflow.rest.models.ProcessDeleteElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -698,7 +885,7 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=False, **kwargs
         )
 
@@ -716,8 +903,8 @@ class ProcessOperations:
 
         return deserialized
 
-    @distributed_trace_async
-    async def actions_process_complete(self, id: str, **kwargs: Any) -> _models.Process:
+    @distributed_trace
+    def actions_process_complete(self, id: str, **kwargs: Any) -> _models.Process:
         """Complete a Process.
 
         Complete a Process. The state of Process is set to 'completed'.
@@ -727,7 +914,7 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -750,7 +937,7 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=False, **kwargs
         )
 
@@ -768,8 +955,8 @@ class ProcessOperations:
 
         return deserialized
 
-    @distributed_trace_async
-    async def actions_process_cancel(self, id: str, **kwargs: Any) -> _models.Process:
+    @distributed_trace
+    def actions_process_cancel(self, id: str, **kwargs: Any) -> _models.Process:
         """Cancel a Process.
 
         Cancel a Process. The Process state is set to 'cancelled'.
@@ -781,7 +968,7 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -804,7 +991,7 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=False, **kwargs
         )
 
@@ -822,8 +1009,8 @@ class ProcessOperations:
 
         return deserialized
 
-    @distributed_trace_async
-    async def actions_process_save_user_action_value_document(
+    @distributed_trace
+    def actions_process_save_user_action_value_document(
         self, id: str, file: IO, *, file_content_type: str, file_name: str, user_action_value_id: str, **kwargs: Any
     ) -> Optional[_models.Process]:
         """Upload and save a document in a user action.
@@ -841,7 +1028,7 @@ class ProcessOperations:
         :keyword user_action_value_id: User action value ID related to de document. Required.
         :paramtype user_action_value_id: str
         :return: Process or None
-        :rtype: ~kuflow.rest.client.models.Process or None
+        :rtype: ~kuflow.rest.models.Process or None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -872,7 +1059,7 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=False, **kwargs
         )
 

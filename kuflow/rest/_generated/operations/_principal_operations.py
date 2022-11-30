@@ -117,7 +117,7 @@ class PrincipalOperations:
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
-        :class:`~kuflow.rest.client.KuFlowRestClient`'s
+        :class:`~kuflow.rest.KuFlowRestClient`'s
         :attr:`principal` attribute.
     """
 
@@ -160,11 +160,11 @@ class PrincipalOperations:
         :paramtype sort: list[str]
         :keyword type: Filter principals by type. Known values are: "USER", "APPLICATION", and
          "SYSTEM". Default value is None.
-        :paramtype type: str or ~kuflow.rest.client.models.PrincipalType
+        :paramtype type: str or ~kuflow.rest.models.PrincipalType
         :keyword group_id: Filter principals that exists in one of group ids. Default value is None.
         :paramtype group_id: list[str]
         :return: PrincipalPage
-        :rtype: ~kuflow.rest.client.models.PrincipalPage
+        :rtype: ~kuflow.rest.models.PrincipalPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -218,7 +218,7 @@ class PrincipalOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Principal
-        :rtype: ~kuflow.rest.client.models.Principal
+        :rtype: ~kuflow.rest.models.Principal
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {

@@ -75,12 +75,12 @@ class TaskOperations:
         :keyword process_id: Filter by an array of process ids. Default value is None.
         :paramtype process_id: list[str]
         :keyword state: Filter by an array of task states. Default value is None.
-        :paramtype state: list[str or ~kuflow.rest.client.models.TaskState]
+        :paramtype state: list[str or ~kuflow.rest.models.TaskState]
         :keyword task_definition_code: Filter by an array of task definition codes. Default value is
          None.
         :paramtype task_definition_code: list[str]
         :return: TaskPage
-        :rtype: ~kuflow.rest.client.models.TaskPage
+        :rtype: ~kuflow.rest.models.TaskPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         if sort is not None and isinstance(sort, str):
@@ -123,13 +123,13 @@ class TaskOperations:
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param task: Task to be created. Is either a model type or a IO type. Required.
-        :type task: ~kuflow.rest.client.models.Task
+        :type task: ~kuflow.rest.models.Task
         :keyword activity_token: When create a Kuflow Task backed with a Temporal.io servers, this
          value is required and must be set with the context task token of Temporal.io activity. Default
          value is None.
         :paramtype activity_token: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.create_task(task=task, activity_token=activity_token, **kwargs)
@@ -142,7 +142,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.retrieve_task(id=id, **kwargs)
@@ -155,7 +155,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.actions_task_claim(id=id, **kwargs)
@@ -169,9 +169,9 @@ class TaskOperations:
         :type id: str
         :param command: Command to change the task owner. Is either a model type or a IO type.
          Required.
-        :type command: ~kuflow.rest.client.models.TaskAssignCommand or IO
+        :type command: ~kuflow.rest.models.TaskAssignCommand or IO
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.actions_task_assign(id=id, command=command, **kwargs)
@@ -194,9 +194,9 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to save an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.client.models.TaskSaveElementCommand or IO
+        :type command: ~kuflow.rest.models.TaskSaveElementCommand or IO
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.actions_task_save_element(id=id, command=command, **kwargs)
@@ -215,11 +215,11 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param file: Document to save. Required.
-        :type file: ~kuflow.rest.client.models.Document
+        :type file: ~kuflow.rest.models.Document
         :param command: Command info. Required.
-        :type command: ~kuflow.rest.client.models.TaskSaveElementValueDocumentCommand
+        :type command: ~kuflow.rest.models.TaskSaveElementValueDocumentCommand
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.actions_task_save_element_value_document(
@@ -245,9 +245,9 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.client.models.TaskDeleteElementCommand or IO
+        :type command: ~kuflow.rest.models.TaskDeleteElementCommand or IO
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.actions_task_delete_element(id=id, command=command, **kwargs)
@@ -266,9 +266,9 @@ class TaskOperations:
         :type id: str
         :param command: Command to delete a document elemente value. Is either a model type or a IO
          type. Required.
-        :type command: ~kuflow.rest.client.models.TaskDeleteElementValueDocumentCommand or IO
+        :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand or IO
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.actions_task_delete_element_value_document(id=id, command=command, **kwargs)
@@ -321,7 +321,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.actions_task_complete(id=id, **kwargs)
@@ -335,9 +335,9 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param log: Log to be created. Is either a model type or a IO type. Required.
-        :type log: ~kuflow.rest.client.models.Log or IO
+        :type log: ~kuflow.rest.models.Log or IO
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.task.actions_task_append_log(id=id, log=log, **kwargs)

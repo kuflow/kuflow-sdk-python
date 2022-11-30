@@ -41,16 +41,36 @@ from azure.core.exceptions import (
     map_error,
 )
 from azure.core.pipeline import PipelineResponse
-from azure.core.pipeline.transport import AsyncHttpResponse
+from azure.core.pipeline.transport import HttpResponse
 from azure.core.rest import HttpRequest
-from azure.core.tracing.decorator_async import distributed_trace_async
+from azure.core.tracing.decorator import distributed_trace
 from azure.core.utils import case_insensitive_dict
 
-from ... import models as _models
-from ...operations._authentication_operations import build_create_authentication_request
+from .. import models as _models
+from .._serialization import Serializer
 
 T = TypeVar("T")
-ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
+ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
+
+_SERIALIZER = Serializer()
+_SERIALIZER.client_side_validation = False
+
+
+def build_create_authentication_request(**kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/authentications"
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
 class AuthenticationOperations:
@@ -59,13 +79,13 @@ class AuthenticationOperations:
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
-        :class:`~kuflow.rest.client.aio.KuFlowRestClient`'s
+        :class:`~kuflow.rest.KuFlowRestClient`'s
         :attr:`authentication` attribute.
     """
 
     models = _models
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs):
         input_args = list(args)
         self._client = input_args.pop(0) if input_args else kwargs.pop("client")
         self._config = input_args.pop(0) if input_args else kwargs.pop("config")
@@ -73,7 +93,7 @@ class AuthenticationOperations:
         self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
     @overload
-    async def create_authentication(
+    def create_authentication(
         self, authentication: _models.Authentication, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Authentication:
         """Create an authentication for the current principal.
@@ -81,17 +101,17 @@ class AuthenticationOperations:
         Create an authentication for the current principal.
 
         :param authentication: Authentication to be created. Required.
-        :type authentication: ~kuflow.rest.client.models.Authentication
+        :type authentication: ~kuflow.rest.models.Authentication
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
         :return: Authentication
-        :rtype: ~kuflow.rest.client.models.Authentication
+        :rtype: ~kuflow.rest.models.Authentication
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def create_authentication(
+    def create_authentication(
         self, authentication: IO, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Authentication:
         """Create an authentication for the current principal.
@@ -104,12 +124,12 @@ class AuthenticationOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Authentication
-        :rtype: ~kuflow.rest.client.models.Authentication
+        :rtype: ~kuflow.rest.models.Authentication
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
-    @distributed_trace_async
-    async def create_authentication(
+    @distributed_trace
+    def create_authentication(
         self, authentication: Union[_models.Authentication, IO], **kwargs: Any
     ) -> _models.Authentication:
         """Create an authentication for the current principal.
@@ -118,12 +138,12 @@ class AuthenticationOperations:
 
         :param authentication: Authentication to be created. Is either a model type or a IO type.
          Required.
-        :type authentication: ~kuflow.rest.client.models.Authentication or IO
+        :type authentication: ~kuflow.rest.models.Authentication or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Authentication
-        :rtype: ~kuflow.rest.client.models.Authentication
+        :rtype: ~kuflow.rest.models.Authentication
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -157,7 +177,7 @@ class AuthenticationOperations:
         )
         request.url = self._client.format_url(request.url)
 
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=False, **kwargs
         )
 

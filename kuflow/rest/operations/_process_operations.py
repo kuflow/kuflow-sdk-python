@@ -65,7 +65,7 @@ class ProcessOperations:
          Please refer to the method description for supported properties. Default value is None.
         :paramtype sort: Union[str, List[str]]
         :return: ProcessPage
-        :rtype: ~kuflow.rest.client.models.ProcessPage
+        :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         if sort is not None and isinstance(sort, str):
@@ -91,9 +91,9 @@ class ProcessOperations:
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param process: Process to create. Is either a model type or a IO type. Required.
-        :type process: ~kuflow.rest.client.models.Process or IO
+        :type process: ~kuflow.rest.models.Process or IO
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.process.create_process(process=process, **kwargs)
@@ -106,7 +106,7 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.process.retrieve_process(id=id, **kwargs)
@@ -126,9 +126,9 @@ class ProcessOperations:
         :type id: str
         :param command: Command to change the process initiator. Is either a model type or a IO type.
          Required.
-        :type command: ~kuflow.rest.client.models.ProcessChangeInitiatorCommand or IO
+        :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand or IO
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.process.actions_process_change_initiator(id=id, command=command, **kwargs)
@@ -149,9 +149,9 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to save an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.client.models.ProcessSaveElementCommand or IO
+        :type command: ~kuflow.rest.models.ProcessSaveElementCommand or IO
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.process.actions_process_save_element(id=id, command=command, **kwargs)
@@ -168,9 +168,9 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.client.models.ProcessDeleteElementCommand or IO
+        :type command: ~kuflow.rest.models.ProcessDeleteElementCommand or IO
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.process.actions_process_delete_element(id=id, command=command, **kwargs)
@@ -185,7 +185,7 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.process.actions_process_complete(id=id, **kwargs)
@@ -202,7 +202,7 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Process
-        :rtype: ~kuflow.rest.client.models.Process
+        :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.process.actions_process_cancel(id=id, **kwargs)
@@ -221,7 +221,7 @@ class ProcessOperations:
         :keyword command: User action info. Required.
         :type command: _models.ProcessSaveUserActionValueDocumentCommand
         :return: Process or None
-        :rtype: ~kuflow.rest.client.models.Process or None
+        :rtype: ~kuflow.rest.models.Process or None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self.__kuflow_client.process.actions_process_save_user_action_value_document(

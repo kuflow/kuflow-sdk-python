@@ -1,2 +1,3 @@
-# kuflow-rest-client-java-python
-KuFlow rest client for Python
+# KuFlow SDK for Python
+
+KuFlow SDK for Python

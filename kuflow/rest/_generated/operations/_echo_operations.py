@@ -76,7 +76,7 @@ class EchoOperations:
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
-        :class:`~kuflow.rest.client.KuFlowRestClient`'s
+        :class:`~kuflow.rest.KuFlowRestClient`'s
         :attr:`echo` attribute.
     """
 
@@ -96,7 +96,7 @@ class EchoOperations:
         Echo endpoint to test integration, return a DUMMY authentication token.
 
         :return: Authentication
-        :rtype: ~kuflow.rest.client.models.Authentication
+        :rtype: ~kuflow.rest.models.Authentication
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {

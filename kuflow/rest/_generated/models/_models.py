@@ -59,7 +59,7 @@ class AbstractAudited(_serialization.Model):
 
     :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
      are: "PROCESS", "TASK", and "AUTHENTICATION".
-    :vartype object_type: str or ~kuflow.rest.client.models.AuditedObjectType
+    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -107,7 +107,7 @@ class Authentication(AbstractAudited):
 
     :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
      are: "PROCESS", "TASK", and "AUTHENTICATION".
-    :vartype object_type: str or ~kuflow.rest.client.models.AuditedObjectType
+    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -174,7 +174,7 @@ class DefaultError(_serialization.Model):
     :ivar message: Message Status. Required.
     :vartype message: str
     :ivar errors: Related error information.
-    :vartype errors: list[~kuflow.rest.client.models.DefaultErrorInfo]
+    :vartype errors: list[~kuflow.rest.models.DefaultErrorInfo]
     """
 
     _validation = {
@@ -207,7 +207,7 @@ class DefaultError(_serialization.Model):
         :keyword message: Message Status. Required.
         :paramtype message: str
         :keyword errors: Related error information.
-        :paramtype errors: list[~kuflow.rest.client.models.DefaultErrorInfo]
+        :paramtype errors: list[~kuflow.rest.models.DefaultErrorInfo]
         """
         super().__init__(**kwargs)
         self.timestamp = timestamp
@@ -277,7 +277,7 @@ class Log(_serialization.Model):
     :ivar message: Required.
     :vartype message: str
     :ivar level: Required. Known values are: "INFO", "WARN", and "ERROR".
-    :vartype level: str or ~kuflow.rest.client.models.LogLevel
+    :vartype level: str or ~kuflow.rest.models.LogLevel
     """
 
     _validation = {
@@ -307,7 +307,7 @@ class Log(_serialization.Model):
         :keyword message: Required.
         :paramtype message: str
         :keyword level: Required. Known values are: "INFO", "WARN", and "ERROR".
-        :paramtype level: str or ~kuflow.rest.client.models.LogLevel
+        :paramtype level: str or ~kuflow.rest.models.LogLevel
         """
         super().__init__(**kwargs)
         self.id = id
@@ -326,9 +326,9 @@ class Page(_serialization.Model):
 
     :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
      "PROCESS_PAGE", and "TASK_PAGE".
-    :vartype object_type: str or ~kuflow.rest.client.models.PagedObjectType
+    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
-    :vartype metadata: ~kuflow.rest.client.models.PageMetadata
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
     """
 
     _validation = {
@@ -348,7 +348,7 @@ class Page(_serialization.Model):
     def __init__(self, *, metadata: "_models.PageMetadata", **kwargs):
         """
         :keyword metadata: Required.
-        :paramtype metadata: ~kuflow.rest.client.models.PageMetadata
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
         """
         super().__init__(**kwargs)
         self.object_type: Optional[str] = None
@@ -410,13 +410,13 @@ class Principal(_serialization.Model):
     :ivar id: Required.
     :vartype id: str
     :ivar type: Required. Known values are: "USER", "APPLICATION", and "SYSTEM".
-    :vartype type: str or ~kuflow.rest.client.models.PrincipalType
+    :vartype type: str or ~kuflow.rest.models.PrincipalType
     :ivar name: Required.
     :vartype name: str
     :ivar user:
-    :vartype user: ~kuflow.rest.client.models.PrincipalUser
+    :vartype user: ~kuflow.rest.models.PrincipalUser
     :ivar application:
-    :vartype application: ~kuflow.rest.client.models.PrincipalApplication
+    :vartype application: ~kuflow.rest.models.PrincipalApplication
     """
 
     _validation = {
@@ -447,13 +447,13 @@ class Principal(_serialization.Model):
         :keyword id: Required.
         :paramtype id: str
         :keyword type: Required. Known values are: "USER", "APPLICATION", and "SYSTEM".
-        :paramtype type: str or ~kuflow.rest.client.models.PrincipalType
+        :paramtype type: str or ~kuflow.rest.models.PrincipalType
         :keyword name: Required.
         :paramtype name: str
         :keyword user:
-        :paramtype user: ~kuflow.rest.client.models.PrincipalUser
+        :paramtype user: ~kuflow.rest.models.PrincipalUser
         :keyword application:
-        :paramtype application: ~kuflow.rest.client.models.PrincipalApplication
+        :paramtype application: ~kuflow.rest.models.PrincipalApplication
         """
         super().__init__(**kwargs)
         self.id = id
@@ -490,11 +490,11 @@ class PrincipalPage(Page):
 
     :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
      "PROCESS_PAGE", and "TASK_PAGE".
-    :vartype object_type: str or ~kuflow.rest.client.models.PagedObjectType
+    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
-    :vartype metadata: ~kuflow.rest.client.models.PageMetadata
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
     :ivar content: Required.
-    :vartype content: list[~kuflow.rest.client.models.Principal]
+    :vartype content: list[~kuflow.rest.models.Principal]
     """
 
     _validation = {
@@ -512,9 +512,9 @@ class PrincipalPage(Page):
     def __init__(self, *, metadata: "_models.PageMetadata", content: List["_models.Principal"], **kwargs):
         """
         :keyword metadata: Required.
-        :paramtype metadata: ~kuflow.rest.client.models.PageMetadata
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
         :keyword content: Required.
-        :paramtype content: list[~kuflow.rest.client.models.Principal]
+        :paramtype content: list[~kuflow.rest.models.Principal]
         """
         super().__init__(metadata=metadata, **kwargs)
         self.object_type: str = "PRINCIPAL_PAGE"
@@ -558,7 +558,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
 
     :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
      are: "PROCESS", "TASK", and "AUTHENTICATION".
-    :vartype object_type: str or ~kuflow.rest.client.models.AuditedObjectType
+    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -572,13 +572,13 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :ivar subject: Process subject.
     :vartype subject: str
     :ivar state: Process state. Known values are: "RUNNING", "COMPLETED", and "CANCELLED".
-    :vartype state: str or ~kuflow.rest.client.models.ProcessState
+    :vartype state: str or ~kuflow.rest.models.ProcessState
     :ivar process_definition: Required.
-    :vartype process_definition: ~kuflow.rest.client.models.ProcessDefinitionSummary
+    :vartype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
     :ivar element_values: Process element values, an ElementValueDocument is not allowed.
-    :vartype element_values: dict[str, list[~kuflow.rest.client.models.ProcessElementValue]]
+    :vartype element_values: dict[str, list[~kuflow.rest.models.ProcessElementValue]]
     :ivar initiator:
-    :vartype initiator: ~kuflow.rest.client.models.Principal
+    :vartype initiator: ~kuflow.rest.models.Principal
     """
 
     _validation = {
@@ -622,13 +622,13 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :keyword subject: Process subject.
         :paramtype subject: str
         :keyword state: Process state. Known values are: "RUNNING", "COMPLETED", and "CANCELLED".
-        :paramtype state: str or ~kuflow.rest.client.models.ProcessState
+        :paramtype state: str or ~kuflow.rest.models.ProcessState
         :keyword process_definition: Required.
-        :paramtype process_definition: ~kuflow.rest.client.models.ProcessDefinitionSummary
+        :paramtype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
         :keyword element_values: Process element values, an ElementValueDocument is not allowed.
-        :paramtype element_values: dict[str, list[~kuflow.rest.client.models.ProcessElementValue]]
+        :paramtype element_values: dict[str, list[~kuflow.rest.models.ProcessElementValue]]
         :keyword initiator:
-        :paramtype initiator: ~kuflow.rest.client.models.Principal
+        :paramtype initiator: ~kuflow.rest.models.Principal
         """
         super().__init__(**kwargs)
         self.object_type: str = "PROCESS"
@@ -742,7 +742,7 @@ class ProcessElementValue(_serialization.Model):
     :ivar valid:
     :vartype valid: bool
     :ivar type: Process element value types. Required. Known values are: "STRING" and "NUMBER".
-    :vartype type: str or ~kuflow.rest.client.models.ProcessElementValueType
+    :vartype type: str or ~kuflow.rest.models.ProcessElementValueType
     """
 
     _validation = {
@@ -774,7 +774,7 @@ class ProcessElementValueNumber(ProcessElementValue):
     :ivar valid:
     :vartype valid: bool
     :ivar type: Process element value types. Required. Known values are: "STRING" and "NUMBER".
-    :vartype type: str or ~kuflow.rest.client.models.ProcessElementValueType
+    :vartype type: str or ~kuflow.rest.models.ProcessElementValueType
     :ivar value:
     :vartype value: float
     """
@@ -809,7 +809,7 @@ class ProcessElementValueString(ProcessElementValue):
     :ivar valid:
     :vartype valid: bool
     :ivar type: Process element value types. Required. Known values are: "STRING" and "NUMBER".
-    :vartype type: str or ~kuflow.rest.client.models.ProcessElementValueType
+    :vartype type: str or ~kuflow.rest.models.ProcessElementValueType
     :ivar value:
     :vartype value: str
     """
@@ -843,11 +843,11 @@ class ProcessPage(Page):
 
     :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
      "PROCESS_PAGE", and "TASK_PAGE".
-    :vartype object_type: str or ~kuflow.rest.client.models.PagedObjectType
+    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
-    :vartype metadata: ~kuflow.rest.client.models.PageMetadata
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
     :ivar content: Required.
-    :vartype content: list[~kuflow.rest.client.models.Process]
+    :vartype content: list[~kuflow.rest.models.Process]
     """
 
     _validation = {
@@ -865,9 +865,9 @@ class ProcessPage(Page):
     def __init__(self, *, metadata: "_models.PageMetadata", content: List["_models.Process"], **kwargs):
         """
         :keyword metadata: Required.
-        :paramtype metadata: ~kuflow.rest.client.models.PageMetadata
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
         :keyword content: Required.
-        :paramtype content: list[~kuflow.rest.client.models.Process]
+        :paramtype content: list[~kuflow.rest.models.Process]
         """
         super().__init__(metadata=metadata, **kwargs)
         self.object_type: str = "PROCESS_PAGE"
@@ -882,7 +882,7 @@ class ProcessSaveElementCommand(_serialization.Model):
     :ivar element_definition_code: Required.
     :vartype element_definition_code: str
     :ivar element_values:
-    :vartype element_values: list[~kuflow.rest.client.models.ProcessElementValue]
+    :vartype element_values: list[~kuflow.rest.models.ProcessElementValue]
     """
 
     _validation = {
@@ -905,7 +905,7 @@ class ProcessSaveElementCommand(_serialization.Model):
         :keyword element_definition_code: Required.
         :paramtype element_definition_code: str
         :keyword element_values:
-        :paramtype element_values: list[~kuflow.rest.client.models.ProcessElementValue]
+        :paramtype element_values: list[~kuflow.rest.models.ProcessElementValue]
         """
         super().__init__(**kwargs)
         self.element_definition_code = element_definition_code
@@ -921,7 +921,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
 
     :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
      are: "PROCESS", "TASK", and "AUTHENTICATION".
-    :vartype object_type: str or ~kuflow.rest.client.models.AuditedObjectType
+    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -933,17 +933,17 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :ivar id:
     :vartype id: str
     :ivar state: Task state. Known values are: "READY", "CLAIMED", "COMPLETED", and "CANCELLED".
-    :vartype state: str or ~kuflow.rest.client.models.TaskState
+    :vartype state: str or ~kuflow.rest.models.TaskState
     :ivar task_definition: In creation task, one of 'id, version or code' is mandatory. Required.
-    :vartype task_definition: ~kuflow.rest.client.models.TasksDefinitionSummary
+    :vartype task_definition: ~kuflow.rest.models.TasksDefinitionSummary
     :ivar process_id: Required.
     :vartype process_id: str
     :ivar element_values: Task element values, en ElementValueDocument is not allowed.
-    :vartype element_values: dict[str, list[~kuflow.rest.client.models.TaskElementValue]]
+    :vartype element_values: dict[str, list[~kuflow.rest.models.TaskElementValue]]
     :ivar logs:
-    :vartype logs: list[~kuflow.rest.client.models.Log]
+    :vartype logs: list[~kuflow.rest.models.Log]
     :ivar owner:
-    :vartype owner: ~kuflow.rest.client.models.Principal
+    :vartype owner: ~kuflow.rest.models.Principal
     """
 
     _validation = {
@@ -987,16 +987,16 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :keyword id:
         :paramtype id: str
         :keyword state: Task state. Known values are: "READY", "CLAIMED", "COMPLETED", and "CANCELLED".
-        :paramtype state: str or ~kuflow.rest.client.models.TaskState
+        :paramtype state: str or ~kuflow.rest.models.TaskState
         :keyword task_definition: In creation task, one of 'id, version or code' is mandatory.
          Required.
-        :paramtype task_definition: ~kuflow.rest.client.models.TasksDefinitionSummary
+        :paramtype task_definition: ~kuflow.rest.models.TasksDefinitionSummary
         :keyword process_id: Required.
         :paramtype process_id: str
         :keyword element_values: Task element values, en ElementValueDocument is not allowed.
-        :paramtype element_values: dict[str, list[~kuflow.rest.client.models.TaskElementValue]]
+        :paramtype element_values: dict[str, list[~kuflow.rest.models.TaskElementValue]]
         :keyword owner:
-        :paramtype owner: ~kuflow.rest.client.models.Principal
+        :paramtype owner: ~kuflow.rest.models.Principal
         """
         super().__init__(**kwargs)
         self.object_type: str = "TASK"
@@ -1100,7 +1100,7 @@ class TaskElementValue(_serialization.Model):
     :vartype valid: bool
     :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
      "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.client.models.TaskElementValueType
+    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
     """
 
     _validation = {
@@ -1141,9 +1141,9 @@ class TaskElementValueDocument(TaskElementValue):
     :vartype valid: bool
     :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
      "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.client.models.TaskElementValueType
+    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
     :ivar value:
-    :vartype value: ~kuflow.rest.client.models.TaskElementValueDocumentItem
+    :vartype value: ~kuflow.rest.models.TaskElementValueDocumentItem
     """
 
     _validation = {
@@ -1161,7 +1161,7 @@ class TaskElementValueDocument(TaskElementValue):
         :keyword valid:
         :paramtype valid: bool
         :keyword value:
-        :paramtype value: ~kuflow.rest.client.models.TaskElementValueDocumentItem
+        :paramtype value: ~kuflow.rest.models.TaskElementValueDocumentItem
         """
         super().__init__(valid=valid, **kwargs)
         self.type: str = "DOCUMENT"
@@ -1237,7 +1237,7 @@ class TaskElementValueNumber(TaskElementValue):
     :vartype valid: bool
     :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
      "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.client.models.TaskElementValueType
+    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
     :ivar value:
     :vartype value: float
     """
@@ -1273,7 +1273,7 @@ class TaskElementValueObject(TaskElementValue):
     :vartype valid: bool
     :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
      "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.client.models.TaskElementValueType
+    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
     :ivar value: Dictionary of :code:`<any>`.
     :vartype value: dict[str, any]
     """
@@ -1309,9 +1309,9 @@ class TaskElementValuePrincipal(TaskElementValue):
     :vartype valid: bool
     :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
      "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.client.models.TaskElementValueType
+    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
     :ivar value:
-    :vartype value: ~kuflow.rest.client.models.TaskElementValuePrincipalItem
+    :vartype value: ~kuflow.rest.models.TaskElementValuePrincipalItem
     """
 
     _validation = {
@@ -1331,7 +1331,7 @@ class TaskElementValuePrincipal(TaskElementValue):
         :keyword valid:
         :paramtype valid: bool
         :keyword value:
-        :paramtype value: ~kuflow.rest.client.models.TaskElementValuePrincipalItem
+        :paramtype value: ~kuflow.rest.models.TaskElementValuePrincipalItem
         """
         super().__init__(valid=valid, **kwargs)
         self.type: str = "PRINCIPAL"
@@ -1346,7 +1346,7 @@ class TaskElementValuePrincipalItem(_serialization.Model):
     :ivar id: Required.
     :vartype id: str
     :ivar type: Required. Known values are: "USER", "APPLICATION", and "SYSTEM".
-    :vartype type: str or ~kuflow.rest.client.models.PrincipalType
+    :vartype type: str or ~kuflow.rest.models.PrincipalType
     :ivar name:
     :vartype name: str
     """
@@ -1374,7 +1374,7 @@ class TaskElementValuePrincipalItem(_serialization.Model):
         :keyword id: Required.
         :paramtype id: str
         :keyword type: Required. Known values are: "USER", "APPLICATION", and "SYSTEM".
-        :paramtype type: str or ~kuflow.rest.client.models.PrincipalType
+        :paramtype type: str or ~kuflow.rest.models.PrincipalType
         :keyword name:
         :paramtype name: str
         """
@@ -1393,7 +1393,7 @@ class TaskElementValueString(TaskElementValue):
     :vartype valid: bool
     :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
      "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.client.models.TaskElementValueType
+    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
     :ivar value:
     :vartype value: str
     """
@@ -1427,11 +1427,11 @@ class TaskPage(Page):
 
     :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
      "PROCESS_PAGE", and "TASK_PAGE".
-    :vartype object_type: str or ~kuflow.rest.client.models.PagedObjectType
+    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
-    :vartype metadata: ~kuflow.rest.client.models.PageMetadata
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
     :ivar content: Required.
-    :vartype content: list[~kuflow.rest.client.models.Task]
+    :vartype content: list[~kuflow.rest.models.Task]
     """
 
     _validation = {
@@ -1449,9 +1449,9 @@ class TaskPage(Page):
     def __init__(self, *, metadata: "_models.PageMetadata", content: List["_models.Task"], **kwargs):
         """
         :keyword metadata: Required.
-        :paramtype metadata: ~kuflow.rest.client.models.PageMetadata
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
         :keyword content: Required.
-        :paramtype content: list[~kuflow.rest.client.models.Task]
+        :paramtype content: list[~kuflow.rest.models.Task]
         """
         super().__init__(metadata=metadata, **kwargs)
         self.object_type: str = "TASK_PAGE"
@@ -1466,7 +1466,7 @@ class TaskSaveElementCommand(_serialization.Model):
     :ivar element_definition_code: Required.
     :vartype element_definition_code: str
     :ivar element_values:
-    :vartype element_values: list[~kuflow.rest.client.models.TaskElementValue]
+    :vartype element_values: list[~kuflow.rest.models.TaskElementValue]
     """
 
     _validation = {
@@ -1489,7 +1489,7 @@ class TaskSaveElementCommand(_serialization.Model):
         :keyword element_definition_code: Required.
         :paramtype element_definition_code: str
         :keyword element_values:
-        :paramtype element_values: list[~kuflow.rest.client.models.TaskElementValue]
+        :paramtype element_values: list[~kuflow.rest.models.TaskElementValue]
         """
         super().__init__(**kwargs)
         self.element_definition_code = element_definition_code
@@ -1557,7 +1557,7 @@ class WebhookEvent(_serialization.Model):
     :vartype id: str
     :ivar type: Type of the Event. Required. Known values are: "PROCESS.STATE_CHANGED" and
      "TASK.STATE_CHANGED".
-    :vartype type: str or ~kuflow.rest.client.models.WebhookType
+    :vartype type: str or ~kuflow.rest.models.WebhookType
     :ivar timestamp: Required.
     :vartype timestamp: ~datetime.datetime
     """
@@ -1603,11 +1603,11 @@ class WebhookEventProcessStateChanged(WebhookEvent):
     :vartype id: str
     :ivar type: Type of the Event. Required. Known values are: "PROCESS.STATE_CHANGED" and
      "TASK.STATE_CHANGED".
-    :vartype type: str or ~kuflow.rest.client.models.WebhookType
+    :vartype type: str or ~kuflow.rest.models.WebhookType
     :ivar timestamp: Required.
     :vartype timestamp: ~datetime.datetime
     :ivar data: Required.
-    :vartype data: ~kuflow.rest.client.models.WebhookEventProcessStateChangedData
+    :vartype data: ~kuflow.rest.models.WebhookEventProcessStateChangedData
     """
 
     _validation = {
@@ -1638,7 +1638,7 @@ class WebhookEventProcessStateChanged(WebhookEvent):
         :keyword timestamp: Required.
         :paramtype timestamp: ~datetime.datetime
         :keyword data: Required.
-        :paramtype data: ~kuflow.rest.client.models.WebhookEventProcessStateChangedData
+        :paramtype data: ~kuflow.rest.models.WebhookEventProcessStateChangedData
         """
         super().__init__(id=id, timestamp=timestamp, **kwargs)
         self.type: str = "PROCESS.STATE_CHANGED"
@@ -1654,7 +1654,7 @@ class WebhookEventProcessStateChangedData(_serialization.Model):
     :vartype process_id: str
     :ivar process_state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
      "CANCELLED".
-    :vartype process_state: str or ~kuflow.rest.client.models.ProcessState
+    :vartype process_state: str or ~kuflow.rest.models.ProcessState
     """
 
     _validation = {
@@ -1673,7 +1673,7 @@ class WebhookEventProcessStateChangedData(_serialization.Model):
         :paramtype process_id: str
         :keyword process_state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
          "CANCELLED".
-        :paramtype process_state: str or ~kuflow.rest.client.models.ProcessState
+        :paramtype process_state: str or ~kuflow.rest.models.ProcessState
         """
         super().__init__(**kwargs)
         self.process_id = process_id
@@ -1689,11 +1689,11 @@ class WebhookEventTaskStateChanged(WebhookEvent):
     :vartype id: str
     :ivar type: Type of the Event. Required. Known values are: "PROCESS.STATE_CHANGED" and
      "TASK.STATE_CHANGED".
-    :vartype type: str or ~kuflow.rest.client.models.WebhookType
+    :vartype type: str or ~kuflow.rest.models.WebhookType
     :ivar timestamp: Required.
     :vartype timestamp: ~datetime.datetime
     :ivar data: Required.
-    :vartype data: ~kuflow.rest.client.models.WebhookEventTaskStateChangedData
+    :vartype data: ~kuflow.rest.models.WebhookEventTaskStateChangedData
     """
 
     _validation = {
@@ -1724,7 +1724,7 @@ class WebhookEventTaskStateChanged(WebhookEvent):
         :keyword timestamp: Required.
         :paramtype timestamp: ~datetime.datetime
         :keyword data: Required.
-        :paramtype data: ~kuflow.rest.client.models.WebhookEventTaskStateChangedData
+        :paramtype data: ~kuflow.rest.models.WebhookEventTaskStateChangedData
         """
         super().__init__(id=id, timestamp=timestamp, **kwargs)
         self.type: str = "TASK.STATE_CHANGED"
@@ -1744,7 +1744,7 @@ class WebhookEventTaskStateChangedData(_serialization.Model):
     :vartype task_code: str
     :ivar task_state: Task state. Required. Known values are: "READY", "CLAIMED", "COMPLETED", and
      "CANCELLED".
-    :vartype task_state: str or ~kuflow.rest.client.models.TaskState
+    :vartype task_state: str or ~kuflow.rest.models.TaskState
     """
 
     _validation = {
@@ -1773,7 +1773,7 @@ class WebhookEventTaskStateChangedData(_serialization.Model):
         :paramtype task_code: str
         :keyword task_state: Task state. Required. Known values are: "READY", "CLAIMED", "COMPLETED",
          and "CANCELLED".
-        :paramtype task_state: str or ~kuflow.rest.client.models.TaskState
+        :paramtype task_state: str or ~kuflow.rest.models.TaskState
         """
         super().__init__(**kwargs)
         self.process_id = process_id

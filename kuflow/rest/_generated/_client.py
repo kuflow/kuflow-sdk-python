@@ -99,15 +99,15 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
     choice automatically.
 
     :ivar echo: EchoOperations operations
-    :vartype echo: kuflow.rest.client.operations.EchoOperations
+    :vartype echo: kuflow.rest.operations.EchoOperations
     :ivar authentication: AuthenticationOperations operations
-    :vartype authentication: kuflow.rest.client.operations.AuthenticationOperations
+    :vartype authentication: kuflow.rest.operations.AuthenticationOperations
     :ivar principal: PrincipalOperations operations
-    :vartype principal: kuflow.rest.client.operations.PrincipalOperations
+    :vartype principal: kuflow.rest.operations.PrincipalOperations
     :ivar process: ProcessOperations operations
-    :vartype process: kuflow.rest.client.operations.ProcessOperations
+    :vartype process: kuflow.rest.operations.ProcessOperations
     :ivar task: TaskOperations operations
-    :vartype task: kuflow.rest.client.operations.TaskOperations
+    :vartype task: kuflow.rest.operations.TaskOperations
     :param credential: Credential needed for the client to connect to Azure. Required.
     :type credential: ~azure.core.credentials.TokenCredential
     :keyword endpoint: Service URL. Default value is "https://api.kuflow.com/v2022-10-08".

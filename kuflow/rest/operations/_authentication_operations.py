@@ -49,12 +49,12 @@ class AuthenticationOperations:
 
         :param authentication: Authentication to be created. Is either a model type or a IO type.
          Required.
-        :type authentication: ~kuflow.rest.client.models.Authentication or IO
+        :type authentication: ~kuflow.rest.models.Authentication or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Authentication
-        :rtype: ~kuflow.rest.client.models.Authentication
+        :rtype: ~kuflow.rest.models.Authentication
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 

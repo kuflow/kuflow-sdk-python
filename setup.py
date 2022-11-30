@@ -3,12 +3,12 @@
 from setuptools import setup, find_packages
 
 
-PACKAGE_NAME = "kuflowclient"
+PACKAGE_NAME = "kuflow-rest"
 version = "0.0.1"
 setup(
     name=PACKAGE_NAME,
     version=version,
-    description="KuFlowClient",
+    description="KuFlowRestClient",
     author_email="",
     url="",
     keywords="azure, azure sdk",

@@ -26,7 +26,7 @@
 
 import sys
 
-from kuflow.rest.client import KuFlowRestClient, models
+from kuflow.rest import KuFlowRestClient, models
 
 
 def main() -> int:

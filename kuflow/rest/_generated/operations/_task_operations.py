@@ -384,7 +384,7 @@ class TaskOperations:
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
-        :class:`~kuflow.rest.client.KuFlowRestClient`'s
+        :class:`~kuflow.rest.KuFlowRestClient`'s
         :attr:`task` attribute.
     """
 
@@ -430,12 +430,12 @@ class TaskOperations:
         :keyword process_id: Filter by an array of process ids. Default value is None.
         :paramtype process_id: list[str]
         :keyword state: Filter by an array of task states. Default value is None.
-        :paramtype state: list[str or ~kuflow.rest.client.models.TaskState]
+        :paramtype state: list[str or ~kuflow.rest.models.TaskState]
         :keyword task_definition_code: Filter by an array of task definition codes. Default value is
          None.
         :paramtype task_definition_code: list[str]
         :return: TaskPage
-        :rtype: ~kuflow.rest.client.models.TaskPage
+        :rtype: ~kuflow.rest.models.TaskPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -510,7 +510,7 @@ class TaskOperations:
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param task: Task to be created. Required.
-        :type task: ~kuflow.rest.client.models.Task
+        :type task: ~kuflow.rest.models.Task
         :keyword activity_token: When create a Kuflow Task backed with a Temporal.io servers, this
          value is required and must be set with the context task token of Temporal.io activity. Default
          value is None.
@@ -519,7 +519,7 @@ class TaskOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -556,7 +556,7 @@ class TaskOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -584,7 +584,7 @@ class TaskOperations:
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param task: Task to be created. Is either a model type or a IO type. Required.
-        :type task: ~kuflow.rest.client.models.Task or IO
+        :type task: ~kuflow.rest.models.Task or IO
         :keyword activity_token: When create a Kuflow Task backed with a Temporal.io servers, this
          value is required and must be set with the context task token of Temporal.io activity. Default
          value is None.
@@ -593,7 +593,7 @@ class TaskOperations:
          Default value is None.
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -659,7 +659,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -708,7 +708,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -760,12 +760,12 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to change the task owner. Required.
-        :type command: ~kuflow.rest.client.models.TaskAssignCommand
+        :type command: ~kuflow.rest.models.TaskAssignCommand
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -785,7 +785,7 @@ class TaskOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -801,12 +801,12 @@ class TaskOperations:
         :type id: str
         :param command: Command to change the task owner. Is either a model type or a IO type.
          Required.
-        :type command: ~kuflow.rest.client.models.TaskAssignCommand or IO
+        :type command: ~kuflow.rest.models.TaskAssignCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -878,12 +878,12 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to save an element. Required.
-        :type command: ~kuflow.rest.client.models.TaskSaveElementCommand
+        :type command: ~kuflow.rest.models.TaskSaveElementCommand
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -911,7 +911,7 @@ class TaskOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -934,12 +934,12 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to save an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.client.models.TaskSaveElementCommand or IO
+        :type command: ~kuflow.rest.models.TaskSaveElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -1028,7 +1028,7 @@ class TaskOperations:
         :keyword element_value_valid: Element Value ID. Default value is True.
         :paramtype element_value_valid: bool
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -1096,12 +1096,12 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete an element. Required.
-        :type command: ~kuflow.rest.client.models.TaskDeleteElementCommand
+        :type command: ~kuflow.rest.models.TaskDeleteElementCommand
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -1123,7 +1123,7 @@ class TaskOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -1140,12 +1140,12 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.client.models.TaskDeleteElementCommand or IO
+        :type command: ~kuflow.rest.models.TaskDeleteElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -1217,12 +1217,12 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete a document elemente value. Required.
-        :type command: ~kuflow.rest.client.models.TaskDeleteElementValueDocumentCommand
+        :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -1245,7 +1245,7 @@ class TaskOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -1264,12 +1264,12 @@ class TaskOperations:
         :type id: str
         :param command: Command to delete a document elemente value. Is either a model type or a IO
          type. Required.
-        :type command: ~kuflow.rest.client.models.TaskDeleteElementValueDocumentCommand or IO
+        :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -1443,7 +1443,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -1495,12 +1495,12 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param log: Log to be created. Required.
-        :type log: ~kuflow.rest.client.models.Log
+        :type log: ~kuflow.rest.models.Log
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -1521,7 +1521,7 @@ class TaskOperations:
          Default value is "application/json".
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -1535,12 +1535,12 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param log: Log to be created. Is either a model type or a IO type. Required.
-        :type log: ~kuflow.rest.client.models.Log or IO
+        :type log: ~kuflow.rest.models.Log or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
         :return: Task
-        :rtype: ~kuflow.rest.client.models.Task
+        :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
