@@ -264,7 +264,7 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete a document elemente value. Is either a model type or a IO
+        :param command: Command to delete a document element value. Is either a model type or a IO
          type. Required.
         :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand or IO
         :return: Task
@@ -302,9 +302,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :keyword element_definition_code: Element definition code of a Form Element to download.
-         Required.
-        :paramtype element_definition_code: str
+        :param element_definition_code: Element definition code of a Form Element to download.
+        :type element_definition_code: str
         :return: Iterator of the response bytes
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
