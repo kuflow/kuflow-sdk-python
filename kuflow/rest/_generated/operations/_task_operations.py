@@ -293,7 +293,7 @@ def build_actions_task_download_element_value_document_request(
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-    accept = _headers.pop("Accept", "application/octet-stream")
+    accept = _headers.pop("Accept", "application/octet-stream, application/json")
 
     # Construct URL
     _url = "/tasks/{id}/~actions/download-element-value-document"
@@ -318,7 +318,7 @@ def build_actions_task_download_element_value_rendered_request(
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-    accept = _headers.pop("Accept", "application/pdf, application/zip")
+    accept = _headers.pop("Accept", "application/pdf, application/zip, application/json")
 
     # Construct URL
     _url = "/tasks/{id}/~actions/download-element-value-form-rendered"
@@ -690,7 +690,8 @@ class TaskOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise HttpResponseError(response=response)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
 
@@ -1069,7 +1070,8 @@ class TaskOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise HttpResponseError(response=response)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
 
@@ -1367,7 +1369,8 @@ class TaskOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise HttpResponseError(response=response)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
 
         deserialized = response.iter_bytes()
 
@@ -1425,7 +1428,8 @@ class TaskOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise HttpResponseError(response=response)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
 
         deserialized = response.iter_bytes()
 
@@ -1474,7 +1478,8 @@ class TaskOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise HttpResponseError(response=response)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
 
@@ -1583,7 +1588,8 @@ class TaskOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise HttpResponseError(response=response)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
 
