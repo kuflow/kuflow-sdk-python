@@ -39,13 +39,13 @@ from .operations import AuthenticationOperations, PrincipalOperations, ProcessOp
 class KuFlowClientTokenCredential:
     def __init__(
         self,
-        username: str,
-        password: str,
+        client_id: str,
+        client_secret: str,
     ) -> None:
-        self.username = username
-        self.password = password
+        self.client_id = client_id
+        self.client_secret = client_secret
 
-        self.token = base64.b64encode("{}:{}".format(username, password).encode("utf-8")).decode("utf-8")
+        self.token = base64.b64encode("{}:{}".format(client_id, client_secret).encode("utf-8")).decode("utf-8")
 
     def get_token(
         self, *scopes: str, claims: Optional[str] = None, tenant_id: Optional[str] = None, **kwargs: Any
@@ -138,10 +138,10 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
     :vartype process: kuflow.rest.client.operations.ProcessOperations
     :ivar task: TaskOperations operations
     :vartype task: kuflow.rest.client.operations.TaskOperations
-    :param username: Username used to connect to KuFlow. Required.
-    :paramtype username: str
-    :param password: Password used to connect to KuFlow. Required.
-    :paramtype password: str
+    :param client_id: Client id used to connect to KuFlow. Required.
+    :paramtype client_id: str
+    :param client_secret: Client secret used to connect to KuFlow. Required.
+    :paramtype client_secret: str
     :keyword endpoint: Service URL. Default value is "https://api.kuflow.com/v2022-10-08".
     :paramtype endpoint: str
     :keyword allow_insecure_connection: Allow non HTTPS endpoints. Default False.
@@ -150,8 +150,8 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
 
     def __init__(
         self,
-        username: str,
-        password: str,
+        client_id: str,
+        client_secret: str,
         endpoint: str = "https://api.kuflow.com/v2022-10-08",
         allow_insecure_connection: bool = False,
         **kwargs: Any,
@@ -161,7 +161,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
             per_call_policies.append(AllowHttpPolicy())
 
         self._kuflow_client = KuFlowRestClientGenerated(
-            credential=KuFlowClientTokenCredential(username=username, password=password),  # type: ignore
+            credential=KuFlowClientTokenCredential(client_id=client_id, client_secret=client_secret),  # type: ignore
             endpoint=endpoint,
             api_version=kwargs.pop("api_version", VERSION),
             credential_scopes="https://api.kuflow.com//v2022-10-08/.default",
