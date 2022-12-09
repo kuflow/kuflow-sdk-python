@@ -405,25 +405,17 @@ class PageMetadata(_serialization.Model):
 class Principal(_serialization.Model):
     """Principal.
 
-    All required parameters must be populated in order to send to Azure.
-
-    :ivar id: Required.
+    :ivar id:
     :vartype id: str
-    :ivar type: Required. Known values are: "USER", "APPLICATION", and "SYSTEM".
+    :ivar type: Known values are: "USER", "APPLICATION", and "SYSTEM".
     :vartype type: str or ~kuflow.rest.models.PrincipalType
-    :ivar name: Required.
+    :ivar name:
     :vartype name: str
     :ivar user:
     :vartype user: ~kuflow.rest.models.PrincipalUser
     :ivar application:
     :vartype application: ~kuflow.rest.models.PrincipalApplication
     """
-
-    _validation = {
-        "id": {"required": True},
-        "type": {"required": True},
-        "name": {"required": True},
-    }
 
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
@@ -436,19 +428,19 @@ class Principal(_serialization.Model):
     def __init__(
         self,
         *,
-        id: str,  # pylint: disable=redefined-builtin
-        type: Union[str, "_models.PrincipalType"],
-        name: str,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        type: Optional[Union[str, "_models.PrincipalType"]] = None,
+        name: Optional[str] = None,
         user: Optional["_models.PrincipalUser"] = None,
         application: Optional["_models.PrincipalApplication"] = None,
         **kwargs,
     ):
         """
-        :keyword id: Required.
+        :keyword id:
         :paramtype id: str
-        :keyword type: Required. Known values are: "USER", "APPLICATION", and "SYSTEM".
+        :keyword type: Known values are: "USER", "APPLICATION", and "SYSTEM".
         :paramtype type: str or ~kuflow.rest.models.PrincipalType
-        :keyword name: Required.
+        :keyword name:
         :paramtype name: str
         :keyword user:
         :paramtype user: ~kuflow.rest.models.PrincipalUser
