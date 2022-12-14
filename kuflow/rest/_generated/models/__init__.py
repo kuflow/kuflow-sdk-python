@@ -52,6 +52,7 @@ from ._models import ProcessPage
 from ._models import ProcessSaveElementCommand
 from ._models import Task
 from ._models import TaskAssignCommand
+from ._models import TaskDefinitionSummary
 from ._models import TaskDeleteElementCommand
 from ._models import TaskDeleteElementValueDocumentCommand
 from ._models import TaskElementValue
@@ -64,7 +65,6 @@ from ._models import TaskElementValuePrincipalItem
 from ._models import TaskElementValueString
 from ._models import TaskPage
 from ._models import TaskSaveElementCommand
-from ._models import TasksDefinitionSummary
 from ._models import WebhookEvent
 from ._models import WebhookEventProcessStateChanged
 from ._models import WebhookEventProcessStateChangedData
@@ -107,6 +107,7 @@ __all__ = [
     "ProcessSaveElementCommand",
     "Task",
     "TaskAssignCommand",
+    "TaskDefinitionSummary",
     "TaskDeleteElementCommand",
     "TaskDeleteElementValueDocumentCommand",
     "TaskElementValue",
@@ -119,7 +120,6 @@ __all__ = [
     "TaskElementValueString",
     "TaskPage",
     "TaskSaveElementCommand",
-    "TasksDefinitionSummary",
     "WebhookEvent",
     "WebhookEventProcessStateChanged",
     "WebhookEventProcessStateChangedData",

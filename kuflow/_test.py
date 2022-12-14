@@ -61,7 +61,7 @@ def main() -> int:
     task = models.Task(
         id="4bbdf1ef-5350-4abf-b0c1-58a0c57aacdb",
         process_id=process.id,
-        task_definition=models.TasksDefinitionSummary(code="TASK_0001"),
+        task_definition=models.TaskDefinitionSummary(code="TASK_0001"),
         element_values={
             "TEXT_001": [models.TaskElementValueString(value="texto")],
             "TEXT_002": [

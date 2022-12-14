@@ -927,7 +927,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :ivar state: Task state. Known values are: "READY", "CLAIMED", "COMPLETED", and "CANCELLED".
     :vartype state: str or ~kuflow.rest.models.TaskState
     :ivar task_definition: In creation task, one of 'id, version or code' is mandatory. Required.
-    :vartype task_definition: ~kuflow.rest.models.TasksDefinitionSummary
+    :vartype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
     :ivar process_id: Required.
     :vartype process_id: str
     :ivar element_values: Task element values, en ElementValueDocument is not allowed.
@@ -957,7 +957,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
         "state": {"key": "state", "type": "str"},
-        "task_definition": {"key": "taskDefinition", "type": "TasksDefinitionSummary"},
+        "task_definition": {"key": "taskDefinition", "type": "TaskDefinitionSummary"},
         "process_id": {"key": "processId", "type": "str"},
         "element_values": {"key": "elementValues", "type": "{[TaskElementValue]}"},
         "logs": {"key": "logs", "type": "[Log]"},
@@ -967,7 +967,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     def __init__(
         self,
         *,
-        task_definition: "_models.TasksDefinitionSummary",
+        task_definition: "_models.TaskDefinitionSummary",
         process_id: str,
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         state: Optional[Union[str, "_models.TaskState"]] = None,
@@ -982,7 +982,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype state: str or ~kuflow.rest.models.TaskState
         :keyword task_definition: In creation task, one of 'id, version or code' is mandatory.
          Required.
-        :paramtype task_definition: ~kuflow.rest.models.TasksDefinitionSummary
+        :paramtype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
         :keyword process_id: Required.
         :paramtype process_id: str
         :keyword element_values: Task element values, en ElementValueDocument is not allowed.
@@ -1025,6 +1025,55 @@ class TaskAssignCommand(_serialization.Model):
         super().__init__(**kwargs)
         self.principal_id = principal_id
         self.email = email
+
+
+class TaskDefinitionSummary(_serialization.Model):
+    """In creation task, one of 'id, version or code' is mandatory.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar id:
+    :vartype id: str
+    :ivar version:
+    :vartype version: str
+    :ivar code:
+    :vartype code: str
+    :ivar name:
+    :vartype name: str
+    """
+
+    _validation = {
+        "name": {"readonly": True, "max_length": 50, "min_length": 1},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "version": {"key": "version", "type": "str"},
+        "code": {"key": "code", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        version: Optional[str] = None,
+        code: Optional[str] = None,
+        **kwargs,
+    ):
+        """
+        :keyword id:
+        :paramtype id: str
+        :keyword version:
+        :paramtype version: str
+        :keyword code:
+        :paramtype code: str
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.version = version
+        self.code = code
+        self.name = None
 
 
 class TaskDeleteElementCommand(_serialization.Model):
@@ -1486,55 +1535,6 @@ class TaskSaveElementCommand(_serialization.Model):
         super().__init__(**kwargs)
         self.element_definition_code = element_definition_code
         self.element_values = element_values
-
-
-class TasksDefinitionSummary(_serialization.Model):
-    """In creation task, one of 'id, version or code' is mandatory.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :ivar id:
-    :vartype id: str
-    :ivar version:
-    :vartype version: str
-    :ivar code:
-    :vartype code: str
-    :ivar name:
-    :vartype name: str
-    """
-
-    _validation = {
-        "name": {"readonly": True, "max_length": 50, "min_length": 1},
-    }
-
-    _attribute_map = {
-        "id": {"key": "id", "type": "str"},
-        "version": {"key": "version", "type": "str"},
-        "code": {"key": "code", "type": "str"},
-        "name": {"key": "name", "type": "str"},
-    }
-
-    def __init__(
-        self,
-        *,
-        id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        version: Optional[str] = None,
-        code: Optional[str] = None,
-        **kwargs,
-    ):
-        """
-        :keyword id:
-        :paramtype id: str
-        :keyword version:
-        :paramtype version: str
-        :keyword code:
-        :paramtype code: str
-        """
-        super().__init__(**kwargs)
-        self.id = id
-        self.version = version
-        self.code = code
-        self.name = None
 
 
 class WebhookEvent(_serialization.Model):
