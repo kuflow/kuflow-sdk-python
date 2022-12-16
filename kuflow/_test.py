@@ -35,7 +35,7 @@ def main() -> int:
     client = KuFlowRestClient(
         client_id="CLIENT_ID",
         client_secret="CLIENT_SECRET",
-        endpoint="http://localhost:8080/apis/external/v2022-10-08",
+        endpoint="http://localhost:8080/apis/external",
         allow_insecure_connection=True,
     )
     principals = client.principal.find_principals(group_id="c16a8bbc-cdbd-4ebe-80d9-817defb7cb2f")

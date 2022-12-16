@@ -79,6 +79,9 @@ class AllowHttpPolicy(SansIOHTTPPolicy):
 
 
 class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
+
+    API_VERSION = "v2022-10-08"
+
     """Introduction
     ============
 
@@ -160,11 +163,14 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         if allow_insecure_connection:
             per_call_policies.append(AllowHttpPolicy())
 
+        if not endpoint.endswith("/" + KuFlowRestClient.API_VERSION):
+            endpoint = endpoint + "/" + KuFlowRestClient.API_VERSION
+
         self._kuflow_client = KuFlowRestClientGenerated(
             credential=KuFlowClientTokenCredential(client_id=client_id, client_secret=client_secret),  # type: ignore
             endpoint=endpoint,
             api_version=kwargs.pop("api_version", VERSION),
-            credential_scopes="https://api.kuflow.com//v2022-10-08/.default",
+            credential_scopes="https://api.kuflow.com/v2022-10-08/.default",
             per_call_policies=per_call_policies,
         )
 
