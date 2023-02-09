@@ -272,7 +272,7 @@ class TaskOperations:
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param task: Task to be created. Is either a Task type or a IO type. Required.
+        :param task: Task to be created. Is either a model type or a IO type. Required.
         :type task: ~kuflow.rest.models.Task or IO
         :keyword activity_token: When create a Kuflow Task backed with a Temporal.io servers, this
          value is required and must be set with the context task token of Temporal.io activity. Default
@@ -489,8 +489,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to change the task owner. Is either a TaskAssignCommand type or a IO
-         type. Required.
+        :param command: Command to change the task owner. Is either a model type or a IO type.
+         Required.
         :type command: ~kuflow.rest.models.TaskAssignCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -623,8 +623,7 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to save an element. Is either a TaskSaveElementCommand type or a IO
-         type. Required.
+        :param command: Command to save an element. Is either a model type or a IO type. Required.
         :type command: ~kuflow.rest.models.TaskSaveElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -831,8 +830,7 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete an element. Is either a TaskDeleteElementCommand type or a IO
-         type. Required.
+        :param command: Command to delete an element. Is either a model type or a IO type. Required.
         :type command: ~kuflow.rest.models.TaskDeleteElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -955,8 +953,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete a document elemente value. Is either a
-         TaskDeleteElementValueDocumentCommand type or a IO type. Required.
+        :param command: Command to delete a document elemente value. Is either a model type or a IO
+         type. Required.
         :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -1230,7 +1228,7 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param log: Log to be created. Is either a Log type or a IO type. Required.
+        :param log: Log to be created. Is either a model type or a IO type. Required.
         :type log: ~kuflow.rest.models.Log or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.

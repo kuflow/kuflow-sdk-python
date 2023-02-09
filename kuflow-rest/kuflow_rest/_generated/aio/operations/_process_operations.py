@@ -225,7 +225,7 @@ class ProcessOperations:
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process: Process to create. Is either a Process type or a IO type. Required.
+        :param process: Process to create. Is either a model type or a IO type. Required.
         :type process: ~kuflow.rest.models.Process or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -404,8 +404,8 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to change the process initiator. Is either a
-         ProcessChangeInitiatorCommand type or a IO type. Required.
+        :param command: Command to change the process initiator. Is either a model type or a IO type.
+         Required.
         :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -537,8 +537,7 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to save an element. Is either a ProcessSaveElementCommand type or a IO
-         type. Required.
+        :param command: Command to save an element. Is either a model type or a IO type. Required.
         :type command: ~kuflow.rest.models.ProcessSaveElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -658,8 +657,7 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete an element. Is either a ProcessDeleteElementCommand type or a
-         IO type. Required.
+        :param command: Command to delete an element. Is either a model type or a IO type. Required.
         :type command: ~kuflow.rest.models.ProcessDeleteElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.

@@ -136,8 +136,8 @@ class AuthenticationOperations:
 
         Create an authentication for the current principal.
 
-        :param authentication: Authentication to be created. Is either a Authentication type or a IO
-         type. Required.
+        :param authentication: Authentication to be created. Is either a model type or a IO type.
+         Required.
         :type authentication: ~kuflow.rest.models.Authentication or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.

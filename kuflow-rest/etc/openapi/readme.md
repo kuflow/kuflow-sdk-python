@@ -76,7 +76,7 @@ license-header: |
 # hide-clients: true
 
 use-extension:
-  '@autorest/python': '6.4.0'
+  '@autorest/python': '6.2.9'
   '@autorest/modelerfour': '4.25.0'
 
 modelerfour:

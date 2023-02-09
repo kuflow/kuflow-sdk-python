@@ -9,7 +9,8 @@
       "autorest": "autorest",
       "generate": "npm run generate:autorest && npm run generate:black",
       "generate:autorest": "autorest --version=3.9.4 readme.md",
-      "generate:black": "cd ../../ && black kuflow_rest"
+      "generate:black": "cd ../../ && black kuflow_rest",
+      "generate:workaround": "scripts/fix-discriminators.js"
     }
   }
   

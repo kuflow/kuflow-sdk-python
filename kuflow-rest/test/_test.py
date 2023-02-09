@@ -25,6 +25,7 @@
 
 
 import sys
+import uuid
 
 from kuflow_rest import KuFlowRestClient, models
 
@@ -38,33 +39,48 @@ def main() -> int:
         endpoint="http://localhost:8080/apis/external",
         allow_insecure_connection=True,
     )
-    principals = client.principal.find_principals(group_id="c16a8bbc-cdbd-4ebe-80d9-817defb7cb2f")
+
+    # Variables
+    group_id_users = "7bed4109-c867-4f25-869b-071881a82a2b"
+    group_id_owners = "f0565aee-7a90-463f-9a24-65f5e9da0210"
+
+    # Test group operations
+    principals = client.principal.find_principals(group_id=group_id_users)
     print(principals)
-    principals = client.principal.find_principals(group_id=["c16a8bbc-cdbd-4ebe-80d9-817defb7cb2f"])
+    principals = client.principal.find_principals(group_id=[group_id_users])
     print(principals)
     principals = client.principal.find_principals(
-        group_id=["c16a8bbc-cdbd-4ebe-80d9-817defb7cb2f", "aaeb0b1d-6c3d-4436-aace-219af8a1810d"]
+        group_id=[group_id_users, group_id_owners]
     )
     print(principals)
 
+    # Test authentication tokens operations
     authentication = models.Authentication(type="ENGINE")
     authentication = client.authentication.create_authentication(authentication)
     print(authentication)
 
+    # Test process operations
+    process_id = uuid.uuid1()
+    process_definition_id = "2536b747-d436-48eb-af9a-21989a74f95f"
+
+    task_id = uuid.uuid1()
+    task_definition_code = "TASK"
+
     process = models.Process(
-        id="28abe67f-9462-4343-b58e-c8b3344eb865",
-        process_definition=models.ProcessDefinitionSummary(id="be35212b-deb8-4719-a10d-b8550219d156"),
+        id=process_id,
+        process_definition=models.ProcessDefinitionSummary(id=process_definition_id),
     )
     process = client.process.create_process(process)
     print(process)
 
+    # Test task operations
     task = models.Task(
-        id="4bbdf1ef-5350-4abf-b0c1-58a0c57aacdb",
+        id=task_id,
         process_id=process.id,
-        task_definition=models.TaskDefinitionSummary(code="TASK_0001"),
+        task_definition=models.TaskDefinitionSummary(code=task_definition_code),
         element_values={
-            "TEXT_001": [models.TaskElementValueString(value="texto")],
-            "TEXT_002": [
+            "FIELD_TEXT": [models.TaskElementValueString(value="texto")],
+            "FIELD__TEXT_MULTIPLE": [
                 models.TaskElementValueString(value="texto 2 1"),
                 models.TaskElementValueString(value="texto 2 2"),
             ],
@@ -73,16 +89,21 @@ def main() -> int:
     task = client.task.create_task(task)
     print(task)
 
-    # client.task.actions_task_claim(task.id)
+
+    # Claim task
+    client.task.actions_task_claim(task_id)
 
     file = models.Document(
         file_mame="bugs-bunny.png",
         content_type="image/png",
-        file_content=open("/Users/kuflow/Downloads/bugs-bunny.png", "rb"),
+        file_content=open("/home/zeben/dummy/robot.png", "rb"),
     )
-    command = models.TaskSaveElementValueDocumentCommand(element_definition_code="DOC_001")
+    command = models.TaskSaveElementValueDocumentCommand(element_definition_code="DOC")
     task = client.task.actions_task_save_element_value_document(id=task.id, file=file, command=command)
     print(task)
+
+    # Complete task
+    client.task.actions_task_complete(task_id)
 
     return 0
 
