@@ -18,3 +18,4 @@ python = "~3.8"
 [tool.poetry.group.dev.dependencies]
 mypy = "0.910"
 flake8 = "4.0.1"
+black = "^23.1.0"
