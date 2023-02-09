@@ -3,6 +3,7 @@
 !.editorconfig
 !.gitattributes
 !.gitignore
+!.flake8
 
 ######################
 # Python
