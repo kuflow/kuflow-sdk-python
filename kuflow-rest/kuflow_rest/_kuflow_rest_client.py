@@ -79,7 +79,6 @@ class AllowHttpPolicy(SansIOHTTPPolicy):
 
 
 class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
-
     API_VERSION = "v2022-10-08"
 
     """Introduction
