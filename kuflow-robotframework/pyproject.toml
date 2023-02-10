@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "kuflow-rest"
+name = "kuflow-robotframework"
 version = "0.1.0"
-description = "Client for KuFlow Rest Api" 
+description = "KuFlow library for Robot Framework" 
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
 readme = "README.md"
 include = ["VERSION", "README.md", "CHANGELOG.md"]
-packages = [{ include = "kuflow_rest" }]
+packages = [{ include = "kuflow_robotframework" }]
 homepage = "https://kuflow.com/"
 documentation = "https://docs.kuflow.com/"
 repository = "https://github.com/kuflow/kuflow-sdk-python"
@@ -17,8 +17,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
 python = "~3.8"
-azure-core = "^1.26.3"
-isodate = "^0.6.1"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "0.910"

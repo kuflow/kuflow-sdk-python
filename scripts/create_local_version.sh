@@ -1,6 +1,6 @@
 #!/bin/sh
 # Usus dunamai to determine a semver compatible version for the current state of the project
-# Useefull when building wheels in CI/CD on branches or merge requests, 
+# Usefull when building wheels in CI/CD on branches or merge requests, 
 # without possibly overwriting released versions (of certain tag)
 # Used to run in CI/CD, as it will modify both pyproject.toml's and python files (by setting the right string in `__version__=..`)
 set -x
@@ -26,5 +26,6 @@ do
   sed -i$SEP'' "s/^version = .*/version = \"$VERSION\"/" "$p/pyproject.toml"
 done
 sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" kuflow-rest/kuflow_rest/__init__.py
+sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" kuflow-robotframework/kuflow_robotframework/__init__.py
 # Example other package: sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" package-b/package_b/__init__.py
 # Example other package: sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" service-c/service_c/__init__.py
