@@ -4,12 +4,12 @@ version = "0.1.0"
 description = "Client for KuFlow Rest Api" 
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
-readme = "README.md"
-include = ["VERSION", "README.md", "CHANGELOG.md"]
-packages = [{ include = "kuflow_rest" }]
 homepage = "https://kuflow.com/"
 documentation = "https://docs.kuflow.com/"
 repository = "https://github.com/kuflow/kuflow-sdk-python"
+readme = "README.md"
+include = ["VERSION", "README.md", "CHANGELOG.md"]
+packages = [{ include = "kuflow_rest" }]
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]

@@ -26,6 +26,6 @@ do
   sed -i$SEP'' "s/^version = .*/version = \"$VERSION\"/" "$p/pyproject.toml"
 done
 sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" kuflow-rest/kuflow_rest/__init__.py
-sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" kuflow-robotframework/kuflow_robotframework/__init__.py
+sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" kuflow-robotframework/KuFlow/__init__.py
 # Example other package: sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" package-b/package_b/__init__.py
 # Example other package: sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" service-c/service_c/__init__.py

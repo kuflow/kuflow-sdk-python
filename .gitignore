@@ -31,3 +31,9 @@ node_modules/
 # Visual Studio Code
 ######################
 .vscode/
+
+######################
+# Other
+######################
+env.py
+output/
