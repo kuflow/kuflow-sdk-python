@@ -68,7 +68,6 @@ class AllowHttpPolicy(SansIOHTTPPolicy):
     """A simple policy that allows http requestes adding "enforce_https" to the request context."""
 
     def on_request(self, request):
-        # type: (PipelineRequest) -> None
         """Updates with the given request id before sending the request to the next policy.
 
         :param request: The PipelineRequest object

@@ -49,9 +49,7 @@ def main() -> int:
     print(principals)
     principals = client.principal.find_principals(group_id=[group_id_users])
     print(principals)
-    principals = client.principal.find_principals(
-        group_id=[group_id_users, group_id_owners]
-    )
+    principals = client.principal.find_principals(group_id=[group_id_users, group_id_owners])
     print(principals)
 
     # Test authentication tokens operations
@@ -88,7 +86,6 @@ def main() -> int:
     )
     task = client.task.create_task(task)
     print(task)
-
 
     # Claim task
     client.task.actions_task_claim(task_id)
