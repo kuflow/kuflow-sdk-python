@@ -1,20 +1,21 @@
 #!/bin/sh
-# Usus dunamai to determine a semver compatible version for the current state of the project
+# To use: Set the appropriate version
 # Usefull when building wheels in CI/CD on branches or merge requests, 
 # without possibly overwriting released versions (of certain tag)
 # Used to run in CI/CD, as it will modify both pyproject.toml's and python files (by setting the right string in `__version__=..`)
+
+
+########################################
+VERSION=0.4.0.dev
+########################################
+
+
 set -x
 set -u
 set -e
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 cd "${DIR}/.." || exit
 
-# first run directly, to have script stop if dunamai isn't available (for example if not installed, or running in wrong virtual env)
-#dunamai from any
-#VERSION=$(dunamai from any)
-#echo $VERSION
-
-VERSION=0.4.0.dev
 
 # all python packages, in topological order
 . ${DIR}/projects.sh
