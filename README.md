@@ -9,7 +9,7 @@ TODO:
 To release, create a commit witha a message in python version format. Example: "v0.2.0"
 
 For dev commits, tag as: "[\\.\\-]dev[\\.\\-]?.\*$".
-Exa,ple: "0.3.1.dev"
+Example: "0.3.1.dev"
 
 # Develop
 
