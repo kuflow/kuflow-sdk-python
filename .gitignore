@@ -3,12 +3,18 @@
 !.editorconfig
 !.gitattributes
 !.gitignore
+!.flake8
 
 ######################
 # Python
 ######################
 venv/
 build/
+.pytest_cache
+__pycache__/
+dist/
+*.egg-info/
+.pytest_cache/
 
 ######################
 # Node
@@ -25,3 +31,9 @@ node_modules/
 # Visual Studio Code
 ######################
 .vscode/
+
+######################
+# Other
+######################
+env.py
+output/
