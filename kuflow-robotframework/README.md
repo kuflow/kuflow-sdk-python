@@ -1,5 +1,5 @@
-[![MIT](https://img.shields.io/github/license/kuflow/kuflow-robotframework?label=License)](https://github.com/kuflow/kuflow-robotframework/blob/master/LICENSE)
-[![Python 3.8+](https://img.shields.io/pypi/pyversions/kuflow-robotframework.svg)](https://pypi.org/project/kuflow-robotframework)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/kuflow/kuflow-sdk-python/blob/master/LICENSE)
+[![Python](https://img.shields.io/pypi/pyversions/kuflow-robotframework.svg)](https://pypi.org/project/kuflow-robotframework)
 [![PyPI](https://img.shields.io/pypi/v/kuflow-robotframework.svg)](https://pypi.org/project/kuflow-robotframework)
 
 # KuFlow Robot Framework
@@ -28,9 +28,9 @@ List of available keywords:
 
 > Allow to get a task by ID
 
-#### Save Element Document 
+#### Save Element Document
 
-> Save a element task of type document 
+> Save a element task of type document
 
 #### Delete Element Document
 
@@ -40,15 +40,15 @@ List of available keywords:
 
 > Save a element task
 
-#### Delete Element 
+#### Delete Element
 
 > Allow to delete task element by specifying the item definition code.
 
-#### Convert To  Principal Item
+#### Convert To Principal Item
 
 > Given an Id of a Principal user, create an item that represents a reference to the Principal.
 
-#### Convert To  Document Item From Uri
+#### Convert To Document Item From Uri
 
 > Given an Id of a Document or the URI reference of a Document, create an item that represents a reference to the Document elementand can be used.
 
@@ -56,11 +56,9 @@ List of available keywords:
 
 More detailed docs are available in the [documentation pages](https://docs.kuflow.com/developers/overview/introduction).
 
-
 ## Contributing
 
 We are happy to receive your help and comments, together we will dance a wonderful KuFlow. Please review our [contribution guide](CONTRIBUTING.md).
-
 
 ## License
 

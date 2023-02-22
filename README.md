@@ -1,4 +1,4 @@
-# KuFlow SDK for Python
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/kuflow/kuflow-sdk-python/blob/master/LICENSE)
 
 Mono repo for all python modules provided by KuFlow.
 
@@ -44,6 +44,14 @@ python -m pip install -U pip
 python -m pip install kuflow-robotframework
 ```
 
+## Documentation
+
+More detailed docs are available in the [documentation pages](https://docs.kuflow.com/developers/overview/introduction).
+
 ## Contributing
 
 We are happy to receive your help and comments, together we will dance a wonderful KuFlow. Please review our [contribution guide](CONTRIBUTING.md) as well as the **Readme** and **Contribution** guides in each module of this repository.
+
+## License
+
+[MIT License](https://github.com/kuflow/kuflow-sdk-python/blob/master/LICENSE)
