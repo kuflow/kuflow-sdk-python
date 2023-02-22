@@ -30,8 +30,12 @@ do
     # Therefore we use ~=1.2, which equals >=1.2,<2.0, together with >=1.2.3
     FOLDER=$(ls)
     sed -i$SEP'' "s|^Requires-Dist: \(.*\) @ file:.*|Requires-Dist: \1 (~=$VERSION_MINOR,>=$VERSION)|" "$FOLDER/PKG-INFO"
-    sed -i$SEP'' "s| @ \.\.[a-zA-Z\-_/]*|~=$VERSION_MINOR,>=$VERSION|" "$FOLDER/setup.py"
+
+    sed -i$SEP'' "s|file:[^']*||" "$FOLDER/setup.py"
+    sed -i$SEP'' "s|\s@\s|~=$VERSION_MINOR,>=$VERSION|" "$FOLDER/setup.py"
+
     sed -i$SEP'' "s|{.*path.*\.\..*|\"~$VERSION\"|" "$FOLDER/pyproject.toml"
+
     tar -czvf new.tar.gz "$FOLDER"
     mv new.tar.gz $curdir/$TARFILE
 done
@@ -55,7 +59,9 @@ do
     # Thus at least at the same fix version, but only compatible versions.
     # Therefore we use ~=1.2, which equals >=1.2,<2.0, together with >=1.2.3
     FOLDER=$(ls -d *.dist-info)
-    sed -i$SEP'' "s|^Requires-Dist: \(.*\) @ \.\./.*|Requires-Dist: \1 (~=$VERSION_MINOR,>=$VERSION)|" "$FOLDER/METADATA"
+
+    sed -i$SEP'' "s|^Requires-Dist: \(.*\) @ file:.*|Requires-Dist: \1 (~=$VERSION_MINOR,>=$VERSION)|" "$FOLDER/METADATA"
+
     zip -r new.whl ./*
     mv new.whl "$curdir/$WHEELFILE"
     cd "$curdir"
