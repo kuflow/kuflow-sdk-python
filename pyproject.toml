@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuflow-sdk-python"
-version = "0.4.0.dev3"
+version = "0.4.0.dev4"
 description = "KuFlow packages to build awesome clients"
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
@@ -14,31 +14,18 @@ include = ["VERSION", "README.md"]
 requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.commitizen]
-name = "cz_conventional_commits"
-version = "0.4.0.dev3"
-tag_format = "v$version"
-version_files = [
-    "VERSION",
-    "pyproject.toml:^version",
-    "kuflow-rest/VERSION",
-    "kuflow-rest/pyproject.toml:^version",
-    "kuflow-rest/kuflow_rest/__init__.py:^__version",
-    "kuflow-robotframework/VERSION",
-    "kuflow-robotframework/pyproject.toml:^version",
-    "kuflow-robotframework/KuFlow/__init__.py:^__version",
-    ]
-update_changelog_on_bump = true
-changelog_incremental = true
-bump_message = "bump: $current_version → $new_version"
-
-
 [tool.poetry.dependencies]
-python = "~3.8"
+python = "^3.8"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.29.0"
 mypy = "0.910"
 flake8 = "4.0.1"
-dunamai = "^1.7.0"
-commitizen = "^2.20.3"
+pytest = "^7.2.1"
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+testpaths = ["tests"]
+python_files= "test_*.py"

@@ -27,9 +27,12 @@
 import sys
 import uuid
 
+import pytest
+
 from kuflow_rest import KuFlowRestClient, models
 
 
+@pytest.mark.skip(reason="Manual Integration Test")
 def main() -> int:
     """Echo the input arguments to standard output"""
 

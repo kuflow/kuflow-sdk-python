@@ -1,0 +1,2 @@
+python-magic==0.4.27 ; python_version >= "3.8" and python_version < "4.0"
+robotframework==5.0.1 ; python_version >= "3.8" and python_version < "4.0"

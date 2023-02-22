@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "kuflow-robotframework"
-version = "0.4.0.dev3"
-description = "KuFlow library for Robot Framework" 
+version = "0.4.0.dev4"
+description = "KuFlow library for Robot Framework"
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
 homepage = "https://kuflow.com/"
@@ -17,8 +17,8 @@ requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
-python = "~3.8"
-kuflow-rest = {path="../kuflow-rest", develop=true}
+python = "^3.8"
+kuflow-rest = "^0.4.0.dev3"
 robotframework = "^5.0"
 python-magic = "^0.4.27"
 
@@ -26,6 +26,7 @@ python-magic = "^0.4.27"
 mypy = "0.910"
 flake8 = "4.0.1"
 black = "^23.1.0"
+pytest = "^7.2.1"
 robotframework-tidy = "^3.3.3"
 
 [tool.black]
