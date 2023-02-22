@@ -233,14 +233,14 @@ class Keywords:
         | ${result_two} = Convert To Number |  123.123
         | Save Element | ${TASK_ID} | FIELD | ${result_one} | ${result_two}
         |
-        | ${result} = Convert To Element Value Principal Item    7dd16e94-2dac-4fca-931e-c2505baa695c
+        | ${result} = Convert To Principal Item    7dd16e94-2dac-4fca-931e-c2505baa695c
         | Save Element | ${TASK_ID} | FIELD | ${result}
         |
         | &{result_one} = Create Dictionary | one_key=My Example Value One | two_key=2
         | &{result_two} = Create Dictionary | a_key=My Example Value A | b_key=B
         | Save Element | ${TASK_ID} | FIELD | ${result_one} | ${result_two}
         |
-        | ${result} = Convert To Element Value Document Item
+        | ${result} = Convert To Document Item From Uri
         | ...   ku:task/acdca56f-b8aa-46c8-9055-8ee52810a4a9/element-value/a05f197f-a50a-46d5-bdec-29a0c020f0d7
         | Save Element | ${TASK_ID} | FIELD | ${result}
         """
