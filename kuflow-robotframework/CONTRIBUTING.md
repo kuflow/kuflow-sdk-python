@@ -24,7 +24,7 @@ npm run black
 
 ### RobotFramework keywords
 
-The keywords of RobotFramework library are in [keywords.py](src/KuFlow/keywords.py) file. Please make sure they are properly documented.
+The keywords of RobotFramework library are in [keywords.py](KuFlow/keywords.py) file. Please make sure they are properly documented.
 
 ## Test
 

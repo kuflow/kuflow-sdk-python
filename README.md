@@ -48,7 +48,7 @@ python -m pip install kuflow-robotframework
 
 ## Documentation
 
-More detailed docs are available in the [documentation pages](https://docs.kuflow.com/developers/overview/introduction).
+More detailed docs are available in the [documentation pages](https://docs.kuflow.com/developers/).
 
 ## Contributing
 

@@ -30,9 +30,7 @@ poetry run black
 npm run black
 ```
 
-### RobotFramework keywords
 
-The keywords of RobotFramework library are in [keywords.py](src/KuFlow/keywords.py) file. Please make sure they are properly documented.
 
 ## Test
 

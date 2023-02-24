@@ -8,7 +8,7 @@ This is a client for the KuFlow API Rest that allows you to interact with our AP
 
 ## Documentation
 
-More detailed docs are available in the [documentation pages](https://docs.kuflow.com/developers/overview/introduction).
+More detailed docs are available in the [documentation pages](https://docs.kuflow.com/developers/).
 
 ## Contributing
 
