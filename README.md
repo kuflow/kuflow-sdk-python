@@ -1,92 +1,59 @@
-# KuFlow SDK for Python
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/kuflow/kuflow-sdk-python/blob/master/LICENSE)
+![Python](https://img.shields.io/pypi/pyversions/kuflow-rest.svg)
+![PyPI](https://img.shields.io/pypi/v/kuflow-rest.svg)
 
-KuFlow SDK for Python
+Mono repo for all python modules provided by KuFlow.
 
-# Release
+## Modules
 
-TODO:
+### Rest Client
 
-To release, create a commit witha a message in python version format. Example: "v0.2.0"
+This is a client for the KuFlow API Rest that allows you to interact with our API in a comfortable way in the creation of your workers and tools.
 
-For dev commits, tag as: "[\\.\\-]dev[\\.\\-]?.\*$".
-Example: "0.3.1.dev"
+In the `kuflow-rest` path there is a readme with information about the module.
 
-# Develop
+The module is published in [Pypi](https://pypi.org/project/kuflow-rest/) for its use.
 
-## To create all virtual environments.
+#### Installation
 
-`poetry_install.sh`
+Install from PyPI.
 
-## If you want to run poetry update on all projects
+```python
+# Update Pip if necessary
+python -m pip install -U pip
 
-`poetry_update.sh`
-
-## To add a new package
-
-Edit:
-projects.sh: contains a list of all the poetry packages, in topological order
-
-create_local_version.sh and pyproject.toml's
-
-### If you add a dependency to one of the packages
-
-If you add a dependency to one of the packages, you also want to update the upstream packages’ lock files in the mono repo.
-`$./poetry_update.sh`
-
-### Sharing development utilities
-
-Some development utilities are repo wide dependencies. See the dev group of the root folder’s pyproject.toml. But production dependencies not exist in the root pyproject.toml.
-
-Each package in the mono repo has all its dependencies, both production, and development. For example pytest to allows the IDE to use the version used in the package: `poetry run pytest`
-
-### See more
-
-Monorepo based in:
-
-- https://gitlab.com/gerbenoostra/poetry-monorepo/
-- https://gerben-oostra.medium.com/python-poetry-mono-repo-without-limitations-dd63b47dc6b8
-
-## Usage
-
-To create the poetry virtual environments:
-
-```shell
-scripts/poetry_install.sh
+# Install the package
+python -m pip install kuflow-rest
 ```
 
-It might update the `poetry.lock` files, which is mainly usefull when running on new architectures.
+### Robot Framework Library
 
-If a new dependency has been added to any of the poetry file, run the helper script to update all lock files:
+Library that provides useful keywords in the creation of a Robot Framework robot. If you miss any keyword, please leave us a comment in the issues or in any of our social networks.
 
-```shell
-scripts/poetry_update.sh
+In the `kuflow-robotframework path there is a readme with information about the module.
+
+The module is published in [Pypi](https://pypi.org/project/kuflow-robotframework/) for its use.
+
+#### Installation
+
+Install from PyPI.
+
+```python
+# Update Pip if necessary
+python -m pip install -U pip
+
+# Install the package
+python -m pip install kuflow-robotframework
 ```
 
-It by design will update all `poetry.lock` files, such that updated transitive dependencies are correct.
-It might also update other transitive dependencies to latest versions.
+## Documentation
 
-On the build server, one can determine the actual local semver version of the current checkout, and update all version numbers in the codebase:
+More detailed docs are available in the [documentation pages](https://docs.kuflow.com/developers/overview/introduction).
 
-```shell
-poetry run scripts/create_local_version.sh
-```
+## Contributing
 
-Note that this changes the `pyproject.toml` files and all python files containing versions, which **should not be committed** to git.
+We are happy to receive your help and comments, together we will dance a wonderful KuFlow. Please review our [contribution guide](CONTRIBUTING.md) as well as the **Readme** and **Contribution** guides in each module of this repository.
 
-To build all the wheels, run
+## License
 
-```shell
-scripts/poetry_build.sh
-```
-
-Note that this changes the `pyproject.toml` files with changes that **should not be committed** to git.
-
-Alternatively, to not have to modify `pyproject.toml` files, one can first build the packages.
-Then, we need to modify the dependencies in the wheel & tar.gz artifacts.
-This is done as follows (without invoking `poetry_build.sh`):
-
-```shell
-cd package-b
-poetry build
-../scripts/replace_path_deps.sh
-```
+[MIT License](https://github.com/kuflow/kuflow-sdk-python/blob/master/LICENSE)
