@@ -26,4 +26,4 @@
 from ._kuflow_rest_client import KuFlowRestClient
 
 __all__ = ["KuFlowRestClient"]
-__version__ = "0.4.0"
+__version__ = "0.4.1.dev0"
