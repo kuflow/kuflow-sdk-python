@@ -12,9 +12,7 @@ Main tools:
 - Flake 8 (linter)
 - PyTest
 
-We strongly recommend the use of python [virtual environments](https://packaging.python.org/en/latest/tutorials/installing-packages/#creating-virtual-environments) to work with. 
-
-
+We strongly recommend the use of python [virtual environments](https://packaging.python.org/en/latest/tutorials/installing-packages/#creating-virtual-environments) to work with.
 
 ## Develop
 
@@ -32,6 +30,8 @@ You can use poetry for dependency management but remember that this is a monorep
 scripts/poetry_update.sh
 ```
 
+Remember that this command gets the latest versions of the dependencies and to update the poetry.lock file.
+
 #### Sharing development utilities
 
 Some development utilities are repo wide dependencies. See the dev group of the root folder’s pyproject.toml. But production dependencies not exist in the root pyproject.toml.
@@ -42,7 +42,7 @@ Each package in the mono repo has all its dependencies, both production, and dev
 
 Update `scripts/projects.sh` to list all the poetry packages in the mono repo. The list should be in topological order: it should list a package’s dependencies before the depending package.
 
-Update  `scripts/create_local.version.sh` with a new `sed` expression with the new module
+Update `scripts/create_local.version.sh` with a new `sed` expression with the new module
 
 #### Versioning
 
@@ -52,7 +52,7 @@ To do this, always develop with a development version tag (the finished ones wit
 
 How is the version set?
 
-Edit  `scripts/create_local.version.sh` and set in the variable `VERSION`
+Edit `scripts/create_local.version.sh` and set in the variable `VERSION`
 
 Then, execute
 

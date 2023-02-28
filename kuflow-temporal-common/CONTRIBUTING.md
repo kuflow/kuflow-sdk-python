@@ -1,0 +1,32 @@
+# Developing kuflow-temporal-common
+
+This doc is intended for contributors to `kuflow-temporal-common`
+
+## Development Environment
+
+- Python 3.8+
+- Poetry
+- Black (code formatter)
+- Flake 8 (linter)
+- PyTest
+- Node >= 16
+
+## Build
+
+### Formatter
+
+To format code:
+
+```bash
+poetry run black
+# Or
+npm run black
+```
+
+## Test
+
+Run all the tests with:
+
+```bash
+poetry run pytest
+```
