@@ -146,7 +146,7 @@ class SaveProcessElementRequest(_serialization.Model):
     }
 
     def __init__(
-        self, processId: str, elementDefinitionCode: str, elementValues: List[models_rest.ProcessElementValue]
+        self, processId: str, elementDefinitionCode: str, elementValues: List["models_rest.ProcessElementValue"]
     ):
         self.processId = processId
         self.elementDefinitionCode = elementDefinitionCode
@@ -228,7 +228,7 @@ class ChangeProcessInitiatorResponse(_serialization.Model):
         self.process = process
 
 
-class FindTaskRequestModel(_serialization.Model):
+class FindTaskRequest(_serialization.Model):
     _attribute_map = {
         "page": {"key": "page", "type": "int"},
         "size": {"key": "size", "type": "int"},
@@ -371,7 +371,7 @@ class SaveTaskElementRequest(_serialization.Model):
         "elementValues": {"key": "elementValues", "type": "[TaskElementValue]"},
     }
 
-    def __init__(self, taskId: str, elementDefinitionCode: str, elementValues: List[models_rest.TaskElementValue]):
+    def __init__(self, taskId: str, elementDefinitionCode: str, elementValues: List["models_rest.TaskElementValue"]):
         self.taskId = taskId
         self.elementDefinitionCode = elementDefinitionCode
         self.elementValues = elementValues
