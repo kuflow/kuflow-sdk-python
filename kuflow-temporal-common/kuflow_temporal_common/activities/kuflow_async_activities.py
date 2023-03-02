@@ -9,6 +9,7 @@ from kuflow_rest import KuFlowRestClient
 class KuFlowAsyncActivities:
     def __init__(self, kuflow_client: KuFlowRestClient) -> None:
         self._kuflow_client = kuflow_client
+        self.activities = [self.create_task_and_wait_finished]
 
     @activity.defn
     async def create_task_and_wait_finished(

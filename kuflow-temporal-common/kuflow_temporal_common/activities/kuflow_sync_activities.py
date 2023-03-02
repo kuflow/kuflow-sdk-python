@@ -9,6 +9,25 @@ from kuflow_rest import KuFlowRestClient, models
 class KuFlowSyncActivities:
     def __init__(self, kuflow_client: KuFlowRestClient) -> None:
         self._kuflow_client = kuflow_client
+        self.activities = [
+            self.retrieve_principal,
+            self.find_processes,
+            self.retrieve_process,
+            self.save_process_element,
+            self.delete_process_element,
+            self.complete_process,
+            self.change_process_initiator,
+            self.find_tasks,
+            self.retrieve_task,
+            self.create_task,
+            self.complete_task,
+            self.claim_task,
+            self.assign_task,
+            self.save_task_element,
+            self.delete_task_element,
+            self.delete_task_element_value_document,
+            self.append_task_log,
+        ]
 
     @activity.defn
     async def retrieve_principal(
