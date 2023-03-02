@@ -80,7 +80,7 @@ class UserActionWorkflowResponse(_serialization.Model):
 ########################
 
 
-class RetrievePrincialRequest(_serialization.Model):
+class RetrievePrincipalRequest(_serialization.Model):
     _attribute_map = {
         "principalId": {"key": "principalId", "type": "str"},
     }
@@ -89,7 +89,7 @@ class RetrievePrincialRequest(_serialization.Model):
         self.principalId = principalId
 
 
-class RetrievePrincialResponse(_serialization.Model):
+class RetrievePrincipalResponse(_serialization.Model):
     _attribute_map = {
         "principal": {"key": "principal", "type": "Principal"},
     }
