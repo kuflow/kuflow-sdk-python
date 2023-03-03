@@ -1,9 +1,9 @@
 import base64
 
 from temporalio import activity
-from ..models import _models as models_temporal
-
 from kuflow_rest import KuFlowRestClient
+
+from . import models as models_temporal
 
 
 class KuFlowAsyncActivities:

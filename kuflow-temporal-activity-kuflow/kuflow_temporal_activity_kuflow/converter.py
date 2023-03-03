@@ -1,5 +1,4 @@
 from typing import Any, Optional, Type
-
 import json
 
 from temporalio import workflow
@@ -12,6 +11,7 @@ from temporalio.converter import (
 )
 
 from kuflow_rest import models as models_rest
+
 from . import models as models_temporal
 
 with workflow.unsafe.imports_passed_through():

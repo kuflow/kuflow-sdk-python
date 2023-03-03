@@ -23,7 +23,5 @@
 # SOFTWARE.
 #
 
-# from ._kuflow_rest_client import KuFlowRestClient
-
-# __all__ = ["KuFlowRestClient"]
+# __all__ = ["KuFlowPayloadConverter"]
 __version__ = "0.4.1.dev0"
