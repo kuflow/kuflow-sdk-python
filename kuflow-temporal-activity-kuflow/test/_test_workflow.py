@@ -3,10 +3,11 @@ from datetime import timedelta
 from temporalio import workflow
 from temporalio.common import RetryPolicy
 
-from kuflow_rest import models
-from kuflow_temporal_activity_kuflow import models as models_temporal
-from kuflow_temporal_activity_kuflow import KuFlowSyncActivities
-from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities
+with workflow.unsafe.imports_passed_through():
+    from kuflow_rest import models
+    from kuflow_temporal_activity_kuflow import models as models_temporal
+    from kuflow_temporal_activity_kuflow import KuFlowSyncActivities
+    from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities
 
 
 @workflow.defn
