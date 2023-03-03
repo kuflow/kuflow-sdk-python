@@ -18,13 +18,17 @@ We strongly recommend the use of python [virtual environments](https://packaging
 
 #### To create all virtual environments
 
+Important!: Execute in a shell without poetry shell spawned
+
 ```shell
 scripts/poetry_install.sh
 ```
 
 #### Dependencies
 
-You can use poetry for dependency management but remember that this is a monorepo, see in which module you want to add it. However, the most convenient way is to update the appropriate pyproject.toml file and update all environments. To do this you must run:
+Important!: Execute in a shell without poetry shell spawned
+
+If a new dependency has been added to any of the poetry file, run the helper script. You can use poetry for dependency management but remember that this is a monorepo, see in which module you want to add it. However, the most convenient way is to update the appropriate pyproject.toml file and update all environments. To do this you must run:
 
 ```bash
 scripts/poetry_update.sh
