@@ -1,4 +1,4 @@
-# Developing kuflow-temporal-common
+# Developing kuflow-temporal-activity-kuflow
 
 This doc is intended for contributors to `kuflow-temporal-common`
 
