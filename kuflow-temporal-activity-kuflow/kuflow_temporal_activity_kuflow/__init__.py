@@ -23,7 +23,8 @@
 # SOFTWARE.
 #
 
-# from ._kuflow_rest_client import KuFlowRestClient
+from .kuflow_async_activities import KuFlowAsyncActivities
+from .kuflow_sync_activities import KuFlowSyncActivities
 
-# __all__ = ["KuFlowRestClient"]
+__all__ = ["KuFlowAsyncActivities", "KuFlowSyncActivities"]
 __version__ = "0.4.1.dev0"

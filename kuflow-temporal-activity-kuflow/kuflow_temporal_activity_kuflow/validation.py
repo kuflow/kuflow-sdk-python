@@ -1,6 +1,7 @@
 from temporalio.exceptions import ApplicationError
 
-from .exception import KuFlowFailureType
+from kuflow_temporal_common.exceptions import KuFlowFailureType
+
 from .models import _models as models_temporal
 
 
