@@ -437,6 +437,29 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "protobuf"
+version = "4.22.0"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "protobuf-4.22.0-cp310-abi3-win32.whl", hash = "sha256:b2fea9dc8e3c0f32c38124790ef16cba2ee0628fe2022a52e435e1117bfef9b1"},
+    {file = "protobuf-4.22.0-cp310-abi3-win_amd64.whl", hash = "sha256:a33a273d21852f911b8bda47f39f4383fe7c061eb1814db2c76c9875c89c2491"},
+    {file = "protobuf-4.22.0-cp37-abi3-macosx_10_9_universal2.whl", hash = "sha256:e894e9ae603e963f0842498c4cd5d39c6a60f0d7e4c103df50ee939564298658"},
+    {file = "protobuf-4.22.0-cp37-abi3-manylinux2014_aarch64.whl", hash = "sha256:7c535d126e7dcc714105ab20b418c4fedbd28f8b8afc42b7350b1e317bbbcc71"},
+    {file = "protobuf-4.22.0-cp37-abi3-manylinux2014_x86_64.whl", hash = "sha256:86c3d20428b007537ba6792b475c0853bba7f66b1f60e610d913b77d94b486e4"},
+    {file = "protobuf-4.22.0-cp37-cp37m-win32.whl", hash = "sha256:1669cb7524221a8e2d9008d0842453dbefdd0fcdd64d67672f657244867635fb"},
+    {file = "protobuf-4.22.0-cp37-cp37m-win_amd64.whl", hash = "sha256:ab4d043865dd04e6b09386981fe8f80b39a1e46139fb4a3c206229d6b9f36ff6"},
+    {file = "protobuf-4.22.0-cp38-cp38-win32.whl", hash = "sha256:29288813aacaa302afa2381db1d6e0482165737b0afdf2811df5fa99185c457b"},
+    {file = "protobuf-4.22.0-cp38-cp38-win_amd64.whl", hash = "sha256:e474b63bab0a2ea32a7b26a4d8eec59e33e709321e5e16fb66e766b61b82a95e"},
+    {file = "protobuf-4.22.0-cp39-cp39-win32.whl", hash = "sha256:47d31bdf58222dd296976aa1646c68c6ee80b96d22e0a3c336c9174e253fd35e"},
+    {file = "protobuf-4.22.0-cp39-cp39-win_amd64.whl", hash = "sha256:c27f371f0159feb70e6ea52ed7e768b3f3a4c5676c1900a7e51a24740381650e"},
+    {file = "protobuf-4.22.0-py3-none-any.whl", hash = "sha256:c3325803095fb4c2a48649c321d2fbde59f8fbfcb9bfc7a86df27d112831c571"},
+    {file = "protobuf-4.22.0.tar.gz", hash = "sha256:652d8dfece122a24d98eebfef30e31e455d300efa41999d1182e015984ac5930"},
+]
+
+[[package]]
 name = "pycodestyle"
 version = "2.8.0"
 description = "Python style guide checker"
@@ -485,6 +508,21 @@ tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
 
 [[package]]
+name = "python-dateutil"
+version = "2.8.2"
+description = "Extensions to the standard Python datetime module"
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+files = [
+    {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
+    {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
+]
+
+[package.dependencies]
+six = ">=1.5"
+
+[[package]]
 name = "requests"
 version = "2.28.2"
 description = "Python HTTP for Humans."
@@ -519,6 +557,32 @@ files = [
 ]
 
 [[package]]
+name = "temporalio"
+version = "1.1.0"
+description = "Temporal.io Python SDK"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+files = [
+    {file = "temporalio-1.1.0-cp37-abi3-macosx_10_9_x86_64.whl", hash = "sha256:1729336d974ee8a4f9fa3802024f3cc5e67c9ce9f75b4e833729e70d28aef78e"},
+    {file = "temporalio-1.1.0-cp37-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:864bd436b1f2432a36ace5667e68020a574f2d8e80799e8d7c35b84c2f40359f"},
+    {file = "temporalio-1.1.0-cp37-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:b4b2dd9df66c611d9b062e1d55eb003832f1dd3c5ae218470ac1ed0a26c737bd"},
+    {file = "temporalio-1.1.0-cp37-abi3-win_amd64.whl", hash = "sha256:7ef2cfe05b4d2f0adde700cf532629be252276ccd5f84d6ca990c75ed86a0ef4"},
+    {file = "temporalio-1.1.0-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:001ff14d5e057b2562d78851d1064f90f5c4a8d4424c4f8caac63792761cdf4f"},
+    {file = "temporalio-1.1.0.tar.gz", hash = "sha256:ee50d6414195d17366a071c190dbdc027ed30d12322a1b0ad70be99a47820542"},
+]
+
+[package.dependencies]
+protobuf = ">=3.20"
+python-dateutil = {version = ">=2.8.2,<3.0.0", markers = "python_version < \"3.11\""}
+types-protobuf = ">=3.20"
+typing-extensions = ">=4.2.0,<5.0.0"
+
+[package.extras]
+grpc = ["grpcio (>=1.48.0,<2.0.0)"]
+opentelemetry = ["opentelemetry-api (>=1.11.1,<2.0.0)", "opentelemetry-sdk (>=1.11.1,<2.0.0)"]
+
+[[package]]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -540,6 +604,18 @@ python-versions = ">=3.7"
 files = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
+]
+
+[[package]]
+name = "types-protobuf"
+version = "4.21.0.7"
+description = "Typing stubs for protobuf"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-protobuf-4.21.0.7.tar.gz", hash = "sha256:6ecaddcc7aed2c636745a17c1411932cdef7a035304d50ffd4140297b6b882e8"},
+    {file = "types_protobuf-4.21.0.7-py3-none-any.whl", hash = "sha256:5f4c0ba5840d66a9f32bcfd153a5d41c503f409223eae4fda876cdd6b50a638a"},
 ]
 
 [[package]]
@@ -574,4 +650,4 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "8bc2d312c83d06582cba6a9cda34320a8148795d2ee5f0f725b0d9fe9cb7ee85"
+content-hash = "2d0613f53f7a771383de785492cd3f0a95995824b1d0fbe70ee37037ce36788a"

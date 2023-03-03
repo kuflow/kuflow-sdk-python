@@ -20,6 +20,7 @@ python = "^3.8"
 kuflow-rest = {path="../kuflow-rest", develop=true}
 azure-core = "^1.26.3"
 isodate = "^0.6.1"
+temporalio = "^1.1.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "0.910"
