@@ -37,3 +37,4 @@ node_modules/
 ######################
 env.py
 output/
+**/application-local.yaml
