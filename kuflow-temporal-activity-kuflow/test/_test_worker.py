@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import dataclasses
+import yaml
 
 from temporalio.client import Client, TLSConfig
 from temporalio.worker import Worker
@@ -13,23 +14,31 @@ from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities
 from kuflow_temporal_activity_kuflow import KuFlowSyncActivities
 from _test_workflow import GreetingWorkflow
 
+# Load configuration
+with open("kuflow-temporal-activity-kuflow/test/application-local.yaml", "r") as file:
+    yaml_data = yaml.safe_load(file)
+
+    client_id = yaml_data["kuflow"]["api"]["client-id"]
+    client_secret = yaml_data["kuflow"]["api"]["client-secret"]
+    endpoint = "https://api.sandbox.kuflow.com/v2022-10-08"  # Overwrite default only for internal testing
+
+    server_root_ca_cert = yaml_data["temporal"]["mutual-tls"]["ca-data"]
+    server_root_ca_cert = server_root_ca_cert.encode("utf-8")
+
+    client_cert = yaml_data["temporal"]["mutual-tls"]["cert-data"]
+    client_cert = client_cert.encode("utf-8")
+
+    client_key = yaml_data["temporal"]["mutual-tls"]["key-data"]
+    client_key = client_key.encode("utf-8")
+
+    temporal_host = yaml_data["temporal"]["target"]
+    temporal_namespace = yaml_data["temporal"]["namespace"]
+    temporal_queue = yaml_data["temporal"]["kuflow-queue"]
+
 
 async def main():
     # Uncomment the line below to see logging
     logging.basicConfig(level=logging.INFO)
-
-    # MTLS
-    with open(
-        "/home/zeben/dev/kuflow/src/worker-python-sdk/etc/certs/server-root-ca.cert",
-        "rb",
-    ) as f:
-        server_root_ca_cert = f.read()
-
-    with open("/home/zeben/dev/kuflow/src/worker-python-sdk/etc/certs/client.cert", "rb") as f:
-        client_cert = f.read()
-
-    with open("/home/zeben/dev/kuflow/src/worker-python-sdk/etc/certs/client.key", "rb") as f:
-        client_key = f.read()
 
     kuflow_client = KuFlowRestClient(
         client_id=client_id,
@@ -42,8 +51,8 @@ async def main():
     kuFlow_authorization_token_provider = KuFlowAuthorizationTokenProvider(kuflow_client=kuflow_client)
 
     client = await Client.connect(
-        "engine.sandbox.kuflow.com:443",
-        namespace="tenant-d434658f-abe2-491a-b2ef-b073c752617c",
+        temporal_host,
+        namespace=temporal_namespace,
         tls=TLSConfig(
             server_root_ca_cert=server_root_ca_cert,
             client_cert=client_cert,
@@ -65,45 +74,13 @@ async def main():
     worker = Worker(
         client,
         debug_mode=True,  # Debug mode
-        task_queue="greeting-task-queue",
+        task_queue=temporal_queue,
         workflows=[GreetingWorkflow],
         activities=kuflow_sync_activities.activities + kuflow_async_activities.activities,
-        # workflow_runner=UnsandboxedWorkflowRunner(),  # Disable Sandboxing in test
     )
 
     await worker.run()
-    # await kuFlow_authorizationToken_provider.close()
-
-    # Run a worker for the workflow
-    # async with Worker(
-    #     client,
-    #     task_queue="greeting-task-queue",
-    #     workflows=[GreetingWorkflow],
-    #     activities=[compose_greeting, complete_process],
-    # ):
-    #     # Wait until interrupted
-    #     print("Worker started, ctrl+c to exit")
-    #     await interrupt_event.wait()
-    #     print("Shutting down")
-
-    # async with worker:
-    # While the worker is running, use the client to run the workflow and
-    # print out its result. Note, in many production setups, the client
-    # would be in a completely separate process from the worker.
-    # result = await client.execute_workflow(
-    #     GreetingWorkflow.run,
-    #     "World",
-    #     id="hello-activity-workflow-id",
-    #     task_queue="greeting-task-queue",
-    # )
-    # print(f"Result: {result}")
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-    # loop = asyncio.new_event_loop()
-    # try:
-    #     loop.run_until_complete(main())
-    # except KeyboardInterrupt:
-    #     interrupt_event.set()
-    #     loop.run_until_complete(loop.shutdown_asyncgens())
