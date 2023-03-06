@@ -37,6 +37,6 @@ class GreetingWorkflow:
             retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=30)),
         )
 
-        print(f"Result: {result}")
+        workflow.logger.info(f"Result: {result}")
 
         return models_temporal.WorkflowResponse(f"Workflow {request.processId} finished")
