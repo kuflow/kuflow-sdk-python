@@ -24,6 +24,7 @@
 #
 
 
+import platform
 import sys
 import base64
 
@@ -170,6 +171,9 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
             api_version=kwargs.pop("api_version", VERSION),
             credential_scopes="https://api.kuflow.com/v2022-10-08/.default",
             per_call_policies=per_call_policies,
+            base_user_agent="sdk-python-kuflow-rest/{} Python/{} ({})".format(
+                VERSION, platform.python_version(), platform.platform()
+            ),
         )
 
         self.authentication = AuthenticationOperations(self._kuflow_client)

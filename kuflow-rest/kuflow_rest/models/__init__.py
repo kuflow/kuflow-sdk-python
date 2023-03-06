@@ -23,6 +23,7 @@
 # SOFTWARE.
 #
 
+from .._generated.models import __all__ as _all_generated_models
 
 from .._generated.models import (
     AbstractAudited,
@@ -44,9 +45,12 @@ from .._generated.models import (
     ProcessElementValueNumber,
     ProcessElementValueString,
     ProcessPage,
+    ProcessPageItem,
     ProcessSaveElementCommand,
+    RelatedProcess,
     Task,
     TaskAssignCommand,
+    TaskDefinitionSummary,
     TaskDeleteElementCommand,
     TaskDeleteElementValueDocumentCommand,
     TaskElementValue,
@@ -58,8 +62,8 @@ from .._generated.models import (
     TaskElementValuePrincipalItem,
     TaskElementValueString,
     TaskPage,
+    TaskPageItem,
     TaskSaveElementCommand,
-    TaskDefinitionSummary,
     WebhookEvent,
     WebhookEventProcessStateChanged,
     WebhookEventProcessStateChangedData,
@@ -78,7 +82,9 @@ from .._generated.models import (
 
 from ._models import Document, TaskSaveElementValueDocumentCommand, ProcessSaveUserActionValueDocumentCommand
 
+
 __all__ = [
+    # From _generated.models
     "AbstractAudited",
     "Authentication",
     "DefaultError",
@@ -98,10 +104,12 @@ __all__ = [
     "ProcessElementValueNumber",
     "ProcessElementValueString",
     "ProcessPage",
+    "ProcessPageItem",
     "ProcessSaveElementCommand",
-    "ProcessSaveUserActionValueDocumentCommand",
+    "RelatedProcess",
     "Task",
     "TaskAssignCommand",
+    "TaskDefinitionSummary",
     "TaskDeleteElementCommand",
     "TaskDeleteElementValueDocumentCommand",
     "TaskElementValue",
@@ -113,9 +121,8 @@ __all__ = [
     "TaskElementValuePrincipalItem",
     "TaskElementValueString",
     "TaskPage",
+    "TaskPageItem",
     "TaskSaveElementCommand",
-    "TaskSaveElementValueDocumentCommand",
-    "TaskDefinitionSummary",
     "WebhookEvent",
     "WebhookEventProcessStateChanged",
     "WebhookEventProcessStateChangedData",
@@ -130,5 +137,13 @@ __all__ = [
     "TaskElementValueType",
     "TaskState",
     "WebhookType",
+    # From models
     "Document",
+    "ProcessSaveUserActionValueDocumentCommand",
+    "TaskSaveElementValueDocumentCommand",
 ]
+
+
+# For usability, we must include in __all__, all the items of the model generated package
+# So this assertion is to avoid forgetfulness.
+assert all(item in __all__ for item in _all_generated_models)
