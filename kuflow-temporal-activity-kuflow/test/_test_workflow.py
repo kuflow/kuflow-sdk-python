@@ -29,27 +29,6 @@ class GreetingWorkflow:
             retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=30)),
         )
 
-        # result = await workflow.execute_activity(
-        #     KuFlowSyncActivities.find_processes,
-        #     models_temporal.FindProcessesRequest(size=1),
-        #     start_to_close_timeout=timedelta(seconds=120),
-        #     retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=30)),
-        # )
-
-        # result = await workflow.execute_activity(
-        #     KuFlowSyncActivities.retrieve_principal,
-        #     models_temporal.RetrievePrincialRequest(principalId="8934b169-c85e-4e05-9580-13ace7f267f5"),
-        #     start_to_close_timeout=timedelta(seconds=120),
-        #     retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=30)),
-        # )
-
-        # result = await workflow.execute_activity(
-        #     KuFlowSyncActivities.retrieve_process,
-        #     models_temporal.RetrieveProcessRequest(request.processId),
-        #     start_to_close_timeout=timedelta(seconds=120),
-        #     retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=30)),
-        # )
-
         # Complete Workflow
         result = await workflow.execute_activity(
             KuFlowSyncActivities.complete_process,
