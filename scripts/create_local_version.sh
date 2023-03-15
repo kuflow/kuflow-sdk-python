@@ -33,4 +33,5 @@ sed -i$SEP'' "s/^VERSION.*/VERSION = \"$VERSION\"/" kuflow-rest/kuflow_rest/_gen
 sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" kuflow-robotframework/KuFlow/__init__.py
 sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" kuflow-temporal-common/kuflow_temporal_common/__init__.py
 sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" kuflow-temporal-activity-kuflow/kuflow_temporal_activity_kuflow/__init__.py
+sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" kuflow-temporal-activity-robotframework/kuflow_temporal_activity_robotframework/__init__.py
 # Example other package: sed -i$SEP'' "s/^__version__.*/__version__ = \"$VERSION\"/" package-b/package_b/__init__.py

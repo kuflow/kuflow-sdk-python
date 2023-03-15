@@ -77,6 +77,12 @@ async def main():
         task_queue=temporal_queue,
         workflows=[GreetingWorkflow],
         activities=kuflow_sync_activities.activities + kuflow_async_activities.activities,
+        # In order to debug in vscode, use UnsandboxedWorkflowRunner "from temporalio.worker":
+        #   workflow_runner=UnsandboxedWorkflowRunner()
+        # and (optionally if you want set a breakpoint inside Temporal code):
+        #   1) Add temporalio package to the workspace to breakpoint inside,
+        #   2) Launch with justMyCode": false in launch configuration
+        # More info: https://github.com/temporalio/sdk-python/issues/238
     )
 
     await worker.run()

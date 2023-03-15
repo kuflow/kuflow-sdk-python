@@ -42,7 +42,7 @@ Each package in the mono repo has all its dependencies, both production, and dev
 
 Update `scripts/projects.sh` to list all the poetry packages in the mono repo. The list should be in topological order: it should list a package’s dependencies before the depending package.
 
-Update `scripts/create_local.version.sh` with a new `sed` expression with the new module
+Update `scripts/create_local_version.sh` with a new `sed` expression with the new module
 
 #### Versioning
 
