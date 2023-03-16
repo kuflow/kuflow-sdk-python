@@ -1,4 +1,4 @@
-from attr import dataclass
+from dataclasses import dataclass
 import robot
 
 from temporalio import activity
@@ -23,17 +23,17 @@ class ExecuteRobotRequest:
         Please see :func:`robot.run.run` docstring to more info
     """
 
-    tests: any
+    tests: str
 
     options: dict
 
 
 class RobotFrameworkActivities:
     def __init__(self) -> None:
-        pass
+        self.activities = [self.execute_robot]
 
     @activity.defn
-    # @auto_heartbeater
+    @auto_heartbeater
     async def execute_robot(self, request: ExecuteRobotRequest):
         robot_code = robot.run(request.tests, **request.options)
 
