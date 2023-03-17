@@ -462,6 +462,18 @@ tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
 
 [[package]]
+name = "robotframework"
+version = "5.0.1"
+description = "Generic automation framework for acceptance testing and robotic process automation (RPA)"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "robotframework-5.0.1-py3-none-any.whl", hash = "sha256:2d2072cf9ec807e820bf27e5f71240e715e37691c9ba930a59a71d5c0fd61998"},
+    {file = "robotframework-5.0.1.zip", hash = "sha256:cf5dc59777ed9d8c3e1e91fb4403454890242867735681f22f4f22dbb2a20fc8"},
+]
+
+[[package]]
 name = "setuptools"
 version = "67.6.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
@@ -533,4 +545,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "49763f1ad46ccc56512076fb3abd2bcc0907c9a2f4d3bb8250674b948daa9e19"
+content-hash = "14a77075747b9526bcbe789c5a3980aa0bf34de220cffed31a8830da913c267a"

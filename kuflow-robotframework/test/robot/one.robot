@@ -34,6 +34,21 @@ Library         KuFlow
 Test Clear
     Clear All Elements
 
+Test Settings
+    Set KuFlow Credentials
+
+    ${client}=    Get Client
+    ${text}=    Set Variable If    $client is None    False    True
+    Should Be True    ${text}
+
+    ${instance}=    Get Instance
+    ${text}=    Set Variable If    $instance is None    False    True
+    Should Be True    ${text}
+
+    ${instance}=    Get library instance    KuFlow
+    ${current_instance}=    Call Method    ${instance}    get_instance
+    Log To Console    kkkk
+
 Test Single Claim a KuFlow Task
     Set KuFlow Credentials
 

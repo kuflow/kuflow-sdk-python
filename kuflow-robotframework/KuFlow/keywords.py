@@ -35,8 +35,6 @@ from robot.api.deco import keyword
 
 from kuflow_rest import KuFlowRestClient, models
 
-# from models import Pr
-
 
 class Keywords:
     def __init__(self) -> None:
@@ -56,19 +54,27 @@ class Keywords:
         | Set Client Authentication | identifier | token
         | Set Client Authentication | identifier | token | https://api.kuflow.com/v1.0
         """
-        if endpoint == None:
-            self._client  = KuFlowRestClient(
+        if endpoint is None:
+            self._client = KuFlowRestClient(
                 client_id=client_id,
                 client_secret=client_secret,
                 allow_insecure_connection=True,
             )
         else:
-            self._client  = KuFlowRestClient(
+            self._client = KuFlowRestClient(
                 client_id=client_id,
                 client_secret=client_secret,
                 endpoint=endpoint,
                 allow_insecure_connection=True,
             )
+
+    @keyword(tags=("settings",))
+    def get_client(self) -> KuFlowRestClient:
+        return self._client
+
+    @keyword(tags=("settings",))
+    def get_instance(self) -> "Keywords":
+        return self
 
     @keyword()
     def append_log_message(self, task_id: UUID, message: str, level=models.LogLevel.INFO) -> models.Task:
