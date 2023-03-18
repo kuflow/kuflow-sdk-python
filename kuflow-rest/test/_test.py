@@ -96,7 +96,7 @@ def main() -> int:
     file = models.Document(
         file_mame="bugs-bunny.png",
         content_type="image/png",
-        file_content=open("/home/zeben/dummy/robot.png", "rb"),
+        file_content=open("etc/sample/data/samples_01.jpg", "rb"),
     )
     command = models.TaskSaveElementValueDocumentCommand(element_definition_code="DOC")
     task = client.task.actions_task_save_element_value_document(id=task.id, file=file, command=command)

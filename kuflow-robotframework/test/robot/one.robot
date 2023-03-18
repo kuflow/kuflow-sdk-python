@@ -82,10 +82,10 @@ Test Single Save document to KuFlow Task
     Delete Element    ${KUFLOW_TASK_ID}    DOC
 
     # Upload a new file
-    ${task}=    Save Element Document    ${KUFLOW_TASK_ID}    DOC    /files/dummy/coyote.jpg
+    ${task}=    Save Element Document    ${KUFLOW_TASK_ID}    DOC    etc/sample/data/samples_01.jpg
 
     # Replace a existing document element with a new file
-    ${taskUpdated}=    Save Element Document    ${KUFLOW_TASK_ID}    DOC    /files/dummy/robot.png
+    ${taskUpdated}=    Save Element Document    ${KUFLOW_TASK_ID}    DOC    etc/sample/data/samples_02.jpg
     Should Not Be Equal
     ...    ${task.element_values['DOC'][0].value.content_length}
     ...    ${taskUpdated.element_values['DOC'][0].value.content_length}
@@ -96,8 +96,8 @@ Test Multiple Save document to KuFlow Task
     # Clear previous
     Delete Element    ${KUFLOW_TASK_ID}    DOC_MULTIPLE
     # Save multiple file in a single task element
-    Save Element Document    ${KUFLOW_TASK_ID}    DOC_MULTIPLE    /files/dummy/coyote.jpg
-    ${task}=    Save Element Document    ${KUFLOW_TASK_ID}    DOC_MULTIPLE    /files/dummy/piolin.gif
+    Save Element Document    ${KUFLOW_TASK_ID}    DOC_MULTIPLE    etc/sample/data/samples_03.jpg
+    ${task}=    Save Element Document    ${KUFLOW_TASK_ID}    DOC_MULTIPLE    etc/sample/data/samples_04.jpg
     ${length}=    Get length    ${task.element_values['DOC_MULTIPLE']}
     Should Be Equal As Integers    ${length}    2
 
@@ -105,7 +105,7 @@ Test Multiple Save document to KuFlow Task
     ${taskUpdated}=    Save Element Document
     ...    ${KUFLOW_TASK_ID}
     ...    DOC_MULTIPLE
-    ...    /files/dummy/robot.png
+    ...    etc/sample/data/samples_02.jpg
     ...    ${task.element_values['DOC_MULTIPLE'][1].value.id}
     ...    valid=${False}
 
@@ -182,7 +182,7 @@ Test Single Save Element Document Reference To KuFlow Task
     # Prepare test
     Delete Element    ${KUFLOW_TASK_ID}    DOC
     Delete Element    ${KUFLOW_TASK_ID}    DOC_MULTIPLE
-    ${task}=    Save Element Document    ${KUFLOW_TASK_ID}    DOC_MULTIPLE    /files/dummy/piolin.gif
+    ${task}=    Save Element Document    ${KUFLOW_TASK_ID}    DOC_MULTIPLE    etc/sample/data/samples_01.jpg
 
     # test
     ${result}=    Convert To Document Item From Uri
@@ -197,10 +197,7 @@ Test Single Save Element Document Reference To KuFlow Task
 *** Keywords ***
 Set KuFlow Credentials
     # Initialize KuFlow API client
-    Set Client Authentication
-    ...    ${KUFLOW_API_ENDPOINT}
-    ...    ${KUFLOW_CLIENT_ID}
-    ...    ${KUFLOW_CLIENT_SECRET}
+    Set Client Authentication    endpoint=${KUFLOW_API_ENDPOINT}    client_id=${KUFLOW_CLIENT_ID}    client_secret=${KUFLOW_CLIENT_SECRET}
 
 Clear All Elements
     Set KuFlow Credentials

@@ -4,6 +4,7 @@
 !.gitattributes
 !.gitignore
 !.flake8
+!.tool-versions
 
 ######################
 # Python
