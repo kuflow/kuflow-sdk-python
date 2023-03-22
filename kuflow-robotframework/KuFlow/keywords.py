@@ -42,7 +42,9 @@ class Keywords:
         self._client = None
 
     @keyword(tags=("settings",))
-    def set_client_authentication(self, client_id: str, client_secret: str, endpoint: Optional[str] = None):
+    def set_client_authentication(
+        self, client_id: str, client_secret: str, endpoint: Optional[str] = None, allow_insecure_connection: bool = True
+    ):
         """Configure the client authentication in order to execute keywords against Rest API.
 
         Before using any other KuFlow Keyword, this one must be called.
@@ -58,14 +60,14 @@ class Keywords:
             self._client = KuFlowRestClient(
                 client_id=client_id,
                 client_secret=client_secret,
-                allow_insecure_connection=True,
+                allow_insecure_connection=allow_insecure_connection,
             )
         else:
             self._client = KuFlowRestClient(
                 client_id=client_id,
                 client_secret=client_secret,
                 endpoint=endpoint,
-                allow_insecure_connection=True,
+                allow_insecure_connection=allow_insecure_connection,
             )
 
     @keyword(tags=("settings",))
