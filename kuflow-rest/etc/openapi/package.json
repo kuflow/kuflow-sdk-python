@@ -7,10 +7,10 @@
     },
     "scripts": {
       "autorest": "autorest",
-      "generate": "npm run generate:autorest && npm run generate:black",
+      "generate": "npm run generate:venv-activate && npm run generate:autorest && npm run generate:black && npm run generate:workaround",
+      "generate:venv-activate": ". ../../.venv/bin/activate",
       "generate:autorest": "autorest --version=3.9.4 readme.md",
       "generate:black": "cd ../../ && black kuflow_rest",
       "generate:workaround": "scripts/fix-discriminators.js"
     }
   }
-  
