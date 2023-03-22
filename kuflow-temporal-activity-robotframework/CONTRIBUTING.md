@@ -1,6 +1,6 @@
-# Developing kuflow-temporal-activity-kuflow
+# Developing kuflow-temporal-activity-robotframework
 
-This doc is intended for contributors to `kuflow-temporal-activity-kuflow`
+This doc is intended for contributors to `kuflow-temporal-activity-robotframework`
 
 ## Development Environment
 

@@ -4,6 +4,7 @@
 !.gitattributes
 !.gitignore
 !.flake8
+!.tool-versions
 
 ######################
 # Python
@@ -13,6 +14,7 @@ build/
 .pytest_cache
 __pycache__/
 dist/
+info/
 *.egg-info/
 .pytest_cache/
 
@@ -33,8 +35,16 @@ node_modules/
 .vscode/
 
 ######################
+# RobotFramework
+######################
+/log.html
+/output.xml
+/report.html
+
+######################
 # Other
 ######################
+results/
 env.py
 output/
 **/application-local.yaml

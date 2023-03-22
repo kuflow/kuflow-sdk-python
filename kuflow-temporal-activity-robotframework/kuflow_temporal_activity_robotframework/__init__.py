@@ -23,14 +23,8 @@
 # SOFTWARE.
 #
 
-from .keywords import Keywords
+from .robot_framework_activities import RobotFrameworkActivities
+
+__all__ = ["RobotFrameworkActivities"]
 
 __version__ = "0.4.2.dev0"
-__all__ = ["KuFlow"]
-
-
-class KuFlow(Keywords):
-    """KuFlow: Automagic Workflows."""
-
-    ROBOT_LIBRARY_VERSION = __version__
-    ROBOT_LIBRARY_SCOPE = "GLOBAL"

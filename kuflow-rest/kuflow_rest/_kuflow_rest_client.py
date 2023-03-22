@@ -154,10 +154,13 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         self,
         client_id: str,
         client_secret: str,
-        endpoint: str = "https://api.kuflow.com/v2022-10-08",
-        allow_insecure_connection: bool = False,
+        endpoint: Optional[str] = None,
+        allow_insecure_connection: Optional[bool] = None,
         **kwargs: Any,
     ) -> None:
+        if endpoint is None:
+            endpoint = "https://api.kuflow.com/v2022-10-08"
+
         per_call_policies = []
         if allow_insecure_connection:
             per_call_policies.append(AllowHttpPolicy())

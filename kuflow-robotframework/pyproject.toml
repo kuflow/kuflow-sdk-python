@@ -19,7 +19,8 @@ build-backend = "poetry.core.masonry.api"
 python = "^3.8"
 kuflow-rest = {path="../kuflow-rest", develop=true}
 robotframework = "^5.0"
-python-magic = "^0.4.27"
+python-magic = {version = "^0.4.27", platform = "!=win32"}
+python-magic-bin = {version = "^0.4.14", platform = "win32"}
 
 [tool.poetry.group.dev.dependencies]
 mypy = "0.910"

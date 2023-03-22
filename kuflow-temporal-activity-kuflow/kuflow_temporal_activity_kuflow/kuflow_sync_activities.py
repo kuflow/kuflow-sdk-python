@@ -172,7 +172,7 @@ class KuFlowSyncActivities:
         try:
             validation.validate_create_task_request(request)
 
-            task = self._kuflow_client.task.create_task(id=request.task)
+            task = self._kuflow_client.task.create_task(task=request.task)
 
             return models_temporal.CreateTaskResponse(task=task)
         except Exception as err:

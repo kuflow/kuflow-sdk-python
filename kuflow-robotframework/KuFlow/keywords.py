@@ -25,7 +25,7 @@
 
 import logging
 import os
-from typing import Union
+from typing import Union, Optional
 from uuid import UUID
 
 import magic
@@ -35,8 +35,6 @@ from robot.api.deco import keyword
 
 from kuflow_rest import KuFlowRestClient, models
 
-# from models import Pr
-
 
 class Keywords:
     def __init__(self) -> None:
@@ -44,22 +42,38 @@ class Keywords:
         self._client = None
 
     @keyword(tags=("settings",))
-    def set_client_authentication(self, endpoint, client_id, client_secret):
+    def set_client_authentication(
+        self,
+        client_id: str,
+        client_secret: str,
+        endpoint: Optional[str] = None,
+        allow_insecure_connection: Optional[bool] = None,
+    ):
         """Configure the client authentication in order to execute keywords against Rest API.
 
         Before using any other KuFlow Keyword, this one must be called.
 
         Example:
-        | Set Client Authentication | %{KUFLOW_API_ENDPOINT} | %{KUFLOW_CLIENT_ID} | %{KUFLOW_CLIENT_SECRET}
+        | Set Client Authentication | %{KUFLOW_CLIENT_ID} | %{KUFLOW_CLIENT_SECRET}
+        | Set Client Authentication | %{KUFLOW_CLIENT_ID} | %{KUFLOW_CLIENT_SECRET} | %{KUFLOW_API_ENDPOINT}
         =>
-        | Set Client Authentication | https://api.kuflow.com/v1.0 | identifier | token
+        | Set Client Authentication | identifier | token
+        | Set Client Authentication | identifier | token | https://api.kuflow.com/v1.0
         """
         self._client = KuFlowRestClient(
             client_id=client_id,
             client_secret=client_secret,
             endpoint=endpoint,
-            allow_insecure_connection=True,
+            allow_insecure_connection=allow_insecure_connection,
         )
+
+    @keyword(tags=("settings",))
+    def get_client(self) -> KuFlowRestClient:
+        return self._client
+
+    @keyword(tags=("settings",))
+    def get_instance(self) -> "Keywords":
+        return self
 
     @keyword()
     def append_log_message(self, task_id: UUID, message: str, level=models.LogLevel.INFO) -> models.Task:
