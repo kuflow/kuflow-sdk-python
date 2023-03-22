@@ -23,8 +23,6 @@ ipython = "^7.29.0"
 flake8 = "4.0.1"
 black = "^23.1.0"
 pytest = "^7.2.1"
-# For RoboCode vscode extension
-robotframework = "^5.0"
 
 [tool.pytest.ini_options]
 log_cli = true
