@@ -53,12 +53,13 @@ class KuFlowClientTokenCredential:
     ) -> AccessToken:
         """Request an access token for `scopes`.
 
-        :param str scopes: The type of access needed.
-
-        :keyword str claims: Additional claims required in the token, such as those returned in a resource
-            provider's claims challenge following an authorization failure.
-        :keyword str tenant_id: Optional tenant to include in the token request.
-
+        :param scopes: The type of access needed.
+        :type scopes: str
+        :keyword claims: Additional claims required in the token, such as those returned in a resource provider's
+                         claims challenge following an authorization failure.
+        :type claims: Optional[str]
+        :keyword tenant_id: Optional tenant to include in the token request.
+        :type tenant_id: Optional[str]
         :rtype: AccessToken
         :return: An AccessToken instance containing the token string and its expiration time in Unix time.
         """

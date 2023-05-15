@@ -30,6 +30,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 #
 # --------------------------------------------------------------------------
+from io import IOBase
 from typing import Any, Callable, Dict, IO, List, Optional, TypeVar, Union, overload
 
 from azure.core.exceptions import (
@@ -129,8 +130,9 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -225,7 +227,7 @@ class ProcessOperations:
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process: Process to create. Is either a model type or a IO type. Required.
+        :param process: Process to create. Is either a Process type or a IO type. Required.
         :type process: ~kuflow.rest.models.Process or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -251,7 +253,7 @@ class ProcessOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(process, (IO, bytes)):
+        if isinstance(process, (IOBase, bytes)):
             _content = process
         else:
             _json = self._serialize.body(process, "Process")
@@ -265,8 +267,9 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -319,8 +322,9 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -404,8 +408,8 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to change the process initiator. Is either a model type or a IO type.
-         Required.
+        :param command: Command to change the process initiator. Is either a
+         ProcessChangeInitiatorCommand type or a IO type. Required.
         :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -431,7 +435,7 @@ class ProcessOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(command, (IO, bytes)):
+        if isinstance(command, (IOBase, bytes)):
             _content = command
         else:
             _json = self._serialize.body(command, "ProcessChangeInitiatorCommand")
@@ -446,8 +450,9 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -537,7 +542,8 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to save an element. Is either a model type or a IO type. Required.
+        :param command: Command to save an element. Is either a ProcessSaveElementCommand type or a IO
+         type. Required.
         :type command: ~kuflow.rest.models.ProcessSaveElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -563,7 +569,7 @@ class ProcessOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(command, (IO, bytes)):
+        if isinstance(command, (IOBase, bytes)):
             _content = command
         else:
             _json = self._serialize.body(command, "ProcessSaveElementCommand")
@@ -578,8 +584,9 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -657,7 +664,8 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete an element. Is either a model type or a IO type. Required.
+        :param command: Command to delete an element. Is either a ProcessDeleteElementCommand type or a
+         IO type. Required.
         :type command: ~kuflow.rest.models.ProcessDeleteElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -683,7 +691,7 @@ class ProcessOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(command, (IO, bytes)):
+        if isinstance(command, (IOBase, bytes)):
             _content = command
         else:
             _json = self._serialize.body(command, "ProcessDeleteElementCommand")
@@ -698,8 +706,9 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -750,8 +759,9 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -804,8 +814,9 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -872,8 +883,9 @@ class ProcessOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response

@@ -30,22 +30,22 @@ from typing import IO, Optional
 class Document:
     """File document.
 
-    :ivar file_mame: File name
-    :vartype file_mame: str
-    :ivar content_type: File content type
-    :vartype content_type: str
-    :ivar file_content: File content.
-    :vartype file_content: IO
+    Attributes:
+        file_mame: File name
+        content_type: File content type
+        file_content: File content.
     """
 
-    def __init__(self, file_mame: str, content_type: str, file_content: IO):
+    file_mame: str
+    content_type: str
+    file_content: IO
+
+    def __init__(self, file_mame: str, content_type: str, file_content: IO) -> None:
         """
-        :keyword file_mame:
-        :paramtype file_mame: File name
-        :keyword content_type: File content type
-        :paramtype content_type: str
-        :keyword file_content: File content.
-        :paramtype File content.: IO
+        Parameters:
+            file_mame: File name
+            content_type: File content type
+            file_content: File content.
         """
         self.file_mame = file_mame
         self.content_type = content_type
@@ -55,50 +55,61 @@ class Document:
 class TaskSaveElementValueDocumentCommand:
     """TaskSaveElementValueDocumentCommand.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to KuFlow.
 
-    :ivar element_definition_code: Required.
-    :vartype element_definition_code: str
-    :ivar element_value_id:
-    :vartype element_value_id: str
-    :ivar element_value_valid:
-    :vartype element_value_valid: bool
+    Attributes:
+        element_definition_code: Element definition code. Required.
+        element_value_id: Element value id
+        element_value_valid: Valid
     """
 
-    def __init__(
-        self,
-        element_definition_code: str,
-        element_value_id: Optional[str] = None,
-        element_value_valid: bool = True,
-    ):
+    element_definition_code: str
+    element_value_id: Optional[str] = None
+    element_value_valid: bool = True
+
+    def __init__(self, element_definition_code: str, element_value_id: Optional[str] = None, element_value_valid: bool = True) -> None:
         """
-        :keyword element_definition_code: Required.
-        :paramtype element_definition_code: str
-        :keyword element_value_id:
-        :paramtype element_value_id: str
-        :keyword element_value_valid:
-        :paramtype element_value_valid: bool
+        Parameters:
+            element_definition_code: Element definition code. Required.
+            element_value_id: Element value id
+            element_value_valid: Valid
         """
         self.element_definition_code = element_definition_code
         self.element_value_id = element_value_id
         self.element_value_valid = element_value_valid
 
 
+class TaskSaveJsonFormsValueDocumentRequestCommand:
+    """TaskSaveJsonFormsValueDocumentCommand.
+
+    All required parameters must be populated in order to send to KuFlow.
+
+    Attributes:
+        schema_path: Document schema path
+    """
+
+    schema_path: str
+
+    def __init__(self, schema_path: str) -> None:
+        """
+        Parameters:
+            schema_path: Document schema path. Required.
+        """
+        self.schema_path = schema_path
+
+
 class ProcessSaveUserActionValueDocumentCommand:
     """ProcessSaveUserActionValueDocumentCommand.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to KuFlow.
 
-    :ivar user_action_value_id: Required.
-    :vartype user_action_value_id: str
+    Attributes:
+        user_action_value_id: User action value id
     """
 
-    def __init__(
-        self,
-        user_action_value_id: str,
-    ):
+    def __init__(self, user_action_value_id: str) -> None:
         """
-        :keyword user_action_value_id: Required.
-        :paramtype user_action_value_id: str
+        Parameters:
+            user_action_value_id: User action value id
         """
         self.user_action_value_id = user_action_value_id

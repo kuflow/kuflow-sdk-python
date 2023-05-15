@@ -30,6 +30,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 #
 # --------------------------------------------------------------------------
+from io import IOBase
 from typing import Any, Callable, Dict, IO, Optional, TypeVar, Union, overload
 
 from azure.core.exceptions import (
@@ -136,8 +137,8 @@ class AuthenticationOperations:
 
         Create an authentication for the current principal.
 
-        :param authentication: Authentication to be created. Is either a model type or a IO type.
-         Required.
+        :param authentication: Authentication to be created. Is either a Authentication type or a IO
+         type. Required.
         :type authentication: ~kuflow.rest.models.Authentication or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -163,7 +164,7 @@ class AuthenticationOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(authentication, (IO, bytes)):
+        if isinstance(authentication, (IOBase, bytes)):
             _content = authentication
         else:
             _json = self._serialize.body(authentication, "Authentication")
@@ -177,8 +178,9 @@ class AuthenticationOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response

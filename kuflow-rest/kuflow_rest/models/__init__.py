@@ -64,6 +64,8 @@ from .._generated.models import (
     TaskPage,
     TaskPageItem,
     TaskSaveElementCommand,
+    TaskSaveJsonFormsValueDataCommand,
+    TaskSaveJsonFormsValueDocumentResponseCommand,
     WebhookEvent,
     WebhookEventProcessStateChanged,
     WebhookEventProcessStateChangedData,
@@ -80,7 +82,12 @@ from .._generated.models import (
     WebhookType,
 )
 
-from ._models import Document, TaskSaveElementValueDocumentCommand, ProcessSaveUserActionValueDocumentCommand
+from ._models import (
+    Document,
+    TaskSaveElementValueDocumentCommand,
+    TaskSaveJsonFormsValueDocumentRequestCommand,
+    ProcessSaveUserActionValueDocumentCommand,
+)
 
 
 __all__ = [
@@ -123,6 +130,8 @@ __all__ = [
     "TaskPage",
     "TaskPageItem",
     "TaskSaveElementCommand",
+    "TaskSaveJsonFormsValueDataCommand",
+    "TaskSaveJsonFormsValueDocumentResponseCommand",
     "WebhookEvent",
     "WebhookEventProcessStateChanged",
     "WebhookEventProcessStateChangedData",
@@ -141,6 +150,7 @@ __all__ = [
     "Document",
     "ProcessSaveUserActionValueDocumentCommand",
     "TaskSaveElementValueDocumentCommand",
+    "TaskSaveJsonFormsValueDocumentRequestCommand",
 ]
 
 

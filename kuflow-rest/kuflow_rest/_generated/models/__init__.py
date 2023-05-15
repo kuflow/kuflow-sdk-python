@@ -34,6 +34,7 @@ from ._models import AbstractAudited
 from ._models import Authentication
 from ._models import DefaultError
 from ._models import DefaultErrorInfo
+from ._models import JsonFormsValue
 from ._models import Log
 from ._models import Page
 from ._models import PageMetadata
@@ -68,6 +69,8 @@ from ._models import TaskElementValueString
 from ._models import TaskPage
 from ._models import TaskPageItem
 from ._models import TaskSaveElementCommand
+from ._models import TaskSaveJsonFormsValueDataCommand
+from ._models import TaskSaveJsonFormsValueDocumentResponseCommand
 from ._models import WebhookEvent
 from ._models import WebhookEventProcessStateChanged
 from ._models import WebhookEventProcessStateChangedData
@@ -92,6 +95,7 @@ __all__ = [
     "Authentication",
     "DefaultError",
     "DefaultErrorInfo",
+    "JsonFormsValue",
     "Log",
     "Page",
     "PageMetadata",
@@ -126,6 +130,8 @@ __all__ = [
     "TaskPage",
     "TaskPageItem",
     "TaskSaveElementCommand",
+    "TaskSaveJsonFormsValueDataCommand",
+    "TaskSaveJsonFormsValueDocumentResponseCommand",
     "WebhookEvent",
     "WebhookEventProcessStateChanged",
     "WebhookEventProcessStateChangedData",

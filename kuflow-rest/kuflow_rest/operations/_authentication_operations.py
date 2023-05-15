@@ -47,15 +47,10 @@ class AuthenticationOperations:
 
         Create an authentication for the current principal.
 
-        :param authentication: Authentication to be created. Is either a model type or a IO type.
-         Required.
+        :param authentication: Authentication to be created. Is either a model type or a IO type. Required.
         :type authentication: ~kuflow.rest.models.Authentication or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Authentication
         :rtype: ~kuflow.rest.models.Authentication
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-
         return self.__kuflow_client.authentication.create_authentication(authentication=authentication, **kwargs)

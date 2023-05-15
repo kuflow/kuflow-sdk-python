@@ -1,10 +1,34 @@
+# coding=utf-8
+#
+# MIT License
+#
+# Copyright (c) 2022 KuFlow
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
 from temporalio import activity
 
 from kuflow_rest import KuFlowRestClient, models
-from kuflow_temporal_activity_kuflow import validation
 from kuflow_temporal_common import exceptions
 
-from . import models as models_temporal
+from . import models as models_temporal, validation
 
 
 class KuFlowSyncActivities:
@@ -38,11 +62,11 @@ class KuFlowSyncActivities:
         try:
             validation.validate_retrieve_principal_request(request)
 
-            principal = self._kuflow_client.principal.retrieve_principal(id=request.principalId)
+            principal = self._kuflow_client.principal.retrieve_principal(id=request.principal_id)
 
             return models_temporal.RetrievePrincipalResponse(principal=principal)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def find_processes(
@@ -52,11 +76,11 @@ class KuFlowSyncActivities:
         try:
             # Get all non-None properties of the object to avoid overwrite defaults
             non_none_props = {k: v for k, v in vars(request).items() if v is not None}
-            procesPage = self._kuflow_client.process.find_processes(**non_none_props)
+            proces_page = self._kuflow_client.process.find_processes(**non_none_props)
 
-            return models_temporal.FindProcessesResponse(processes=procesPage)
+            return models_temporal.FindProcessesResponse(processes=proces_page)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def retrieve_process(
@@ -66,11 +90,11 @@ class KuFlowSyncActivities:
         try:
             validation.validate_retrieve_process_request(request)
 
-            process = self._kuflow_client.process.retrieve_process(id=request.processId)
+            process = self._kuflow_client.process.retrieve_process(id=request.process_id)
 
             return models_temporal.RetrieveProcessResponse(process=process)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def save_process_element(
@@ -81,13 +105,13 @@ class KuFlowSyncActivities:
             validation.validate_save_process_element_request(request)
 
             command = models.ProcessSaveElementCommand(
-                element_definition_code=request.elementDefinitionCode, element_values=request.elementValues
+                element_definition_code=request.element_definition_code, element_values=request.element_values
             )
-            process = self._kuflow_client.process.actions_process_save_element(id=request.processId, command=command)
+            process = self._kuflow_client.process.actions_process_save_element(id=request.process_id, command=command)
 
             return models_temporal.SaveProcessElementResponse(process=process)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def delete_process_element(
@@ -97,13 +121,13 @@ class KuFlowSyncActivities:
         try:
             validation.validate_delete_process_element_request(request)
 
-            command = models.ProcessDeleteElementCommand(element_definition_code=request.elementDefinitionCode)
+            command = models.ProcessDeleteElementCommand(element_definition_code=request.element_definition_code)
 
-            process = self._kuflow_client.process.actions_process_delete_element(id=request.processId, command=command)
+            process = self._kuflow_client.process.actions_process_delete_element(id=request.process_id, command=command)
 
             return models_temporal.DeleteProcessElementResponse(process=process)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def complete_process(
@@ -113,11 +137,11 @@ class KuFlowSyncActivities:
         try:
             validation.validate_complete_process_request(request)
 
-            process = self._kuflow_client.process.actions_process_complete(request.processId)
+            process = self._kuflow_client.process.actions_process_complete(request.process_id)
 
             return models_temporal.CompleteProcessResponse(process=process)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def change_process_initiator(
@@ -127,14 +151,14 @@ class KuFlowSyncActivities:
         try:
             validation.validate_change_process_initiator_request(request)
 
-            command = models.ProcessChangeInitiatorCommand(email=request.email, principal_id=request.principalId)
+            command = models.ProcessChangeInitiatorCommand(email=request.email, principal_id=request.principal_id)
             process = self._kuflow_client.process.actions_process_change_initiator(
-                id=request.processId, command=command
+                id=request.process_id, command=command
             )
 
             return models_temporal.ChangeProcessInitiatorResponse(process=process)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def find_tasks(
@@ -144,11 +168,11 @@ class KuFlowSyncActivities:
         try:
             # Get all non-None properties of the object to avoid overwrite defaults
             non_none_props = {k: v for k, v in vars(request).items() if v is not None}
-            taskPage = self._kuflow_client.task.find_tasks(**non_none_props)
+            task_page = self._kuflow_client.task.find_tasks(**non_none_props)
 
-            return models_temporal.FindTaskResponse(tasks=taskPage)
+            return models_temporal.FindTaskResponse(tasks=task_page)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def retrieve_task(
@@ -158,11 +182,11 @@ class KuFlowSyncActivities:
         try:
             validation.validate_retrieve_task_request(request)
 
-            task = self._kuflow_client.task.retrieve_task(id=request.taskId)
+            task = self._kuflow_client.task.retrieve_task(id=request.task_id)
 
             return models_temporal.RetrieveTaskResponse(task=task)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def create_task(
@@ -176,7 +200,7 @@ class KuFlowSyncActivities:
 
             return models_temporal.CreateTaskResponse(task=task)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def complete_task(
@@ -186,25 +210,25 @@ class KuFlowSyncActivities:
         try:
             validation.validate_complete_task_request(request)
 
-            task = self._kuflow_client.task.actions_task_complete(id=request.taskId)
+            task = self._kuflow_client.task.actions_task_complete(id=request.task_id)
 
             return models_temporal.CompleteTaskResponse(task=task)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def claim_task(
         self,
         request: models_temporal.ClaimTaskRequest,
-    ) -> models_temporal.CompleteTaskResponse:
+    ) -> models_temporal.ClaimTaskResponse:
         try:
             validation.validate_claim_task_request(request)
 
-            task = self._kuflow_client.task.actions_task_claim(id=request.taskId)
+            task = self._kuflow_client.task.actions_task_claim(id=request.task_id)
 
             return models_temporal.ClaimTaskResponse(task=task)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def assign_task(
@@ -214,12 +238,12 @@ class KuFlowSyncActivities:
         try:
             validation.validate_assign_task_request(request)
 
-            command = models.TaskAssignCommand(email=request.email, principal_id=request.principalId)
-            task = self._kuflow_client.task.actions_task_assign(id=request.taskId, command=command)
+            command = models.TaskAssignCommand(email=request.email, principal_id=request.principal_id)
+            task = self._kuflow_client.task.actions_task_assign(id=request.task_id, command=command)
 
             return models_temporal.AssignTaskResponse(task=task)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def save_task_element(
@@ -230,13 +254,13 @@ class KuFlowSyncActivities:
             validation.validate_save_task_element_request(request)
 
             command = models.TaskSaveElementCommand(
-                element_definition_code=request.elementDefinitionCode, element_values=request.elementValues
+                element_definition_code=request.element_definition_code, element_values=request.element_values
             )
-            task = self._kuflow_client.task.actions_task_save_element(id=request.taskId, command=command)
+            task = self._kuflow_client.task.actions_task_save_element(id=request.task_id, command=command)
 
             return models_temporal.SaveTaskElementResponse(task=task)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def delete_task_element(
@@ -246,12 +270,12 @@ class KuFlowSyncActivities:
         try:
             validation.validate_delete_task_element_request(request)
 
-            command = models.TaskDeleteElementCommand(element_definition_code=request.elementDefinitionCode)
-            task = self._kuflow_client.task.actions_task_delete_element(id=request.taskId, command=command)
+            command = models.TaskDeleteElementCommand(element_definition_code=request.element_definition_code)
+            task = self._kuflow_client.task.actions_task_delete_element(id=request.task_id, command=command)
 
             return models_temporal.DeleteTaskElementResponse(task=task)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def delete_task_element_value_document(
@@ -261,14 +285,29 @@ class KuFlowSyncActivities:
         try:
             validation.validate_delete_task_element_value_document_request(request)
 
-            command = models.TaskDeleteElementValueDocumentCommand(document_id=request.documentId)
+            command = models.TaskDeleteElementValueDocumentCommand(document_id=request.document_id)
             task = self._kuflow_client.task.actions_task_delete_element_value_document(
-                id=request.taskId, command=command
+                id=request.task_id, command=command
             )
 
             return models_temporal.DeleteTaskElementValueDocumentResponse(task=task)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err
+
+    @activity.defn
+    async def save_task_json_forms_value_data(
+        self,
+        request: models_temporal.SaveTaskJsonFormsValueDataRequest,
+    ) -> models_temporal.SaveTaskJsonFormsValueDataResponse:
+        try:
+            validation.validate_save_task_json_forms_value_data(request)
+
+            command = models.TaskSaveJsonFormsValueDataCommand(data=request.data)
+            task = self._kuflow_client.task.actions_task_save_json_forms_value_data(id=request.task_id, command=command)
+
+            return models_temporal.SaveTaskJsonFormsValueDataResponse(task=task)
+        except Exception as err:
+            raise exceptions.create_application_error(err) from err
 
     @activity.defn
     async def append_task_log(
@@ -278,8 +317,8 @@ class KuFlowSyncActivities:
         try:
             validation.validate_append_task_log_request(request)
 
-            task = self._kuflow_client.task.actions_task_append_log(id=request.taskId, log=request.log)
+            task = self._kuflow_client.task.actions_task_append_log(id=request.task_id, log=request.log)
 
             return models_temporal.AppendTaskLogResponse(task=task)
         except Exception as err:
-            return exceptions.create_application_error(err)
+            raise exceptions.create_application_error(err) from err

@@ -24,7 +24,7 @@
 #
 
 
-from typing import Any, IO, Iterator, List, Optional, Union
+from typing import Any, Iterator, List, Optional, Union
 
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
 
@@ -62,23 +62,20 @@ class TaskOperations:
         cancelledAt.
 
         :keyword size: The number of records returned within a single API call. Default value is 25.
-        :paramtype size: int
-        :keyword page: The page number of the current page in the returned records, 0 is the first
-         page. Default value is 0.
-        :paramtype page: int
+        :type size: int
+        :keyword page: The page number of the current page in the returned records, 0 is the first page.
+                       Default value is 0.
+        :type page: int
         :keyword sort: Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-
-         Default sort order is ascending. Multiple sort criteria are supported.
-
-         Please refer to the method description for supported properties. Default value is None.
-        :paramtype sort: list[str]
+                       Default sort order is ascending. Multiple sort criteria are supported.
+                       Please refer to the method description for supported properties. Default value is None.
+        :type sort: list[str]
         :keyword process_id: Filter by an array of process ids. Default value is None.
-        :paramtype process_id: list[str]
+        :type process_id: list[str]
         :keyword state: Filter by an array of task states. Default value is None.
-        :paramtype state: list[str or ~kuflow.rest.models.TaskState]
-        :keyword task_definition_code: Filter by an array of task definition codes. Default value is
-         None.
-        :paramtype task_definition_code: list[str]
+        :type state: list[str or ~kuflow.rest.models.TaskState]
+        :keyword task_definition_code: Filter by an array of task definition codes. Default value is None.
+        :type task_definition_code: list[str]
         :return: TaskPage
         :rtype: ~kuflow.rest.models.TaskPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -122,12 +119,12 @@ class TaskOperations:
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param task: Task to be created. Is either a model type or a IO type. Required.
+        :param task: Task to be created. Required.
         :type task: ~kuflow.rest.models.Task
         :keyword activity_token: When create a Kuflow Task backed with a Temporal.io servers, this
          value is required and must be set with the context task token of Temporal.io activity. Default
          value is None.
-        :paramtype activity_token: str
+        :type activity_token: str
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -167,9 +164,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to change the task owner. Is either a model type or a IO type.
-         Required.
-        :type command: ~kuflow.rest.models.TaskAssignCommand or IO
+        :param command: Command to change the task owner. Required.
+        :type command: ~kuflow.rest.models.TaskAssignCommand
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -193,8 +189,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to save an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.models.TaskSaveElementCommand or IO
+        :param command: Command to save an element. Required.
+        :type command: ~kuflow.rest.models.TaskSaveElementCommand
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -234,7 +230,7 @@ class TaskOperations:
         )
 
     def actions_task_delete_element(
-        self, id: str, command: Union[_models.TaskDeleteElementCommand, IO], **kwargs: Any
+        self, id: str, command: _models.TaskDeleteElementCommand, **kwargs: Any
     ) -> _models.Task:
         """Delete an element by code.
 
@@ -244,8 +240,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.models.TaskDeleteElementCommand or IO
+        :param command: Command to delete an element. Required.
+        :type command: ~kuflow.rest.models.TaskDeleteElementCommand
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -264,9 +260,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete a document element value. Is either a model type or a IO
-         type. Required.
-        :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand or IO
+        :param command: Command to delete a document element value. Required.
+        :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -281,7 +276,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :keyword document_id: Document ID to download. Required.
-        :paramtype document_id: str
+        :type document_id: str
         :return: Iterator of the response bytes
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -312,6 +307,79 @@ class TaskOperations:
             id=id, element_definition_code=element_definition_code, **kwargs
         )
 
+    def actions_task_save_json_forms_value_data(
+        self,
+        id: str,
+        command: _models.TaskSaveJsonFormsValueDataCommand,
+        **kwargs: Any,
+    ) -> _models.Task:
+        """Save JSON data.
+
+        Allow to save a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param command: Command to save the JSON value. Required.
+        :type command: ~kuflow.rest.models.TaskSaveJsonFormsValueDataCommand
+        :return: Task
+        :rtype: ~kuflow.rest.models.Task
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self.__kuflow_client.task.actions_task_save_json_forms_value_data(id=id, command=command, **kwargs)
+
+    def actions_task_save_json_forms_value_document(
+        self,
+        id: str,
+        file: _models.Document,
+        command: _models.TaskSaveJsonFormsValueDocumentRequestCommand,
+        **kwargs: Any,
+    ) -> _models.TaskSaveJsonFormsValueDocumentResponseCommand:
+        """Save a JSON Forms document.
+
+        Save a document in the task to later be linked into the JSON data.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param file: Document to save. Required.
+        :type file: ~kuflow.rest.models.Document
+        :param command: Command to save the JSON value. Required.
+        :type command: ~kuflow.rest.models.TaskSaveJsonFormsValueDataCommand
+        :return: TaskSaveJsonFormsValueDocumentResponseCommand
+        :rtype: ~kuflow.rest.models.TaskSaveJsonFormsValueDocumentResponseCommand
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self.__kuflow_client.task.actions_task_save_json_forms_value_document(
+            id=id,
+            file=file.file_content,
+            file_content_type=file.content_type,
+            file_name=file.file_mame,
+            schema_path=command.schema_path,
+            **kwargs,
+        )
+
+    def actions_task_download_json_forms_value_document(
+        self, id: str, *, document_uri: str, **kwargs: Any
+    ) -> Iterator[bytes]:
+        """Download document.
+
+        Given a task, download a document from a json form data.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param document_uri: Document URI to download. Required.
+        :type document_uri: str
+        :return: Iterator of the response bytes
+        :rtype: Iterator[bytes]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self.__kuflow_client.task.actions_task_download_json_forms_value_document(
+            id=id,
+            document_uri=document_uri,
+            **kwargs,
+        )
+
     def actions_task_complete(self, id: str, **kwargs: Any) -> _models.Task:
         """Complete a task.
 
@@ -333,8 +401,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param log: Log to be created. Is either a model type or a IO type. Required.
-        :type log: ~kuflow.rest.models.Log or IO
+        :param log: Log to be created. Required.
+        :type log: ~kuflow.rest.models.Log
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
