@@ -30,6 +30,7 @@ from .._generated.models import (
     Authentication,
     DefaultError,
     DefaultErrorInfo,
+    JsonFormsValue,
     Log,
     Page,
     PageMetadata,
@@ -84,6 +85,8 @@ from .._generated.models import (
 
 from ._models import (
     Document,
+    JsonFormsFile,
+    JsonFormsPrincipal,
     TaskSaveElementValueDocumentCommand,
     TaskSaveJsonFormsValueDocumentRequestCommand,
     ProcessSaveUserActionValueDocumentCommand,
@@ -96,6 +99,7 @@ __all__ = [
     "Authentication",
     "DefaultError",
     "DefaultErrorInfo",
+    "JsonFormsValue",
     "Log",
     "Page",
     "PageMetadata",
@@ -148,9 +152,11 @@ __all__ = [
     "WebhookType",
     # From models
     "Document",
-    "ProcessSaveUserActionValueDocumentCommand",
+    "JsonFormsFile",
+    "JsonFormsPrincipal",
     "TaskSaveElementValueDocumentCommand",
     "TaskSaveJsonFormsValueDocumentRequestCommand",
+    "ProcessSaveUserActionValueDocumentCommand",
 ]
 
 

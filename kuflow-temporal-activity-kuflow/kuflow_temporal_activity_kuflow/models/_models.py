@@ -376,7 +376,9 @@ class ChangeProcessInitiatorRequest(_serialization.Model):
         "principal_id": {"key": "principalId", "type": "str"},
     }
 
-    def __init__(self, process_id: str, email: Optional[str] = None, principal_id: Optional[str] = None, **kwargs: Any) -> None:
+    def __init__(
+        self, process_id: str, email: Optional[str] = None, principal_id: Optional[str] = None, **kwargs: Any
+    ) -> None:
         super().__init__(**kwargs)
         self.process_id = process_id
         self.email = email
@@ -615,7 +617,9 @@ class AssignTaskRequest(_serialization.Model):
         "principal_id": {"key": "principalId", "type": "str"},
     }
 
-    def __init__(self, task_id: str, email: Optional[str] = None, principal_id: Optional[str] = None, **kwargs: Any) -> None:
+    def __init__(
+        self, task_id: str, email: Optional[str] = None, principal_id: Optional[str] = None, **kwargs: Any
+    ) -> None:
         super().__init__(**kwargs)
         self.task_id = task_id
         self.email = email

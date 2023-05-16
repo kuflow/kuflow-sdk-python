@@ -26,6 +26,8 @@
 
 from typing import IO, Optional
 
+from .._generated.models import PrincipalType
+
 
 class Document:
     """File document.
@@ -67,7 +69,9 @@ class TaskSaveElementValueDocumentCommand:
     element_value_id: Optional[str] = None
     element_value_valid: bool = True
 
-    def __init__(self, element_definition_code: str, element_value_id: Optional[str] = None, element_value_valid: bool = True) -> None:
+    def __init__(
+        self, element_definition_code: str, element_value_id: Optional[str] = None, element_value_valid: bool = True
+    ) -> None:
         """
         Parameters:
             element_definition_code: Element definition code. Required.
@@ -107,9 +111,56 @@ class ProcessSaveUserActionValueDocumentCommand:
         user_action_value_id: User action value id
     """
 
+    user_action_value_id: str
+
     def __init__(self, user_action_value_id: str) -> None:
         """
         Parameters:
             user_action_value_id: User action value id
         """
         self.user_action_value_id = user_action_value_id
+
+
+class JsonFormsPrincipal:
+    """JsonFormsPrincipal.
+
+    Principal class
+
+    Attributes:
+        id: Principal id
+        type: Principal type
+        name: Principal name
+    """
+
+    id: str
+    type: PrincipalType
+    name: str
+
+    def __init__(self, id: str, type: PrincipalType, name: str):
+        self.id = id
+        self.type = type
+        self.name = name
+
+
+class JsonFormsFile:
+    """JsonFormsFile.
+
+    File class
+
+    Attributes:
+        uri: File uri, ie: kf:xxx-yyy-zzz/aaa-bbb-ccc
+        type: File type, ie: application/pdf
+        name: File name, ie: dummy.pdf
+        size: File size in bytes, ie: 500
+    """
+
+    uri: str
+    type: str
+    name: str
+    size: int
+
+    def __init__(self, uri: str, type: str, name: str, size: int):
+        self.uri = uri
+        self.type = type
+        self.name = name
+        self.size = size
