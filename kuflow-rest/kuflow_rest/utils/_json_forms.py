@@ -38,7 +38,7 @@ from ..models import (
     TaskSaveJsonFormsValueDataCommand,
 )
 
-SimpleType = Union[str, int, bool, date, JsonFormsPrincipal, JsonFormsFile]
+SimpleType = Union[str, int, float, bool, date, JsonFormsPrincipal, JsonFormsFile]
 
 ContainerArrayType = List["ComplexType"]
 
@@ -538,6 +538,7 @@ def update_json_forms_property(
         raise ValueError(f"Incorrect property path {json_forms_property_path}")
 
 
+# flake8: noqa: C901
 def find_json_forms_property(
     model: JsonFormsModels, property_path: str, create_missing_parents: bool = False
 ) -> Optional[JsonFormsProperty]:
@@ -559,73 +560,65 @@ def find_json_forms_property(
     if property_data is None:
         return None
 
-    json_forms_property_container: ContainerType = property_data
-    json_forms_property_path = ""
-    json_forms_property_value: Optional[ComplexType] = None
+    property_container: ContainerType = property_data
+    property_value_path = ""
+    property_value: Optional[ComplexType] = None
 
     paths = property_path.split(".")
     for idx, path in enumerate(paths):
-        json_forms_property_path = path
-        if json_forms_property_path == "":
+        property_value_path = path
+        if property_value_path == "":
             continue
 
-        json_forms_property_path_as_integer = -1
+        property_value_path_as_integer = -1
 
-        if is_json_forms_type_container_array(json_forms_property_container):
-            if not json_forms_property_path.isdigit():
-                raise ValueError(f"Wrong list index {json_forms_property_path}")
+        if is_json_forms_type_container_array(property_container):
+            if not property_value_path.isdigit():
+                raise ValueError(f"Wrong list index {property_value_path}")
 
-            json_forms_property_path_as_integer = int(json_forms_property_path)
-            if json_forms_property_path_as_integer < 0 or json_forms_property_path_as_integer > len(
-                json_forms_property_container
-            ):
+            property_value_path_as_integer = int(property_value_path)
+            if property_value_path_as_integer < 0 or property_value_path_as_integer > len(property_container):
                 return None
-            elif json_forms_property_path_as_integer == len(json_forms_property_container):
+            elif property_value_path_as_integer == len(property_container):
                 if not create_missing_parents:
                     return None
 
-                json_forms_property_value = None
+                property_value = None
             else:
-                json_forms_property_value = json_forms_property_container[json_forms_property_path_as_integer]
-        elif is_json_forms_type_container_record(json_forms_property_container):
-            if json_forms_property_path not in json_forms_property_container:
+                property_value = property_container[property_value_path_as_integer]
+        elif is_json_forms_type_container_record(property_container):
+            if property_value_path not in property_container:
                 if not create_missing_parents:
                     return None
 
-            json_forms_property_value = json_forms_property_container.get(json_forms_property_path)
+            property_value = property_container.get(property_value_path)
         else:
             return None
 
-        if json_forms_property_value is None:
+        if property_value is None:
             if not create_missing_parents:
                 return None
 
             if idx + 1 < len(paths):
                 path_next = paths[idx + 1]
                 if path_next.isdigit():
-                    json_forms_property_value = []
+                    property_value = []
                 else:
-                    json_forms_property_value = {}
+                    property_value = {}
 
-                if is_json_forms_type_container_array(json_forms_property_container):
-                    if json_forms_property_path_as_integer != len(json_forms_property_container):
-                        raise ValueError(f"Wrong list index {json_forms_property_path}")
+                if is_json_forms_type_container_array(property_container):
+                    if property_value_path_as_integer != len(property_container):
+                        raise ValueError(f"Wrong list index {property_value_path}")
 
-                    json_forms_property_container.append(json_forms_property_value)
-                elif is_json_forms_type_container_record(json_forms_property_container):
-                    json_forms_property_container[json_forms_property_path] = json_forms_property_value
+                    property_container.append(property_value)
+                elif is_json_forms_type_container_record(property_container):
+                    property_container[property_value_path] = property_value
 
-        if (
-            json_forms_property_value is not None
-            and is_json_forms_type_container(json_forms_property_value)
-            and idx + 1 < len(paths)
-        ):
-            json_forms_property_container = json_forms_property_value
-            json_forms_property_value = None
+        if property_value is not None and is_json_forms_type_container(property_value) and idx + 1 < len(paths):
+            property_container = property_value
+            property_value = None
 
-    return JsonFormsProperty(
-        container=json_forms_property_container, path=json_forms_property_path, value=json_forms_property_value
-    )
+    return JsonFormsProperty(container=property_container, path=property_value_path, value=property_value)
 
 
 def transform_json_forms_property_value(value: Optional[SimpleType]) -> Optional[SimpleType]:

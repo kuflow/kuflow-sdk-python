@@ -63,19 +63,19 @@ class JsonFormsValueUtils(unittest.TestCase):
         value = get_json_forms_property_as_str(task, "key1")
         self.assertEqual(value, "value_key1")
 
-        value = get_json_forms_property_as_str(task, "key2.key2_key1.0.key2_key1_key2")
+        value = get_json_forms_property_as_str(task, "key2.0.key2_key1.0.key2_key1_key2")
         self.assertEqual(value, "value_key2_key1_key2")
 
         with self.assertRaises(ValueError) as context:
-            get_json_forms_property_as_str(task, "key2.key2_key1.0.unknown")
+            get_json_forms_property_as_str(task, "key2.0.key2_key1.0.unknown")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as context:
-            get_json_forms_property_as_str(task, "key2.key2_key1.10")
+            get_json_forms_property_as_str(task, "key2.0.key2_key1.10")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as context:
-            get_json_forms_property_as_str(task, "key2.key2_key1.100.key2_key1_key2")
+            get_json_forms_property_as_str(task, "key2.0.key2_key1.100.key2_key1_key2")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
     def test_find_json_forms_property_as_str(self):
@@ -84,16 +84,16 @@ class JsonFormsValueUtils(unittest.TestCase):
         value = find_json_forms_property_as_str(task, "key1")
         self.assertEqual(value, "value_key1")
 
-        value = find_json_forms_property_as_str(task, "key2.key2_key1.0.key2_key1_key2")
+        value = find_json_forms_property_as_str(task, "key2.0.key2_key1.0.key2_key1_key2")
         self.assertEqual(value, "value_key2_key1_key2")
 
-        value = find_json_forms_property_as_str(task, "key2.key2_key1.0.unknown")
+        value = find_json_forms_property_as_str(task, "key2.0.key2_key1.0.unknown")
         self.assertIsNone(value)
 
-        value = find_json_forms_property_as_str(task, "key2.key2_key1.10")
+        value = find_json_forms_property_as_str(task, "key2.0.key2_key1.10")
         self.assertIsNone(value)
 
-        value = find_json_forms_property_as_str(task, "key2.key2_key1.100.key2_key1_key2")
+        value = find_json_forms_property_as_str(task, "key2.0.key2_key1.100.key2_key1_key2")
         self.assertIsNone(value)
 
     def test_get_json_forms_property_as_int(self):
@@ -221,14 +221,14 @@ class JsonFormsValueUtils(unittest.TestCase):
         task = prepare_task()
 
         value = find_json_forms_property_as_datetime(task, "key5.1")
-        self.assertEqual(value, date.fromisoformat("2000-01-01T10:10:05+01:00"))
+        self.assertEqual(value, datetime.fromisoformat("2000-01-01T10:10:05+01:00"))
 
         value = find_json_forms_property_as_datetime(task, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as cm:
             find_json_forms_property_as_datetime(task, "key1")
-        self.assertEqual(str(cm.exception), "Property key1 is not a date following ISO 8601 format")
+        self.assertEqual(str(cm.exception), "Property key1 is not a date-time following ISO 8601 format")
 
     def test_get_json_forms_property_as_json_forms_file(self):
         task = prepare_task()
@@ -320,7 +320,7 @@ class JsonFormsValueUtils(unittest.TestCase):
     def test_get_json_forms_property_as_dict(self):
         task = prepare_task()
 
-        value = get_json_forms_property_as_dict(task, "key2.key2_key1.0")
+        value = get_json_forms_property_as_dict(task, "key2.0.key2_key1.0")
         self.assertEqual(
             value,
             {
@@ -340,7 +340,7 @@ class JsonFormsValueUtils(unittest.TestCase):
     def test_find_json_forms_property_as_dict(self):
         task = prepare_task()
 
-        value = find_json_forms_property_as_dict(task, "key2.key2_key1.0")
+        value = find_json_forms_property_as_dict(task, "key2.0.key2_key1.0")
         self.assertEqual(
             value,
             {
