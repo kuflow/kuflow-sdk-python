@@ -267,7 +267,7 @@ six = "*"
 
 [[package]]
 name = "kuflow-rest"
-version = "0.4.3.dev0"
+version = "0.4.5"
 description = "Client for KuFlow Rest Api"
 category = "main"
 optional = false
