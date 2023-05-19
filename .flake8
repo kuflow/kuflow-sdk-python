@@ -8,6 +8,7 @@ exclude =
     dist,
     .venv,
     .mypy_cache,
-    _generated
+    _generated,
+    etc
 max-complexity = 10
 max-line-length = 120

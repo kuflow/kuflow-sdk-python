@@ -58,26 +58,23 @@ class PrincipalOperations:
         Available sort query values: id, name.
 
         :keyword size: The number of records returned within a single API call. Default value is 25.
-        :paramtype size: int
-        :keyword page: The page number of the current page in the returned records, 0 is the first
-         page. Default value is 0.
-        :paramtype page: int
+        :type size: int
+        :keyword page: The page number of the current page in the returned records, 0 is the first page.
+                       Default value is 0.
+        :type page: int
         :keyword sort: Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-
-         Default sort order is ascending. Multiple sort criteria are supported.
-
-         Please refer to the method description for supported properties. Default value is None.
-        :paramtype sort: Union[str, List[str]]
+                       Default sort order is ascending. Multiple sort criteria are supported.
+                       Please refer to the method description for supported properties. Default value is None.
+        :type sort: Optional[Union[str, List[str]]]
         :keyword type: Filter principals by type. Known values are: "USER", "APPLICATION", and
-         "SYSTEM". Default value is None.
-        :paramtype type: str or ~kuflow.rest.models.PrincipalType
+                      "SYSTEM". Default value is None.
+        :type type: Optional[_models.PrincipalType]
         :keyword group_id: Filter principals that exists in one of group ids. Default value is None.
-        :paramtype group_id: str or List[str]
+        :type group_id: Optional[Union[str, List[str]]]
         :return: PrincipalPage
         :rtype: ~kuflow.rest.models.PrincipalPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-
         if sort is not None and isinstance(sort, str):
             sort = [sort]
 

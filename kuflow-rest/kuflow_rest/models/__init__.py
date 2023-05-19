@@ -30,6 +30,7 @@ from .._generated.models import (
     Authentication,
     DefaultError,
     DefaultErrorInfo,
+    JsonFormsValue,
     Log,
     Page,
     PageMetadata,
@@ -64,6 +65,8 @@ from .._generated.models import (
     TaskPage,
     TaskPageItem,
     TaskSaveElementCommand,
+    TaskSaveJsonFormsValueDataCommand,
+    TaskSaveJsonFormsValueDocumentResponseCommand,
     WebhookEvent,
     WebhookEventProcessStateChanged,
     WebhookEventProcessStateChangedData,
@@ -80,7 +83,14 @@ from .._generated.models import (
     WebhookType,
 )
 
-from ._models import Document, TaskSaveElementValueDocumentCommand, ProcessSaveUserActionValueDocumentCommand
+from ._models import (
+    Document,
+    JsonFormsFile,
+    JsonFormsPrincipal,
+    TaskSaveElementValueDocumentCommand,
+    TaskSaveJsonFormsValueDocumentRequestCommand,
+    ProcessSaveUserActionValueDocumentCommand,
+)
 
 
 __all__ = [
@@ -89,6 +99,7 @@ __all__ = [
     "Authentication",
     "DefaultError",
     "DefaultErrorInfo",
+    "JsonFormsValue",
     "Log",
     "Page",
     "PageMetadata",
@@ -123,6 +134,8 @@ __all__ = [
     "TaskPage",
     "TaskPageItem",
     "TaskSaveElementCommand",
+    "TaskSaveJsonFormsValueDataCommand",
+    "TaskSaveJsonFormsValueDocumentResponseCommand",
     "WebhookEvent",
     "WebhookEventProcessStateChanged",
     "WebhookEventProcessStateChangedData",
@@ -139,8 +152,11 @@ __all__ = [
     "WebhookType",
     # From models
     "Document",
-    "ProcessSaveUserActionValueDocumentCommand",
+    "JsonFormsFile",
+    "JsonFormsPrincipal",
     "TaskSaveElementValueDocumentCommand",
+    "TaskSaveJsonFormsValueDocumentRequestCommand",
+    "ProcessSaveUserActionValueDocumentCommand",
 ]
 
 

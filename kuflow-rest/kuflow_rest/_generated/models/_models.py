@@ -97,8 +97,8 @@ class AbstractAudited(_serialization.Model):
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -172,8 +172,8 @@ class Authentication(AbstractAudited):
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
         type: Optional[Literal["ENGINE"]] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -235,8 +235,8 @@ class DefaultError(_serialization.Model):
         status: int,
         message: str,
         errors: Optional[List["_models.DefaultErrorInfo"]] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword timestamp: Timestamp indicating when the error happened. Required.
         :paramtype timestamp: ~datetime.datetime
@@ -282,8 +282,14 @@ class DefaultErrorInfo(_serialization.Model):
     }
 
     def __init__(
-        self, *, code: str, message: str, location: Optional[str] = None, location_type: Optional[str] = None, **kwargs
-    ):
+        self,
+        *,
+        code: str,
+        message: str,
+        location: Optional[str] = None,
+        location_type: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword code: Required.
         :paramtype code: str
@@ -299,6 +305,32 @@ class DefaultErrorInfo(_serialization.Model):
         self.message = message
         self.location = location
         self.location_type = location_type
+
+
+class JsonFormsValue(_serialization.Model):
+    """Json form values, used when the render type selected is JSON Forms.
+
+    :ivar valid: true if the data complain the related json schema.
+    :vartype valid: bool
+    :ivar data: json value filled that complain with the related json schema.
+    :vartype data: dict[str, any]
+    """
+
+    _attribute_map = {
+        "valid": {"key": "valid", "type": "bool"},
+        "data": {"key": "data", "type": "{object}"},
+    }
+
+    def __init__(self, *, valid: Optional[bool] = None, data: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+        """
+        :keyword valid: true if the data complain the related json schema.
+        :paramtype valid: bool
+        :keyword data: json value filled that complain with the related json schema.
+        :paramtype data: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.valid = valid
+        self.data = data
 
 
 class Log(_serialization.Model):
@@ -335,8 +367,8 @@ class Log(_serialization.Model):
         level: Union[str, "_models.LogLevel"],
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         created_at: Optional[datetime.datetime] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword id:
         :paramtype id: str
@@ -383,7 +415,7 @@ class Page(_serialization.Model):
         "object_type": {"PRINCIPAL_PAGE": "PrincipalPage", "PROCESS_PAGE": "ProcessPage", "TASK_PAGE": "TaskPage"}
     }
 
-    def __init__(self, *, metadata: "_models.PageMetadata", **kwargs):
+    def __init__(self, *, metadata: "_models.PageMetadata", **kwargs: Any) -> None:
         """
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
@@ -422,7 +454,7 @@ class PageMetadata(_serialization.Model):
         "total_pages": {"key": "totalPages", "type": "int"},
     }
 
-    def __init__(self, *, size: int, page: int, total_elements: int, total_pages: int, **kwargs):
+    def __init__(self, *, size: int, page: int, total_elements: int, total_pages: int, **kwargs: Any) -> None:
         """
         :keyword size: Required.
         :paramtype size: int
@@ -471,8 +503,8 @@ class Principal(_serialization.Model):
         name: Optional[str] = None,
         user: Optional["_models.PrincipalUser"] = None,
         application: Optional["_models.PrincipalApplication"] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword id:
         :paramtype id: str
@@ -504,7 +536,7 @@ class PrincipalApplication(_serialization.Model):
         "id": {"key": "id", "type": "str"},
     }
 
-    def __init__(self, *, id: Optional[str] = None, **kwargs):  # pylint: disable=redefined-builtin
+    def __init__(self, *, id: Optional[str] = None, **kwargs: Any) -> None:  # pylint: disable=redefined-builtin
         """
         :keyword id:
         :paramtype id: str
@@ -539,7 +571,7 @@ class PrincipalPage(Page):
         "content": {"key": "content", "type": "[Principal]"},
     }
 
-    def __init__(self, *, metadata: "_models.PageMetadata", content: List["_models.Principal"], **kwargs):
+    def __init__(self, *, metadata: "_models.PageMetadata", content: List["_models.Principal"], **kwargs: Any) -> None:
         """
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
@@ -566,8 +598,12 @@ class PrincipalUser(_serialization.Model):
     }
 
     def __init__(
-        self, *, id: Optional[str] = None, email: Optional[str] = None, **kwargs  # pylint: disable=redefined-builtin
-    ):
+        self,
+        *,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        email: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword id:
         :paramtype id: str
@@ -646,8 +682,8 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         element_values: Optional[Dict[str, List["_models.ProcessElementValue"]]] = None,
         initiator: Optional["_models.Principal"] = None,
         related_process: Optional["_models.RelatedProcess"] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -703,7 +739,7 @@ class ProcessChangeInitiatorCommand(_serialization.Model):
         "email": {"key": "email", "type": "str"},
     }
 
-    def __init__(self, *, principal_id: Optional[str] = None, email: Optional[str] = None, **kwargs):
+    def __init__(self, *, principal_id: Optional[str] = None, email: Optional[str] = None, **kwargs: Any) -> None:
         """
         :keyword principal_id:
         :paramtype principal_id: str
@@ -745,8 +781,8 @@ class ProcessDefinitionSummary(_serialization.Model):
         id: str,  # pylint: disable=redefined-builtin
         version: Optional[str] = None,
         name: Optional[str] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword id: Required.
         :paramtype id: str
@@ -778,7 +814,7 @@ class ProcessDeleteElementCommand(_serialization.Model):
         "element_definition_code": {"key": "elementDefinitionCode", "type": "str"},
     }
 
-    def __init__(self, *, element_definition_code: str, **kwargs):
+    def __init__(self, *, element_definition_code: str, **kwargs: Any) -> None:
         """
         :keyword element_definition_code: Code of task element to delete. Required.
         :paramtype element_definition_code: str
@@ -812,7 +848,7 @@ class ProcessElementValue(_serialization.Model):
 
     _subtype_map = {"type": {"NUMBER": "ProcessElementValueNumber", "STRING": "ProcessElementValueString"}}
 
-    def __init__(self, *, valid: bool = True, **kwargs):
+    def __init__(self, *, valid: bool = True, **kwargs: Any) -> None:
         """
         :keyword valid:
         :paramtype valid: bool
@@ -845,7 +881,7 @@ class ProcessElementValueNumber(ProcessElementValue):
         "value": {"key": "value", "type": "float"},
     }
 
-    def __init__(self, *, valid: bool = True, value: Optional[float] = None, **kwargs):
+    def __init__(self, *, valid: bool = True, value: Optional[float] = None, **kwargs: Any) -> None:
         """
         :keyword valid:
         :paramtype valid: bool
@@ -880,7 +916,7 @@ class ProcessElementValueString(ProcessElementValue):
         "value": {"key": "value", "type": "str"},
     }
 
-    def __init__(self, *, valid: bool = True, value: Optional[str] = None, **kwargs):
+    def __init__(self, *, valid: bool = True, value: Optional[str] = None, **kwargs: Any) -> None:
         """
         :keyword valid:
         :paramtype valid: bool
@@ -918,7 +954,9 @@ class ProcessPage(Page):
         "content": {"key": "content", "type": "[ProcessPageItem]"},
     }
 
-    def __init__(self, *, metadata: "_models.PageMetadata", content: List["_models.ProcessPageItem"], **kwargs):
+    def __init__(
+        self, *, metadata: "_models.PageMetadata", content: List["_models.ProcessPageItem"], **kwargs: Any
+    ) -> None:
         """
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
@@ -993,8 +1031,8 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
         state: Optional[Union[str, "_models.ProcessState"]] = None,
         element_values: Optional[Dict[str, List["_models.ProcessElementValue"]]] = None,
         initiator: Optional["_models.Principal"] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -1058,8 +1096,8 @@ class ProcessSaveElementCommand(_serialization.Model):
         *,
         element_definition_code: str,
         element_values: Optional[List["_models.ProcessElementValue"]] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword element_definition_code: Required.
         :paramtype element_definition_code: str
@@ -1085,7 +1123,9 @@ class RelatedProcess(_serialization.Model):
         "outcoming": {"key": "outcoming", "type": "[str]"},
     }
 
-    def __init__(self, *, incoming: Optional[List[str]] = None, outcoming: Optional[List[str]] = None, **kwargs):
+    def __init__(
+        self, *, incoming: Optional[List[str]] = None, outcoming: Optional[List[str]] = None, **kwargs: Any
+    ) -> None:
         """
         :keyword incoming: Processes whose relationship target is the current process.
         :paramtype incoming: list[str]
@@ -1121,8 +1161,12 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :vartype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
     :ivar process_id: Required.
     :vartype process_id: str
-    :ivar element_values: Task element values, en ElementValueDocument is not allowed.
+    :ivar element_values: Task element values, en ElementValueDocument is not allowed, used when
+     the task render type selected is
+     JSON Forms.
     :vartype element_values: dict[str, list[~kuflow.rest.models.TaskElementValue]]
+    :ivar json_forms_value: Json form values, used when the render type selected is JSON Forms.
+    :vartype json_forms_value: ~kuflow.rest.models.JsonFormsValue
     :ivar logs:
     :vartype logs: list[~kuflow.rest.models.Log]
     :ivar owner:
@@ -1146,6 +1190,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "task_definition": {"key": "taskDefinition", "type": "TaskDefinitionSummary"},
         "process_id": {"key": "processId", "type": "str"},
         "element_values": {"key": "elementValues", "type": "{[TaskElementValue]}"},
+        "json_forms_value": {"key": "jsonFormsValue", "type": "JsonFormsValue"},
         "logs": {"key": "logs", "type": "[Log]"},
         "owner": {"key": "owner", "type": "Principal"},
     }
@@ -1162,10 +1207,11 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         state: Optional[Union[str, "_models.TaskState"]] = None,
         element_values: Optional[Dict[str, List["_models.TaskElementValue"]]] = None,
+        json_forms_value: Optional["_models.JsonFormsValue"] = None,
         logs: Optional[List["_models.Log"]] = None,
         owner: Optional["_models.Principal"] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -1184,8 +1230,12 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
         :keyword process_id: Required.
         :paramtype process_id: str
-        :keyword element_values: Task element values, en ElementValueDocument is not allowed.
+        :keyword element_values: Task element values, en ElementValueDocument is not allowed, used when
+         the task render type selected is
+         JSON Forms.
         :paramtype element_values: dict[str, list[~kuflow.rest.models.TaskElementValue]]
+        :keyword json_forms_value: Json form values, used when the render type selected is JSON Forms.
+        :paramtype json_forms_value: ~kuflow.rest.models.JsonFormsValue
         :keyword logs:
         :paramtype logs: list[~kuflow.rest.models.Log]
         :keyword owner:
@@ -1204,6 +1254,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         self.task_definition = task_definition
         self.process_id = process_id
         self.element_values = element_values
+        self.json_forms_value = json_forms_value
         self.logs = logs
         self.owner = owner
 
@@ -1222,7 +1273,7 @@ class TaskAssignCommand(_serialization.Model):
         "email": {"key": "email", "type": "str"},
     }
 
-    def __init__(self, *, principal_id: Optional[str] = None, email: Optional[str] = None, **kwargs):
+    def __init__(self, *, principal_id: Optional[str] = None, email: Optional[str] = None, **kwargs: Any) -> None:
         """
         :keyword principal_id:
         :paramtype principal_id: str
@@ -1265,8 +1316,8 @@ class TaskDefinitionSummary(_serialization.Model):
         version: Optional[str] = None,
         code: Optional[str] = None,
         name: Optional[str] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword id:
         :paramtype id: str
@@ -1301,7 +1352,7 @@ class TaskDeleteElementCommand(_serialization.Model):
         "element_definition_code": {"key": "elementDefinitionCode", "type": "str"},
     }
 
-    def __init__(self, *, element_definition_code: str, **kwargs):
+    def __init__(self, *, element_definition_code: str, **kwargs: Any) -> None:
         """
         :keyword element_definition_code: Code of task element to delete. Required.
         :paramtype element_definition_code: str
@@ -1327,7 +1378,7 @@ class TaskDeleteElementValueDocumentCommand(_serialization.Model):
         "document_id": {"key": "documentId", "type": "str"},
     }
 
-    def __init__(self, *, document_id: str, **kwargs):
+    def __init__(self, *, document_id: str, **kwargs: Any) -> None:
         """
         :keyword document_id: Document ID to delete. Required.
         :paramtype document_id: str
@@ -1371,7 +1422,7 @@ class TaskElementValue(_serialization.Model):
         }
     }
 
-    def __init__(self, *, valid: bool = True, **kwargs):
+    def __init__(self, *, valid: bool = True, **kwargs: Any) -> None:
         """
         :keyword valid:
         :paramtype valid: bool
@@ -1405,7 +1456,9 @@ class TaskElementValueDocument(TaskElementValue):
         "value": {"key": "value", "type": "TaskElementValueDocumentItem"},
     }
 
-    def __init__(self, *, valid: bool = True, value: Optional["_models.TaskElementValueDocumentItem"] = None, **kwargs):
+    def __init__(
+        self, *, valid: bool = True, value: Optional["_models.TaskElementValueDocumentItem"] = None, **kwargs: Any
+    ) -> None:
         """
         :keyword valid:
         :paramtype valid: bool
@@ -1452,8 +1505,8 @@ class TaskElementValueDocumentItem(_serialization.Model):
         content_path: Optional[str] = None,
         content_type: Optional[str] = None,
         content_length: Optional[int] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword id:
         :paramtype id: str
@@ -1501,7 +1554,7 @@ class TaskElementValueNumber(TaskElementValue):
         "value": {"key": "value", "type": "float"},
     }
 
-    def __init__(self, *, valid: bool = True, value: Optional[float] = None, **kwargs):
+    def __init__(self, *, valid: bool = True, value: Optional[float] = None, **kwargs: Any) -> None:
         """
         :keyword valid:
         :paramtype valid: bool
@@ -1537,7 +1590,7 @@ class TaskElementValueObject(TaskElementValue):
         "value": {"key": "value", "type": "{object}"},
     }
 
-    def __init__(self, *, valid: bool = True, value: Optional[Dict[str, Any]] = None, **kwargs):
+    def __init__(self, *, valid: bool = True, value: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
         """
         :keyword valid:
         :paramtype valid: bool
@@ -1574,8 +1627,8 @@ class TaskElementValuePrincipal(TaskElementValue):
     }
 
     def __init__(
-        self, *, valid: bool = True, value: Optional["_models.TaskElementValuePrincipalItem"] = None, **kwargs
-    ):
+        self, *, valid: bool = True, value: Optional["_models.TaskElementValuePrincipalItem"] = None, **kwargs: Any
+    ) -> None:
         """
         :keyword valid:
         :paramtype valid: bool
@@ -1617,8 +1670,8 @@ class TaskElementValuePrincipalItem(_serialization.Model):
         id: str,  # pylint: disable=redefined-builtin
         type: Union[str, "_models.PrincipalType"],
         name: Optional[str] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword id: Required.
         :paramtype id: str
@@ -1657,7 +1710,7 @@ class TaskElementValueString(TaskElementValue):
         "value": {"key": "value", "type": "str"},
     }
 
-    def __init__(self, *, valid: bool = True, value: Optional[str] = None, **kwargs):
+    def __init__(self, *, valid: bool = True, value: Optional[str] = None, **kwargs: Any) -> None:
         """
         :keyword valid:
         :paramtype valid: bool
@@ -1695,7 +1748,9 @@ class TaskPage(Page):
         "content": {"key": "content", "type": "[TaskPageItem]"},
     }
 
-    def __init__(self, *, metadata: "_models.PageMetadata", content: List["_models.TaskPageItem"], **kwargs):
+    def __init__(
+        self, *, metadata: "_models.PageMetadata", content: List["_models.TaskPageItem"], **kwargs: Any
+    ) -> None:
         """
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
@@ -1733,6 +1788,8 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
     :vartype process_id: str
     :ivar element_values: Task element values, en ElementValueDocument is not allowed.
     :vartype element_values: dict[str, list[~kuflow.rest.models.TaskElementValue]]
+    :ivar json_forms_value: Json form values, used when the render type selected is JSON Forms.
+    :vartype json_forms_value: ~kuflow.rest.models.JsonFormsValue
     :ivar owner:
     :vartype owner: ~kuflow.rest.models.Principal
     """
@@ -1754,6 +1811,7 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         "task_definition": {"key": "taskDefinition", "type": "TaskDefinitionSummary"},
         "process_id": {"key": "processId", "type": "str"},
         "element_values": {"key": "elementValues", "type": "{[TaskElementValue]}"},
+        "json_forms_value": {"key": "jsonFormsValue", "type": "JsonFormsValue"},
         "owner": {"key": "owner", "type": "Principal"},
     }
 
@@ -1769,9 +1827,10 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         state: Optional[Union[str, "_models.TaskState"]] = None,
         element_values: Optional[Dict[str, List["_models.TaskElementValue"]]] = None,
+        json_forms_value: Optional["_models.JsonFormsValue"] = None,
         owner: Optional["_models.Principal"] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -1792,6 +1851,8 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         :paramtype process_id: str
         :keyword element_values: Task element values, en ElementValueDocument is not allowed.
         :paramtype element_values: dict[str, list[~kuflow.rest.models.TaskElementValue]]
+        :keyword json_forms_value: Json form values, used when the render type selected is JSON Forms.
+        :paramtype json_forms_value: ~kuflow.rest.models.JsonFormsValue
         :keyword owner:
         :paramtype owner: ~kuflow.rest.models.Principal
         """
@@ -1808,6 +1869,7 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         self.task_definition = task_definition
         self.process_id = process_id
         self.element_values = element_values
+        self.json_forms_value = json_forms_value
         self.owner = owner
 
 
@@ -1836,8 +1898,8 @@ class TaskSaveElementCommand(_serialization.Model):
         *,
         element_definition_code: str,
         element_values: Optional[List["_models.TaskElementValue"]] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword element_definition_code: Required.
         :paramtype element_definition_code: str
@@ -1847,6 +1909,58 @@ class TaskSaveElementCommand(_serialization.Model):
         super().__init__(**kwargs)
         self.element_definition_code = element_definition_code
         self.element_values = element_values
+
+
+class TaskSaveJsonFormsValueDataCommand(_serialization.Model):
+    """TaskSaveJsonFormsValueDataCommand.
+
+    :ivar data: json value filled that complain with the related json schema.
+    :vartype data: dict[str, any]
+    """
+
+    _attribute_map = {
+        "data": {"key": "data", "type": "{object}"},
+    }
+
+    def __init__(self, *, data: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+        """
+        :keyword data: json value filled that complain with the related json schema.
+        :paramtype data: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.data = data
+
+
+class TaskSaveJsonFormsValueDocumentResponseCommand(_serialization.Model):
+    """TaskSaveJsonFormsValueDocumentResponseCommand.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :ivar value: JSON value representing the uploaded file.
+
+     Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
+     Required.
+    :vartype value: str
+    """
+
+    _validation = {
+        "value": {"required": True},
+    }
+
+    _attribute_map = {
+        "value": {"key": "value", "type": "str"},
+    }
+
+    def __init__(self, *, value: str, **kwargs: Any) -> None:
+        """
+        :keyword value: JSON value representing the uploaded file.
+
+         Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
+         Required.
+        :paramtype value: str
+        """
+        super().__init__(**kwargs)
+        self.value = value
 
 
 class WebhookEvent(_serialization.Model):
@@ -1885,7 +1999,9 @@ class WebhookEvent(_serialization.Model):
         }
     }
 
-    def __init__(self, *, id: str, timestamp: datetime.datetime, **kwargs):  # pylint: disable=redefined-builtin
+    def __init__(
+        self, *, id: str, timestamp: datetime.datetime, **kwargs: Any  # pylint: disable=redefined-builtin
+    ) -> None:
         """
         :keyword id: Required.
         :paramtype id: str
@@ -1934,8 +2050,8 @@ class WebhookEventProcessStateChanged(WebhookEvent):
         id: str,  # pylint: disable=redefined-builtin
         timestamp: datetime.datetime,
         data: "_models.WebhookEventProcessStateChangedData",
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword id: Required.
         :paramtype id: str
@@ -1971,7 +2087,7 @@ class WebhookEventProcessStateChangedData(_serialization.Model):
         "process_state": {"key": "processState", "type": "str"},
     }
 
-    def __init__(self, *, process_id: str, process_state: Union[str, "_models.ProcessState"], **kwargs):
+    def __init__(self, *, process_id: str, process_state: Union[str, "_models.ProcessState"], **kwargs: Any) -> None:
         """
         :keyword process_id: Required.
         :paramtype process_id: str
@@ -2020,8 +2136,8 @@ class WebhookEventTaskStateChanged(WebhookEvent):
         id: str,  # pylint: disable=redefined-builtin
         timestamp: datetime.datetime,
         data: "_models.WebhookEventTaskStateChangedData",
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword id: Required.
         :paramtype id: str
@@ -2066,8 +2182,14 @@ class WebhookEventTaskStateChangedData(_serialization.Model):
     }
 
     def __init__(
-        self, *, process_id: str, task_id: str, task_code: str, task_state: Union[str, "_models.TaskState"], **kwargs
-    ):
+        self,
+        *,
+        process_id: str,
+        task_id: str,
+        task_code: str,
+        task_state: Union[str, "_models.TaskState"],
+        **kwargs: Any,
+    ) -> None:
         """
         :keyword process_id: Required.
         :paramtype process_id: str

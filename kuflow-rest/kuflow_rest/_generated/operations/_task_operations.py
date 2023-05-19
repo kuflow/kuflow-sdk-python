@@ -30,6 +30,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 #
 # --------------------------------------------------------------------------
+from io import IOBase
 from typing import Any, Callable, Dict, IO, Iterator, List, Optional, TypeVar, Union, overload
 
 from azure.core.exceptions import (
@@ -337,6 +338,83 @@ def build_actions_task_download_element_value_rendered_request(
     return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
 
 
+def build_actions_task_save_json_forms_value_data_request(id: str, **kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/tasks/{id}/~actions/save-json-forms-value-data"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+
+
+def build_actions_task_save_json_forms_value_document_request(
+    id: str, *, file_content_type: str, file_name: str, schema_path: str, content: IO, **kwargs: Any
+) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+    _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/tasks/{id}/~actions/save-json-forms-value-document"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+
+    # Construct parameters
+    _params["fileContentType"] = _SERIALIZER.query("file_content_type", file_content_type, "str")
+    _params["fileName"] = _SERIALIZER.query("file_name", file_name, "str")
+    _params["schemaPath"] = _SERIALIZER.query("schema_path", schema_path, "str")
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, content=content, **kwargs)
+
+
+def build_actions_task_download_json_forms_value_document_request(
+    id: str, *, document_uri: str, **kwargs: Any
+) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+    _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
+
+    accept = _headers.pop("Accept", "application/octet-stream, application/json")
+
+    # Construct URL
+    _url = "/tasks/{id}/~actions/download-json-forms-value-document"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+
+    # Construct parameters
+    _params["documentUri"] = _SERIALIZER.query("document_uri", document_uri, "str")
+
+    # Construct headers
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
+
+
 def build_actions_task_complete_request(id: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
@@ -463,8 +541,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -583,7 +662,7 @@ class TaskOperations:
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param task: Task to be created. Is either a model type or a IO type. Required.
+        :param task: Task to be created. Is either a Task type or a IO type. Required.
         :type task: ~kuflow.rest.models.Task or IO
         :keyword activity_token: When create a Kuflow Task backed with a Temporal.io servers, this
          value is required and must be set with the context task token of Temporal.io activity. Default
@@ -613,7 +692,7 @@ class TaskOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(task, (IO, bytes)):
+        if isinstance(task, (IOBase, bytes)):
             _content = task
         else:
             _json = self._serialize.body(task, "Task")
@@ -628,8 +707,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -682,8 +762,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -732,8 +813,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -800,8 +882,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to change the task owner. Is either a model type or a IO type.
-         Required.
+        :param command: Command to change the task owner. Is either a TaskAssignCommand type or a IO
+         type. Required.
         :type command: ~kuflow.rest.models.TaskAssignCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -827,7 +909,7 @@ class TaskOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(command, (IO, bytes)):
+        if isinstance(command, (IOBase, bytes)):
             _content = command
         else:
             _json = self._serialize.body(command, "TaskAssignCommand")
@@ -842,8 +924,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -934,7 +1017,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to save an element. Is either a model type or a IO type. Required.
+        :param command: Command to save an element. Is either a TaskSaveElementCommand type or a IO
+         type. Required.
         :type command: ~kuflow.rest.models.TaskSaveElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -960,7 +1044,7 @@ class TaskOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(command, (IO, bytes)):
+        if isinstance(command, (IOBase, bytes)):
             _content = command
         else:
             _json = self._serialize.body(command, "TaskSaveElementCommand")
@@ -975,8 +1059,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1062,8 +1147,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1141,7 +1227,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete an element. Is either a model type or a IO type. Required.
+        :param command: Command to delete an element. Is either a TaskDeleteElementCommand type or a IO
+         type. Required.
         :type command: ~kuflow.rest.models.TaskDeleteElementCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -1167,7 +1254,7 @@ class TaskOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(command, (IO, bytes)):
+        if isinstance(command, (IOBase, bytes)):
             _content = command
         else:
             _json = self._serialize.body(command, "TaskDeleteElementCommand")
@@ -1182,8 +1269,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1218,7 +1306,7 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete a document elemente value. Required.
+        :param command: Command to delete a document element value. Required.
         :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
@@ -1241,7 +1329,7 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete a document elemente value. Required.
+        :param command: Command to delete a document element value. Required.
         :type command: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
@@ -1264,8 +1352,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete a document elemente value. Is either a model type or a IO
-         type. Required.
+        :param command: Command to delete a document element value. Is either a
+         TaskDeleteElementValueDocumentCommand type or a IO type. Required.
         :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -1291,7 +1379,7 @@ class TaskOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(command, (IO, bytes)):
+        if isinstance(command, (IOBase, bytes)):
             _content = command
         else:
             _json = self._serialize.body(command, "TaskDeleteElementValueDocumentCommand")
@@ -1306,8 +1394,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1361,8 +1450,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = True
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=True, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1420,8 +1510,257 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = True
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=True, **kwargs
+            request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = response.iter_bytes()
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @overload
+    def actions_task_save_json_forms_value_data(
+        self,
+        id: str,
+        command: _models.TaskSaveJsonFormsValueDataCommand,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.Task:
+        """Save JSON data.
+
+        Allow to save a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param command: Command to save the JSON value. Required.
+        :type command: ~kuflow.rest.models.TaskSaveJsonFormsValueDataCommand
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: Task
+        :rtype: ~kuflow.rest.models.Task
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @overload
+    def actions_task_save_json_forms_value_data(
+        self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
+    ) -> _models.Task:
+        """Save JSON data.
+
+        Allow to save a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param command: Command to save the JSON value. Required.
+        :type command: IO
+        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: Task
+        :rtype: ~kuflow.rest.models.Task
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @distributed_trace
+    def actions_task_save_json_forms_value_data(
+        self, id: str, command: Union[_models.TaskSaveJsonFormsValueDataCommand, IO], **kwargs: Any
+    ) -> _models.Task:
+        """Save JSON data.
+
+        Allow to save a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param command: Command to save the JSON value. Is either a TaskSaveJsonFormsValueDataCommand
+         type or a IO type. Required.
+        :type command: ~kuflow.rest.models.TaskSaveJsonFormsValueDataCommand or IO
+        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
+         Default value is None.
+        :paramtype content_type: str
+        :return: Task
+        :rtype: ~kuflow.rest.models.Task
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        cls: ClsType[_models.Task] = kwargs.pop("cls", None)
+
+        content_type = content_type or "application/json"
+        _json = None
+        _content = None
+        if isinstance(command, (IOBase, bytes)):
+            _content = command
+        else:
+            _json = self._serialize.body(command, "TaskSaveJsonFormsValueDataCommand")
+
+        request = build_actions_task_save_json_forms_value_data_request(
+            id=id,
+            content_type=content_type,
+            json=_json,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        request.url = self._client.format_url(request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("Task", pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+
+    @distributed_trace
+    def actions_task_save_json_forms_value_document(
+        self, id: str, file: IO, *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
+    ) -> _models.TaskSaveJsonFormsValueDocumentResponseCommand:
+        """Save a JSON Forms document.
+
+        Save a document in the task to later be linked into the JSON data.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param file: Document to save. Required.
+        :type file: IO
+        :keyword file_content_type: Document content type. Required.
+        :paramtype file_content_type: str
+        :keyword file_name: Document name. Required.
+        :paramtype file_name: str
+        :keyword schema_path: JSON Schema path related to the document. The uploaded document must be
+         validated by the passed schema path. Required.
+        :paramtype schema_path: str
+        :return: TaskSaveJsonFormsValueDocumentResponseCommand
+        :rtype: ~kuflow.rest.models.TaskSaveJsonFormsValueDocumentResponseCommand
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/octet-stream"))
+        cls: ClsType[_models.TaskSaveJsonFormsValueDocumentResponseCommand] = kwargs.pop("cls", None)
+
+        _content = file
+
+        request = build_actions_task_save_json_forms_value_document_request(
+            id=id,
+            file_content_type=file_content_type,
+            file_name=file_name,
+            schema_path=schema_path,
+            content_type=content_type,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        request.url = self._client.format_url(request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("TaskSaveJsonFormsValueDocumentResponseCommand", pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+
+    @distributed_trace
+    def actions_task_download_json_forms_value_document(
+        self, id: str, *, document_uri: str, **kwargs: Any
+    ) -> Iterator[bytes]:
+        """Download document.
+
+        Given a task, download a document from a json form data.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :keyword document_uri: Document URI to download. Required.
+        :paramtype document_uri: str
+        :return: Iterator of the response bytes
+        :rtype: Iterator[bytes]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[Iterator[bytes]] = kwargs.pop("cls", None)
+
+        request = build_actions_task_download_json_forms_value_document_request(
+            id=id,
+            document_uri=document_uri,
+            headers=_headers,
+            params=_params,
+        )
+        request.url = self._client.format_url(request.url)
+
+        _stream = True
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1470,8 +1809,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1539,7 +1879,7 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param log: Log to be created. Is either a model type or a IO type. Required.
+        :param log: Log to be created. Is either a Log type or a IO type. Required.
         :type log: ~kuflow.rest.models.Log or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
@@ -1565,7 +1905,7 @@ class TaskOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(log, (IO, bytes)):
+        if isinstance(log, (IOBase, bytes)):
             _content = log
         else:
             _json = self._serialize.body(log, "Log")
@@ -1580,8 +1920,9 @@ class TaskOperations:
         )
         request.url = self._client.format_url(request.url)
 
+        _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=False, **kwargs
+            request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response

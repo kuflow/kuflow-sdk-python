@@ -23,7 +23,6 @@
 # SOFTWARE.
 #
 
-
 from typing import Any, List, Optional, Union
 
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
@@ -54,16 +53,16 @@ class ProcessOperations:
         Available sort query values: id, createdAt, lastModifiedAt.
 
         :keyword size: The number of records returned within a single API call. Default value is 25.
-        :paramtype size: int
-        :keyword page: The page number of the current page in the returned records, 0 is the first
-         page. Default value is 0.
-        :paramtype page: int
+        :type size: int
+        :keyword page: The page number of the current page in the returned records, 0 is the first page.
+                       Default value is 0.
+        :type page: int
         :keyword sort: Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
 
-         Default sort order is ascending. Multiple sort criteria are supported.
+                       Default sort order is ascending. Multiple sort criteria are supported.
 
-         Please refer to the method description for supported properties. Default value is None.
-        :paramtype sort: Union[str, List[str]]
+                       Please refer to the method description for supported properties. Default value is None.
+        :type sort: Optional[Union[str, List[str]]]
         :return: ProcessPage
         :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -90,8 +89,8 @@ class ProcessOperations:
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process: Process to create. Is either a model type or a IO type. Required.
-        :type process: ~kuflow.rest.models.Process or IO
+        :param process: Process to create. Required.
+        :type process: ~kuflow.rest.models.Process
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -124,9 +123,8 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to change the process initiator. Is either a model type or a IO type.
-         Required.
-        :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand or IO
+        :param command: Command to change the process initiator. Required.
+        :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -148,8 +146,8 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to save an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.models.ProcessSaveElementCommand or IO
+        :param command: Command to save an element. Required.
+        :type command: ~kuflow.rest.models.ProcessSaveElementCommand
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -167,8 +165,8 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete an element. Is either a model type or a IO type. Required.
-        :type command: ~kuflow.rest.models.ProcessDeleteElementCommand or IO
+        :param command: Command to delete an element. Required.
+        :type command: ~kuflow.rest.models.ProcessDeleteElementCommand
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:

@@ -17,7 +17,7 @@ class GreetingWorkflow:
         id = workflow.uuid4()
 
         task_definition = models.TaskDefinitionSummary(code="T_ONE")
-        task = models.Task(id=id, process_id=request.processId, task_definition=task_definition)
+        task = models.Task(id=id, process_id=request.process_id, task_definition=task_definition)
         create_task_request = models_temporal.CreateTaskRequest(task=task)
 
         # Create Task
@@ -32,11 +32,11 @@ class GreetingWorkflow:
         # Complete Workflow
         result = await workflow.execute_activity(
             KuFlowSyncActivities.complete_process,
-            models_temporal.CompleteProcessRequest(request.processId),
+            models_temporal.CompleteProcessRequest(request.process_id),
             start_to_close_timeout=timedelta(seconds=120),
             retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=30)),
         )
 
         workflow.logger.info(f"Result: {result}")
 
-        return models_temporal.WorkflowResponse(f"Workflow {request.processId} finished")
+        return models_temporal.WorkflowResponse(f"Workflow {request.process_id} finished")

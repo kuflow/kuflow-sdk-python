@@ -1,3 +1,28 @@
+# coding=utf-8
+#
+# MIT License
+#
+# Copyright (c) 2022 KuFlow
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
 import datetime
 import asyncio
 import logging
@@ -13,11 +38,11 @@ logger = logging.getLogger(__name__)
 class KuFlowAuthorizationTokenProviderBackoff:
     """
     :ivar sleep: Time in seconds to sleep
-    :vartype sleep: int
+    :type sleep: int
     :ivar max_sleep: Maximum time in seconds reached in the backoff
-    :vartype max_sleep: int
+    :type max_sleep: int
     :ivar exponential_rate: Increment rate factor
-    :vartype exponential_rate: int
+    :type exponential_rate: int
     """
 
     def __init__(
@@ -34,13 +59,17 @@ class KuFlowAuthorizationTokenProvider:
         kuflow_client: KuFlowRestClient,
         backoff: KuFlowAuthorizationTokenProviderBackoff = KuFlowAuthorizationTokenProviderBackoff(),
     ):
-        self._temporal_client: Client = None
+        self._temporal_client: Optional[Client] = None
         self._kuflow_client = kuflow_client
         self._consecutive_failures = 0
         self._backoff = backoff
 
-    def initialize_rpc_auth_metadata(self, init_metadata: Mapping[str, str] = {}) -> Mapping[str, str]:
+    def initialize_rpc_auth_metadata(self, init_metadata=None) -> Mapping[str, str]:
+        if init_metadata is None:
+            init_metadata = {}
+
         authentication = self._create_authentication()
+        metadata = {}
         if authentication.token:
             metadata = self._set_auth_rpc_metadata(token=authentication.token, metadata=init_metadata)
         return metadata
