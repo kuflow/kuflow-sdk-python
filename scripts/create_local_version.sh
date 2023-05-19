@@ -1,12 +1,12 @@
 #!/bin/sh
 # To use: Set the appropriate version
-# Usefull when building wheels in CI/CD on branches or merge requests,
+# Usefully when building wheels in CI/CD on branches or merge requests,
 # without possibly overwriting released versions (of certain tag)
 # Used to run in CI/CD, as it will modify both pyproject.toml's and python files (by setting the right string in `__version__=..`)
 
 
 ########################################
-VERSION=0.4.5
+VERSION=0.5.0
 ########################################
 
 
