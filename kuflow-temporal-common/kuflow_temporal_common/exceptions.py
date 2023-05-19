@@ -30,7 +30,7 @@ from azure.core.exceptions import (
 from temporalio.exceptions import ApplicationError
 
 
-class KuFlowFailureType(Enum, str):
+class KuFlowFailureType(str, Enum):
     ACTIVITIES_FAILURE = "KuFlowActivities.Failure"
 
     ACTIVITIES_REST_FAILURE = "KuFlowActivities.RestFailure"
