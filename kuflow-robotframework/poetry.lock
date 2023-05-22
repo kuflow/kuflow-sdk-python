@@ -360,7 +360,7 @@ testing = ["Django (<3.1)", "attrs", "colorama", "docopt", "pytest (<7.0.0)"]
 
 [[package]]
 name = "kuflow-rest"
-version = "0.5.0"
+version = "0.5.1.dev0"
 description = "Client for KuFlow Rest Api"
 category = "main"
 optional = false
