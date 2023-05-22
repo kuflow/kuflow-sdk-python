@@ -18,7 +18,7 @@ cd "${DIR}/.." || exit
 
 
 # all python packages, in topological order
-. ${DIR}/projects.sh
+. "${DIR}/projects.sh"
 _projects=". ${PROJECTS}"
 echo "Running on following projects: ${_projects}"
 if [ "$(uname)" = "Darwin" ]; then export SEP=" "; else SEP=""; fi

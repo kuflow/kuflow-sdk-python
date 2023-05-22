@@ -826,9 +826,9 @@ def prepare_command_element_value_document_item(suffix: str) -> TaskElementValue
         id=f"id_{suffix}",
         uri=f"uri_{suffix}",
         name=f"name_{suffix}",
-        contentPath=f"contentPath_{suffix}",
-        contentType=f"contentType_{suffix}",
-        contentLength=600,
+        content_path=f"contentPath_{suffix}",
+        content_type=f"contentType_{suffix}",
+        content_length=600,
     )
 
 

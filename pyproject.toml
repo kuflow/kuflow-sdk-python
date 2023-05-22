@@ -16,8 +16,14 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
 python = "^3.8"
+kuflow-rest = {path="./kuflow-rest", develop=true}
+kuflow-robotframework = {path="./kuflow-robotframework", develop=true}
+kuflow-temporal-common = {path="./kuflow-temporal-common", develop=true}
+kuflow-temporal-activity-kuflow = {path="./kuflow-temporal-activity-kuflow", develop=true}
+kuflow-temporal-activity-robotframework = {path="./kuflow-temporal-activity-robotframework", develop=true}
 
 [tool.poetry.group.dev.dependencies]
+mypy = "^1.3.0"
 ipython = "^7.34.0"
 flake8 = "^5.0.4"
 black = "^23.3.0"
@@ -27,8 +33,8 @@ pytest = "^7.3.1"
 log_cli = true
 log_cli_level = "INFO"
 log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
-testpaths = ["tests"]
 python_files= "test_*.py"
 
 [tool.black]
 line-length = 120
+target-version = ["py38", "py39"]

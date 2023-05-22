@@ -94,7 +94,7 @@ class UserActionWorkflowRequest(_serialization.Model):
         user_action_definition_code: str,
         user_action_id: str,
         requestor_principal_id: str,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
         self.process_id = process_id
@@ -260,7 +260,7 @@ class SaveProcessElementRequest(_serialization.Model):
         process_id: str,
         element_definition_code: str,
         element_values: List[models_rest.ProcessElementValue],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
         self.process_id = process_id
@@ -437,7 +437,7 @@ class FindTaskRequest(_serialization.Model):
         process_ids: Optional[List[str]] = None,
         states: Optional[List[models_rest.TaskState]] = None,
         task_definition_codes: Optional[List[str]] = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
         self.page = page
@@ -666,7 +666,7 @@ class SaveTaskElementRequest(_serialization.Model):
         task_id: str,
         element_definition_code: str,
         element_values: List[models_rest.TaskElementValue],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
         self.task_id = task_id

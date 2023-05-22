@@ -38,6 +38,7 @@ mkdir -p "${DIR}/../info"
 # cp $FLAG "${DIR}/../CHANGELOG.md" "${DIR}/../info/"
 cp $FLAG "${DIR}/../VERSION" "${DIR}/../info/"
 echo "=========="
+
 # copying each wheel to root folder dist
 mkdir -p "${DIR}/../dist"
 for p in $_projects
@@ -47,6 +48,7 @@ do
 done
 echo "=========="
 ls -altr "${DIR}/../dist/"
+
 # then copying these to each project
 for p in $_projects
 do
