@@ -337,3 +337,77 @@ class Keywords:
         """
 
         return models.TaskElementValueDocumentItem(uri=uri)
+
+    @keyword()
+    def save_json_forms_value_data(self, task_id: UUID, value) -> models.Task:
+        """Save a JSON Forms value data
+
+        Allows a JSON Forms to be saved in the task.
+
+        If previous values already exist in the JSON Forms value, they are replaced by the new values.
+
+        Server-side validations are applied on the saved JSON Forms according to the ones you defined in the schema
+        in the task definition in KuFlow.
+
+        Example:
+        | Save Json Forms Value Data    | ${KUFLOW_TASK_ID} | ${json_form_data}
+        =>
+        | &{json_form_data}=    Create Dictionary    key1=value1    keu2=value2
+        | Save Json Forms Value Data    | ${TASK_ID}    | ${json_form_data}
+        """
+        if not is_dict_like(value):
+            raise TypeError("Expected argument to be a dict or dict-like, " "got %s instead." % (type_name(value)))
+
+        command = models.TaskSaveJsonFormsValueDataCommand(data=value)
+
+        return self._client.task.actions_task_save_json_forms_value_data(id=task_id, command=command)
+
+    @keyword()
+    def upload_json_forms_value_document(self, task_id: UUID, path_in_schema: str, path: str) -> str:
+        """Upload a JSON Forms value document
+
+        Allows you to upload a document to the referenced task and then include a reference to it
+        in the task's JSON Forms.
+
+        You must provide the path within the JSON schema that defines the document you wish to upload.
+        This schema is found in your task definition in KuFlow. For example, given this schema:
+
+        {
+            "type": "object",
+            "properties": {
+                "file": {
+                "type": "string",
+                "format": "kuflow-file",
+                "accept": "image/*,application/pdf,.pdf",
+                "maxSize": 20000000
+                }
+            }
+        }
+
+        The path is as follows: #/properties/file
+
+        Note that in RobotFramwork, the hash indicates a comment, so you should escape it
+
+        Example:
+        | Upload Json Forms Value document    | ${KUFLOW_TASK_ID} | ${PATH_IN_SCHEMA} | ${PATH}
+        =>
+        | ${document_reference}=    Upload Json Forms Value document    | ${KUFLOW_TASK_ID} | \#/properties/file | hello.jpg
+        | &{json_form_data}=    Create Dictionary    my_file=${document_reference}
+        | Save Json Forms Value Data    ${KUFLOW_TASK_ID}    ${json_form_data}
+        """
+
+        file_name = os.path.basename(path)
+        file = open(path, "rb")
+        content_type = magic.from_file(path, mime=True)
+
+        file = models.Document(
+            file_mame=file_name,
+            content_type=content_type,
+            file_content=file,
+        )
+        command = models.TaskSaveJsonFormsValueDocumentRequestCommand(schema_path=path_in_schema)
+
+        reponse = self._client.task.actions_task_save_json_forms_value_document(id=task_id, file=file, command=command)
+
+        return reponse.value
+

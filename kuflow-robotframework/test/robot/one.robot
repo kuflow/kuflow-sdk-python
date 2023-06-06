@@ -47,7 +47,7 @@ Test Settings
 
     ${instance}=    Get library instance    KuFlow
     ${current_instance}=    Call Method    ${instance}    get_instance
-    Log To Console    kkkk
+    Log To Console    library: ${instance} instance: ${current_instance}
 
 Test Single Claim a KuFlow Task
     Set KuFlow Credentials
@@ -192,6 +192,22 @@ Test Single Save Element Document Reference To KuFlow Task
     Should Be Equal
     ...    ${task.element_values['DOC_MULTIPLE'][0].value.content_length}
     ...    ${taskUpdated.element_values['DOC'][0].value.content_length}
+
+
+Test Save Json Forms Value Data to KuFlow Task
+    Set KuFlow Credentials
+
+    &{json_form_data}=    Create Dictionary    nationality=US    name=Michael Scott
+    Save Json Forms Value Data    ${KUFLOW_TASK_ID}    ${json_form_data}
+
+
+Test Save Json Forms Value Document to KuFlow Task
+    Set KuFlow Credentials
+
+    ${document_reference}=    Upload Json Forms Value Document    ${KUFLOW_TASK_ID}    \#/definitions/Fichero    etc/sample/data/samples_01.jpg
+
+    &{json_form_data}=    Create Dictionary    nationality=US    name=Michael Scott    fichero=${document_reference}
+    Save Json Forms Value Data    ${KUFLOW_TASK_ID}    ${json_form_data}
 
 
 *** Keywords ***
