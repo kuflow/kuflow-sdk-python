@@ -391,7 +391,8 @@ class Keywords:
         Example:
         | Upload Json Forms Value document    | ${KUFLOW_TASK_ID} | ${PATH_IN_SCHEMA} | ${PATH}
         =>
-        | ${document_reference}=    Upload Json Forms Value document    | ${KUFLOW_TASK_ID} | \#/properties/file | hello.jpg
+        | ${document_reference}=
+        | ... Upload Json Forms Value document    | ${KUFLOW_TASK_ID} | \\#/properties/file | hello.jpg
         | &{json_form_data}=    Create Dictionary    my_file=${document_reference}
         | Save Json Forms Value Data    ${KUFLOW_TASK_ID}    ${json_form_data}
         """
@@ -410,4 +411,3 @@ class Keywords:
         reponse = self._client.task.actions_task_save_json_forms_value_document(id=task_id, file=file, command=command)
 
         return reponse.value
-
