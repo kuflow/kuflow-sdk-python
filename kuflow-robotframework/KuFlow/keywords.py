@@ -376,10 +376,10 @@ class Keywords:
             "type": "object",
             "properties": {
                 "file": {
-                "type": "string",
-                "format": "kuflow-file",
-                "accept": "image/*,application/pdf,.pdf",
-                "maxSize": 20000000
+                    "type": "string",
+                    "format": "kuflow-file",
+                    "accept": "image/*,application/pdf,.pdf",
+                    "maxSize": 20000000
                 }
             }
         }
