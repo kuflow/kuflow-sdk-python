@@ -52,6 +52,14 @@ List of available keywords:
 
 > Given an Id of a Document or the URI reference of a Document, create an item that represents a reference to the Document elementand can be used.
 
+#### Save Json Forms Value Data
+
+> Allows a JSON Forms to be saved in the task.
+
+#### Upload Json Forms Value Document
+
+> Allows you to upload a document to the referenced task and then include a reference to it in the task's JSON Forms.
+
 ## Documentation
 
 More detailed docs are available in the [documentation pages](https://docs.kuflow.com/developers/).
