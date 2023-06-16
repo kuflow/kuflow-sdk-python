@@ -54,7 +54,7 @@ class KuFlowSyncActivities:
             self.append_task_log,
         ]
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_retrievePrincipal")
     async def retrieve_principal(
         self,
         request: models_temporal.RetrievePrincipalRequest,
@@ -68,7 +68,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_findProcesses")
     async def find_processes(
         self,
         request: models_temporal.FindProcessesRequest,
@@ -82,7 +82,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_retrieveProcess")
     async def retrieve_process(
         self,
         request: models_temporal.RetrieveProcessRequest,
@@ -96,7 +96,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_saveProcessElement")
     async def save_process_element(
         self,
         request: models_temporal.SaveProcessElementRequest,
@@ -113,7 +113,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_deleteProcessElement")
     async def delete_process_element(
         self,
         request: models_temporal.DeleteProcessElementRequest,
@@ -129,7 +129,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_completeProcess")
     async def complete_process(
         self,
         request: models_temporal.CompleteProcessRequest,
@@ -143,7 +143,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_changeProcessInitiator")
     async def change_process_initiator(
         self,
         request: models_temporal.ChangeProcessInitiatorRequest,
@@ -160,7 +160,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_findTasks")
     async def find_tasks(
         self,
         request: models_temporal.FindTaskRequest,
@@ -174,7 +174,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_retrieveTask")
     async def retrieve_task(
         self,
         request: models_temporal.RetrieveTaskRequest,
@@ -188,7 +188,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_createTask")
     async def create_task(
         self,
         request: models_temporal.CreateTaskRequest,
@@ -202,7 +202,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_completeTask")
     async def complete_task(
         self,
         request: models_temporal.CompleteTaskRequest,
@@ -216,7 +216,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_claimTask")
     async def claim_task(
         self,
         request: models_temporal.ClaimTaskRequest,
@@ -230,7 +230,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_assignTask")
     async def assign_task(
         self,
         request: models_temporal.AssignTaskRequest,
@@ -245,7 +245,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_saveTaskElement")
     async def save_task_element(
         self,
         request: models_temporal.SaveTaskElementRequest,
@@ -262,7 +262,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_deleteTaskElement")
     async def delete_task_element(
         self,
         request: models_temporal.DeleteTaskElementRequest,
@@ -277,7 +277,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_deleteTaskElementValueDocument")
     async def delete_task_element_value_document(
         self,
         request: models_temporal.DeleteTaskElementValueDocumentRequest,
@@ -294,7 +294,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_saveTaskJsonFormsValueData")
     async def save_task_json_forms_value_data(
         self,
         request: models_temporal.SaveTaskJsonFormsValueDataRequest,
@@ -309,7 +309,7 @@ class KuFlowSyncActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_appendTaskLog")
     async def append_task_log(
         self,
         request: models_temporal.AppendTaskLogRequest,
