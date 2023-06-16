@@ -57,12 +57,12 @@ Edit `scripts/create_local.version.sh` and set in the variable `VERSION`
 Then, execute
 
 ```bash
-scripts/create_local.version.sh
+./scripts/create_local_version.sh
 ```
 After that, execute a lock in each submodule:
 
 ```bash
-scripts/poetry_run_on_each.sh lock
+./scripts/poetry_run_on_each.sh lock
 ```
 
 ### See more
