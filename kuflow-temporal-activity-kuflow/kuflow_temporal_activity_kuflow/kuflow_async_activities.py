@@ -36,7 +36,7 @@ class KuFlowAsyncActivities:
         self._kuflow_client = kuflow_client
         self.activities = [self.create_task_and_wait_finished]
 
-    @activity.defn
+    @activity.defn(name="KuFlow_Engine_createTaskAndWaitFinished")
     async def create_task_and_wait_finished(
         self,
         request: models_temporal.CreateTaskRequest,

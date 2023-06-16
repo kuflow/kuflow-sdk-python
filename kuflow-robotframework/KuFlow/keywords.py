@@ -29,11 +29,16 @@ from typing import Union, Optional
 from uuid import UUID
 
 import magic
+import json
 
 from robot.utils import is_list_like, is_number, is_string, type_name, is_dict_like
 from robot.api.deco import keyword
 
 from kuflow_rest import KuFlowRestClient, models
+
+
+def _to_dict(value: dict) -> dict:
+    return json.loads(json.dumps(value))
 
 
 class Keywords:
@@ -137,7 +142,7 @@ class Keywords:
 
         If it is a multiple element, and the documentId does not exist or is empty, the document will be added to
         the element.
-        If the element already exists (the Id referenced in the body corresponds to an existing one), it updates it.
+        If the element already exists (the id referenced in the body corresponds to an existing one), it updates it.
 
         You also can optionally mark the document as invalid.
 
@@ -180,7 +185,7 @@ class Keywords:
         | Delete Element Document | d9729dc3-10ee-4ed9-91ca-c10e6a6d13ec | ac951e9f-c194-445b-9eec-4a800b25fb56
         """
 
-        command = models.TaskDeleteElementValueDocumentCommand(document_id=id)
+        command = models.TaskDeleteElementValueDocumentCommand(document_id=str(id))
 
         self._client.task.actions_task_delete_element_value_document(id=task_id, command=command)
 
@@ -274,7 +279,7 @@ class Keywords:
             elif isinstance(v, models.TaskElementValueDocumentItem):
                 element = models.TaskElementValueDocument(value=v, valid=valid)
             elif is_dict_like(v):
-                element = models.TaskElementValueObject(value=v, valid=valid)
+                element = models.TaskElementValueObject(value=_to_dict(v), valid=valid)
             else:
                 element = models.TaskElementValueString(value=v, valid=valid)
 
@@ -308,8 +313,8 @@ class Keywords:
     ) -> models.TaskElementValuePrincipalItem:
         """Convert to element value principal item
 
-        Given an Id of a Principal, create an item that represents a reference to the Principal. Then can be used
-        as a value in the kewyord 'Save Element'. The principal ID can be obtained through some api methods such
+        Given an id of a Principal, create an item that represents a reference to the Principal. Then can be used
+        as a value in the keyword 'Save Element'. The principal ID can be obtained through some api methods such
         as "Find all accessible Principals" or implicitly in some resources such as the Initiator of a process
         or the Owner of a task.
 
@@ -319,14 +324,14 @@ class Keywords:
         | Convert To Principal Item  | 7dd16e94-2dac-4fca-931e-c2505baa695c | USER
         """
 
-        return models.TaskElementValuePrincipalItem(id=id, type=type)
+        return models.TaskElementValuePrincipalItem(id=str(id), type=type)
 
     @keyword()
     def convert_to_document_item_from_uri(self, uri: str) -> models.TaskElementValueDocumentItem:
         """Convert to element value principal item
 
-        Given an Id of a Document or the Reference of a Document, create an item that represents a reference to the
-        Document elementand can be used. Then can be used as a value in the kewyord 'Save Element'.
+        Given an id of a Document or the Reference of a Document, create an item that represents a reference to the
+        Document element and can be used. Then can be used as a value in the keyword 'Save Element'.
 
         Example:
         | Convert To Document Item From Uri  | ${ID}
@@ -358,7 +363,7 @@ class Keywords:
         if not is_dict_like(value):
             raise TypeError("Expected argument to be a dict or dict-like, " "got %s instead." % (type_name(value)))
 
-        command = models.TaskSaveJsonFormsValueDataCommand(data=value)
+        command = models.TaskSaveJsonFormsValueDataCommand(data=_to_dict(value))
 
         return self._client.task.actions_task_save_json_forms_value_data(id=task_id, command=command)
 
@@ -386,7 +391,7 @@ class Keywords:
 
         The path is as follows: #/properties/file
 
-        Note that in RobotFramwork, the hash indicates a comment, so you should escape it
+        Note that in RobotFramework, the hash indicates a comment, so you should escape it
 
         Example:
         | Upload Json Forms Value document    | ${KUFLOW_TASK_ID} | ${PATH_IN_SCHEMA} | ${PATH}
@@ -408,6 +413,6 @@ class Keywords:
         )
         command = models.TaskSaveJsonFormsValueDocumentRequestCommand(schema_path=path_in_schema)
 
-        reponse = self._client.task.actions_task_save_json_forms_value_document(id=task_id, file=file, command=command)
+        response = self._client.task.actions_task_save_json_forms_value_document(id=task_id, file=file, command=command)
 
-        return reponse.value
+        return response.value

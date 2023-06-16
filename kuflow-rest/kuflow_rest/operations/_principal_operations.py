@@ -40,7 +40,7 @@ class PrincipalOperations:
     """
 
     def __init__(self, kuflow_client: KuFlowRestClientGenerated):
-        self.__kuflow_client = kuflow_client
+        self._kuflow_client = kuflow_client
 
     def find_principals(
         self,
@@ -81,7 +81,7 @@ class PrincipalOperations:
         if group_id is not None and isinstance(group_id, str):
             group_id = [group_id]
 
-        return self.__kuflow_client.principal.find_principals(
+        return self._kuflow_client.principal.find_principals(
             size=size, page=page, sort=sort, type=type, group_id=group_id, **kwargs
         )
 
@@ -96,4 +96,4 @@ class PrincipalOperations:
         :rtype: ~kuflow.rest.models.Principal
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.principal.retrieve_principal(id=id, **kwargs)
+        return self._kuflow_client.principal.retrieve_principal(id=id, **kwargs)

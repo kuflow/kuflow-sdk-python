@@ -40,7 +40,7 @@ class AuthenticationOperations:
     """
 
     def __init__(self, kuflow_client: KuFlowRestClientGenerated):
-        self.__kuflow_client = kuflow_client
+        self._kuflow_client = kuflow_client
 
     def create_authentication(self, authentication: _models.Authentication, **kwargs: Any) -> _models.Authentication:
         """Create an authentication for the current principal.
@@ -53,4 +53,4 @@ class AuthenticationOperations:
         :rtype: ~kuflow.rest.models.Authentication
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.authentication.create_authentication(authentication=authentication, **kwargs)
+        return self._kuflow_client.authentication.create_authentication(authentication=authentication, **kwargs)

@@ -42,7 +42,7 @@ class TaskOperations:
     """
 
     def __init__(self, kuflow_client: KuFlowRestClientGenerated):
-        self.__kuflow_client = kuflow_client
+        self._kuflow_client = kuflow_client
 
     def find_tasks(
         self,
@@ -89,7 +89,7 @@ class TaskOperations:
         if task_definition_code is not None and isinstance(task_definition_code, str):
             task_definition_code = [task_definition_code]
 
-        return self.__kuflow_client.task.find_tasks(
+        return self._kuflow_client.task.find_tasks(
             size=size,
             page=page,
             sort=sort,
@@ -129,7 +129,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.create_task(task=task, activity_token=activity_token, **kwargs)
+        return self._kuflow_client.task.create_task(task=task, activity_token=activity_token, **kwargs)
 
     def retrieve_task(self, id: str, **kwargs: Any) -> _models.Task:
         """Get a task given it ID.
@@ -142,7 +142,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.retrieve_task(id=id, **kwargs)
+        return self._kuflow_client.task.retrieve_task(id=id, **kwargs)
 
     def actions_task_claim(self, id: str, **kwargs: Any) -> _models.Task:
         """Claim a task.
@@ -155,7 +155,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_claim(id=id, **kwargs)
+        return self._kuflow_client.task.actions_task_claim(id=id, **kwargs)
 
     def actions_task_assign(self, id: str, command: _models.TaskAssignCommand, **kwargs: Any) -> _models.Task:
         """Assign a task.
@@ -170,7 +170,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_assign(id=id, command=command, **kwargs)
+        return self._kuflow_client.task.actions_task_assign(id=id, command=command, **kwargs)
 
     def actions_task_save_element(
         self, id: str, command: _models.TaskSaveElementCommand, **kwargs: Any
@@ -195,7 +195,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_save_element(id=id, command=command, **kwargs)
+        return self._kuflow_client.task.actions_task_save_element(id=id, command=command, **kwargs)
 
     def actions_task_save_element_value_document(
         self, id: str, file: _models.Document, command: _models.TaskSaveElementValueDocumentCommand, **kwargs: Any
@@ -218,7 +218,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_save_element_value_document(
+        return self._kuflow_client.task.actions_task_save_element_value_document(
             id=id,
             file=file.file_content,
             file_content_type=file.content_type,
@@ -246,7 +246,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_delete_element(id=id, command=command, **kwargs)
+        return self._kuflow_client.task.actions_task_delete_element(id=id, command=command, **kwargs)
 
     def actions_task_delete_element_value_document(
         self, id: str, command: _models.TaskDeleteElementValueDocumentCommand, **kwargs: Any
@@ -266,7 +266,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_delete_element_value_document(id=id, command=command, **kwargs)
+        return self._kuflow_client.task.actions_task_delete_element_value_document(id=id, command=command, **kwargs)
 
     def actions_task_download_element_value_document(self, id: str, document_id: str, **kwargs: Any) -> Iterator[bytes]:
         """Download document.
@@ -281,7 +281,7 @@ class TaskOperations:
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_download_element_value_document(
+        return self._kuflow_client.task.actions_task_download_element_value_document(
             id=id, document_id=document_id, **kwargs
         )
 
@@ -303,7 +303,7 @@ class TaskOperations:
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_download_element_value_rendered(
+        return self._kuflow_client.task.actions_task_download_element_value_rendered(
             id=id, element_definition_code=element_definition_code, **kwargs
         )
 
@@ -327,7 +327,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_save_json_forms_value_data(id=id, command=command, **kwargs)
+        return self._kuflow_client.task.actions_task_save_json_forms_value_data(id=id, command=command, **kwargs)
 
     def actions_task_save_json_forms_value_document(
         self,
@@ -350,7 +350,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.TaskSaveJsonFormsValueDocumentResponseCommand
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_save_json_forms_value_document(
+        return self._kuflow_client.task.actions_task_save_json_forms_value_document(
             id=id,
             file=file.file_content,
             file_content_type=file.content_type,
@@ -374,7 +374,7 @@ class TaskOperations:
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_download_json_forms_value_document(
+        return self._kuflow_client.task.actions_task_download_json_forms_value_document(
             id=id,
             document_uri=document_uri,
             **kwargs,
@@ -391,7 +391,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_complete(id=id, **kwargs)
+        return self._kuflow_client.task.actions_task_complete(id=id, **kwargs)
 
     def actions_task_append_log(self, id: str, log: _models.Log, **kwargs: Any) -> _models.Task:
         """Append a log to the task.
@@ -407,4 +407,4 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self.__kuflow_client.task.actions_task_append_log(id=id, log=log, **kwargs)
+        return self._kuflow_client.task.actions_task_append_log(id=id, log=log, **kwargs)
