@@ -259,13 +259,13 @@ class SaveProcessElementRequest(_serialization.Model):
         self,
         process_id: str,
         element_definition_code: str,
-        element_values: List[models_rest.ProcessElementValue],
+        element_values: Optional[List[models_rest.ProcessElementValue]] = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
         self.process_id = process_id
         self.element_definition_code = element_definition_code
-        self.element_values = element_values
+        self.element_values = element_values or []
 
 
 class SaveProcessElementResponse(_serialization.Model):
@@ -665,13 +665,13 @@ class SaveTaskElementRequest(_serialization.Model):
         self,
         task_id: str,
         element_definition_code: str,
-        element_values: List[models_rest.TaskElementValue],
+        element_values: Optional[List[models_rest.TaskElementValue]] = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
         self.task_id = task_id
         self.element_definition_code = element_definition_code
-        self.element_values = element_values
+        self.element_values = element_values or []
 
 
 class SaveTaskElementResponse(_serialization.Model):
@@ -782,10 +782,10 @@ class SaveTaskJsonFormsValueDataRequest(_serialization.Model):
         "data": {"key": "data", "type": "{object}"},
     }
 
-    def __init__(self, task_id: str, data: Dict[str, Any], **kwargs: Any) -> None:
+    def __init__(self, task_id: str, data: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.task_id = task_id
-        self.data = data
+        self.data = data or {}
 
 
 class SaveTaskJsonFormsValueDataResponse(_serialization.Model):

@@ -23,22 +23,21 @@
 # SOFTWARE.
 #
 
-from typing import Union, List, Dict, Optional
+from typing import Any, Union, List, Dict, Optional
 from datetime import date, datetime
 import math
 import re
 
 from ..models import (
-    PrincipalType,
     JsonFormsFile,
     JsonFormsPrincipal,
-    JsonFormsValue,
+    PrincipalType,
     Task,
     TaskPageItem,
     TaskSaveJsonFormsValueDataCommand,
 )
 
-SimpleType = Union[str, int, float, bool, date, JsonFormsPrincipal, JsonFormsFile]
+JsonFormsSimpleType = Union[str, int, float, bool, date, JsonFormsPrincipal, JsonFormsFile]
 
 ContainerArrayType = List["ComplexType"]
 
@@ -46,9 +45,17 @@ ContainerRecordType = Dict[str, "ComplexType"]
 
 ContainerType = Union[ContainerArrayType, ContainerRecordType]
 
-ComplexType = Union[SimpleType, ContainerType]
+ComplexType = Union[JsonFormsSimpleType, ContainerType]
 
 JsonFormsModels = Union[Task, TaskPageItem, TaskSaveJsonFormsValueDataCommand]
+
+
+class JsonFormDataAccessor:
+    def get_data(self) -> Optional[Dict[str, Any]]:
+        raise Exception("Non implemented")
+
+    def set_data(self, data: Optional[Dict[str, Any]]):
+        raise Exception("Non implemented")
 
 
 class JsonFormsProperty:
@@ -62,12 +69,12 @@ class JsonFormsProperty:
         self.value = value
 
 
-def get_json_forms_property_as_str(model: JsonFormsModels, property_path: str) -> str:
+def get_json_forms_property_as_str(accessor: JsonFormDataAccessor, property_path: str) -> str:
     """
     Get a json property as "str" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -76,18 +83,18 @@ def get_json_forms_property_as_str(model: JsonFormsModels, property_path: str) -
     Raises:
         ValueError: If property value doesn't exist or has incorrect format
     """
-    value = find_json_forms_property_as_str(model, property_path)
+    value = find_json_forms_property_as_str(accessor, property_path)
     if value is None:
         raise ValueError("Property value doesn't exist")
     return value
 
 
-def find_json_forms_property_as_str(model: JsonFormsModels, property_path: str) -> Optional[str]:
+def find_json_forms_property_as_str(accessor: JsonFormDataAccessor, property_path: str) -> Optional[str]:
     """
     Try to find a json property as "str" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -96,18 +103,18 @@ def find_json_forms_property_as_str(model: JsonFormsModels, property_path: str) 
     Raises:
         ValueError: If property value has incorrect format
     """
-    value = find_json_forms_property_value(model, property_path)
+    value = find_json_forms_property_value(accessor, property_path)
     if value is not None:
         return str(value)
     return None
 
 
-def get_json_forms_property_as_int(model, property_path) -> int:
+def get_json_forms_property_as_int(accessor: JsonFormDataAccessor, property_path: str) -> int:
     """
     Get a json property as "int" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -116,18 +123,18 @@ def get_json_forms_property_as_int(model, property_path) -> int:
     Raises:
         ValueError: If property value doesn't exist or has incorrect format
     """
-    value = find_json_forms_property_as_int(model, property_path)
+    value = find_json_forms_property_as_int(accessor, property_path)
     if value is None:
         raise ValueError("Property value doesn't exist")
     return value
 
 
-def find_json_forms_property_as_int(model, property_path) -> Optional[int]:
+def find_json_forms_property_as_int(accessor: JsonFormDataAccessor, property_path: str) -> Optional[int]:
     """
     Try to find a json property as "int" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -136,7 +143,7 @@ def find_json_forms_property_as_int(model, property_path) -> Optional[int]:
     Raises:
         ValueError: If property value has incorrect format
     """
-    value = find_json_forms_property_value(model, property_path)
+    value = find_json_forms_property_value(accessor, property_path)
     if value is None:
         return None
 
@@ -153,12 +160,12 @@ def find_json_forms_property_as_int(model, property_path) -> Optional[int]:
     raise ValueError(f"Property {property_path} is not a int")
 
 
-def get_json_forms_property_as_float(model, property_path) -> float:
+def get_json_forms_property_as_float(accessor: JsonFormDataAccessor, property_path: str) -> float:
     """
     Get a json property as "float" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -167,18 +174,18 @@ def get_json_forms_property_as_float(model, property_path) -> float:
     Raises:
         ValueError: If property value doesn't exist or has incorrect format
     """
-    value = find_json_forms_property_as_float(model, property_path)
+    value = find_json_forms_property_as_float(accessor, property_path)
     if value is None:
         raise ValueError("Property value doesn't exist")
     return value
 
 
-def find_json_forms_property_as_float(model, property_path) -> Optional[float]:
+def find_json_forms_property_as_float(accessor: JsonFormDataAccessor, property_path: str) -> Optional[float]:
     """
     Try to find a json property as "float" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -187,7 +194,7 @@ def find_json_forms_property_as_float(model, property_path) -> Optional[float]:
     Raises:
         ValueError: If property value has incorrect format
     """
-    value = find_json_forms_property_value(model, property_path)
+    value = find_json_forms_property_value(accessor, property_path)
     if value is None:
         return None
 
@@ -208,12 +215,12 @@ def find_json_forms_property_as_float(model, property_path) -> Optional[float]:
     raise ValueError(f"Property {property_path} is not a float")
 
 
-def get_json_forms_property_as_date(model, property_path) -> date:
+def get_json_forms_property_as_date(accessor: JsonFormDataAccessor, property_path: str) -> date:
     """
     Get a json property as "date" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -222,18 +229,18 @@ def get_json_forms_property_as_date(model, property_path) -> date:
     Raises:
         ValueError: If property value doesn't exist or has incorrect format
     """
-    value = find_json_forms_property_as_date(model, property_path)
+    value = find_json_forms_property_as_date(accessor, property_path)
     if value is None:
         raise ValueError("Property value doesn't exist")
     return value
 
 
-def find_json_forms_property_as_date(model, property_path) -> Optional[date]:
+def find_json_forms_property_as_date(accessor: JsonFormDataAccessor, property_path: str) -> Optional[date]:
     """
     Try to find a json property as "date" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -242,7 +249,7 @@ def find_json_forms_property_as_date(model, property_path) -> Optional[date]:
     Raises:
         ValueError: If property value has incorrect format
     """
-    value = find_json_forms_property_value(model, property_path)
+    value = find_json_forms_property_value(accessor, property_path)
     if value is None:
         return None
 
@@ -258,12 +265,12 @@ def find_json_forms_property_as_date(model, property_path) -> Optional[date]:
     raise ValueError(f"Property {property_path} is not a date following ISO 8601 format")
 
 
-def get_json_forms_property_as_datetime(model, property_path) -> datetime:
+def get_json_forms_property_as_datetime(accessor: JsonFormDataAccessor, property_path: str) -> datetime:
     """
     Get a json property as "datetime" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -272,18 +279,18 @@ def get_json_forms_property_as_datetime(model, property_path) -> datetime:
     Raises:
         ValueError: If property value doesn't exist or has incorrect format
     """
-    value = find_json_forms_property_as_datetime(model, property_path)
+    value = find_json_forms_property_as_datetime(accessor, property_path)
     if value is None:
         raise ValueError("Property value doesn't exist")
     return value
 
 
-def find_json_forms_property_as_datetime(model, property_path) -> Optional[datetime]:
+def find_json_forms_property_as_datetime(accessor: JsonFormDataAccessor, property_path: str) -> Optional[datetime]:
     """
     Try to find a json property as "datetime" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -292,7 +299,7 @@ def find_json_forms_property_as_datetime(model, property_path) -> Optional[datet
     Raises:
         ValueError: If property value has incorrect format
     """
-    value = find_json_forms_property_value(model, property_path)
+    value = find_json_forms_property_value(accessor, property_path)
     if value is None:
         return None
 
@@ -308,12 +315,12 @@ def find_json_forms_property_as_datetime(model, property_path) -> Optional[datet
     raise ValueError(f"Property {property_path} is not a date-time following ISO 8601 format")
 
 
-def get_json_forms_property_as_json_forms_file(model, property_path) -> JsonFormsFile:
+def get_json_forms_property_as_json_forms_file(accessor: JsonFormDataAccessor, property_path: str) -> JsonFormsFile:
     """
     Get a json property as "JsonFormsFile" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -322,18 +329,20 @@ def get_json_forms_property_as_json_forms_file(model, property_path) -> JsonForm
     Raises:
         ValueError: If property value doesn't exist or has incorrect format
     """
-    value = find_json_forms_property_as_json_forms_file(model, property_path)
+    value = find_json_forms_property_as_json_forms_file(accessor, property_path)
     if value is None:
         raise ValueError("Property value doesn't exist")
     return value
 
 
-def find_json_forms_property_as_json_forms_file(model, property_path) -> Optional[JsonFormsFile]:
+def find_json_forms_property_as_json_forms_file(
+    accessor: JsonFormDataAccessor, property_path: str
+) -> Optional[JsonFormsFile]:
     """
     Try to find a json property as "JsonFormsFile" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -342,7 +351,7 @@ def find_json_forms_property_as_json_forms_file(model, property_path) -> Optiona
     Raises:
         ValueError: If property value has incorrect format
     """
-    value = find_json_forms_property_value(model, property_path)
+    value = find_json_forms_property_value(accessor, property_path)
     if value is None:
         return None
 
@@ -353,12 +362,14 @@ def find_json_forms_property_as_json_forms_file(model, property_path) -> Optiona
     return json_forms_file
 
 
-def get_json_forms_property_as_json_forms_principal(model, property_path) -> JsonFormsPrincipal:
+def get_json_forms_property_as_json_forms_principal(
+    accessor: JsonFormDataAccessor, property_path: str
+) -> JsonFormsPrincipal:
     """
     Get a json property as "JsonFormsPrincipal" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -367,18 +378,20 @@ def get_json_forms_property_as_json_forms_principal(model, property_path) -> Jso
     Raises:
         ValueError: If property value doesn't exist or has incorrect format
     """
-    value = find_json_forms_property_as_json_forms_principal(model, property_path)
+    value = find_json_forms_property_as_json_forms_principal(accessor, property_path)
     if value is None:
         raise ValueError("Property value doesn't exist")
     return value
 
 
-def find_json_forms_property_as_json_forms_principal(model, property_path) -> Optional[JsonFormsPrincipal]:
+def find_json_forms_property_as_json_forms_principal(
+    accessor: JsonFormDataAccessor, property_path: str
+) -> Optional[JsonFormsPrincipal]:
     """
     Try to find a json property as "JsonFormsPrincipal" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -387,7 +400,7 @@ def find_json_forms_property_as_json_forms_principal(model, property_path) -> Op
     Raises:
         ValueError: If property value has incorrect format
     """
-    value = find_json_forms_property_value(model, property_path)
+    value = find_json_forms_property_value(accessor, property_path)
     if value is None:
         return None
 
@@ -398,12 +411,12 @@ def find_json_forms_property_as_json_forms_principal(model, property_path) -> Op
     return json_forms_file
 
 
-def get_json_forms_property_as_list(model, property_path) -> list:
+def get_json_forms_property_as_list(accessor: JsonFormDataAccessor, property_path: str) -> list:
     """
     Get a json property as "list" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -412,18 +425,18 @@ def get_json_forms_property_as_list(model, property_path) -> list:
     Raises:
         ValueError: If property value doesn't exist or has incorrect format
     """
-    value = find_json_forms_property_as_list(model, property_path)
+    value = find_json_forms_property_as_list(accessor, property_path)
     if value is None:
         raise ValueError("Property value doesn't exist")
     return value
 
 
-def find_json_forms_property_as_list(model, property_path) -> Optional[list]:
+def find_json_forms_property_as_list(accessor: JsonFormDataAccessor, property_path: str) -> Optional[list]:
     """
     Try to find a json property as "list" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -432,7 +445,7 @@ def find_json_forms_property_as_list(model, property_path) -> Optional[list]:
     Raises:
         ValueError: If property value has incorrect format
     """
-    value = find_json_forms_property_value(model, property_path)
+    value = find_json_forms_property_value(accessor, property_path)
     if value is None:
         return None
 
@@ -442,12 +455,12 @@ def find_json_forms_property_as_list(model, property_path) -> Optional[list]:
     raise ValueError(f"Property {property_path} is not a list")
 
 
-def get_json_forms_property_as_dict(model, property_path) -> dict:
+def get_json_forms_property_as_dict(accessor: JsonFormDataAccessor, property_path: str) -> dict:
     """
     Get a json property as "dict" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -456,18 +469,18 @@ def get_json_forms_property_as_dict(model, property_path) -> dict:
     Raises:
         ValueError: If property value doesn't exist or has incorrect format
     """
-    value = find_json_forms_property_as_dict(model, property_path)
+    value = find_json_forms_property_as_dict(accessor, property_path)
     if value is None:
         raise ValueError("Property value doesn't exist")
     return value
 
 
-def find_json_forms_property_as_dict(model, property_path) -> Optional[dict]:
+def find_json_forms_property_as_dict(accessor: JsonFormDataAccessor, property_path: str) -> Optional[dict]:
     """
     Try to find a json property as "dict" following the "propertyPath" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
 
     Return:
@@ -476,7 +489,7 @@ def find_json_forms_property_as_dict(model, property_path) -> Optional[dict]:
     Raises:
         ValueError: If property value has incorrect format
     """
-    value = find_json_forms_property_value(model, property_path)
+    value = find_json_forms_property_value(accessor, property_path)
     if value is None:
         return None
 
@@ -487,31 +500,29 @@ def find_json_forms_property_as_dict(model, property_path) -> Optional[dict]:
 
 
 def find_json_forms_property_value(
-    model: JsonFormsModels, property_path: str, create_missing_parents: bool = True
+    accessor: JsonFormDataAccessor, property_path: str, create_missing_parents: bool = True
 ) -> Optional[ComplexType]:
-    property = find_json_forms_property(model, property_path, create_missing_parents)
+    property = find_json_forms_property(accessor, property_path, create_missing_parents)
     if property is not None:
         return property.value
     return None
 
 
 def update_json_forms_property(
-    model: JsonFormsModels,
-    property_path: str,
-    value: Optional[SimpleType],
+    accessor: JsonFormDataAccessor, property_path: str, value: Optional[JsonFormsSimpleType]
 ) -> None:
     """
     Update a json forms data property in the task passed following the "property_path".
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
         value: Value to update
 
     Raises:
         ValueError: If property value has incorrect format
     """
-    property = find_json_forms_property(model, property_path, True)
+    property = find_json_forms_property(accessor, property_path, True)
 
     value = transform_json_forms_property_value(value)
 
@@ -540,13 +551,13 @@ def update_json_forms_property(
 
 # flake8: noqa: C901
 def find_json_forms_property(
-    model: JsonFormsModels, property_path: str, create_missing_parents: bool = False
+    accessor: JsonFormDataAccessor, property_path: str, create_missing_parents: bool = False
 ) -> Optional[JsonFormsProperty]:
     """
     Try to find a json property following the "property_path" passed.
 
     Arguments:
-        model: Related model
+        accessor: Json form data accessor.
         property_path: Property path to find. ie: "user.name" or "users.0.name"
         create_missing_parents: Create parent paths if are missing
 
@@ -556,7 +567,7 @@ def find_json_forms_property(
     Raises:
         ValueError: If property value has incorrect format or a wrong path
     """
-    property_data = get_json_forms_value_data(model, create_missing_parents)
+    property_data = get_json_forms_value_data(accessor, create_missing_parents)
     if property_data is None:
         return None
 
@@ -621,7 +632,7 @@ def find_json_forms_property(
     return JsonFormsProperty(container=property_container, path=property_value_path, value=property_value)
 
 
-def transform_json_forms_property_value(value: Optional[SimpleType]) -> Optional[SimpleType]:
+def transform_json_forms_property_value(value: Optional[JsonFormsSimpleType]) -> Optional[JsonFormsSimpleType]:
     if value is None:
         return None
     elif isinstance(value, JsonFormsPrincipal):
@@ -736,20 +747,11 @@ def is_json_forms_type_container_array(value: Optional[ComplexType]) -> bool:
     return isinstance(value, list)
 
 
-def get_json_forms_value_data(model: JsonFormsModels, create_missing_parents: bool) -> Optional[ContainerType]:
-    data: Optional[ContainerType] = None
-
-    if isinstance(model, Task) or isinstance(model, TaskPageItem):
-        data = model.json_forms_value.data if model.json_forms_value else None
-    else:
-        data = model.data
+def get_json_forms_value_data(accessor: JsonFormDataAccessor, create_missing_parents: bool) -> Optional[ContainerType]:
+    data: Optional[ContainerType] = accessor.get_data()
 
     if data is None and create_missing_parents:
         data = {}
-        if isinstance(model, Task) or isinstance(model, TaskPageItem):
-            model.json_forms_value = model.json_forms_value or JsonFormsValue()
-            model.json_forms_value.data = data
-        else:
-            model.data = data
+        accessor.set_data(data)
 
     return data
