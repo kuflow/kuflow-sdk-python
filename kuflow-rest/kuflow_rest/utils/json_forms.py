@@ -27,6 +27,7 @@ from typing import Any, Union, List, Dict, Optional
 from datetime import date, datetime
 import math
 import re
+from abc import ABC, abstractmethod
 
 from ..models import (
     JsonFormsFile,
@@ -50,12 +51,14 @@ ComplexType = Union[JsonFormsSimpleType, ContainerType]
 JsonFormsModels = Union[Task, TaskPageItem, TaskSaveJsonFormsValueDataCommand]
 
 
-class JsonFormDataAccessor:
+class JsonFormDataAccessor(ABC):
+    @abstractmethod
     def get_data(self) -> Optional[Dict[str, Any]]:
-        raise Exception("Non implemented")
+        raise NotImplementedError
 
+    @abstractmethod
     def set_data(self, data: Optional[Dict[str, Any]]):
-        raise Exception("Non implemented")
+        raise NotImplementedError
 
 
 class JsonFormsProperty:

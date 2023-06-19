@@ -26,9 +26,11 @@
 from temporalio import activity
 
 from kuflow_rest import KuFlowRestClient, models
-from kuflow_temporal_common import exceptions
+from kuflow_temporal_common import exceptions, converter
 
-from . import models as models_temporal, validation
+from .converter import KuFlowComposableEncodingPayloadConverter
+import _validation as validation
+import models as models_temporal
 
 
 class KuFlowSyncActivities:
@@ -55,6 +57,7 @@ class KuFlowSyncActivities:
         ]
 
     @activity.defn(name="KuFlow_Engine_retrievePrincipal")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def retrieve_principal(
         self,
         request: models_temporal.RetrievePrincipalRequest,
@@ -69,6 +72,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_findProcesses")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def find_processes(
         self,
         request: models_temporal.FindProcessesRequest,
@@ -83,6 +87,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_retrieveProcess")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def retrieve_process(
         self,
         request: models_temporal.RetrieveProcessRequest,
@@ -97,6 +102,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_saveProcessElement")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def save_process_element(
         self,
         request: models_temporal.SaveProcessElementRequest,
@@ -114,6 +120,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_deleteProcessElement")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def delete_process_element(
         self,
         request: models_temporal.DeleteProcessElementRequest,
@@ -130,6 +137,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_completeProcess")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def complete_process(
         self,
         request: models_temporal.CompleteProcessRequest,
@@ -144,6 +152,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_changeProcessInitiator")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def change_process_initiator(
         self,
         request: models_temporal.ChangeProcessInitiatorRequest,
@@ -161,6 +170,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_findTasks")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def find_tasks(
         self,
         request: models_temporal.FindTaskRequest,
@@ -175,6 +185,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_retrieveTask")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def retrieve_task(
         self,
         request: models_temporal.RetrieveTaskRequest,
@@ -189,6 +200,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_createTask")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def create_task(
         self,
         request: models_temporal.CreateTaskRequest,
@@ -203,6 +215,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_completeTask")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def complete_task(
         self,
         request: models_temporal.CompleteTaskRequest,
@@ -217,6 +230,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_claimTask")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def claim_task(
         self,
         request: models_temporal.ClaimTaskRequest,
@@ -231,6 +245,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_assignTask")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def assign_task(
         self,
         request: models_temporal.AssignTaskRequest,
@@ -246,6 +261,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_saveTaskElement")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def save_task_element(
         self,
         request: models_temporal.SaveTaskElementRequest,
@@ -263,6 +279,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_deleteTaskElement")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def delete_task_element(
         self,
         request: models_temporal.DeleteTaskElementRequest,
@@ -278,6 +295,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_deleteTaskElementValueDocument")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def delete_task_element_value_document(
         self,
         request: models_temporal.DeleteTaskElementValueDocumentRequest,
@@ -295,6 +313,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_saveTaskJsonFormsValueData")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def save_task_json_forms_value_data(
         self,
         request: models_temporal.SaveTaskJsonFormsValueDataRequest,
@@ -310,6 +329,7 @@ class KuFlowSyncActivities:
             raise exceptions.create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_appendTaskLog")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def append_task_log(
         self,
         request: models_temporal.AppendTaskLogRequest,
