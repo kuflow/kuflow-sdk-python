@@ -1,23 +1,37 @@
-from typing import Any, Optional, Type, List
+from typing import Any, Optional, Type, List, Union
 
 from temporalio.api.common.v1 import Payload
 from temporalio.converter import EncodingPayloadConverter
-from temporalio.types import CallableType
+from temporalio.types import CallableType, ClassType
 
 
 def register(
-    fn: Optional[CallableType] = None, encoding_payload_converter_class: Optional[Type[EncodingPayloadConverter]] = None
+    cls_or_fn: Optional[Union[CallableType, ClassType]] = None,
+    encoding_payload_converter_class: Optional[Type[EncodingPayloadConverter]] = None,
 ):
-    """A decorator to annotate that this temporal method needs a converter class.
+    """A decorator to annotate that this temporal workflow or activity method needs a converter class.
 
     Usage:
-            @kuflow_temporal_converter(encoding_payload_converter_class=CustomEncodingPayloadConverter)
-            def activity_method(self, ...):
-                ...
-    """
-    fn.__kuflow_encoding_payload_converter_class__ = encoding_payload_converter_class
+        @workflow.defn(name="SampleWorkflow")
+        @converter.register_for_workflow(encoding_payload_converter_class=CustomEncodingPayloadConverter)
+        class SampleWorkflow:
+            ...
 
-    return fn
+        OR
+
+        @converter.register_for_activity(encoding_payload_converter_class=CustomEncodingPayloadConverter)
+        def activity_method(self, ...):
+            ...
+    """
+
+    def decorator(_cls_or_fn: CallableType) -> CallableType:
+        _cls_or_fn.__kuflow_encoding_payload_converter_class__ = encoding_payload_converter_class
+
+        return _cls_or_fn
+
+    if cls_or_fn is not None:
+        return decorator(cls_or_fn)
+    return decorator
 
 
 class CompositeEncodingPayloadConverter(EncodingPayloadConverter):
