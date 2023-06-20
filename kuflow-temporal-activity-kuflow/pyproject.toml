@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuflow-temporal-activity-kuflow"
-version = "0.6.2.dev0"
+version = "0.7.0"
 description = "KuFlow SDK :: Temporal.io activities to interact with KuFlow"
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]

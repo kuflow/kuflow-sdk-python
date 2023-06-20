@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuflow-rest"
-version = "0.6.2.dev0"
+version = "0.7.0"
 description = "Client for KuFlow Rest Api"
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
