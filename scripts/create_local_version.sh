@@ -3,10 +3,10 @@
 # Usefully when building wheels in CI/CD on branches or merge requests,
 # without possibly overwriting released versions (of certain tag)
 # Used to run in CI/CD, as it will modify both pyproject.toml's and python files (by setting the right string in `__version__=..`)
-
+# Dev version follow the patter: X.X.X.devX
 
 ########################################
-VERSION=0.7.0
+VERSION=0.7.1.dev0
 ########################################
 
 
