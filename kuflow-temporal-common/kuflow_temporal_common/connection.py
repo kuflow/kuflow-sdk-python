@@ -343,7 +343,7 @@ class KuFlowTemporalConnection:
 
             converters_encoding = converters_by_encoding.get(converter.encoding, None)
             if converters_encoding is None:
-                converters_encoding = [it for it in converters if it.encoding == it.encoding]
+                converters_encoding = [it for it in converters if it.encoding == converter.encoding]
 
             converters_encoding.insert(0, converter)
             converters_by_encoding[converter.encoding] = converters_encoding
