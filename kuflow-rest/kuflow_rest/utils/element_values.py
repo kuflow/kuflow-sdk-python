@@ -25,6 +25,7 @@
 
 from typing import Union, List, Dict, Optional
 from datetime import date
+from abc import ABC, abstractmethod
 
 from ..models import (
     Process,
@@ -71,18 +72,27 @@ ElementValueSimpleType = Union[
 ]
 
 
-class ElementValueAccessor:
+class ElementValueAccessor(ABC):
+    @abstractmethod
     def get_element_values(self) -> List[ElementValueUnion]:
-        raise Exception("Non implemented")
+        raise NotImplementedError
 
+    @abstractmethod
     def set_element_values(self, element_values: List[ElementValueUnion]):
-        raise Exception("Non implemented")
+        raise NotImplementedError
 
+    @abstractmethod
     def to_element_value_object(self, element_value: Optional[ElementValueSimpleType]) -> Optional[ElementValueUnion]:
-        raise Exception("Non implemented")
+        raise NotImplementedError
 
 
 class ProcessElementValueAccessor(ElementValueAccessor):
+    def get_element_values(self) -> List[ElementValueUnion]:
+        raise NotImplementedError
+
+    def set_element_values(self, element_values: List[ElementValueUnion]):
+        raise NotImplementedError
+
     def to_element_value_object(self, element_value: Optional[ElementValueSimpleType]) -> Optional[ElementValueUnion]:
         if element_value is None:
             return None
@@ -101,6 +111,12 @@ class ProcessElementValueAccessor(ElementValueAccessor):
 
 
 class TaskElementValueAccessor(ElementValueAccessor):
+    def get_element_values(self) -> List[ElementValueUnion]:
+        raise NotImplementedError
+
+    def set_element_values(self, element_values: List[ElementValueUnion]):
+        raise NotImplementedError
+
     def to_element_value_object(self, element_value: Optional[ElementValueSimpleType]) -> Optional[ElementValueUnion]:
         if element_value is None:
             return None

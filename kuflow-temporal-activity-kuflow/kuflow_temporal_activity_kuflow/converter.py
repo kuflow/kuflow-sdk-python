@@ -43,6 +43,39 @@ with workflow.unsafe.imports_passed_through():
     from kuflow_rest import Serializer, Deserializer, Model
 
 
+class KuFlowComposableEncodingPayloadConverter(EncodingPayloadConverter):
+    _default_json_converter: JSONPlainPayloadConverter
+
+    _serialize: Serializer
+    _deserialize: Deserializer
+
+    def __init__(self, default_json_converter=JSONPlainPayloadConverter()) -> None:
+        self._default_json_converter = default_json_converter
+        client_models_rest = {k: v for k, v in models_rest.__dict__.items() if isinstance(v, type)}
+        client_models_temporal = {k: v for k, v in models_temporal.__dict__.items() if isinstance(v, type)}
+        client_models = {**client_models_rest, **client_models_temporal}
+        self._serialize = Serializer(client_models)
+        self._deserialize = Deserializer(client_models)
+
+    @property
+    def encoding(self) -> str:
+        return "json/plain"
+
+    def to_payload(self, value: Any) -> Optional[Payload]:
+        if isinstance(value, Model) is False:
+            return None
+
+        serialized = self._serialize.body(value, value.__class__.__name__)
+        return self._default_json_converter.to_payload(serialized)
+
+    def from_payload(self, payload: Payload, type_hint: Optional[Type] = None) -> Any:
+        if issubclass(type_hint, Model) is False:
+            return None
+
+        as_python_object = json.loads(payload.data)
+        return self._deserialize(type_hint.__name__, as_python_object)
+
+
 class KuFlowEncodingPayloadConverter(EncodingPayloadConverter):
     _default_json_converter: JSONPlainPayloadConverter
 

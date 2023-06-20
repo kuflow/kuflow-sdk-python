@@ -27,7 +27,9 @@ import base64
 
 from temporalio import activity
 from kuflow_rest import KuFlowRestClient
+from kuflow_temporal_common import converter
 
+from .converter import KuFlowComposableEncodingPayloadConverter
 from . import models as models_temporal
 
 
@@ -37,6 +39,7 @@ class KuFlowAsyncActivities:
         self.activities = [self.create_task_and_wait_finished]
 
     @activity.defn(name="KuFlow_Engine_createTaskAndWaitFinished")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def create_task_and_wait_finished(
         self,
         request: models_temporal.CreateTaskRequest,

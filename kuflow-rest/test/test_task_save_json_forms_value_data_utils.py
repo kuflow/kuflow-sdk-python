@@ -29,7 +29,6 @@ from datetime import date, datetime
 from kuflow_rest.models import (
     PrincipalType,
     TaskSaveJsonFormsValueDataCommand,
-    JsonFormsValue,
     JsonFormsFile,
     JsonFormsPrincipal,
 )
@@ -347,7 +346,7 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
 
     def test_update_json_forms_property(self):
         command = prepare_task_save_json_forms_data_command()
-        command.json_forms_value = JsonFormsValue()
+        command.data = None
 
         file = JsonFormsFile(
             uri="xxx-yyy-zzz",
@@ -380,7 +379,7 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
         TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key5", principal)
 
         self.assertEqual(
-            command.json_forms_value.data,
+            command.data,
             {
                 "key1": "text",
                 "key2": [
@@ -408,7 +407,7 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
         TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key2.0.key1", None)
 
         self.assertEqual(
-            command.json_forms_value.data,
+            command.data,
             {
                 "key2": [
                     {

@@ -23,5 +23,4 @@
 # SOFTWARE.
 #
 
-# __all__ = ["KuFlowPayloadConverter"]
 __version__ = "0.6.2.dev0"
