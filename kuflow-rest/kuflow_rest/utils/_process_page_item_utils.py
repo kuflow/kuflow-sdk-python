@@ -58,6 +58,9 @@ class CurrentElementValueAccessor(ProcessElementValueAccessor):
         self.element_definition_code = element_definition_code
 
     def set_element_values(self, element_values: List[ElementValueUnion]):
+        if self.process_page_item.element_values is None:
+            self.process_page_item.element_values = {}
+
         if len(element_values) == 0:
             self.process_page_item.element_values.pop(self.element_definition_code, None)
         else:
