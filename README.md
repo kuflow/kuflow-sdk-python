@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/kuflow/kuflow-sdk-python/blob/master/LICENSE)
-![Python](https://img.shields.io/pypi/pyversions/kuflow-rest.svg)
-![PyPI](https://img.shields.io/pypi/v/kuflow-rest.svg)
+[![Python](https://img.shields.io/pypi/pyversions/kuflow-rest.svg)](https://pypi.org/user/kuflow/)
+[![PyPI](https://img.shields.io/pypi/v/kuflow-rest.svg)](https://pypi.org/user/kuflow/)
 
 Mono repo for all python modules provided by KuFlow.
 
