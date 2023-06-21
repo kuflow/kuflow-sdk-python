@@ -23,8 +23,8 @@
 # SOFTWARE.
 #
 
-from typing import Any, Optional, Type
 import json
+from typing import Any, Optional, Type
 
 from temporalio import workflow
 from temporalio.api.common.v1 import Payload
@@ -40,7 +40,7 @@ from kuflow_rest import models as models_rest
 from . import models as models_temporal
 
 with workflow.unsafe.imports_passed_through():
-    from kuflow_rest import Serializer, Deserializer, Model
+    from kuflow_rest import Deserializer, Model, Serializer
 
 
 class KuFlowComposableEncodingPayloadConverter(EncodingPayloadConverter):

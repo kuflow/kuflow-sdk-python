@@ -23,9 +23,18 @@
 # SOFTWARE.
 #
 
-from typing import Any, Dict, List, Optional
 from datetime import date, datetime
+from typing import Any, Dict, List, Optional
 
+from .._generated.models import TaskElementValue
+from ..models import (
+    JsonFormsFile,
+    JsonFormsPrincipal,
+    JsonFormsValue,
+    Task,
+    TaskElementValueDocumentItem,
+    TaskElementValuePrincipalItem,
+)
 from .element_values import (
     ElementValueSimpleType,
     ElementValueUnion,
@@ -79,15 +88,6 @@ from .json_forms import (
     get_json_forms_property_as_list,
     get_json_forms_property_as_str,
     update_json_forms_property,
-)
-from .._generated.models import TaskElementValue
-from ..models import (
-    JsonFormsFile,
-    JsonFormsPrincipal,
-    JsonFormsValue,
-    Task,
-    TaskElementValueDocumentItem,
-    TaskElementValuePrincipalItem,
 )
 
 

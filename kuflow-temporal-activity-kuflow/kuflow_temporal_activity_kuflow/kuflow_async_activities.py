@@ -26,11 +26,12 @@
 import base64
 
 from temporalio import activity
+
 from kuflow_rest import KuFlowRestClient
 from kuflow_temporal_common import converter
 
-from .converter import KuFlowComposableEncodingPayloadConverter
 from . import models as models_temporal
+from .converter import KuFlowComposableEncodingPayloadConverter
 
 
 class KuFlowAsyncActivities:

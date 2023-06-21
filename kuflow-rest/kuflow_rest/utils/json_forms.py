@@ -23,11 +23,11 @@
 # SOFTWARE.
 #
 
-from typing import Any, Union, List, Dict, Optional
-from datetime import date, datetime
 import math
 import re
 from abc import ABC, abstractmethod
+from datetime import date, datetime
+from typing import Any, Dict, List, Optional, Union
 
 from ..models import (
     JsonFormsFile,

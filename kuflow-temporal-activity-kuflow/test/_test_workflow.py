@@ -30,9 +30,8 @@ from temporalio.common import RetryPolicy
 
 with workflow.unsafe.imports_passed_through():
     from kuflow_rest import models
+    from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities, KuFlowSyncActivities
     from kuflow_temporal_activity_kuflow import models as models_temporal
-    from kuflow_temporal_activity_kuflow import KuFlowSyncActivities
-    from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities
 
 
 @workflow.defn

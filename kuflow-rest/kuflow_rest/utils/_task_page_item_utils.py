@@ -23,9 +23,11 @@
 # SOFTWARE.
 #
 
-from typing import List, Optional
 from datetime import date
+from typing import List, Optional
 
+from .._generated.models import TaskElementValue
+from ..models import TaskElementValueDocumentItem, TaskElementValuePrincipalItem, TaskPageItem
 from .element_values import (
     ElementValueSimpleType,
     ElementValueUnion,
@@ -56,12 +58,6 @@ from .element_values import (
     set_element_value_list,
     set_element_value_valid,
     set_element_value_valid_at,
-)
-from .._generated.models import TaskElementValue
-from ..models import (
-    TaskElementValueDocumentItem,
-    TaskElementValuePrincipalItem,
-    TaskPageItem,
 )
 
 

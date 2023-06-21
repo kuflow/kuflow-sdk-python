@@ -25,9 +25,8 @@
 
 from typing import Any, List, Optional, Union
 
-from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
-
 from .. import models as _models
+from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
 
 
 class ProcessOperations:

@@ -23,16 +23,15 @@
 # SOFTWARE.
 #
 
+import json
 import logging
 import os
-from typing import Union, Optional
+from typing import Optional, Union
 from uuid import UUID
 
 import magic
-import json
-
-from robot.utils import is_list_like, is_number, is_string, type_name, is_dict_like
 from robot.api.deco import keyword
+from robot.utils import is_dict_like, is_list_like, is_number, is_string, type_name
 
 from kuflow_rest import KuFlowRestClient, models
 

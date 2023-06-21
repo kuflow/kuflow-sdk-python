@@ -23,10 +23,10 @@
 # SOFTWARE.
 #
 
-from typing import List, Optional, Any, Dict
+from typing import Any, Dict, List, Optional
 
-from kuflow_rest._generated import _serialization
 from kuflow_rest import models as models_rest
+from kuflow_rest._generated import _serialization
 
 ########################
 # For Workflows

@@ -23,9 +23,9 @@
 # SOFTWARE.
 #
 
-from typing import Union, List, Dict, Optional
-from datetime import date
 from abc import ABC, abstractmethod
+from datetime import date
+from typing import Dict, List, Optional, Union
 
 from ..models import (
     Process,

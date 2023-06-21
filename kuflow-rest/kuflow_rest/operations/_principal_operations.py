@@ -26,7 +26,8 @@
 
 from typing import Any, List, Optional, Union
 
-from .._generated import models as _models, KuFlowRestClient as KuFlowRestClientGenerated
+from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
+from .._generated import models as _models
 
 
 class PrincipalOperations:

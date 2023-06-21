@@ -23,42 +23,24 @@
 # SOFTWARE.
 #
 
-import dataclasses
 import concurrent.futures
+import dataclasses
 from dataclasses import dataclass
 from datetime import timedelta
-from typing import (
-    Awaitable,
-    Callable,
-    Dict,
-    List,
-    Mapping,
-    Optional,
-    Sequence,
-    Set,
-    Type,
-    Union,
-)
+from typing import Awaitable, Callable, Dict, List, Mapping, Optional, Sequence, Set, Type, Union
 
-import temporalio.converter
+import temporalio.activity
 import temporalio.common
+import temporalio.converter
 import temporalio.runtime
 import temporalio.workflow
-import temporalio.activity
-
-from temporalio.worker import Worker
-from temporalio.client import Client, Interceptor, TLSConfig, RetryConfig
-from temporalio.worker import (
-    SharedStateManager,
-    UnsandboxedWorkflowRunner,
-    WorkflowRunner,
-)
+from temporalio.client import Client, Interceptor, RetryConfig, TLSConfig
+from temporalio.worker import SharedStateManager, UnsandboxedWorkflowRunner, Worker, WorkflowRunner
 from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner
 
+from kuflow_rest import KuFlowRestClient
 from kuflow_temporal_common.authentication import KuFlowAuthorizationTokenProvider
 from kuflow_temporal_common.converter import CompositeEncodingPayloadConverter
-
-from kuflow_rest import KuFlowRestClient
 
 
 @dataclass

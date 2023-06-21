@@ -27,10 +27,10 @@ import unittest
 from datetime import date
 
 from kuflow_rest.models import (
-    ProcessPageItem,
     ProcessDefinitionSummary,
-    ProcessElementValueString,
     ProcessElementValueNumber,
+    ProcessElementValueString,
+    ProcessPageItem,
 )
 from kuflow_rest.utils import ProcessPageItemUtils
 

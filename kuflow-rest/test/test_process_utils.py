@@ -26,12 +26,7 @@
 import unittest
 from datetime import date
 
-from kuflow_rest.models import (
-    Process,
-    ProcessDefinitionSummary,
-    ProcessElementValueString,
-    ProcessElementValueNumber,
-)
+from kuflow_rest.models import Process, ProcessDefinitionSummary, ProcessElementValueNumber, ProcessElementValueString
 from kuflow_rest.utils import ProcessUtils
 
 

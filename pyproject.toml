@@ -28,6 +28,7 @@ flake8 = "^5.0.4"
 black = "^23.3.0"
 pytest = "^7.3.1"
 pyyaml = "^6.0"
+isort = "^5.12.0"
 
 [tool.pytest.ini_options]
 log_cli = true
@@ -38,3 +39,10 @@ python_files= "test_*.py"
 [tool.black]
 line-length = 120
 target-version = ["py38", "py39"]
+
+[tool.isort]
+profile = "black"
+line_length = 120
+skip_glob = ["*/_generated/*"]
+skip_gitignore = true
+known_first_party = ["kuflow_rest", "kuflow_temporal_common", "kuflow_temporal_activity_kuflow"]

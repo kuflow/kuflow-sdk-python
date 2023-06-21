@@ -24,9 +24,8 @@
 #
 
 from enum import Enum
-from azure.core.exceptions import (
-    HttpResponseError,
-)
+
+from azure.core.exceptions import HttpResponseError
 from temporalio.exceptions import ApplicationError
 
 

@@ -25,24 +25,20 @@
 
 import asyncio
 import logging
-import yaml
 
+import yaml
+from _test_workflow import GreetingWorkflow
 from temporalio.client import TLSConfig
 
 from kuflow_rest import KuFlowRestClient
-
-from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities
-from kuflow_temporal_activity_kuflow import KuFlowSyncActivities
+from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities, KuFlowSyncActivities
 from kuflow_temporal_common.connection import (
-    KuFlowTemporalConnection,
     KuFlowConfig,
-    TemporalConfig,
+    KuFlowTemporalConnection,
     TemporalClientConfig,
+    TemporalConfig,
     TemporalWorkerConfig,
 )
-
-
-from _test_workflow import GreetingWorkflow
 
 # Load configuration
 with open("kuflow-temporal-activity-kuflow/test/application-local.yaml", "r") as file:

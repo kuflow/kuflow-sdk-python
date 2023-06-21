@@ -27,19 +27,19 @@ import unittest
 from datetime import date, datetime
 
 from kuflow_rest.models import (
+    JsonFormsFile,
+    JsonFormsPrincipal,
+    JsonFormsValue,
     PrincipalType,
     Task,
     TaskDefinitionSummary,
-    TaskElementValueString,
+    TaskElementValueDocument,
+    TaskElementValueDocumentItem,
     TaskElementValueNumber,
     TaskElementValueObject,
     TaskElementValuePrincipal,
     TaskElementValuePrincipalItem,
-    TaskElementValueDocument,
-    TaskElementValueDocumentItem,
-    JsonFormsValue,
-    JsonFormsFile,
-    JsonFormsPrincipal,
+    TaskElementValueString,
 )
 from kuflow_rest.utils import TaskUtils
 
