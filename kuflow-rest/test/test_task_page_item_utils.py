@@ -27,15 +27,15 @@ import unittest
 from datetime import date
 
 from kuflow_rest.models import (
-    TaskPageItem,
     TaskDefinitionSummary,
-    TaskElementValueString,
+    TaskElementValueDocument,
+    TaskElementValueDocumentItem,
     TaskElementValueNumber,
     TaskElementValueObject,
     TaskElementValuePrincipal,
     TaskElementValuePrincipalItem,
-    TaskElementValueDocument,
-    TaskElementValueDocumentItem,
+    TaskElementValueString,
+    TaskPageItem,
 )
 from kuflow_rest.utils import TaskPageItemUtils
 

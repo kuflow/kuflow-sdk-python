@@ -23,9 +23,11 @@
 # SOFTWARE.
 #
 
-from typing import List, Optional
 from datetime import date
+from typing import List, Optional
 
+from .._generated.models import ProcessElementValue
+from ..models import Process
 from .element_values import (
     ElementValueSimpleType,
     ElementValueUnion,
@@ -48,8 +50,6 @@ from .element_values import (
     set_element_value_valid,
     set_element_value_valid_at,
 )
-from .._generated.models import ProcessElementValue
-from ..models import Process
 
 
 class CurrentElementValueAccessor(ProcessElementValueAccessor):

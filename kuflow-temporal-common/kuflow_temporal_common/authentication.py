@@ -23,10 +23,10 @@
 # SOFTWARE.
 #
 
-import datetime
 import asyncio
+import datetime
 import logging
-from typing import Optional, Mapping
+from typing import Mapping, Optional
 
 from temporalio.client import Client
 

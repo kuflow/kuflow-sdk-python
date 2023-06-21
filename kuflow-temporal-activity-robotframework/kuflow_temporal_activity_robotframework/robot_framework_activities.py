@@ -25,12 +25,12 @@
 
 from dataclasses import dataclass, field
 from typing import Callable, List, Optional, Sequence
-import robot
 
+import robot
 from temporalio import activity
 from temporalio.exceptions import ApplicationError
-from kuflow_temporal_common.activity_utils import auto_heartbeater
 
+from kuflow_temporal_common.activity_utils import auto_heartbeater
 from kuflow_temporal_common.exceptions import KuFlowFailureType
 
 

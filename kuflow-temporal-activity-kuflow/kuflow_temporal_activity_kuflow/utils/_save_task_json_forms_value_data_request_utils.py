@@ -23,9 +23,10 @@
 # SOFTWARE.
 #
 
-from typing import Any, Dict, Optional
 from datetime import date, datetime
+from typing import Any, Dict, Optional
 
+from kuflow_rest.models import JsonFormsFile, JsonFormsPrincipal
 from kuflow_rest.utils.json_forms import (
     JsonFormDataAccessor,
     JsonFormsSimpleType,
@@ -49,10 +50,7 @@ from kuflow_rest.utils.json_forms import (
     get_json_forms_property_as_str,
     update_json_forms_property,
 )
-from kuflow_rest.models import (
-    JsonFormsFile,
-    JsonFormsPrincipal,
-)
+
 from ..models import SaveTaskJsonFormsValueDataRequest
 
 

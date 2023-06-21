@@ -26,9 +26,10 @@
 from temporalio import activity
 
 from kuflow_rest import KuFlowRestClient, models
-from kuflow_temporal_common import exceptions, converter
+from kuflow_temporal_common import converter, exceptions
 
-from . import _validation as validation, models as models_temporal
+from . import _validation as validation
+from . import models as models_temporal
 from .converter import KuFlowComposableEncodingPayloadConverter
 
 

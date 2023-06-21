@@ -26,7 +26,7 @@
 import unittest
 from datetime import date
 
-from kuflow_rest.models import ProcessElementValueString, ProcessElementValueNumber
+from kuflow_rest.models import ProcessElementValueNumber, ProcessElementValueString
 from kuflow_temporal_activity_kuflow.models import SaveProcessElementRequest
 from kuflow_temporal_activity_kuflow.utils import SaveProcessElementRequestUtils
 

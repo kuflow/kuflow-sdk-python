@@ -26,11 +26,7 @@
 import unittest
 from datetime import date, datetime
 
-from kuflow_rest.models import (
-    PrincipalType,
-    JsonFormsFile,
-    JsonFormsPrincipal,
-)
+from kuflow_rest.models import JsonFormsFile, JsonFormsPrincipal, PrincipalType
 from kuflow_temporal_activity_kuflow.models import SaveTaskJsonFormsValueDataRequest
 from kuflow_temporal_activity_kuflow.utils import SaveTaskJsonFormsValueDataRequestUtils
 

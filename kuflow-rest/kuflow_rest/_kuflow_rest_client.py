@@ -24,16 +24,16 @@
 #
 
 
+import base64
 import platform
 import sys
-import base64
-
 from typing import Any, Optional
+
 from azure.core.credentials import AccessToken
 from azure.core.pipeline.policies import SansIOHTTPPolicy
 
-from ._generated import VERSION, KuFlowRestClient as KuFlowRestClientGenerated
-
+from ._generated import VERSION
+from ._generated import KuFlowRestClient as KuFlowRestClientGenerated
 from .operations import AuthenticationOperations, PrincipalOperations, ProcessOperations, TaskOperations
 
 

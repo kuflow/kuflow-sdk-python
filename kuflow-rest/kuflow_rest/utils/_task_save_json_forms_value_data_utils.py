@@ -23,9 +23,10 @@
 # SOFTWARE.
 #
 
-from typing import Any, Dict, Optional
 from datetime import date, datetime
+from typing import Any, Dict, Optional
 
+from ..models import JsonFormsFile, JsonFormsPrincipal, TaskSaveJsonFormsValueDataCommand
 from .json_forms import (
     JsonFormDataAccessor,
     JsonFormsSimpleType,
@@ -48,11 +49,6 @@ from .json_forms import (
     get_json_forms_property_as_list,
     get_json_forms_property_as_str,
     update_json_forms_property,
-)
-from ..models import (
-    JsonFormsFile,
-    JsonFormsPrincipal,
-    TaskSaveJsonFormsValueDataCommand,
 )
 
 

@@ -1,4 +1,4 @@
-from typing import Any, Optional, Type, List, Union
+from typing import Any, List, Optional, Type, Union
 
 from temporalio.api.common.v1 import Payload
 from temporalio.converter import EncodingPayloadConverter

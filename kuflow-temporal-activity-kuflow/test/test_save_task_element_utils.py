@@ -27,13 +27,13 @@ import unittest
 from datetime import date
 
 from kuflow_rest.models import (
-    TaskElementValueString,
+    TaskElementValueDocument,
+    TaskElementValueDocumentItem,
     TaskElementValueNumber,
     TaskElementValueObject,
     TaskElementValuePrincipal,
     TaskElementValuePrincipalItem,
-    TaskElementValueDocument,
-    TaskElementValueDocumentItem,
+    TaskElementValueString,
 )
 from kuflow_temporal_activity_kuflow.models import SaveTaskElementRequest
 from kuflow_temporal_activity_kuflow.utils import SaveTaskElementRequestUtils
