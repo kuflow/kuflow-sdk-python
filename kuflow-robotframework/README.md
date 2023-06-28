@@ -52,6 +52,10 @@ List of available keywords:
 
 > Given an Id of a Document or the URI reference of a Document, create an item that represents a reference to the Document elementand can be used.
 
+#### Convert JSON String To Object
+
+> Given a JSON string as argument, return new JSON object
+
 #### Save Json Forms Value Data
 
 > Allows a JSON Forms to be saved in the task.

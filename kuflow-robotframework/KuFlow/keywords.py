@@ -346,7 +346,7 @@ class Keywords:
     def convert_json_string_to_object(self, json_string):
         """Convert JSON String To Object
 
-        Given a JSON string as argument, return new json_object
+        Given a JSON string as argument, return new JSON object
 
         Example:
         | ${json_object}=  |  Convert JSON String To Object | ${json_string} |
