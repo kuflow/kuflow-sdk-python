@@ -343,6 +343,26 @@ class Keywords:
         return models.TaskElementValueDocumentItem(uri=uri)
 
     @keyword()
+    def convert_json_string_to_object(self, json_string):
+        """Convert JSON String To Object
+
+        Given a JSON string as argument, return new json_object
+
+        Example:
+        | ${json_object}=  |  Convert JSON String To Object | ${json_string} |
+        =>
+        | ${json_string}=    catenate
+        | ...  {
+        | ...    "key1": "10",
+        | ...    "key2": {
+        | ...            "subkey1": "My value"
+        | ...          }
+        | ...  }
+        | ${json_object}=  |  Convert JSON String To Object | ${json_string} |
+        """
+        return json.loads(json_string)
+
+    @keyword()
     def save_json_forms_value_data(self, task_id: UUID, value) -> models.Task:
         """Save a JSON Forms value data
 

@@ -5,6 +5,17 @@ from kuflow_temporal_activity_robotframework.robot_framework_activities import E
 
 my_var = "My custom variable value"
 
+my_nested_dict = {}
+my_nested_dict['key1'] = {}
+my_nested_dict['key2'] = {}
+
+my_nested_dict['key1']['nested_key1'] = 'value1'
+my_nested_dict['key1']['nested_key2'] = 'value2'
+my_nested_dict['key2']['nested_key3'] = 'value3'
+my_nested_dict['key2']['nested_key4'] = 'value4'
+
+my_list = [my_nested_dict]
+
 
 async def main():
     robot_framework_activities = RobotFrameworkActivities()
