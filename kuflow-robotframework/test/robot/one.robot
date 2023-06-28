@@ -209,6 +209,17 @@ Test Save Json Forms Value Document to KuFlow Task
     &{json_form_data}=    Create Dictionary    nationality=US    name=Michael Scott    fichero=${document_reference}
     Save Json Forms Value Data    ${KUFLOW_TASK_ID}    ${json_form_data}
 
+Test Convert JSON String To Object
+    ${json_string}=    catenate
+    ...  {
+    ...    "key1": "10",
+    ...    "key2": {
+    ...            "subkey1": "My value"
+    ...          }
+    ...  }
+    Log To Console       Original JSON:\n${json_string}
+    ${json_object}=    Convert JSON String To Object    ${json_string}
+    Log To Console       Navigate dict:\n${json_object['key1']}
 
 *** Keywords ***
 Set KuFlow Credentials
