@@ -27,4 +27,4 @@ from .robot_framework_activities import RobotFrameworkActivities
 
 __all__ = ["RobotFrameworkActivities"]
 
-__version__ = "0.8.0"
+__version__ = "0.8.1.dev0"
