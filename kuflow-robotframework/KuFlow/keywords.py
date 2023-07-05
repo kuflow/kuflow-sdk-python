@@ -37,7 +37,12 @@ from kuflow_rest import KuFlowRestClient, models
 
 
 def _to_dict(value: dict) -> dict:
-    return json.loads(json.dumps(value))
+    """Converts the given ``value`` to a Python ``dict`` type.
+
+    Mainly useful for converting other mappings to normal dictionaries.
+    This includes converting Robot Framework's own ``DotDict`` instances.
+    """
+    return dict(value)
 
 
 class Keywords:
