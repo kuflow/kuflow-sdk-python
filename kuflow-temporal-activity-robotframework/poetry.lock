@@ -267,7 +267,7 @@ six = "*"
 
 [[package]]
 name = "kuflow-rest"
-version = "0.8.1"
+version = "0.8.2.dev0"
 description = "Client for KuFlow Rest Api"
 category = "main"
 optional = false
@@ -285,7 +285,7 @@ url = "../kuflow-rest"
 
 [[package]]
 name = "kuflow-temporal-common"
-version = "0.8.1"
+version = "0.8.2.dev0"
 description = "KuFlow utilities to use Temporal.io"
 category = "main"
 optional = false
