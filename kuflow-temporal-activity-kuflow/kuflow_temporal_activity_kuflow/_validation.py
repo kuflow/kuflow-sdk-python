@@ -80,15 +80,6 @@ def validate_delete_process_element_request(
         )
 
 
-def validate_complete_process_request(
-    request: models_temporal.CompleteProcessRequest,
-) -> None:
-    if not request.process_id:
-        raise ApplicationError(
-            "'processId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
-        )
-
-
 def validate_change_process_initiator_request(
     request: models_temporal.ChangeProcessInitiatorRequest,
 ) -> None:

@@ -42,7 +42,6 @@ class KuFlowSyncActivities:
             self.retrieve_process,
             self.save_process_element,
             self.delete_process_element,
-            self.complete_process,
             self.change_process_initiator,
             self.find_tasks,
             self.retrieve_task,
