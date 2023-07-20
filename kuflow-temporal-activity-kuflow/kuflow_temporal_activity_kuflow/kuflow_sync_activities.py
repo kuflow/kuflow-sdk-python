@@ -42,7 +42,6 @@ class KuFlowSyncActivities:
             self.retrieve_process,
             self.save_process_element,
             self.delete_process_element,
-            self.complete_process,
             self.change_process_initiator,
             self.find_tasks,
             self.retrieve_task,
@@ -133,21 +132,6 @@ class KuFlowSyncActivities:
             process = self._kuflow_client.process.actions_process_delete_element(id=request.process_id, command=command)
 
             return models_temporal.DeleteProcessElementResponse(process=process)
-        except Exception as err:
-            raise exceptions.create_application_error(err) from err
-
-    @activity.defn(name="KuFlow_Engine_completeProcess")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
-    async def complete_process(
-        self,
-        request: models_temporal.CompleteProcessRequest,
-    ) -> models_temporal.CompleteProcessResponse:
-        try:
-            validation.validate_complete_process_request(request)
-
-            process = self._kuflow_client.process.actions_process_complete(request.process_id)
-
-            return models_temporal.CompleteProcessResponse(process=process)
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 

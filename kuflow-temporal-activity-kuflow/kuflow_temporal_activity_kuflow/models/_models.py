@@ -323,40 +323,6 @@ class DeleteProcessElementResponse(_serialization.Model):
         self.process = process
 
 
-class CompleteProcessRequest(_serialization.Model):
-    """
-    Attributes:
-        process_id: Process identifier to mark as completed
-    """
-
-    process_id: str
-
-    _attribute_map = {
-        "process_id": {"key": "processId", "type": "str"},
-    }
-
-    def __init__(self, process_id: str, **kwargs: Any) -> None:
-        super().__init__(**kwargs)
-        self.process_id = process_id
-
-
-class CompleteProcessResponse(_serialization.Model):
-    """
-    Attributes:
-        process: Process updated
-    """
-
-    process: models_rest.Process
-
-    _attribute_map = {
-        "process": {"key": "process", "type": "Process"},
-    }
-
-    def __init__(self, process: models_rest.Process, **kwargs: Any) -> None:
-        super().__init__(**kwargs)
-        self.process = process
-
-
 class ChangeProcessInitiatorRequest(_serialization.Model):
     """
     Attributes:

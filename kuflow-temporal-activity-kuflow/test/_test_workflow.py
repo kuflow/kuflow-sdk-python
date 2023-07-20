@@ -30,7 +30,7 @@ from temporalio.common import RetryPolicy
 
 with workflow.unsafe.imports_passed_through():
     from kuflow_rest import models
-    from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities, KuFlowSyncActivities
+    from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities
     from kuflow_temporal_activity_kuflow import models as models_temporal
 
 
@@ -45,19 +45,11 @@ class GreetingWorkflow:
         create_task_request = models_temporal.CreateTaskRequest(task=task)
 
         # Create Task
-        await workflow.execute_activity(
+        result = await workflow.execute_activity(
             KuFlowAsyncActivities.create_task_and_wait_finished,
             create_task_request,
             start_to_close_timeout=timedelta(days=1),
             schedule_to_close_timeout=timedelta(days=365),
-            retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=30)),
-        )
-
-        # Complete Workflow
-        result = await workflow.execute_activity(
-            KuFlowSyncActivities.complete_process,
-            models_temporal.CompleteProcessRequest(request.process_id),
-            start_to_close_timeout=timedelta(seconds=120),
             retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=30)),
         )
 

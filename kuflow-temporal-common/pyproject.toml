@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuflow-temporal-common"
-version = "0.8.2.dev0"
+version = "0.9.0"
 description = "KuFlow utilities to use Temporal.io"
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
