@@ -51,12 +51,12 @@ class AbstractAudited(_serialization.Model):
     """AbstractAudited.
 
     You probably want to use the sub-classes and not this class directly. Known sub-classes are:
-    Authentication, ProcessPageItem, Process, TaskPageItem, Task
+    Authentication, ProcessPageItem, Process, TaskPageItem, Task, Worker
 
     All required parameters must be populated in order to send to Azure.
 
     :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "AUTHENTICATION".
+     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -87,6 +87,7 @@ class AbstractAudited(_serialization.Model):
             "PROCESS": "Process",
             "TASK_PAGE_ITEM": "TaskPageItem",
             "TASK": "Task",
+            "WORKER": "Worker",
         }
     }
 
@@ -125,7 +126,7 @@ class Authentication(AbstractAudited):
     All required parameters must be populated in order to send to Azure.
 
     :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "AUTHENTICATION".
+     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -621,7 +622,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     All required parameters must be populated in order to send to Azure.
 
     :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "AUTHENTICATION".
+     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -974,7 +975,7 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
     All required parameters must be populated in order to send to Azure.
 
     :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "AUTHENTICATION".
+     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -1143,7 +1144,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     All required parameters must be populated in order to send to Azure.
 
     :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "AUTHENTICATION".
+     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -1768,7 +1769,7 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
     All required parameters must be populated in order to send to Azure.
 
     :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "AUTHENTICATION".
+     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -2206,3 +2207,115 @@ class WebhookEventTaskStateChangedData(_serialization.Model):
         self.task_id = task_id
         self.task_code = task_code
         self.task_state = task_state
+
+
+class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
+    """Worker.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
+     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id:
+    :vartype id: str
+    :ivar identity: Required.
+    :vartype identity: str
+    :ivar task_queue: Required.
+    :vartype task_queue: str
+    :ivar workflow_types:
+    :vartype workflow_types: list[str]
+    :ivar activity_types:
+    :vartype activity_types: list[str]
+    :ivar hostname: Required.
+    :vartype hostname: str
+    :ivar ip: Required.
+    :vartype ip: str
+    """
+
+    _validation = {
+        "object_type": {"required": True},
+        "identity": {"required": True, "max_length": 255, "min_length": 1},
+        "task_queue": {"required": True, "max_length": 255, "min_length": 1},
+        "hostname": {"required": True, "max_length": 255, "min_length": 1},
+        "ip": {"required": True, "max_length": 40, "min_length": 7},
+    }
+
+    _attribute_map = {
+        "object_type": {"key": "objectType", "type": "str"},
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "identity": {"key": "identity", "type": "str"},
+        "task_queue": {"key": "taskQueue", "type": "str"},
+        "workflow_types": {"key": "workflowTypes", "type": "[str]"},
+        "activity_types": {"key": "activityTypes", "type": "[str]"},
+        "hostname": {"key": "hostname", "type": "str"},
+        "ip": {"key": "ip", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        identity: str,
+        task_queue: str,
+        hostname: str,
+        ip: str,
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        workflow_types: Optional[List[str]] = None,
+        activity_types: Optional[List[str]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id:
+        :paramtype id: str
+        :keyword identity: Required.
+        :paramtype identity: str
+        :keyword task_queue: Required.
+        :paramtype task_queue: str
+        :keyword workflow_types:
+        :paramtype workflow_types: list[str]
+        :keyword activity_types:
+        :paramtype activity_types: list[str]
+        :keyword hostname: Required.
+        :paramtype hostname: str
+        :keyword ip: Required.
+        :paramtype ip: str
+        """
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.object_type: str = "WORKER"
+        self.id = id
+        self.identity = identity
+        self.task_queue = task_queue
+        self.workflow_types = workflow_types
+        self.activity_types = activity_types
+        self.hostname = hostname
+        self.ip = ip

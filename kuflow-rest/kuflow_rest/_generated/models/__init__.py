@@ -76,6 +76,7 @@ from ._models import WebhookEventProcessStateChanged
 from ._models import WebhookEventProcessStateChangedData
 from ._models import WebhookEventTaskStateChanged
 from ._models import WebhookEventTaskStateChangedData
+from ._models import Worker
 
 from ._enums import AuditedObjectType
 from ._enums import LogLevel
@@ -137,6 +138,7 @@ __all__ = [
     "WebhookEventProcessStateChangedData",
     "WebhookEventTaskStateChanged",
     "WebhookEventTaskStateChangedData",
+    "Worker",
     "AuditedObjectType",
     "LogLevel",
     "PagedObjectType",

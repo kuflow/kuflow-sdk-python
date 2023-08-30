@@ -41,14 +41,12 @@ from azure.core.exceptions import (
     map_error,
 )
 from azure.core.pipeline import PipelineResponse
-from azure.core.pipeline.transport import HttpResponse
-from azure.core.rest import HttpRequest
+from azure.core.rest import HttpRequest, HttpResponse
 from azure.core.tracing.decorator import distributed_trace
 from azure.core.utils import case_insensitive_dict
 
 from .. import models as _models
 from .._serialization import Serializer
-from .._vendor import _format_url_section
 
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -103,7 +101,7 @@ def build_retrieve_principal_request(id: str, **kwargs: Any) -> HttpRequest:
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -199,6 +197,8 @@ class PrincipalOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -250,6 +250,8 @@ class PrincipalOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)

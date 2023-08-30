@@ -34,7 +34,13 @@ from azure.core.pipeline.policies import SansIOHTTPPolicy
 
 from ._generated import VERSION
 from ._generated import KuFlowRestClient as KuFlowRestClientGenerated
-from .operations import AuthenticationOperations, PrincipalOperations, ProcessOperations, TaskOperations
+from .operations import (
+    AuthenticationOperations,
+    PrincipalOperations,
+    ProcessOperations,
+    TaskOperations,
+    WorkerOperations,
+)
 
 
 class KuFlowClientTokenCredential:
@@ -141,6 +147,8 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
     :vartype process: kuflow.rest.client.operations.ProcessOperations
     :ivar task: TaskOperations operations
     :vartype task: kuflow.rest.client.operations.TaskOperations
+    :ivar task: WorkerOperations operations
+    :vartype task: kuflow.rest.client.operations.WorkerOperations
     :param client_id: Client id used to connect to KuFlow. Required.
     :paramtype client_id: str
     :param client_secret: Client secret used to connect to KuFlow. Required.
@@ -184,6 +192,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         self.principal = PrincipalOperations(self._kuflow_client)
         self.process = ProcessOperations(self._kuflow_client)
         self.task = TaskOperations(self._kuflow_client)
+        self.worker = WorkerOperations(self._kuflow_client)
 
     def __enter__(self):
         self._kuflow_client.__enter__()  # pylint:disable=no-member

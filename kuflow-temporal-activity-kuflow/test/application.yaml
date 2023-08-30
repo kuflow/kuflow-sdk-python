@@ -1,5 +1,8 @@
 kuflow:
   api:
+    # API Endpoint
+    endpoint: "https://api.kuflow.com"
+
     # ID of the APPLICATION configured in KUFLOW.
     # Get it in "Application details" in the Kuflow APP.
     client-id: FILL_ME

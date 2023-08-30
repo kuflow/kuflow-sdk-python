@@ -42,30 +42,50 @@ from azure.core.exceptions import (
     map_error,
 )
 from azure.core.pipeline import PipelineResponse
-from azure.core.rest import AsyncHttpResponse, HttpRequest
-from azure.core.tracing.decorator_async import distributed_trace_async
+from azure.core.rest import HttpRequest, HttpResponse
+from azure.core.tracing.decorator import distributed_trace
 from azure.core.utils import case_insensitive_dict
 
-from ... import models as _models
-from ...operations._authentication_operations import build_create_authentication_request
+from .. import models as _models
+from .._serialization import Serializer
 
 T = TypeVar("T")
-ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
+ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
+
+_SERIALIZER = Serializer()
+_SERIALIZER.client_side_validation = False
 
 
-class AuthenticationOperations:
+def build_create_worker_request(**kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/workers"
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+
+
+class WorkerOperations:
     """
     .. warning::
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
-        :class:`~kuflow.rest.aio.KuFlowRestClient`'s
-        :attr:`authentication` attribute.
+        :class:`~kuflow.rest.KuFlowRestClient`'s
+        :attr:`worker` attribute.
     """
 
     models = _models
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs):
         input_args = list(args)
         self._client = input_args.pop(0) if input_args else kwargs.pop("client")
         self._config = input_args.pop(0) if input_args else kwargs.pop("config")
@@ -73,57 +93,61 @@ class AuthenticationOperations:
         self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
     @overload
-    async def create_authentication(
-        self, authentication: _models.Authentication, *, content_type: str = "application/json", **kwargs: Any
-    ) -> _models.Authentication:
-        """Create an authentication for the current principal.
+    def create_worker(
+        self, worker: _models.Worker, *, content_type: str = "application/json", **kwargs: Any
+    ) -> _models.Worker:
+        """Create or update a worker.
 
-        Create an authentication for the current principal.
+        Register a worker in KuFlow, this allows the platform to have a catalogue of all registered
+        workers.
 
-        :param authentication: Authentication to be created. Required.
-        :type authentication: ~kuflow.rest.models.Authentication
+        If already exist a worker for the same identity, the worker will be updated.
+
+        :param worker: Worker to create or update. Required.
+        :type worker: ~kuflow.rest.models.Worker
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Authentication
-        :rtype: ~kuflow.rest.models.Authentication
+        :return: Worker
+        :rtype: ~kuflow.rest.models.Worker
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def create_authentication(
-        self, authentication: IO, *, content_type: str = "application/json", **kwargs: Any
-    ) -> _models.Authentication:
-        """Create an authentication for the current principal.
+    def create_worker(self, worker: IO, *, content_type: str = "application/json", **kwargs: Any) -> _models.Worker:
+        """Create or update a worker.
 
-        Create an authentication for the current principal.
+        Register a worker in KuFlow, this allows the platform to have a catalogue of all registered
+        workers.
 
-        :param authentication: Authentication to be created. Required.
-        :type authentication: IO
+        If already exist a worker for the same identity, the worker will be updated.
+
+        :param worker: Worker to create or update. Required.
+        :type worker: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Authentication
-        :rtype: ~kuflow.rest.models.Authentication
+        :return: Worker
+        :rtype: ~kuflow.rest.models.Worker
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
-    @distributed_trace_async
-    async def create_authentication(
-        self, authentication: Union[_models.Authentication, IO], **kwargs: Any
-    ) -> _models.Authentication:
-        """Create an authentication for the current principal.
+    @distributed_trace
+    def create_worker(self, worker: Union[_models.Worker, IO], **kwargs: Any) -> _models.Worker:
+        """Create or update a worker.
 
-        Create an authentication for the current principal.
+        Register a worker in KuFlow, this allows the platform to have a catalogue of all registered
+        workers.
 
-        :param authentication: Authentication to be created. Is either a Authentication type or a IO
-         type. Required.
-        :type authentication: ~kuflow.rest.models.Authentication or IO
+        If already exist a worker for the same identity, the worker will be updated.
+
+        :param worker: Worker to create or update. Is either a Worker type or a IO type. Required.
+        :type worker: ~kuflow.rest.models.Worker or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
-        :return: Authentication
-        :rtype: ~kuflow.rest.models.Authentication
+        :return: Worker
+        :rtype: ~kuflow.rest.models.Worker
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -138,17 +162,17 @@ class AuthenticationOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Authentication] = kwargs.pop("cls", None)
+        cls: ClsType[_models.Worker] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(authentication, (IOBase, bytes)):
-            _content = authentication
+        if isinstance(worker, (IOBase, bytes)):
+            _content = worker
         else:
-            _json = self._serialize.body(authentication, "Authentication")
+            _json = self._serialize.body(worker, "Worker")
 
-        request = build_create_authentication_request(
+        request = build_create_worker_request(
             content_type=content_type,
             json=_json,
             content=_content,
@@ -158,22 +182,26 @@ class AuthenticationOperations:
         request.url = self._client.format_url(request.url)
 
         _stream = False
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
 
-        if response.status_code not in [200]:
+        if response.status_code not in [200, 201]:
             if _stream:
-                await response.read()  # Load the body in memory and close the socket
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Authentication", pipeline_response)
+        if response.status_code == 200:
+            deserialized = self._deserialize("Worker", pipeline_response)
+
+        if response.status_code == 201:
+            deserialized = self._deserialize("Worker", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore

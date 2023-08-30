@@ -61,10 +61,10 @@ def main() -> int:
     print(authentication)
 
     # Test process operations
-    process_id = uuid.uuid1()
+    process_id = str(uuid.uuid4())
     process_definition_id = "2536b747-d436-48eb-af9a-21989a74f95f"
 
-    task_id = uuid.uuid1()
+    task_id = str(uuid.uuid4())
     task_definition_code = "TASK"
 
     process = models.Process(
