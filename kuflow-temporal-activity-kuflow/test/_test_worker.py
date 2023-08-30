@@ -25,6 +25,7 @@
 
 import asyncio
 import logging
+from pathlib import Path
 
 import yaml
 from _test_workflow import GreetingWorkflow
@@ -41,12 +42,12 @@ from kuflow_temporal_common.connection import (
 )
 
 # Load configuration
-with open("kuflow-temporal-activity-kuflow/test/application-local.yaml", "r") as file:
+with open(Path(__file__).with_name("application-local.yaml"), "r") as file:
     yaml_data = yaml.safe_load(file)
 
+    endpoint = yaml_data["kuflow"]["api"]["endpoint"]
     client_id = yaml_data["kuflow"]["api"]["client-id"]
     client_secret = yaml_data["kuflow"]["api"]["client-secret"]
-    endpoint = "https://api.sandbox.kuflow.com/v2022-10-08"  # Overwrite default only for internal testing
 
     server_root_ca_cert = yaml_data["temporal"]["mutual-tls"]["ca-data"]
     server_root_ca_cert = server_root_ca_cert.encode("utf-8")
@@ -70,6 +71,7 @@ async def main():
         client_id=client_id,
         client_secret=client_secret,
         endpoint=endpoint,
+        allow_insecure_connection=True,
     )
 
     kuflow_sync_activities = KuFlowSyncActivities(kuflow_rest_client)

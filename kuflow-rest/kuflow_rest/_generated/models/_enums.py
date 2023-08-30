@@ -37,11 +37,12 @@ from azure.core import CaseInsensitiveEnumMeta
 class AuditedObjectType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Audited object Types."""
 
+    AUTHENTICATION = "AUTHENTICATION"
     PROCESS = "PROCESS"
     PROCESS_PAGE_ITEM = "PROCESS_PAGE_ITEM"
     TASK = "TASK"
     TASK_PAGE_ITEM = "TASK_PAGE_ITEM"
-    AUTHENTICATION = "AUTHENTICATION"
+    WORKER = "WORKER"
 
 
 class LogLevel(str, Enum, metaclass=CaseInsensitiveEnumMeta):

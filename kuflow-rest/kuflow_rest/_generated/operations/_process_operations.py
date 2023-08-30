@@ -42,14 +42,12 @@ from azure.core.exceptions import (
     map_error,
 )
 from azure.core.pipeline import PipelineResponse
-from azure.core.pipeline.transport import HttpResponse
-from azure.core.rest import HttpRequest
+from azure.core.rest import HttpRequest, HttpResponse
 from azure.core.tracing.decorator import distributed_trace
 from azure.core.utils import case_insensitive_dict
 
 from .. import models as _models
 from .._serialization import Serializer
-from .._vendor import _format_url_section
 
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -111,7 +109,7 @@ def build_retrieve_process_request(id: str, **kwargs: Any) -> HttpRequest:
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -119,7 +117,9 @@ def build_retrieve_process_request(id: str, **kwargs: Any) -> HttpRequest:
     return HttpRequest(method="GET", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_process_change_initiator_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_actions_process_change_initiator_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -131,7 +131,7 @@ def build_actions_process_change_initiator_request(id: str, **kwargs: Any) -> Ht
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     if content_type is not None:
@@ -141,7 +141,7 @@ def build_actions_process_change_initiator_request(id: str, **kwargs: Any) -> Ht
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_process_save_element_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_actions_process_save_element_request(id: str, **kwargs: Any) -> HttpRequest:  # pylint: disable=name-too-long
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -153,7 +153,7 @@ def build_actions_process_save_element_request(id: str, **kwargs: Any) -> HttpRe
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     if content_type is not None:
@@ -163,7 +163,9 @@ def build_actions_process_save_element_request(id: str, **kwargs: Any) -> HttpRe
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_process_delete_element_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_actions_process_delete_element_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -175,7 +177,7 @@ def build_actions_process_delete_element_request(id: str, **kwargs: Any) -> Http
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     if content_type is not None:
@@ -196,7 +198,7 @@ def build_actions_process_complete_request(id: str, **kwargs: Any) -> HttpReques
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -215,7 +217,7 @@ def build_actions_process_cancel_request(id: str, **kwargs: Any) -> HttpRequest:
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -223,7 +225,7 @@ def build_actions_process_cancel_request(id: str, **kwargs: Any) -> HttpRequest:
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_process_save_user_action_value_document_request(
+def build_actions_process_save_user_action_value_document_request(  # pylint: disable=name-too-long
     id: str, *, file_content_type: str, file_name: str, user_action_value_id: str, content: IO, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -238,7 +240,7 @@ def build_actions_process_save_user_action_value_document_request(
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["fileContentType"] = _SERIALIZER.query("file_content_type", file_content_type, "str")
@@ -327,6 +329,8 @@ class ProcessOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -462,6 +466,8 @@ class ProcessOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200, 201]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -517,6 +523,8 @@ class ProcessOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -645,6 +653,8 @@ class ProcessOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -779,6 +789,8 @@ class ProcessOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -901,6 +913,8 @@ class ProcessOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -954,6 +968,8 @@ class ProcessOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1009,6 +1025,8 @@ class ProcessOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1021,7 +1039,7 @@ class ProcessOperations:
         return deserialized
 
     @distributed_trace
-    def actions_process_save_user_action_value_document(
+    def actions_process_save_user_action_value_document(  # pylint: disable=name-too-long
         self, id: str, file: IO, *, file_content_type: str, file_name: str, user_action_value_id: str, **kwargs: Any
     ) -> Optional[_models.Process]:
         """Upload and save a document in a user action.
@@ -1078,6 +1096,8 @@ class ProcessOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200, 304]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)

@@ -39,7 +39,13 @@ from azure.core.rest import AsyncHttpResponse, HttpRequest
 from .. import models as _models
 from .._serialization import Deserializer, Serializer
 from ._configuration import KuFlowRestClientConfiguration
-from .operations import AuthenticationOperations, PrincipalOperations, ProcessOperations, TaskOperations
+from .operations import (
+    AuthenticationOperations,
+    PrincipalOperations,
+    ProcessOperations,
+    TaskOperations,
+    WorkerOperations,
+)
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
@@ -106,6 +112,8 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
     :vartype process: kuflow.rest.aio.operations.ProcessOperations
     :ivar task: TaskOperations operations
     :vartype task: kuflow.rest.aio.operations.TaskOperations
+    :ivar worker: WorkerOperations operations
+    :vartype worker: kuflow.rest.aio.operations.WorkerOperations
     :param credential: Credential needed for the client to connect to Azure. Required.
     :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :keyword endpoint: Service URL. Default value is "https://api.kuflow.com/v2022-10-08".
@@ -126,6 +134,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         self.principal = PrincipalOperations(self._client, self._config, self._serialize, self._deserialize)
         self.process = ProcessOperations(self._client, self._config, self._serialize, self._deserialize)
         self.task = TaskOperations(self._client, self._config, self._serialize, self._deserialize)
+        self.worker = WorkerOperations(self._client, self._config, self._serialize, self._deserialize)
 
     def send_request(self, request: HttpRequest, **kwargs: Any) -> Awaitable[AsyncHttpResponse]:
         """Runs the network request through the client's chained policies.

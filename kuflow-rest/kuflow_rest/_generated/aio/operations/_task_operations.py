@@ -42,8 +42,7 @@ from azure.core.exceptions import (
     map_error,
 )
 from azure.core.pipeline import PipelineResponse
-from azure.core.pipeline.transport import AsyncHttpResponse
-from azure.core.rest import HttpRequest
+from azure.core.rest import AsyncHttpResponse, HttpRequest
 from azure.core.tracing.decorator_async import distributed_trace_async
 from azure.core.utils import case_insensitive_dict
 
@@ -164,6 +163,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -330,6 +331,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200, 201]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -385,6 +388,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -436,6 +441,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -547,6 +554,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -682,6 +691,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -770,6 +781,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -892,6 +905,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -904,7 +919,7 @@ class TaskOperations:
         return deserialized
 
     @overload
-    async def actions_task_delete_element_value_document(
+    async def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
         self,
         id: str,
         command: _models.TaskDeleteElementValueDocumentCommand,
@@ -932,7 +947,7 @@ class TaskOperations:
         """
 
     @overload
-    async def actions_task_delete_element_value_document(
+    async def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
         self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Delete an element document value.
@@ -955,7 +970,7 @@ class TaskOperations:
         """
 
     @distributed_trace_async
-    async def actions_task_delete_element_value_document(
+    async def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
         self, id: str, command: Union[_models.TaskDeleteElementValueDocumentCommand, IO], **kwargs: Any
     ) -> _models.Task:
         """Delete an element document value.
@@ -1017,6 +1032,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1029,7 +1046,7 @@ class TaskOperations:
         return deserialized
 
     @distributed_trace_async
-    async def actions_task_download_element_value_document(
+    async def actions_task_download_element_value_document(  # pylint: disable=name-too-long
         self, id: str, *, document_id: str, **kwargs: Any
     ) -> AsyncIterator[bytes]:
         """Download document.
@@ -1073,6 +1090,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1085,7 +1104,7 @@ class TaskOperations:
         return deserialized  # type: ignore
 
     @distributed_trace_async
-    async def actions_task_download_element_value_rendered(
+    async def actions_task_download_element_value_rendered(  # pylint: disable=name-too-long
         self, id: str, *, element_definition_code: str, **kwargs: Any
     ) -> AsyncIterator[bytes]:
         """Download a Form rendered as PDF or Zip of PDFs (when the element is multiple).
@@ -1133,6 +1152,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1255,6 +1276,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1267,7 +1290,7 @@ class TaskOperations:
         return deserialized
 
     @distributed_trace_async
-    async def actions_task_save_json_forms_value_document(
+    async def actions_task_save_json_forms_value_document(  # pylint: disable=name-too-long
         self, id: str, file: IO, *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
     ) -> _models.TaskSaveJsonFormsValueDocumentResponseCommand:
         """Save a JSON Forms document.
@@ -1325,6 +1348,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1337,7 +1362,7 @@ class TaskOperations:
         return deserialized
 
     @distributed_trace_async
-    async def actions_task_download_json_forms_value_document(
+    async def actions_task_download_json_forms_value_document(  # pylint: disable=name-too-long
         self, id: str, *, document_uri: str, **kwargs: Any
     ) -> AsyncIterator[bytes]:
         """Download document.
@@ -1381,6 +1406,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1432,6 +1459,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1543,6 +1572,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)

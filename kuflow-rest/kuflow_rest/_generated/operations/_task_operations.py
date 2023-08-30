@@ -42,14 +42,12 @@ from azure.core.exceptions import (
     map_error,
 )
 from azure.core.pipeline import PipelineResponse
-from azure.core.pipeline.transport import HttpResponse
-from azure.core.rest import HttpRequest
+from azure.core.rest import HttpRequest, HttpResponse
 from azure.core.tracing.decorator import distributed_trace
 from azure.core.utils import case_insensitive_dict
 
 from .. import models as _models
 from .._serialization import Serializer
-from .._vendor import _format_url_section
 
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -131,7 +129,7 @@ def build_retrieve_task_request(id: str, **kwargs: Any) -> HttpRequest:
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -150,7 +148,7 @@ def build_actions_task_claim_request(id: str, **kwargs: Any) -> HttpRequest:
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -170,7 +168,7 @@ def build_actions_task_assign_request(id: str, **kwargs: Any) -> HttpRequest:
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     if content_type is not None:
@@ -192,7 +190,7 @@ def build_actions_task_save_element_request(id: str, **kwargs: Any) -> HttpReque
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     if content_type is not None:
@@ -202,7 +200,7 @@ def build_actions_task_save_element_request(id: str, **kwargs: Any) -> HttpReque
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_task_save_element_value_document_request(
+def build_actions_task_save_element_value_document_request(  # pylint: disable=name-too-long
     id: str,
     *,
     file_content_type: str,
@@ -225,7 +223,7 @@ def build_actions_task_save_element_value_document_request(
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["fileContentType"] = _SERIALIZER.query("file_content_type", file_content_type, "str")
@@ -244,7 +242,7 @@ def build_actions_task_save_element_value_document_request(
     return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, content=content, **kwargs)
 
 
-def build_actions_task_delete_element_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_actions_task_delete_element_request(id: str, **kwargs: Any) -> HttpRequest:  # pylint: disable=name-too-long
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -256,7 +254,7 @@ def build_actions_task_delete_element_request(id: str, **kwargs: Any) -> HttpReq
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     if content_type is not None:
@@ -266,7 +264,9 @@ def build_actions_task_delete_element_request(id: str, **kwargs: Any) -> HttpReq
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_task_delete_element_value_document_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_actions_task_delete_element_value_document_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -278,7 +278,7 @@ def build_actions_task_delete_element_value_document_request(id: str, **kwargs: 
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     if content_type is not None:
@@ -288,7 +288,7 @@ def build_actions_task_delete_element_value_document_request(id: str, **kwargs: 
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_task_download_element_value_document_request(
+def build_actions_task_download_element_value_document_request(  # pylint: disable=name-too-long
     id: str, *, document_id: str, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -302,7 +302,7 @@ def build_actions_task_download_element_value_document_request(
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["documentId"] = _SERIALIZER.query("document_id", document_id, "str")
@@ -313,7 +313,7 @@ def build_actions_task_download_element_value_document_request(
     return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
 
 
-def build_actions_task_download_element_value_rendered_request(
+def build_actions_task_download_element_value_rendered_request(  # pylint: disable=name-too-long
     id: str, *, element_definition_code: str, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -327,7 +327,7 @@ def build_actions_task_download_element_value_rendered_request(
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["elementDefinitionCode"] = _SERIALIZER.query("element_definition_code", element_definition_code, "str")
@@ -338,7 +338,9 @@ def build_actions_task_download_element_value_rendered_request(
     return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
 
 
-def build_actions_task_save_json_forms_value_data_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_actions_task_save_json_forms_value_data_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -350,7 +352,7 @@ def build_actions_task_save_json_forms_value_data_request(id: str, **kwargs: Any
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     if content_type is not None:
@@ -360,7 +362,7 @@ def build_actions_task_save_json_forms_value_data_request(id: str, **kwargs: Any
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_task_save_json_forms_value_document_request(
+def build_actions_task_save_json_forms_value_document_request(  # pylint: disable=name-too-long
     id: str, *, file_content_type: str, file_name: str, schema_path: str, content: IO, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -375,7 +377,7 @@ def build_actions_task_save_json_forms_value_document_request(
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["fileContentType"] = _SERIALIZER.query("file_content_type", file_content_type, "str")
@@ -390,7 +392,7 @@ def build_actions_task_save_json_forms_value_document_request(
     return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, content=content, **kwargs)
 
 
-def build_actions_task_download_json_forms_value_document_request(
+def build_actions_task_download_json_forms_value_document_request(  # pylint: disable=name-too-long
     id: str, *, document_uri: str, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -404,7 +406,7 @@ def build_actions_task_download_json_forms_value_document_request(
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["documentUri"] = _SERIALIZER.query("document_uri", document_uri, "str")
@@ -426,7 +428,7 @@ def build_actions_task_complete_request(id: str, **kwargs: Any) -> HttpRequest:
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -446,7 +448,7 @@ def build_actions_task_append_log_request(id: str, **kwargs: Any) -> HttpRequest
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
     if content_type is not None:
@@ -549,6 +551,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -715,6 +719,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200, 201]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -770,6 +776,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -821,6 +829,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -932,6 +942,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1067,6 +1079,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1155,6 +1169,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1277,6 +1293,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1289,7 +1307,7 @@ class TaskOperations:
         return deserialized
 
     @overload
-    def actions_task_delete_element_value_document(
+    def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
         self,
         id: str,
         command: _models.TaskDeleteElementValueDocumentCommand,
@@ -1317,7 +1335,7 @@ class TaskOperations:
         """
 
     @overload
-    def actions_task_delete_element_value_document(
+    def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
         self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Delete an element document value.
@@ -1340,7 +1358,7 @@ class TaskOperations:
         """
 
     @distributed_trace
-    def actions_task_delete_element_value_document(
+    def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
         self, id: str, command: Union[_models.TaskDeleteElementValueDocumentCommand, IO], **kwargs: Any
     ) -> _models.Task:
         """Delete an element document value.
@@ -1402,6 +1420,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1414,7 +1434,7 @@ class TaskOperations:
         return deserialized
 
     @distributed_trace
-    def actions_task_download_element_value_document(
+    def actions_task_download_element_value_document(  # pylint: disable=name-too-long
         self, id: str, *, document_id: str, **kwargs: Any
     ) -> Iterator[bytes]:
         """Download document.
@@ -1458,6 +1478,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1470,7 +1492,7 @@ class TaskOperations:
         return deserialized  # type: ignore
 
     @distributed_trace
-    def actions_task_download_element_value_rendered(
+    def actions_task_download_element_value_rendered(  # pylint: disable=name-too-long
         self, id: str, *, element_definition_code: str, **kwargs: Any
     ) -> Iterator[bytes]:
         """Download a Form rendered as PDF or Zip of PDFs (when the element is multiple).
@@ -1518,6 +1540,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1640,6 +1664,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1652,7 +1678,7 @@ class TaskOperations:
         return deserialized
 
     @distributed_trace
-    def actions_task_save_json_forms_value_document(
+    def actions_task_save_json_forms_value_document(  # pylint: disable=name-too-long
         self, id: str, file: IO, *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
     ) -> _models.TaskSaveJsonFormsValueDocumentResponseCommand:
         """Save a JSON Forms document.
@@ -1710,6 +1736,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1722,7 +1750,7 @@ class TaskOperations:
         return deserialized
 
     @distributed_trace
-    def actions_task_download_json_forms_value_document(
+    def actions_task_download_json_forms_value_document(  # pylint: disable=name-too-long
         self, id: str, *, document_uri: str, **kwargs: Any
     ) -> Iterator[bytes]:
         """Download document.
@@ -1766,6 +1794,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1817,6 +1847,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -1928,6 +1960,8 @@ class TaskOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)

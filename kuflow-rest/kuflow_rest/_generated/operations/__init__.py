@@ -34,6 +34,7 @@ from ._authentication_operations import AuthenticationOperations
 from ._principal_operations import PrincipalOperations
 from ._process_operations import ProcessOperations
 from ._task_operations import TaskOperations
+from ._worker_operations import WorkerOperations
 
 from ._patch import __all__ as _patch_all
 from ._patch import *  # pylint: disable=unused-wildcard-import
@@ -44,6 +45,7 @@ __all__ = [
     "PrincipalOperations",
     "ProcessOperations",
     "TaskOperations",
+    "WorkerOperations",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])
 _patch_sdk()

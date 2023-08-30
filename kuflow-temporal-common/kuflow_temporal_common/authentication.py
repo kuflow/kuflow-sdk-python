@@ -57,8 +57,11 @@ class KuFlowAuthorizationTokenProvider:
     def __init__(
         self,
         kuflow_client: KuFlowRestClient,
-        backoff: KuFlowAuthorizationTokenProviderBackoff = KuFlowAuthorizationTokenProviderBackoff(),
+        backoff: Optional[KuFlowAuthorizationTokenProviderBackoff] = None,
     ):
+        if backoff is None:
+            backoff = KuFlowAuthorizationTokenProviderBackoff()
+
         self._temporal_client: Optional[Client] = None
         self._kuflow_client = kuflow_client
         self._consecutive_failures = 0
@@ -110,10 +113,10 @@ class KuFlowAuthorizationTokenProvider:
         except Exception as err:
             self._consecutive_failures = self._consecutive_failures + 1
 
-            retry_duration_ms = round(
+            retry_duration_in_seconds = round(
                 self._backoff.sleep * self._backoff.exponential_rate**self._consecutive_failures
             )
-            refresh_in_seconds = min(retry_duration_ms, self._backoff.max_sleep)
+            refresh_in_seconds = min(retry_duration_in_seconds, self._backoff.max_sleep)
 
             logger.error(f"Token renewal failed. Nex retry in {refresh_in_seconds} seconds", err)
 

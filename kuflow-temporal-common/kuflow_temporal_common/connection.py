@@ -39,7 +39,14 @@ from temporalio.worker import SharedStateManager, UnsandboxedWorkflowRunner, Wor
 from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner
 
 from kuflow_rest import KuFlowRestClient
-from kuflow_temporal_common.authentication import KuFlowAuthorizationTokenProvider
+from kuflow_temporal_common.authentication import (
+    KuFlowAuthorizationTokenProvider,
+    KuFlowAuthorizationTokenProviderBackoff,
+)
+from kuflow_temporal_common.worker_information_notifier import (
+    KuFlowWorkerInformationNotifier,
+    KuFlowWorkerInformationNotifierBackoff,
+)
 from kuflow_temporal_common.converter import CompositeEncodingPayloadConverter
 
 
@@ -48,7 +55,13 @@ class KuFlowConfig:
     """KuFlow configuration."""
 
     rest_client: KuFlowRestClient
-    """TODO Root CA to validate the server certificate against."""
+    """Rest client used."""
+
+    authorization_token_provider_backoff: Optional[KuFlowAuthorizationTokenProviderBackoff] = None
+    """Authorization backoff configuration"""
+
+    worker_information_notifier_backoff: Optional[KuFlowWorkerInformationNotifierBackoff] = None
+    """Worker notifier backoff configuration"""
 
 
 @dataclass
@@ -230,6 +243,8 @@ class KuFlowTemporalConnection:
 
     _kuflow_authorization_token_provider: Optional[KuFlowAuthorizationTokenProvider] = None
 
+    _kuFlow_worker_information_notifier: Optional[KuFlowWorkerInformationNotifier] = None
+
     _client: Optional[Client] = None
 
     _worker: Optional[Worker] = None
@@ -244,6 +259,7 @@ class KuFlowTemporalConnection:
         self._kuflow = kuflow
         self._temporal = temporal
         self._kuflow_authorization_token_provider = None
+        self._kuFlow_worker_information_notifier = None
         self._client = None
         self._worker = None
 
@@ -255,7 +271,8 @@ class KuFlowTemporalConnection:
 
         # Initializing an KuFlow token provider
         self._kuflow_authorization_token_provider = KuFlowAuthorizationTokenProvider(
-            kuflow_client=self._kuflow.rest_client
+            kuflow_client=self._kuflow.rest_client,
+            backoff=self._kuflow.authorization_token_provider_backoff,
         )
 
         self._temporal.client.rpc_metadata = self._kuflow_authorization_token_provider.initialize_rpc_auth_metadata()
@@ -308,6 +325,16 @@ class KuFlowTemporalConnection:
             elif callable(activity):
                 defn = temporalio.activity._Definition.must_from_callable(activity)
                 self._activity_types.add(defn.name)
+
+        self._kuFlow_worker_information_notifier = KuFlowWorkerInformationNotifier(
+            kuflow_client=self._kuflow.rest_client,
+            temporal_worker=worker,
+            temporal_client=self._client,
+            temporal_workflow_types=self._workflow_types,
+            temporal_activity_types=self._activity_types,
+            backoff=self._kuflow.worker_information_notifier_backoff,
+        )
+        await self._kuFlow_worker_information_notifier.start()
 
         await worker.run()
 
