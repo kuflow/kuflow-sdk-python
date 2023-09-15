@@ -32,15 +32,9 @@
 # --------------------------------------------------------------------------
 
 import datetime
-import sys
 from typing import Any, Dict, List, Optional, TYPE_CHECKING, Union
 
 from .. import _serialization
-
-if sys.version_info >= (3, 8):
-    from typing import Literal  # pylint: disable=no-name-in-module, ungrouped-imports
-else:
-    from typing_extensions import Literal  # type: ignore  # pylint: disable=ungrouped-imports
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
@@ -118,10 +112,8 @@ class AbstractAudited(_serialization.Model):
         self.last_modified_at = last_modified_at
 
 
-class Authentication(AbstractAudited):
+class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """Authentication.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
 
     All required parameters must be populated in order to send to Azure.
 
@@ -138,19 +130,24 @@ class Authentication(AbstractAudited):
     :vartype last_modified_at: ~datetime.datetime
     :ivar id:
     :vartype id: str
-    :ivar type: Default value is "ENGINE".
-    :vartype type: str
-    :ivar token:
+    :ivar type: Known values are: "ENGINE", "ENGINE_TOKEN", and "ENGINE_CERTIFICATE".
+    :vartype type: str or ~kuflow.rest.models.AuthenticationType
+    :ivar token: Engine authentication token.
+
+     @deprecated use engineToken.token.
     :vartype token: str
-    :ivar expired_at:
+    :ivar expired_at: Engine authentication token expiration.
+
+     @deprecated use engineToken.expiredAt.
     :vartype expired_at: ~datetime.datetime
+    :ivar engine_token:
+    :vartype engine_token: ~kuflow.rest.models.AuthenticationEngineToken
+    :ivar engine_certificate:
+    :vartype engine_certificate: ~kuflow.rest.models.AuthenticationEngineCertificate
     """
 
     _validation = {
         "object_type": {"required": True},
-        "id": {"readonly": True},
-        "token": {"readonly": True},
-        "expired_at": {"readonly": True},
     }
 
     _attribute_map = {
@@ -163,6 +160,8 @@ class Authentication(AbstractAudited):
         "type": {"key": "type", "type": "str"},
         "token": {"key": "token", "type": "str"},
         "expired_at": {"key": "expiredAt", "type": "iso-8601"},
+        "engine_token": {"key": "engineToken", "type": "AuthenticationEngineToken"},
+        "engine_certificate": {"key": "engineCertificate", "type": "AuthenticationEngineCertificate"},
     }
 
     def __init__(
@@ -172,7 +171,12 @@ class Authentication(AbstractAudited):
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
-        type: Optional[Literal["ENGINE"]] = None,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        type: Optional[Union[str, "_models.AuthenticationType"]] = None,
+        token: Optional[str] = None,
+        expired_at: Optional[datetime.datetime] = None,
+        engine_token: Optional["_models.AuthenticationEngineToken"] = None,
+        engine_certificate: Optional["_models.AuthenticationEngineCertificate"] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -184,8 +188,22 @@ class Authentication(AbstractAudited):
         :paramtype last_modified_by: str
         :keyword last_modified_at: When this model type was last updated.
         :paramtype last_modified_at: ~datetime.datetime
-        :keyword type: Default value is "ENGINE".
-        :paramtype type: str
+        :keyword id:
+        :paramtype id: str
+        :keyword type: Known values are: "ENGINE", "ENGINE_TOKEN", and "ENGINE_CERTIFICATE".
+        :paramtype type: str or ~kuflow.rest.models.AuthenticationType
+        :keyword token: Engine authentication token.
+
+         @deprecated use engineToken.token.
+        :paramtype token: str
+        :keyword expired_at: Engine authentication token expiration.
+
+         @deprecated use engineToken.expiredAt.
+        :paramtype expired_at: ~datetime.datetime
+        :keyword engine_token:
+        :paramtype engine_token: ~kuflow.rest.models.AuthenticationEngineToken
+        :keyword engine_certificate:
+        :paramtype engine_certificate: ~kuflow.rest.models.AuthenticationEngineCertificate
         """
         super().__init__(
             created_by=created_by,
@@ -195,10 +213,120 @@ class Authentication(AbstractAudited):
             **kwargs,
         )
         self.object_type: str = "AUTHENTICATION"
-        self.id = None
+        self.id = id
         self.type = type
-        self.token = None
-        self.expired_at = None
+        self.token = token
+        self.expired_at = expired_at
+        self.engine_token = engine_token
+        self.engine_certificate = engine_certificate
+
+
+class AuthenticationEngineCertificate(_serialization.Model):
+    """AuthenticationEngineCertificate.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :ivar namespace: Required.
+    :vartype namespace: str
+    :ivar tls: Required.
+    :vartype tls: ~kuflow.rest.models.AuthenticationEngineCertificateTls
+    """
+
+    _validation = {
+        "namespace": {"required": True},
+        "tls": {"required": True},
+    }
+
+    _attribute_map = {
+        "namespace": {"key": "namespace", "type": "str"},
+        "tls": {"key": "tls", "type": "AuthenticationEngineCertificateTls"},
+    }
+
+    def __init__(self, *, namespace: str, tls: "_models.AuthenticationEngineCertificateTls", **kwargs: Any) -> None:
+        """
+        :keyword namespace: Required.
+        :paramtype namespace: str
+        :keyword tls: Required.
+        :paramtype tls: ~kuflow.rest.models.AuthenticationEngineCertificateTls
+        """
+        super().__init__(**kwargs)
+        self.namespace = namespace
+        self.tls = tls
+
+
+class AuthenticationEngineCertificateTls(_serialization.Model):
+    """AuthenticationEngineCertificateTls.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :ivar server_root_ca_certificate: Required.
+    :vartype server_root_ca_certificate: str
+    :ivar client_certificate: Required.
+    :vartype client_certificate: str
+    :ivar client_private_key: Required.
+    :vartype client_private_key: str
+    """
+
+    _validation = {
+        "server_root_ca_certificate": {"required": True},
+        "client_certificate": {"required": True},
+        "client_private_key": {"required": True},
+    }
+
+    _attribute_map = {
+        "server_root_ca_certificate": {"key": "serverRootCaCertificate", "type": "str"},
+        "client_certificate": {"key": "clientCertificate", "type": "str"},
+        "client_private_key": {"key": "clientPrivateKey", "type": "str"},
+    }
+
+    def __init__(
+        self, *, server_root_ca_certificate: str, client_certificate: str, client_private_key: str, **kwargs: Any
+    ) -> None:
+        """
+        :keyword server_root_ca_certificate: Required.
+        :paramtype server_root_ca_certificate: str
+        :keyword client_certificate: Required.
+        :paramtype client_certificate: str
+        :keyword client_private_key: Required.
+        :paramtype client_private_key: str
+        """
+        super().__init__(**kwargs)
+        self.server_root_ca_certificate = server_root_ca_certificate
+        self.client_certificate = client_certificate
+        self.client_private_key = client_private_key
+
+
+class AuthenticationEngineToken(_serialization.Model):
+    """AuthenticationEngineToken.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :ivar token: Engine authentication token. Required.
+    :vartype token: str
+    :ivar expired_at: Required.
+    :vartype expired_at: ~datetime.datetime
+    """
+
+    _validation = {
+        "token": {"required": True},
+        "expired_at": {"required": True},
+    }
+
+    _attribute_map = {
+        "token": {"key": "token", "type": "str"},
+        "expired_at": {"key": "expiredAt", "type": "iso-8601"},
+    }
+
+    def __init__(self, *, token: str, expired_at: datetime.datetime, **kwargs: Any) -> None:
+        """
+        :keyword token: Engine authentication token. Required.
+        :paramtype token: str
+        :keyword expired_at: Required.
+        :paramtype expired_at: ~datetime.datetime
+        """
+        super().__init__(**kwargs)
+        self.token = token
+        self.expired_at = expired_at
 
 
 class DefaultError(_serialization.Model):

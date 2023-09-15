@@ -56,7 +56,7 @@ def main() -> int:
     print(principals)
 
     # Test authentication tokens operations
-    authentication = models.Authentication(type="ENGINE")
+    authentication = models.Authentication(type=models.AuthenticationType.ENGINE_TOKEN)
     authentication = client.authentication.create_authentication(authentication)
     print(authentication)
 

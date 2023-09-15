@@ -38,16 +38,16 @@ from temporalio.client import Client, Interceptor, RetryConfig, TLSConfig
 from temporalio.worker import SharedStateManager, UnsandboxedWorkflowRunner, Worker, WorkflowRunner
 from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner
 
-from kuflow_rest import KuFlowRestClient
+from kuflow_rest import KuFlowRestClient, models
 from kuflow_temporal_common.authentication import (
     KuFlowAuthorizationTokenProvider,
     KuFlowAuthorizationTokenProviderBackoff,
 )
+from kuflow_temporal_common.converter import CompositeEncodingPayloadConverter
 from kuflow_temporal_common.worker_information_notifier import (
     KuFlowWorkerInformationNotifier,
     KuFlowWorkerInformationNotifierBackoff,
 )
-from kuflow_temporal_common.converter import CompositeEncodingPayloadConverter
 
 
 @dataclass
@@ -71,8 +71,8 @@ class TemporalClientConfig:
     target_host: Optional[str] = None
     """``host:port`` for the Temporal server. For local development, this is often "localhost:7233"."""
 
-    namespace: str = "default"
-    """Namespace to use for client calls."""
+    namespace: Optional[str] = None
+    """Namespace to use for client calls, this is often "default"."""
 
     data_converter: temporalio.converter.DataConverter = temporalio.converter.DataConverter.default
     """Data converter to use for all data conversions to/from payloads."""
@@ -269,6 +269,8 @@ class KuFlowTemporalConnection:
         if self._client is not None:
             return self._client
 
+        self._apply_default_configurations()
+
         # Initializing an KuFlow token provider
         self._kuflow_authorization_token_provider = KuFlowAuthorizationTokenProvider(
             kuflow_client=self._kuflow.rest_client,
@@ -385,6 +387,22 @@ class KuFlowTemporalConnection:
                     converters.append(converter_class)
 
         return converters
+
+    def _apply_default_configurations(self):
+        authentication = models.Authentication(type=models.AuthenticationType.ENGINE_CERTIFICATE)
+        authentication = self._kuflow.rest_client.authentication.create_authentication(authentication)
+
+        if self._temporal.client.tls is False:
+            self._temporal.client.tls = TLSConfig(
+                server_root_ca_cert=authentication.engine_certificate.tls.server_root_ca_certificate.encode("utf-8"),
+                client_cert=authentication.engine_certificate.tls.client_certificate.encode("utf-8"),
+                client_private_key=authentication.engine_certificate.tls.client_private_key.encode("utf-8"),
+            )
+
+        if self._temporal.client.namespace is None:
+            self._temporal.client.namespace = authentication.engine_certificate.namespace
+
+        self._temporal.client.namespace = self._temporal.client.namespace or "default"
 
 
 def clean_dict(value: dict) -> dict:

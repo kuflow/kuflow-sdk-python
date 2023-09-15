@@ -25,11 +25,10 @@
 
 import asyncio
 import logging
-from typing import Any, Dict, Optional, Set
 import socket
+from typing import Any, Dict, Optional, Set
 
 from azure.core.pipeline import PipelineResponse
-
 from temporalio.client import Client
 from temporalio.worker import Worker
 
