@@ -125,8 +125,10 @@ class KuFlowAuthorizationTokenProvider:
     def _set_auth_rpc_metadata(self, token: str, metadata: Mapping[str, str]):
         new_metadata = dict(metadata)
         new_metadata["authorization"] = "Bearer " + token
+
         return new_metadata
 
     def _create_authentication(self) -> models.Authentication:
-        authentication = models.Authentication(type="ENGINE")
+        authentication = models.Authentication(type=models.AuthenticationType.ENGINE_TOKEN)
+
         return self._kuflow_client.authentication.create_authentication(authentication)

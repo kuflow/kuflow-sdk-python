@@ -29,7 +29,6 @@ from pathlib import Path
 
 import yaml
 from _test_workflow import GreetingWorkflow
-from temporalio.client import TLSConfig
 
 from kuflow_rest import KuFlowRestClient
 from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities, KuFlowSyncActivities
@@ -49,17 +48,7 @@ with open(Path(__file__).with_name("application-local.yaml"), "r") as file:
     client_id = yaml_data["kuflow"]["api"]["client-id"]
     client_secret = yaml_data["kuflow"]["api"]["client-secret"]
 
-    server_root_ca_cert = yaml_data["temporal"]["mutual-tls"]["ca-data"]
-    server_root_ca_cert = server_root_ca_cert.encode("utf-8")
-
-    client_cert = yaml_data["temporal"]["mutual-tls"]["cert-data"]
-    client_cert = client_cert.encode("utf-8")
-
-    client_key = yaml_data["temporal"]["mutual-tls"]["key-data"]
-    client_key = client_key.encode("utf-8")
-
     temporal_host = yaml_data["temporal"]["target"]
-    temporal_namespace = yaml_data["temporal"]["namespace"]
     temporal_queue = yaml_data["temporal"]["kuflow-queue"]
 
 
@@ -84,12 +73,6 @@ async def main():
         temporal=TemporalConfig(
             client=TemporalClientConfig(
                 target_host=temporal_host,
-                namespace=temporal_namespace,
-                tls=TLSConfig(
-                    server_root_ca_cert=server_root_ca_cert,
-                    client_cert=client_cert,
-                    client_private_key=client_key,
-                ),
             ),
             worker=TemporalWorkerConfig(
                 task_queue=temporal_queue,

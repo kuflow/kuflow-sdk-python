@@ -32,6 +32,9 @@
 
 from ._models import AbstractAudited
 from ._models import Authentication
+from ._models import AuthenticationEngineCertificate
+from ._models import AuthenticationEngineCertificateTls
+from ._models import AuthenticationEngineToken
 from ._models import DefaultError
 from ._models import DefaultErrorInfo
 from ._models import JsonFormsValue
@@ -79,6 +82,7 @@ from ._models import WebhookEventTaskStateChangedData
 from ._models import Worker
 
 from ._enums import AuditedObjectType
+from ._enums import AuthenticationType
 from ._enums import LogLevel
 from ._enums import PagedObjectType
 from ._enums import PrincipalType
@@ -94,6 +98,9 @@ from ._patch import patch_sdk as _patch_sdk
 __all__ = [
     "AbstractAudited",
     "Authentication",
+    "AuthenticationEngineCertificate",
+    "AuthenticationEngineCertificateTls",
+    "AuthenticationEngineToken",
     "DefaultError",
     "DefaultErrorInfo",
     "JsonFormsValue",
@@ -140,6 +147,7 @@ __all__ = [
     "WebhookEventTaskStateChangedData",
     "Worker",
     "AuditedObjectType",
+    "AuthenticationType",
     "LogLevel",
     "PagedObjectType",
     "PrincipalType",

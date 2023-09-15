@@ -45,6 +45,14 @@ class AuditedObjectType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     WORKER = "WORKER"
 
 
+class AuthenticationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """AuthenticationType."""
+
+    ENGINE = "ENGINE"
+    ENGINE_TOKEN = "ENGINE_TOKEN"
+    ENGINE_CERTIFICATE = "ENGINE_CERTIFICATE"
+
+
 class LogLevel(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """LogLevel."""
 
