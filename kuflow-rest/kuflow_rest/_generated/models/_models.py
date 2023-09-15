@@ -133,10 +133,12 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
     :ivar type: Known values are: "ENGINE", "ENGINE_TOKEN", and "ENGINE_CERTIFICATE".
     :vartype type: str or ~kuflow.rest.models.AuthenticationType
     :ivar token: Engine authentication token.
-     @deprecated use engineConfig.token.
+
+     @deprecated use engineToken.token.
     :vartype token: str
     :ivar expired_at: Engine authentication token expiration.
-     @deprecated use engineConfig.expiredAt.
+
+     @deprecated use engineToken.expiredAt.
     :vartype expired_at: ~datetime.datetime
     :ivar engine_token:
     :vartype engine_token: ~kuflow.rest.models.AuthenticationEngineToken
@@ -191,10 +193,12 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         :keyword type: Known values are: "ENGINE", "ENGINE_TOKEN", and "ENGINE_CERTIFICATE".
         :paramtype type: str or ~kuflow.rest.models.AuthenticationType
         :keyword token: Engine authentication token.
-         @deprecated use engineConfig.token.
+
+         @deprecated use engineToken.token.
         :paramtype token: str
         :keyword expired_at: Engine authentication token expiration.
-         @deprecated use engineConfig.expiredAt.
+
+         @deprecated use engineToken.expiredAt.
         :paramtype expired_at: ~datetime.datetime
         :keyword engine_token:
         :paramtype engine_token: ~kuflow.rest.models.AuthenticationEngineToken
