@@ -23,8 +23,9 @@
 # SOFTWARE.
 #
 
-from .kuflow_async_activities import KuFlowAsyncActivities
-from .kuflow_sync_activities import KuFlowSyncActivities
+from .kuflow_activities import KuFlowActivities
 
-__all__ = ["KuFlowAsyncActivities", "KuFlowSyncActivities"]
+KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK = "KuFlow_Engine_Signal_Completed_Task"
+
+__all__ = ["KuFlowActivities", "KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK"]
 __version__ = "1.0.1.dev0"

@@ -33,7 +33,7 @@ from . import models as models_temporal
 from .converter import KuFlowComposableEncodingPayloadConverter
 
 
-class KuFlowSyncActivities:
+class KuFlowActivities:
     def __init__(self, kuflow_client: KuFlowRestClient) -> None:
         self._kuflow_client = kuflow_client
         self.activities = [

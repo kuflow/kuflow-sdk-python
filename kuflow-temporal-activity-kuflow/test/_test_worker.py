@@ -31,7 +31,7 @@ import yaml
 from _test_workflow import GreetingWorkflow
 
 from kuflow_rest import KuFlowRestClient
-from kuflow_temporal_activity_kuflow import KuFlowAsyncActivities, KuFlowSyncActivities
+from kuflow_temporal_activity_kuflow import KuFlowActivities
 from kuflow_temporal_common.connection import (
     KuFlowConfig,
     KuFlowTemporalConnection,
@@ -63,10 +63,7 @@ async def main():
         allow_insecure_connection=True,
     )
 
-    kuflow_sync_activities = KuFlowSyncActivities(kuflow_rest_client)
-    kuflow_async_activities = KuFlowAsyncActivities(kuflow_rest_client)
-
-    activities = kuflow_sync_activities.activities + kuflow_async_activities.activities
+    kuflow_activities = KuFlowActivities(kuflow_rest_client)
 
     kuflow_temporal_connection = KuFlowTemporalConnection(
         kuflow=KuFlowConfig(rest_client=kuflow_rest_client),
@@ -77,7 +74,7 @@ async def main():
             worker=TemporalWorkerConfig(
                 task_queue=temporal_queue,
                 workflows=[GreetingWorkflow],
-                activities=activities,
+                activities=kuflow_activities.activities,
                 debug_mode=True,
             ),
         ),

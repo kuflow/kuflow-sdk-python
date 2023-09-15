@@ -594,9 +594,11 @@ class TaskOperations:
 
         :param task: Task to be created. Required.
         :type task: ~kuflow.rest.models.Task
-        :keyword activity_token: When create a Kuflow Task backed with a Temporal.io servers, this
-         value is required and must be set with the context task token of Temporal.io activity. Default
-         value is None.
+        :keyword activity_token: [DEPRECATED] When create a KuFlow Task backed with a Temporal.io
+         servers, this value is required and must be
+         set with the context task token of Temporal.io activity. It is no longer necessary because it
+         will be never
+         used for the latest SDKs versions. Default value is None.
         :paramtype activity_token: str
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
@@ -631,9 +633,11 @@ class TaskOperations:
 
         :param task: Task to be created. Required.
         :type task: IO
-        :keyword activity_token: When create a Kuflow Task backed with a Temporal.io servers, this
-         value is required and must be set with the context task token of Temporal.io activity. Default
-         value is None.
+        :keyword activity_token: [DEPRECATED] When create a KuFlow Task backed with a Temporal.io
+         servers, this value is required and must be
+         set with the context task token of Temporal.io activity. It is no longer necessary because it
+         will be never
+         used for the latest SDKs versions. Default value is None.
         :paramtype activity_token: str
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
@@ -668,9 +672,11 @@ class TaskOperations:
 
         :param task: Task to be created. Is either a Task type or a IO type. Required.
         :type task: ~kuflow.rest.models.Task or IO
-        :keyword activity_token: When create a Kuflow Task backed with a Temporal.io servers, this
-         value is required and must be set with the context task token of Temporal.io activity. Default
-         value is None.
+        :keyword activity_token: [DEPRECATED] When create a KuFlow Task backed with a Temporal.io
+         servers, this value is required and must be
+         set with the context task token of Temporal.io activity. It is no longer necessary because it
+         will be never
+         used for the latest SDKs versions. Default value is None.
         :paramtype activity_token: str
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
