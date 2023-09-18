@@ -11,6 +11,7 @@ This is the AutoRest configuration file for KuFlow.
 To build the SDK for KuFlow, simply do the following in this folder:
 
 ```bash
+$> poetry shell
 $> npm ci
 $> npm run generate
 ```

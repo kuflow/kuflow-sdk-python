@@ -39,7 +39,6 @@ with workflow.unsafe.imports_passed_through():
 class GreetingWorkflow:
     def __init__(self) -> None:
         self._kuflow_completed_task_ids: List[str] = []
-        self._exit = False
 
     @workflow.signal(name=KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK)
     async def kuflow_engine_completed_task(self, task_id: str) -> None:
