@@ -98,7 +98,7 @@ class TaskOperations:
             **kwargs,
         )
 
-    def create_task(self, task: _models.Task, activity_token: Optional[str] = None, **kwargs: Any) -> _models.Task:
+    def create_task(self, task: _models.Task, **kwargs: Any) -> _models.Task:
         """Create a new Task in the selected Process.
 
         Create a Task and optionally fill its elements. We can fill in any type of element except
@@ -120,15 +120,11 @@ class TaskOperations:
 
         :param task: Task to be created. Required.
         :type task: ~kuflow.rest.models.Task
-        :keyword activity_token: When create a Kuflow Task backed with a Temporal.io servers, this
-         value is required and must be set with the context task token of Temporal.io activity. Default
-         value is None.
-        :type activity_token: str
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.task.create_task(task=task, activity_token=activity_token, **kwargs)
+        return self._kuflow_client.task.create_task(task=task, **kwargs)
 
     def retrieve_task(self, id: str, **kwargs: Any) -> _models.Task:
         """Get a task given it ID.
