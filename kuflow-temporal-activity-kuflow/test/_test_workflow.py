@@ -55,7 +55,7 @@ class GreetingWorkflow:
         # Create Task
         await self._create_task_and_wait_completion(task)
 
-        workflow.logger.info(f"Finished")
+        workflow.logger.info(f"Finished {request.process_id}")
 
         return models_temporal.WorkflowResponse(f"Workflow {request.process_id} finished")
 
