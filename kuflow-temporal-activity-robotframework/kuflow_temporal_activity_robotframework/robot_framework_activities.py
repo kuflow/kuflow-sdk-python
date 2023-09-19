@@ -84,8 +84,6 @@ class RobotFrameworkActivities:
             Please see :func:`robot.run.run` docstring to more info.
     """
 
-    activities: Sequence[Callable]
-
     def __init__(
         self,
         default_variables: Optional[List[str]] = None,

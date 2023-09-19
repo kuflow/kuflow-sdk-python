@@ -62,10 +62,6 @@ class JsonFormDataAccessor(ABC):
 
 
 class JsonFormsProperty:
-    container: ContainerType
-    path: str
-    value: ComplexType
-
     def __init__(self, container: ContainerType, path: str, value: ComplexType):
         self.container = container
         self.path = path

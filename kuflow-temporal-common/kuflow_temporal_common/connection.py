@@ -237,31 +237,17 @@ class TemporalConfig:
 class KuFlowTemporalConnection:
     """Configure a temporal client and worker with KuFlow requirements."""
 
-    _kuflow: KuFlowConfig
-
-    _temporal: TemporalConfig
-
-    _kuflow_authorization_token_provider: Optional[KuFlowAuthorizationTokenProvider] = None
-
-    _kuFlow_worker_information_notifier: Optional[KuFlowWorkerInformationNotifier] = None
-
-    _client: Optional[Client] = None
-
-    _worker: Optional[Worker] = None
-
-    _workflow_types: Set[str] = set()
-
-    _activity_types: Set[str] = set()
-
     def __init__(self, *, kuflow: KuFlowConfig, temporal: TemporalConfig):
         """Create a KuFlowTemporalConnection."""
 
         self._kuflow = kuflow
         self._temporal = temporal
-        self._kuflow_authorization_token_provider = None
-        self._kuFlow_worker_information_notifier = None
-        self._client = None
-        self._worker = None
+        self._kuflow_authorization_token_provider: Optional[KuFlowAuthorizationTokenProvider] = None
+        self._kuFlow_worker_information_notifier: Optional[KuFlowWorkerInformationNotifier] = None
+        self._client: Optional[Client] = None
+        self._worker: Optional[Worker] = None
+        self._workflow_types: Set[str] = set()
+        self._activity_types: Set[str] = set()
 
     async def connect(self) -> Client:
         """Connect to a Temporal server"""
