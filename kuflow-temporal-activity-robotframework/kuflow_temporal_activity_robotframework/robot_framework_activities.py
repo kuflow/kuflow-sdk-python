@@ -24,7 +24,7 @@
 #
 
 from dataclasses import dataclass, field
-from typing import Callable, List, Optional, Sequence
+from typing import List, Optional
 
 import robot
 from temporalio import activity
