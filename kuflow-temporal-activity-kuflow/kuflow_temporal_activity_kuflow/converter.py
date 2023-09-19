@@ -44,11 +44,6 @@ with workflow.unsafe.imports_passed_through():
 
 
 class KuFlowComposableEncodingPayloadConverter(EncodingPayloadConverter):
-    _default_json_converter: JSONPlainPayloadConverter
-
-    _serialize: Serializer
-    _deserialize: Deserializer
-
     def __init__(self, default_json_converter=JSONPlainPayloadConverter()) -> None:
         self._default_json_converter = default_json_converter
         client_models_rest = {k: v for k, v in models_rest.__dict__.items() if isinstance(v, type)}
@@ -77,11 +72,6 @@ class KuFlowComposableEncodingPayloadConverter(EncodingPayloadConverter):
 
 
 class KuFlowEncodingPayloadConverter(EncodingPayloadConverter):
-    _default_json_converter: JSONPlainPayloadConverter
-
-    _serialize: Serializer
-    _deserialize: Deserializer
-
     def __init__(self, default_json_converter=JSONPlainPayloadConverter()) -> None:
         self._default_json_converter = default_json_converter
         client_models_rest = {k: v for k, v in models_rest.__dict__.items() if isinstance(v, type)}

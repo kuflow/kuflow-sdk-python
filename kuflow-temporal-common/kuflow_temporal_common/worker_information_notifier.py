@@ -51,26 +51,6 @@ class KuFlowWorkerInformationNotifierBackoff:
 
 
 class KuFlowWorkerInformationNotifier:
-    _kuflow_client: KuFlowRestClient
-
-    _temporal_client: Client
-
-    _temporal_worker: Worker
-
-    _temporal_workflow_types: Set[str]
-
-    _temporal_activity_types: Set[str]
-
-    _backoff: KuFlowWorkerInformationNotifierBackoff
-
-    _delay_window_in_seconds: int
-
-    _consecutive_failures: int
-
-    _schedule_create_or_update_worker_delay_task: Optional[asyncio.Task]
-
-    _started: bool
-
     def __init__(
         self,
         kuflow_client: KuFlowRestClient,
@@ -90,13 +70,13 @@ class KuFlowWorkerInformationNotifier:
         self._kuflow_client = kuflow_client
         self._temporal_client = temporal_client
         self._temporal_worker = temporal_worker
-        self._temporal_workflow_types = temporal_workflow_types
-        self._temporal_activity_types = temporal_activity_types
+        self._temporal_workflow_types: Set[str] = temporal_workflow_types
+        self._temporal_activity_types: Set[str] = temporal_activity_types
         self._backoff = backoff
 
         self._delay_window_in_seconds = 5 * 60  # 5 min
         self._consecutive_failures = 0
-        self._schedule_create_or_update_worker_delay_task = None
+        self._schedule_create_or_update_worker_delay_task: Optional[asyncio.Task] = None
         self._started = False
 
     async def start(self) -> None:

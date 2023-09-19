@@ -40,14 +40,7 @@ class CompositeEncodingPayloadConverter(EncodingPayloadConverter):
     Encoding/decoding are attempted on each payload converter successively until
     it succeeds.
 
-    Attributes:
-        register_encoding: Encoding of this EncodingPayloadConverter
-        converters: List of payload converters to delegate to, in order.
     """
-
-    register_encoding: str
-
-    converters: List[EncodingPayloadConverter]
 
     def __init__(self, encoding: str, converters: List[EncodingPayloadConverter]):
         """Initializes the encoding data converter.
