@@ -27,4 +27,4 @@ from ._generated._serialization import Deserializer, Model, Serializer
 from ._kuflow_rest_client import KuFlowRestClient
 
 __all__ = ["Deserializer", "KuFlowRestClient", "Model", "Serializer"]
-__version__ = "1.1.1"
+__version__ = "1.1.2.dev0"
