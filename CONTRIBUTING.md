@@ -52,7 +52,7 @@ To do this, always develop with a development version tag (the finished ones wit
 
 How is the version set?
 
-Edit `scripts/create_local.version.sh` and set in the variable `VERSION`
+Edit `scripts/create_local_version.sh` and set in the variable `VERSION`
 
 Then, execute
 
