@@ -116,8 +116,7 @@ class RobotFrameworkActivities:
         if robot_code != 0:
             raise ApplicationError(
                 f"Robot finished with undesired status value of ${robot_code}",
-                non_retryable=True,
-                type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+                type=KuFlowFailureType.ACTIVITIES_FAILURE,
             )
 
     def _merge_variables(self, variables: List = None, variables_overwrite: List = None):
