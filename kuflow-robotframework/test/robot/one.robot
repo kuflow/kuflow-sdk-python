@@ -27,15 +27,33 @@
 
 *** Settings ***
 Variables       devdata/env.py
+Library     Collections
 Library         KuFlow
 
+
+*** Variables ***
+${TEST_EMPTY_KUFLOW_API_ENDPOINT}      %{TEST_EMPTY_KUFLOW_API_ENDPOINT=""}
+${TEST_NONE_KUFLOW_API_ENDPOINT}      %{TEST_EMPTY_KUFLOW_API_ENDPOINT=${None}}
 
 *** Tasks ***
 Test Clear
     Clear All Elements
 
 Test Settings
-    Set KuFlow Credentials
+    # Without endpoint (use default)
+    Set Client Authentication    client_id=${KUFLOW_CLIENT_ID}    client_secret=${KUFLOW_CLIENT_SECRET}
+
+    # With endpoint
+    Set Client Authentication    endpoint=${KUFLOW_API_ENDPOINT}    client_id=${KUFLOW_CLIENT_ID}    client_secret=${KUFLOW_CLIENT_SECRET}
+
+    # With default endpoint empty variable
+    Set Client Authentication    endpoint=${TEST_EMPTY_KUFLOW_API_ENDPOINT}    client_id=${KUFLOW_CLIENT_ID}    client_secret=${KUFLOW_CLIENT_SECRET}
+
+    # With default ${None} endpoint empty variable (At this point Robotframework treats it as a string)
+    Set Client Authentication    endpoint=${TEST_NONE_KUFLOW_API_ENDPOINT}    client_id=${KUFLOW_CLIENT_ID}    client_secret=${KUFLOW_CLIENT_SECRET}
+
+    # With Python None as variable
+    Set Client Authentication    endpoint=${None}    client_id=${KUFLOW_CLIENT_ID}    client_secret=${KUFLOW_CLIENT_SECRET}
 
     ${client}=    Get Client
     ${text}=    Set Variable If    $client is None    False    True
@@ -48,6 +66,20 @@ Test Settings
     ${instance}=    Get library instance    KuFlow
     ${current_instance}=    Call Method    ${instance}    get_instance
     Log To Console    library: ${instance} instance: ${current_instance}
+
+Test Convert Dictionary
+    &{inner_dict}    Create Dictionary
+    ...    Key1=Value1
+    ...    Key2=${true}
+    @{list}    Create List
+    Append To List    ${list}    ${inner_dict}
+    &{outer_dictionary}    Create Dictionary    KeyList=${list}
+    &{outer_dictionary_converted}    Convert To Dictionary Recursively    ${outer_dictionary}
+
+    ${result}    Evaluate    type(${outer_dictionary['KeyList'][0]}) is type(${outer_dictionary_converted['KeyList'][0]})
+
+    Should Be True   ${result}    Dictionary conversion fails
+
 
 Test Single Claim a KuFlow Task
     Set KuFlow Credentials
