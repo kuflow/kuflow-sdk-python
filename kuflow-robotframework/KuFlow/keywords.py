@@ -36,15 +36,6 @@ from robot.utils import is_dict_like, is_list_like, is_number, is_string, type_n
 from kuflow_rest import KuFlowRestClient, models
 
 
-def _to_dict(value: dict) -> dict:
-    """Converts the given ``value`` to a Python ``dict`` type.
-
-    Mainly useful for converting other mappings to normal dictionaries.
-    This includes converting Robot Framework's own ``DotDict`` instances.
-    """
-    return dict(value)
-
-
 class Keywords:
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
@@ -69,6 +60,9 @@ class Keywords:
         | Set Client Authentication | identifier | token
         | Set Client Authentication | identifier | token | https://api.kuflow.com/v1.0
         """
+        if is_string(endpoint) and (endpoint.strip() == '' or endpoint.lower() == 'none'):
+            endpoint = None
+
         self._client = KuFlowRestClient(
             client_id=client_id,
             client_secret=client_secret,
@@ -83,6 +77,19 @@ class Keywords:
     @keyword(tags=("settings",))
     def get_instance(self) -> "Keywords":
         return self
+
+    @keyword(tags=("settings",))
+    def convert_to_recursive_dictionary(self, value: dict) -> dict:
+        """Converts the given ``value`` to a Python ``dict`` type.
+
+        Mainly useful for converting other mappings to normal dictionaries.
+        This includes converting Robot Framework's own ``DotDict`` instances.
+
+        Unlike the `Convert To Dictionary` keyword from Robotframework's Collections library,
+        which only converts the first level of the dictionary using "ssssss",
+        this method performs nested conversion using Json's marshall and unmarshall.
+        """
+        return json.loads(json.dumps(value))
 
     @keyword()
     def append_log_message(self, task_id: UUID, message: str, level=models.LogLevel.INFO) -> models.Task:
@@ -283,7 +290,7 @@ class Keywords:
             elif isinstance(v, models.TaskElementValueDocumentItem):
                 element = models.TaskElementValueDocument(value=v, valid=valid)
             elif is_dict_like(v):
-                element = models.TaskElementValueObject(value=_to_dict(v), valid=valid)
+                element = models.TaskElementValueObject(value=self.convert_to_recursive_dictionary(v), valid=valid)
             else:
                 element = models.TaskElementValueString(value=v, valid=valid)
 
@@ -387,7 +394,7 @@ class Keywords:
         if not is_dict_like(value):
             raise TypeError("Expected argument to be a dict or dict-like, " "got %s instead." % (type_name(value)))
 
-        command = models.TaskSaveJsonFormsValueDataCommand(data=_to_dict(value))
+        command = models.TaskSaveJsonFormsValueDataCommand(data=self.convert_to_recursive_dictionary(value))
 
         return self._client.task.actions_task_save_json_forms_value_data(id=task_id, command=command)
 
