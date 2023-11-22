@@ -74,7 +74,7 @@ Test Convert Dictionary
     @{list}    Create List
     Append To List    ${list}    ${inner_dict}
     &{outer_dictionary}    Create Dictionary    KeyList=${list}
-    &{outer_dictionary_converted}    Convert To Recursive Dictionary    ${outer_dictionary}
+    &{outer_dictionary_converted}    Convert To Dictionary Recursively    ${outer_dictionary}
 
     ${result}    Evaluate    type(${outer_dictionary['KeyList'][0]}) is type(${outer_dictionary_converted['KeyList'][0]})
 

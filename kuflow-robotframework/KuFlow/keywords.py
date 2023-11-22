@@ -79,14 +79,14 @@ class Keywords:
         return self
 
     @keyword(tags=("settings",))
-    def convert_to_recursive_dictionary(self, value: dict) -> dict:
+    def convert_to_dictionary_recursively(self, value: dict) -> dict:
         """Converts the given ``value`` to a Python ``dict`` type.
 
         Mainly useful for converting other mappings to normal dictionaries.
         This includes converting Robot Framework's own ``DotDict`` instances.
 
         Unlike the `Convert To Dictionary` keyword from Robotframework's Collections library,
-        which only converts the first level of the dictionary using "ssssss",
+        which only converts the first level of the dictionary using "Convert To Dictionary",
         this method performs nested conversion using Json's marshall and unmarshall.
         """
         return json.loads(json.dumps(value))
@@ -290,7 +290,7 @@ class Keywords:
             elif isinstance(v, models.TaskElementValueDocumentItem):
                 element = models.TaskElementValueDocument(value=v, valid=valid)
             elif is_dict_like(v):
-                element = models.TaskElementValueObject(value=self.convert_to_recursive_dictionary(v), valid=valid)
+                element = models.TaskElementValueObject(value=self.convert_to_dictionary_recursively(v), valid=valid)
             else:
                 element = models.TaskElementValueString(value=v, valid=valid)
 
@@ -394,7 +394,7 @@ class Keywords:
         if not is_dict_like(value):
             raise TypeError("Expected argument to be a dict or dict-like, " "got %s instead." % (type_name(value)))
 
-        command = models.TaskSaveJsonFormsValueDataCommand(data=self.convert_to_recursive_dictionary(value))
+        command = models.TaskSaveJsonFormsValueDataCommand(data=self.convert_to_dictionary_recursively(value))
 
         return self._client.task.actions_task_save_json_forms_value_data(id=task_id, command=command)
 
