@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -27,6 +26,7 @@ from typing import Any, Dict, List, Optional
 
 from kuflow_rest import models as models_rest
 from kuflow_rest._generated import _serialization
+
 
 ########################
 # For Workflows

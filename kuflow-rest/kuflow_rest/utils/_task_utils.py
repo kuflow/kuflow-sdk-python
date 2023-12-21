@@ -109,7 +109,9 @@ class CurrentElementValueAccessor(TaskElementValueAccessor):
         if self.task.element_values is None:
             return []
 
-        element_values_by_code = self.task.element_values.get(self.element_definition_code)
+        element_values_by_code = self.task.element_values.get(
+            self.element_definition_code
+        )
         if element_values_by_code is None or len(element_values_by_code) == 0:
             return []
 
@@ -146,7 +148,9 @@ class TaskUtils:
         Returns:
             True if all related valid values are TRUE, otherwise False.
         """
-        return get_element_value_valid(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_valid(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
     def get_element_value_valid_at(
@@ -165,10 +169,14 @@ class TaskUtils:
         Returns:
             The requested valid value if it exists, otherwise None.
         """
-        return get_element_value_valid_at(CurrentElementValueAccessor(task, element_definition_code), index)
+        return get_element_value_valid_at(
+            CurrentElementValueAccessor(task, element_definition_code), index
+        )
 
     @staticmethod
-    def set_element_value_valid(task: Task, element_definition_code: str, valid: Optional[bool]) -> Task:
+    def set_element_value_valid(
+        task: Task, element_definition_code: str, valid: Optional[bool]
+    ) -> Task:
         """
         Set the valid value for all element values.
 
@@ -180,12 +188,16 @@ class TaskUtils:
         Returns:
             The passed task.
         """
-        set_element_value_valid(CurrentElementValueAccessor(task, element_definition_code), valid)
+        set_element_value_valid(
+            CurrentElementValueAccessor(task, element_definition_code), valid
+        )
 
         return task
 
     @staticmethod
-    def set_element_value_valid_at(task: Task, element_definition_code: str, valid: Optional[bool], index: int) -> Task:
+    def set_element_value_valid_at(
+        task: Task, element_definition_code: str, valid: Optional[bool], index: int
+    ) -> Task:
         """
         Set the valid value for the selected element value.
 
@@ -198,13 +210,17 @@ class TaskUtils:
         Returns:
             The passed task.
         """
-        set_element_value_valid_at(CurrentElementValueAccessor(task, element_definition_code), valid, index)
+        set_element_value_valid_at(
+            CurrentElementValueAccessor(task, element_definition_code), valid, index
+        )
 
         return task
 
     @staticmethod
     def set_element_value(
-        task: Task, element_definition_code: str, element_value: Optional[ElementValueSimpleType] = None
+        task: Task,
+        element_definition_code: str,
+        element_value: Optional[ElementValueSimpleType] = None,
     ) -> Task:
         """
         Set an element value.
@@ -217,13 +233,17 @@ class TaskUtils:
         Returns:
             The passed task.
         """
-        set_element_value(CurrentElementValueAccessor(task, element_definition_code), element_value)
+        set_element_value(
+            CurrentElementValueAccessor(task, element_definition_code), element_value
+        )
 
         return task
 
     @staticmethod
     def set_element_value_list(
-        task: Task, element_definition_code: str, element_values: Optional[List[ElementValueSimpleType]] = None
+        task: Task,
+        element_definition_code: str,
+        element_values: Optional[List[ElementValueSimpleType]] = None,
     ) -> Task:
         """
         Set an element value.
@@ -236,13 +256,17 @@ class TaskUtils:
         Returns:
             The passed task.
         """
-        set_element_value_list(CurrentElementValueAccessor(task, element_definition_code), element_values)
+        set_element_value_list(
+            CurrentElementValueAccessor(task, element_definition_code), element_values
+        )
 
         return task
 
     @staticmethod
     def add_element_value(
-        task: Task, element_definition_code: str, element_value: Optional[ElementValueSimpleType] = None
+        task: Task,
+        element_definition_code: str,
+        element_value: Optional[ElementValueSimpleType] = None,
     ) -> Task:
         """
         Add an element value.
@@ -255,13 +279,17 @@ class TaskUtils:
         Returns:
             The passed task.
         """
-        add_element_value(CurrentElementValueAccessor(task, element_definition_code), element_value)
+        add_element_value(
+            CurrentElementValueAccessor(task, element_definition_code), element_value
+        )
 
         return task
 
     @staticmethod
     def add_element_value_list(
-        task: Task, element_definition_code: str, element_values: Optional[List[ElementValueSimpleType]] = None
+        task: Task,
+        element_definition_code: str,
+        element_values: Optional[List[ElementValueSimpleType]] = None,
     ) -> Task:
         """
         Add element values.
@@ -274,7 +302,9 @@ class TaskUtils:
         Returns:
             The passed model related object.
         """
-        add_element_value_list(CurrentElementValueAccessor(task, element_definition_code), element_values)
+        add_element_value_list(
+            CurrentElementValueAccessor(task, element_definition_code), element_values
+        )
 
         return task
 
@@ -290,10 +320,14 @@ class TaskUtils:
         Returns:
             The element value as a str.
         """
-        return get_element_value_as_str(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_str(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
-    def find_element_value_as_str(task: Task, element_definition_code: str) -> Optional[str]:
+    def find_element_value_as_str(
+        task: Task, element_definition_code: str
+    ) -> Optional[str]:
         """
         Try to get an element as a str.
 
@@ -304,10 +338,14 @@ class TaskUtils:
         Returns:
             The element value as a str.
         """
-        return find_element_value_as_str(CurrentElementValueAccessor(task, element_definition_code))
+        return find_element_value_as_str(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_str_list(task: Task, element_definition_code: str) -> List[str]:
+    def get_element_value_as_str_list(
+        task: Task, element_definition_code: str
+    ) -> List[str]:
         """
         Try to get an element as a str list.
 
@@ -318,7 +356,9 @@ class TaskUtils:
         Returns:
             The element values as a str list.
         """
-        return get_element_value_as_str_list(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_str_list(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
     def get_element_value_as_float(task: Task, element_definition_code: str) -> float:
@@ -332,7 +372,9 @@ class TaskUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_float(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
     def find_element_value_as_float(task: Task, element_definition_code: str) -> float:
@@ -346,10 +388,14 @@ class TaskUtils:
         Returns:
             The element value as a float.
         """
-        return find_element_value_as_float(CurrentElementValueAccessor(task, element_definition_code))
+        return find_element_value_as_float(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_float_list(task: Task, element_definition_code: str) -> List[float]:
+    def get_element_value_as_float_list(
+        task: Task, element_definition_code: str
+    ) -> List[float]:
         """
         Get all elements as a float list.
 
@@ -360,7 +406,9 @@ class TaskUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float_list(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_float_list(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
     def get_element_value_as_date(task: Task, element_definition_code: str) -> date:
@@ -374,10 +422,14 @@ class TaskUtils:
         Returns:
             The element value as a date.
         """
-        return get_element_value_as_date(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_date(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
-    def find_element_value_as_date(task: Task, element_definition_code: str) -> Optional[date]:
+    def find_element_value_as_date(
+        task: Task, element_definition_code: str
+    ) -> Optional[date]:
         """
         Try to get  an element as a date.
 
@@ -388,10 +440,14 @@ class TaskUtils:
         Returns:
             The element value as a date.
         """
-        return find_element_value_as_date(CurrentElementValueAccessor(task, element_definition_code))
+        return find_element_value_as_date(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_date_list(task: Task, element_definition_code: str) -> Optional[List[date]]:
+    def get_element_value_as_date_list(
+        task: Task, element_definition_code: str
+    ) -> Optional[List[date]]:
         """
         Get all elements as date list.
 
@@ -402,7 +458,9 @@ class TaskUtils:
         Returns:
             The element values as date list.
         """
-        return get_element_value_as_date_list(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_date_list(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
     def get_element_value_as_dict(task: Task, element_definition_code: str) -> dict:
@@ -416,10 +474,14 @@ class TaskUtils:
         Returns:
             The element value as a dict.
         """
-        return get_element_value_as_dict(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_dict(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
-    def find_element_value_as_dict(task: Task, element_definition_code: str) -> Optional[dict]:
+    def find_element_value_as_dict(
+        task: Task, element_definition_code: str
+    ) -> Optional[dict]:
         """
         Try to get an element as a dict.
 
@@ -430,10 +492,14 @@ class TaskUtils:
         Returns:
             The element value as a dict.
         """
-        return find_element_value_as_dict(CurrentElementValueAccessor(task, element_definition_code))
+        return find_element_value_as_dict(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_dict_list(task: Task, element_definition_code: str) -> Optional[List[dict]]:
+    def get_element_value_as_dict_list(
+        task: Task, element_definition_code: str
+    ) -> Optional[List[dict]]:
         """
         Get all elements as dict list.
 
@@ -444,10 +510,14 @@ class TaskUtils:
         Returns:
             The element values as dict list.
         """
-        return get_element_value_as_dict_list(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_dict_list(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_document(task: Task, element_definition_code: str) -> TaskElementValueDocumentItem:
+    def get_element_value_as_document(
+        task: Task, element_definition_code: str
+    ) -> TaskElementValueDocumentItem:
         """
         Get an element as a TaskElementValueDocumentItem.
 
@@ -458,7 +528,9 @@ class TaskUtils:
         Returns:
             The element value as a TaskElementValueDocumentItem.
         """
-        return get_element_value_as_document(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_document(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
     def find_element_value_as_document(
@@ -474,7 +546,9 @@ class TaskUtils:
         Returns:
             The element value as a TaskElementValueDocumentItem.
         """
-        return find_element_value_as_document(CurrentElementValueAccessor(task, element_definition_code))
+        return find_element_value_as_document(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
     def get_element_value_as_document_list(
@@ -490,10 +564,14 @@ class TaskUtils:
         Returns:
             The element values as TaskElementValueDocumentItem list.
         """
-        return get_element_value_as_document_list(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_document_list(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_principal(task: Task, element_definition_code: str) -> TaskElementValuePrincipalItem:
+    def get_element_value_as_principal(
+        task: Task, element_definition_code: str
+    ) -> TaskElementValuePrincipalItem:
         """
         Get an element as a TaskElementValuePrincipalItem.
 
@@ -504,7 +582,9 @@ class TaskUtils:
         Returns:
             The element value as a TaskElementValuePrincipalItem.
         """
-        return get_element_value_as_principal(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_principal(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
     def find_element_value_as_principal(
@@ -520,7 +600,9 @@ class TaskUtils:
         Returns:
             The element value as a TaskElementValuePrincipalItem.
         """
-        return find_element_value_as_principal(CurrentElementValueAccessor(task, element_definition_code))
+        return find_element_value_as_principal(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
     def get_element_value_as_principal_list(
@@ -536,7 +618,9 @@ class TaskUtils:
         Returns:
             The element values as TaskElementValuePrincipalItem list.
         """
-        return get_element_value_as_principal_list(CurrentElementValueAccessor(task, element_definition_code))
+        return get_element_value_as_principal_list(
+            CurrentElementValueAccessor(task, element_definition_code)
+        )
 
     @staticmethod
     def get_json_forms_property_as_str(task: Task, property_path: str) -> str:
@@ -553,10 +637,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_str(CurrentJsonFormDataAccessor(task), property_path)
+        return get_json_forms_property_as_str(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def find_json_forms_property_as_str(task: Task, property_path: str) -> Optional[str]:
+    def find_json_forms_property_as_str(
+        task: Task, property_path: str
+    ) -> Optional[str]:
         """
         Try to find a json property as "str" following the "propertyPath" passed.
 
@@ -570,7 +658,9 @@ class TaskUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_str(CurrentJsonFormDataAccessor(task), property_path)
+        return find_json_forms_property_as_str(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
     def get_json_forms_property_as_int(task: Task, property_path: str) -> int:
@@ -587,10 +677,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_int(CurrentJsonFormDataAccessor(task), property_path)
+        return get_json_forms_property_as_int(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def find_json_forms_property_as_int(task: Task, property_path: str) -> Optional[int]:
+    def find_json_forms_property_as_int(
+        task: Task, property_path: str
+    ) -> Optional[int]:
         """
         Try to find a json property as "int" following the "propertyPath" passed.
 
@@ -604,7 +698,9 @@ class TaskUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_int(CurrentJsonFormDataAccessor(task), property_path)
+        return find_json_forms_property_as_int(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
     def get_json_forms_property_as_float(task: Task, property_path: str) -> float:
@@ -621,10 +717,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_float(CurrentJsonFormDataAccessor(task), property_path)
+        return get_json_forms_property_as_float(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def find_json_forms_property_as_float(task: Task, property_path: str) -> Optional[float]:
+    def find_json_forms_property_as_float(
+        task: Task, property_path: str
+    ) -> Optional[float]:
         """
         Try to find a json property as "float" following the "propertyPath" passed.
 
@@ -638,7 +738,9 @@ class TaskUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_float(CurrentJsonFormDataAccessor(task), property_path)
+        return find_json_forms_property_as_float(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
     def get_json_forms_property_as_date(task: Task, property_path: str) -> date:
@@ -655,10 +757,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_date(CurrentJsonFormDataAccessor(task), property_path)
+        return get_json_forms_property_as_date(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def find_json_forms_property_as_date(task: Task, property_path: str) -> Optional[date]:
+    def find_json_forms_property_as_date(
+        task: Task, property_path: str
+    ) -> Optional[date]:
         """
         Try to find a json property as "date" following the "propertyPath" passed.
 
@@ -672,7 +778,9 @@ class TaskUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_date(CurrentJsonFormDataAccessor(task), property_path)
+        return find_json_forms_property_as_date(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
     def get_json_forms_property_as_datetime(task: Task, property_path: str) -> datetime:
@@ -689,10 +797,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_datetime(CurrentJsonFormDataAccessor(task), property_path)
+        return get_json_forms_property_as_datetime(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def find_json_forms_property_as_datetime(task: Task, property_path: str) -> Optional[datetime]:
+    def find_json_forms_property_as_datetime(
+        task: Task, property_path: str
+    ) -> Optional[datetime]:
         """
         Try to find a json property as "datetime" following the "propertyPath" passed.
 
@@ -706,10 +818,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_datetime(CurrentJsonFormDataAccessor(task), property_path)
+        return find_json_forms_property_as_datetime(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def get_json_forms_property_as_file(task: Task, property_path: str) -> JsonFormsFile:
+    def get_json_forms_property_as_file(
+        task: Task, property_path: str
+    ) -> JsonFormsFile:
         """
         Get a json property as "JsonFormsFile" following the "propertyPath" passed.
 
@@ -723,10 +839,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_json_forms_file(CurrentJsonFormDataAccessor(task), property_path)
+        return get_json_forms_property_as_json_forms_file(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def find_json_forms_property_as_file(task: Task, property_path: str) -> Optional[JsonFormsFile]:
+    def find_json_forms_property_as_file(
+        task: Task, property_path: str
+    ) -> Optional[JsonFormsFile]:
         """
         Try to find a json property as "JsonFormsFile" following the "propertyPath" passed.
 
@@ -740,10 +860,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_json_forms_file(CurrentJsonFormDataAccessor(task), property_path)
+        return find_json_forms_property_as_json_forms_file(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def get_json_forms_property_as_principal(task: Task, property_path: str) -> JsonFormsPrincipal:
+    def get_json_forms_property_as_principal(
+        task: Task, property_path: str
+    ) -> JsonFormsPrincipal:
         """
         Get a json property as "JsonFormsPrincipal" following the "propertyPath" passed.
 
@@ -757,10 +881,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_json_forms_principal(CurrentJsonFormDataAccessor(task), property_path)
+        return get_json_forms_property_as_json_forms_principal(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def find_json_forms_property_as_principal(task: Task, property_path: str) -> Optional[JsonFormsPrincipal]:
+    def find_json_forms_property_as_principal(
+        task: Task, property_path: str
+    ) -> Optional[JsonFormsPrincipal]:
         """
         Try to find a json property as "JsonFormsPrincipal" following the "propertyPath" passed.
 
@@ -774,7 +902,9 @@ class TaskUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_json_forms_principal(CurrentJsonFormDataAccessor(task), property_path)
+        return find_json_forms_property_as_json_forms_principal(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
     def get_json_forms_property_as_list(task: Task, property_path: str) -> list:
@@ -791,10 +921,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_list(CurrentJsonFormDataAccessor(task), property_path)
+        return get_json_forms_property_as_list(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def find_json_forms_property_as_list(task: Task, property_path: str) -> Optional[list]:
+    def find_json_forms_property_as_list(
+        task: Task, property_path: str
+    ) -> Optional[list]:
         """
         Try to find a json property as "list" following the "propertyPath" passed.
 
@@ -808,7 +942,9 @@ class TaskUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_list(CurrentJsonFormDataAccessor(task), property_path)
+        return find_json_forms_property_as_list(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
     def get_json_forms_property_as_dict(task: Task, property_path: str) -> dict:
@@ -825,10 +961,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_dict(CurrentJsonFormDataAccessor(task), property_path)
+        return get_json_forms_property_as_dict(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def find_json_forms_property_as_dict(task: Task, property_path: str) -> Optional[dict]:
+    def find_json_forms_property_as_dict(
+        task: Task, property_path: str
+    ) -> Optional[dict]:
         """
         Try to find a json property as "dict" following the "propertyPath" passed.
 
@@ -842,10 +982,14 @@ class TaskUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_dict(CurrentJsonFormDataAccessor(task), property_path)
+        return find_json_forms_property_as_dict(
+            CurrentJsonFormDataAccessor(task), property_path
+        )
 
     @staticmethod
-    def update_json_forms_property(task: Task, property_path: str, value: Optional[JsonFormsSimpleType]) -> None:
+    def update_json_forms_property(
+        task: Task, property_path: str, value: Optional[JsonFormsSimpleType]
+    ) -> None:
         """
         Update a json forms data property in the task passed following the "property_path".
 
@@ -857,4 +1001,6 @@ class TaskUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        update_json_forms_property(CurrentJsonFormDataAccessor(task), property_path, value)
+        update_json_forms_property(
+            CurrentJsonFormDataAccessor(task), property_path, value
+        )

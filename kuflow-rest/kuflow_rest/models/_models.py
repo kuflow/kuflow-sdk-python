@@ -51,7 +51,10 @@ class TaskSaveElementValueDocumentCommand:
     """
 
     def __init__(
-        self, element_definition_code: str, element_value_id: Optional[str] = None, element_value_valid: bool = True
+        self,
+        element_definition_code: str,
+        element_value_id: Optional[str] = None,
+        element_value_valid: bool = True,
     ) -> None:
         """
         Parameters:

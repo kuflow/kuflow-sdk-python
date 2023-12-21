@@ -142,7 +142,9 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
     def test_set_element_value_as_str_list(self):
         request = prepare_task_save_element_command_str()
 
-        TaskSaveElementCommandUtils.set_element_value_list(request, ["MY TEXT NEW1", "MY TEXT NEW2"])
+        TaskSaveElementCommandUtils.set_element_value_list(
+            request, ["MY TEXT NEW1", "MY TEXT NEW2"]
+        )
         self.assertEqual(
             request.element_values,
             [
@@ -172,7 +174,9 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
     def test_add_element_value_as_str_list(self):
         request = prepare_task_save_element_command_str()
 
-        TaskSaveElementCommandUtils.add_element_value_list(request, ["MY TEXT NEW1", "MY TEXT NEW2"])
+        TaskSaveElementCommandUtils.add_element_value_list(
+            request, ["MY TEXT NEW1", "MY TEXT NEW2"]
+        )
 
         expected_element_values = [
             TaskElementValueString(value="MY TEXT 1", valid=True),
@@ -315,7 +319,9 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
         request = prepare_task_save_element_command_date()
 
         value = TaskSaveElementCommandUtils.get_element_value_as_date_list(request)
-        self.assertEqual(value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")])
+        self.assertEqual(
+            value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")]
+        )
 
         request.element_values = []
 
@@ -325,7 +331,9 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
     def test_set_element_value_as_date(self):
         request = prepare_task_save_element_command_date()
 
-        TaskSaveElementCommandUtils.set_element_value(request, date.fromisoformat("2020-05-05"))
+        TaskSaveElementCommandUtils.set_element_value(
+            request, date.fromisoformat("2020-05-05")
+        )
         self.assertEqual(
             request.element_values,
             [
@@ -340,7 +348,8 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
         request = prepare_task_save_element_command_date()
 
         TaskSaveElementCommandUtils.set_element_value_list(
-            request, [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")]
+            request,
+            [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")],
         )
         self.assertEqual(
             request.element_values,
@@ -356,7 +365,9 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
     def test_add_element_value_as_date(self):
         request = prepare_task_save_element_command_date()
 
-        TaskSaveElementCommandUtils.add_element_value(request, date.fromisoformat("2020-08-08"))
+        TaskSaveElementCommandUtils.add_element_value(
+            request, date.fromisoformat("2020-08-08")
+        )
         expected_element_values = [
             TaskElementValueString(value="2000-01-01", valid=True),
             TaskElementValueString(value="1980-01-01", valid=False),
@@ -371,7 +382,8 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
         request = prepare_task_save_element_command_date()
 
         TaskSaveElementCommandUtils.add_element_value_list(
-            request, [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")]
+            request,
+            [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")],
         )
         expected_element_values = [
             TaskElementValueString(value="2000-01-01", valid=True),
@@ -438,7 +450,9 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
     def test_set_element_value_as_dict_list(self):
         request = prepare_task_save_element_command_dict()
 
-        TaskSaveElementCommandUtils.set_element_value_list(request, [{"key": "value 3"}, {"key": "value 4"}])
+        TaskSaveElementCommandUtils.set_element_value_list(
+            request, [{"key": "value 3"}, {"key": "value 4"}]
+        )
         self.assertEqual(
             request.element_values,
             [
@@ -468,7 +482,9 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
     def test_add_element_value_as_dict_list(self):
         request = prepare_task_save_element_command_dict()
 
-        TaskSaveElementCommandUtils.add_element_value_list(request, [{"key": "value 3"}, {"key": "value 4"}])
+        TaskSaveElementCommandUtils.add_element_value_list(
+            request, [{"key": "value 3"}, {"key": "value 4"}]
+        )
 
         expected_element_values = [
             TaskElementValueObject(value={"key": "value 1"}, valid=True),
@@ -512,7 +528,11 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
 
         value = TaskSaveElementCommandUtils.get_element_value_as_document_list(request)
         self.assertEqual(
-            value, [prepare_task_element_value_document_item("1"), prepare_task_element_value_document_item("2")]
+            value,
+            [
+                prepare_task_element_value_document_item("1"),
+                prepare_task_element_value_document_item("2"),
+            ],
         )
 
         request.element_values = []
@@ -523,11 +543,15 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
     def test_set_element_value_as_document(self):
         request = prepare_task_save_element_command_document()
 
-        TaskSaveElementCommandUtils.set_element_value(request, prepare_task_element_value_document_item("3"))
+        TaskSaveElementCommandUtils.set_element_value(
+            request, prepare_task_element_value_document_item("3")
+        )
         self.assertEqual(
             request.element_values,
             [
-                TaskElementValueDocument(value=prepare_task_element_value_document_item("3"), valid=True),
+                TaskElementValueDocument(
+                    value=prepare_task_element_value_document_item("3"), valid=True
+                ),
             ],
         )
 
@@ -539,13 +563,20 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
 
         TaskSaveElementCommandUtils.set_element_value_list(
             request,
-            [prepare_task_element_value_document_item("3"), prepare_task_element_value_document_item("4")],
+            [
+                prepare_task_element_value_document_item("3"),
+                prepare_task_element_value_document_item("4"),
+            ],
         )
         self.assertEqual(
             request.element_values,
             [
-                TaskElementValueDocument(value=prepare_task_element_value_document_item("3"), valid=True),
-                TaskElementValueDocument(value=prepare_task_element_value_document_item("4"), valid=True),
+                TaskElementValueDocument(
+                    value=prepare_task_element_value_document_item("3"), valid=True
+                ),
+                TaskElementValueDocument(
+                    value=prepare_task_element_value_document_item("4"), valid=True
+                ),
             ],
         )
 
@@ -555,7 +586,9 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
     def test_add_element_value_as_document(self):
         request = prepare_task_save_element_command_document()
 
-        TaskSaveElementCommandUtils.add_element_value(request, prepare_task_element_value_document_item("3"))
+        TaskSaveElementCommandUtils.add_element_value(
+            request, prepare_task_element_value_document_item("3")
+        )
 
         expected_element_values = [
             TaskElementValueDocument(
@@ -581,7 +614,10 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
 
         TaskSaveElementCommandUtils.add_element_value_list(
             request,
-            [prepare_task_element_value_document_item("3"), prepare_task_element_value_document_item("4")],
+            [
+                prepare_task_element_value_document_item("3"),
+                prepare_task_element_value_document_item("4"),
+            ],
         )
 
         expected_element_values = [
@@ -639,7 +675,10 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
         value = TaskSaveElementCommandUtils.get_element_value_as_principal_list(request)
         self.assertEqual(
             value,
-            [prepare_task_element_value_principal_item("1"), prepare_task_element_value_principal_item("2")],
+            [
+                prepare_task_element_value_principal_item("1"),
+                prepare_task_element_value_principal_item("2"),
+            ],
         )
 
         request.element_values = []
@@ -650,11 +689,15 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
     def test_set_element_value_as_principal(self):
         request = prepare_task_save_element_command_principal()
 
-        TaskSaveElementCommandUtils.set_element_value(request, prepare_task_element_value_principal_item("3"))
+        TaskSaveElementCommandUtils.set_element_value(
+            request, prepare_task_element_value_principal_item("3")
+        )
         self.assertEqual(
             request.element_values,
             [
-                TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("3"), valid=True),
+                TaskElementValuePrincipal(
+                    value=prepare_task_element_value_principal_item("3"), valid=True
+                ),
             ],
         )
 
@@ -666,13 +709,20 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
 
         TaskSaveElementCommandUtils.set_element_value_list(
             request,
-            [prepare_task_element_value_principal_item("3"), prepare_task_element_value_principal_item("4")],
+            [
+                prepare_task_element_value_principal_item("3"),
+                prepare_task_element_value_principal_item("4"),
+            ],
         )
         self.assertEqual(
             request.element_values,
             [
-                TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("3"), valid=True),
-                TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("4"), valid=True),
+                TaskElementValuePrincipal(
+                    value=prepare_task_element_value_principal_item("3"), valid=True
+                ),
+                TaskElementValuePrincipal(
+                    value=prepare_task_element_value_principal_item("4"), valid=True
+                ),
             ],
         )
 
@@ -682,7 +732,9 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
     def test_add_element_value_as_principal(self):
         request = prepare_task_save_element_command_principal()
 
-        TaskSaveElementCommandUtils.add_element_value(request, prepare_task_element_value_principal_item("3"))
+        TaskSaveElementCommandUtils.add_element_value(
+            request, prepare_task_element_value_principal_item("3")
+        )
 
         expected_element_values = [
             TaskElementValuePrincipal(
@@ -708,7 +760,10 @@ class SaveTaskElementUtilsTest(unittest.TestCase):
 
         TaskSaveElementCommandUtils.add_element_value_list(
             request,
-            [prepare_task_element_value_principal_item("3"), prepare_task_element_value_principal_item("4")],
+            [
+                prepare_task_element_value_principal_item("3"),
+                prepare_task_element_value_principal_item("4"),
+            ],
         )
 
         expected_element_values = [
@@ -782,8 +837,12 @@ def prepare_task_save_element_command_document() -> TaskSaveElementCommand:
     return TaskSaveElementCommand(
         element_definition_code="CODE",
         element_values=[
-            TaskElementValueDocument(value=prepare_task_element_value_document_item("1"), valid=True),
-            TaskElementValueDocument(value=prepare_task_element_value_document_item("2"), valid=False),
+            TaskElementValueDocument(
+                value=prepare_task_element_value_document_item("1"), valid=True
+            ),
+            TaskElementValueDocument(
+                value=prepare_task_element_value_document_item("2"), valid=False
+            ),
         ],
     )
 
@@ -792,13 +851,19 @@ def prepare_task_save_element_command_principal() -> TaskSaveElementCommand:
     return TaskSaveElementCommand(
         element_definition_code="CODE",
         element_values=[
-            TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("1"), valid=True),
-            TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("2"), valid=False),
+            TaskElementValuePrincipal(
+                value=prepare_task_element_value_principal_item("1"), valid=True
+            ),
+            TaskElementValuePrincipal(
+                value=prepare_task_element_value_principal_item("2"), valid=False
+            ),
         ],
     )
 
 
-def prepare_task_element_value_document_item(suffix: str) -> TaskElementValueDocumentItem:
+def prepare_task_element_value_document_item(
+    suffix: str,
+) -> TaskElementValueDocumentItem:
     return TaskElementValueDocumentItem(
         id=f"id_{suffix}",
         uri=f"uri_{suffix}",
@@ -809,7 +874,9 @@ def prepare_task_element_value_document_item(suffix: str) -> TaskElementValueDoc
     )
 
 
-def prepare_task_element_value_principal_item(suffix: str) -> TaskElementValuePrincipalItem:
+def prepare_task_element_value_principal_item(
+    suffix: str,
+) -> TaskElementValuePrincipalItem:
     return TaskElementValuePrincipalItem(
         id=f"id_{suffix}",
         type="USER",

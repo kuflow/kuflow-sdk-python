@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -24,6 +23,7 @@
 #
 
 from .keywords import Keywords
+
 
 __version__ = "1.1.4.dev0"
 __all__ = ["KuFlow"]

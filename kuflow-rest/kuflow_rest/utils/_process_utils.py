@@ -70,7 +70,9 @@ class CurrentElementValueAccessor(ProcessElementValueAccessor):
         if self.process.element_values is None:
             return []
 
-        element_values_by_code = self.process.element_values.get(self.element_definition_code)
+        element_values_by_code = self.process.element_values.get(
+            self.element_definition_code
+        )
         if element_values_by_code is None or len(element_values_by_code) == 0:
             return []
 
@@ -90,7 +92,9 @@ class ProcessUtils:
         Returns:
             True if all related valid values are TRUE, otherwise False.
         """
-        return get_element_value_valid(CurrentElementValueAccessor(process, element_definition_code))
+        return get_element_value_valid(
+            CurrentElementValueAccessor(process, element_definition_code)
+        )
 
     @staticmethod
     def get_element_value_valid_at(
@@ -109,10 +113,14 @@ class ProcessUtils:
         Returns:
             The requested valid value if it exists, otherwise None.
         """
-        return get_element_value_valid_at(CurrentElementValueAccessor(process, element_definition_code), index)
+        return get_element_value_valid_at(
+            CurrentElementValueAccessor(process, element_definition_code), index
+        )
 
     @staticmethod
-    def set_element_value_valid(process: Process, element_definition_code: str, valid: Optional[bool]) -> Process:
+    def set_element_value_valid(
+        process: Process, element_definition_code: str, valid: Optional[bool]
+    ) -> Process:
         """
         Set the valid value for all element values.
 
@@ -124,13 +132,18 @@ class ProcessUtils:
         Returns:
             The passed process.
         """
-        set_element_value_valid(CurrentElementValueAccessor(process, element_definition_code), valid)
+        set_element_value_valid(
+            CurrentElementValueAccessor(process, element_definition_code), valid
+        )
 
         return process
 
     @staticmethod
     def set_element_value_valid_at(
-        process: Process, element_definition_code: str, valid: Optional[bool], index: int
+        process: Process,
+        element_definition_code: str,
+        valid: Optional[bool],
+        index: int,
     ) -> Process:
         """
         Set the valid value for the selected element value.
@@ -144,13 +157,17 @@ class ProcessUtils:
         Returns:
             The passed process.
         """
-        set_element_value_valid_at(CurrentElementValueAccessor(process, element_definition_code), valid, index)
+        set_element_value_valid_at(
+            CurrentElementValueAccessor(process, element_definition_code), valid, index
+        )
 
         return process
 
     @staticmethod
     def set_element_value(
-        process: Process, element_definition_code: str, element_value: Optional[ElementValueSimpleType] = None
+        process: Process,
+        element_definition_code: str,
+        element_value: Optional[ElementValueSimpleType] = None,
     ) -> Process:
         """
         Set an element value.
@@ -163,13 +180,17 @@ class ProcessUtils:
         Returns:
             The passed process.
         """
-        set_element_value(CurrentElementValueAccessor(process, element_definition_code), element_value)
+        set_element_value(
+            CurrentElementValueAccessor(process, element_definition_code), element_value
+        )
 
         return process
 
     @staticmethod
     def set_element_value_list(
-        process: Process, element_definition_code: str, element_values: Optional[List[ElementValueSimpleType]] = None
+        process: Process,
+        element_definition_code: str,
+        element_values: Optional[List[ElementValueSimpleType]] = None,
     ) -> Process:
         """
         Set an element value.
@@ -182,13 +203,18 @@ class ProcessUtils:
         Returns:
             The passed process.
         """
-        set_element_value_list(CurrentElementValueAccessor(process, element_definition_code), element_values)
+        set_element_value_list(
+            CurrentElementValueAccessor(process, element_definition_code),
+            element_values,
+        )
 
         return process
 
     @staticmethod
     def add_element_value(
-        process: Process, element_definition_code: str, element_value: Optional[ElementValueSimpleType] = None
+        process: Process,
+        element_definition_code: str,
+        element_value: Optional[ElementValueSimpleType] = None,
     ) -> Process:
         """
         Add an element value.
@@ -201,13 +227,17 @@ class ProcessUtils:
         Returns:
             The passed process.
         """
-        add_element_value(CurrentElementValueAccessor(process, element_definition_code), element_value)
+        add_element_value(
+            CurrentElementValueAccessor(process, element_definition_code), element_value
+        )
 
         return process
 
     @staticmethod
     def add_element_value_list(
-        process: Process, element_definition_code: str, element_values: Optional[List[ElementValueSimpleType]] = None
+        process: Process,
+        element_definition_code: str,
+        element_values: Optional[List[ElementValueSimpleType]] = None,
     ) -> Process:
         """
         Add element values.
@@ -220,7 +250,10 @@ class ProcessUtils:
         Returns:
             The passed model related object.
         """
-        add_element_value_list(CurrentElementValueAccessor(process, element_definition_code), element_values)
+        add_element_value_list(
+            CurrentElementValueAccessor(process, element_definition_code),
+            element_values,
+        )
 
         return process
 
@@ -236,10 +269,14 @@ class ProcessUtils:
         Returns:
             The element value as a str.
         """
-        return get_element_value_as_str(CurrentElementValueAccessor(process, element_definition_code))
+        return get_element_value_as_str(
+            CurrentElementValueAccessor(process, element_definition_code)
+        )
 
     @staticmethod
-    def find_element_value_as_str(process: Process, element_definition_code: str) -> Optional[str]:
+    def find_element_value_as_str(
+        process: Process, element_definition_code: str
+    ) -> Optional[str]:
         """
         Try to get an element as a str.
 
@@ -250,10 +287,14 @@ class ProcessUtils:
         Returns:
             The element value as a str.
         """
-        return find_element_value_as_str(CurrentElementValueAccessor(process, element_definition_code))
+        return find_element_value_as_str(
+            CurrentElementValueAccessor(process, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_str_list(process: Process, element_definition_code: str) -> List[str]:
+    def get_element_value_as_str_list(
+        process: Process, element_definition_code: str
+    ) -> List[str]:
         """
         Try to get an element as a str list.
 
@@ -264,10 +305,14 @@ class ProcessUtils:
         Returns:
             The element values as a str list.
         """
-        return get_element_value_as_str_list(CurrentElementValueAccessor(process, element_definition_code))
+        return get_element_value_as_str_list(
+            CurrentElementValueAccessor(process, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_float(process: Process, element_definition_code: str) -> float:
+    def get_element_value_as_float(
+        process: Process, element_definition_code: str
+    ) -> float:
         """
         Get an element as a float.
 
@@ -278,10 +323,14 @@ class ProcessUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float(CurrentElementValueAccessor(process, element_definition_code))
+        return get_element_value_as_float(
+            CurrentElementValueAccessor(process, element_definition_code)
+        )
 
     @staticmethod
-    def find_element_value_as_float(process: Process, element_definition_code: str) -> float:
+    def find_element_value_as_float(
+        process: Process, element_definition_code: str
+    ) -> float:
         """
         Try to get an element as a float.
 
@@ -292,10 +341,14 @@ class ProcessUtils:
         Returns:
             The element value as a float.
         """
-        return find_element_value_as_float(CurrentElementValueAccessor(process, element_definition_code))
+        return find_element_value_as_float(
+            CurrentElementValueAccessor(process, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_float_list(process: Process, element_definition_code: str) -> List[float]:
+    def get_element_value_as_float_list(
+        process: Process, element_definition_code: str
+    ) -> List[float]:
         """
         Get all elements as a float list.
 
@@ -306,10 +359,14 @@ class ProcessUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float_list(CurrentElementValueAccessor(process, element_definition_code))
+        return get_element_value_as_float_list(
+            CurrentElementValueAccessor(process, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_date(process: Process, element_definition_code: str) -> date:
+    def get_element_value_as_date(
+        process: Process, element_definition_code: str
+    ) -> date:
         """
         Get an element as a date.
 
@@ -320,10 +377,14 @@ class ProcessUtils:
         Returns:
             The element value as a date.
         """
-        return get_element_value_as_date(CurrentElementValueAccessor(process, element_definition_code))
+        return get_element_value_as_date(
+            CurrentElementValueAccessor(process, element_definition_code)
+        )
 
     @staticmethod
-    def find_element_value_as_date(process: Process, element_definition_code: str) -> Optional[date]:
+    def find_element_value_as_date(
+        process: Process, element_definition_code: str
+    ) -> Optional[date]:
         """
         Try to get  an element as a date.
 
@@ -334,10 +395,14 @@ class ProcessUtils:
         Returns:
             The element value as a date.
         """
-        return find_element_value_as_date(CurrentElementValueAccessor(process, element_definition_code))
+        return find_element_value_as_date(
+            CurrentElementValueAccessor(process, element_definition_code)
+        )
 
     @staticmethod
-    def get_element_value_as_date_list(process: Process, element_definition_code: str) -> List[date]:
+    def get_element_value_as_date_list(
+        process: Process, element_definition_code: str
+    ) -> List[date]:
         """
         Get all elements as date list.
 
@@ -348,4 +413,6 @@ class ProcessUtils:
         Returns:
             The element value as a date.
         """
-        return get_element_value_as_date_list(CurrentElementValueAccessor(process, element_definition_code))
+        return get_element_value_as_date_list(
+            CurrentElementValueAccessor(process, element_definition_code)
+        )

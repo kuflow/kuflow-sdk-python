@@ -60,7 +60,9 @@ from ...operations._process_operations import (
 )
 
 T = TypeVar("T")
-ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
+ClsType = Optional[
+    Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]
+]
 
 
 class ProcessOperations:
@@ -80,11 +82,18 @@ class ProcessOperations:
         self._client = input_args.pop(0) if input_args else kwargs.pop("client")
         self._config = input_args.pop(0) if input_args else kwargs.pop("config")
         self._serialize = input_args.pop(0) if input_args else kwargs.pop("serializer")
-        self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
+        self._deserialize = (
+            input_args.pop(0) if input_args else kwargs.pop("deserializer")
+        )
 
     @distributed_trace_async
     async def find_processes(
-        self, *, size: int = 25, page: int = 0, sort: Optional[List[str]] = None, **kwargs: Any
+        self,
+        *,
+        size: int = 25,
+        page: int = 0,
+        sort: Optional[List[str]] = None,
+        **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
 
@@ -139,8 +148,12 @@ class ProcessOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("ProcessPage", pipeline_response)
@@ -152,7 +165,11 @@ class ProcessOperations:
 
     @overload
     async def create_process(
-        self, process: _models.Process, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        process: _models.Process,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Process:
         """Create a new process.
 
@@ -211,7 +228,9 @@ class ProcessOperations:
         """
 
     @distributed_trace_async
-    async def create_process(self, process: Union[_models.Process, IO], **kwargs: Any) -> _models.Process:
+    async def create_process(
+        self, process: Union[_models.Process, IO], **kwargs: Any
+    ) -> _models.Process:
         """Create a new process.
 
         Creates a process. This option has direct correspondence to the action of starting a process in
@@ -248,7 +267,9 @@ class ProcessOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Process] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -278,8 +299,12 @@ class ProcessOperations:
         if response.status_code not in [200, 201]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         if response.status_code == 200:
@@ -335,8 +360,12 @@ class ProcessOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Process", pipeline_response)
@@ -377,7 +406,12 @@ class ProcessOperations:
 
     @overload
     async def actions_process_change_initiator(
-        self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        command: IO,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Process:
         """Change process initiator.
 
@@ -401,7 +435,10 @@ class ProcessOperations:
 
     @distributed_trace_async
     async def actions_process_change_initiator(
-        self, id: str, command: Union[_models.ProcessChangeInitiatorCommand, IO], **kwargs: Any
+        self,
+        id: str,
+        command: Union[_models.ProcessChangeInitiatorCommand, IO],
+        **kwargs: Any,
     ) -> _models.Process:
         """Change process initiator.
 
@@ -434,7 +471,9 @@ class ProcessOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Process] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -465,8 +504,12 @@ class ProcessOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Process", pipeline_response)
@@ -509,7 +552,12 @@ class ProcessOperations:
 
     @overload
     async def actions_process_save_element(
-        self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        command: IO,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Process:
         """Save a process element, aka: metadata.
 
@@ -535,7 +583,10 @@ class ProcessOperations:
 
     @distributed_trace_async
     async def actions_process_save_element(
-        self, id: str, command: Union[_models.ProcessSaveElementCommand, IO], **kwargs: Any
+        self,
+        id: str,
+        command: Union[_models.ProcessSaveElementCommand, IO],
+        **kwargs: Any,
     ) -> _models.Process:
         """Save a process element, aka: metadata.
 
@@ -570,7 +621,9 @@ class ProcessOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Process] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -601,8 +654,12 @@ class ProcessOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Process", pipeline_response)
@@ -641,7 +698,12 @@ class ProcessOperations:
 
     @overload
     async def actions_process_delete_element(
-        self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        command: IO,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Process:
         """Delete an element by code.
 
@@ -663,7 +725,10 @@ class ProcessOperations:
 
     @distributed_trace_async
     async def actions_process_delete_element(
-        self, id: str, command: Union[_models.ProcessDeleteElementCommand, IO], **kwargs: Any
+        self,
+        id: str,
+        command: Union[_models.ProcessDeleteElementCommand, IO],
+        **kwargs: Any,
     ) -> _models.Process:
         """Delete an element by code.
 
@@ -694,7 +759,9 @@ class ProcessOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Process] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -725,8 +792,12 @@ class ProcessOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Process", pipeline_response)
@@ -780,8 +851,12 @@ class ProcessOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Process", pipeline_response)
@@ -837,8 +912,12 @@ class ProcessOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Process", pipeline_response)
@@ -850,7 +929,14 @@ class ProcessOperations:
 
     @distributed_trace_async
     async def actions_process_save_user_action_value_document(  # pylint: disable=name-too-long
-        self, id: str, file: IO, *, file_content_type: str, file_name: str, user_action_value_id: str, **kwargs: Any
+        self,
+        id: str,
+        file: IO,
+        *,
+        file_content_type: str,
+        file_name: str,
+        user_action_value_id: str,
+        **kwargs: Any,
     ) -> Optional[_models.Process]:
         """Upload and save a document in a user action.
 
@@ -881,7 +967,9 @@ class ProcessOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/octet-stream"))
+        content_type: str = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", "application/octet-stream")
+        )
         cls: ClsType[Optional[_models.Process]] = kwargs.pop("cls", None)
 
         _content = file
@@ -908,8 +996,12 @@ class ProcessOperations:
         if response.status_code not in [200, 304]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = None

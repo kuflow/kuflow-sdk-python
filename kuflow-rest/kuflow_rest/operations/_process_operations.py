@@ -43,7 +43,11 @@ class ProcessOperations:
         self._kuflow_client = kuflow_client
 
     def find_processes(
-        self, size: int = 25, page: int = 0, sort: Optional[Union[str, List[str]]] = None, **kwargs: Any
+        self,
+        size: int = 25,
+        page: int = 0,
+        sort: Optional[Union[str, List[str]]] = None,
+        **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
 
@@ -69,9 +73,13 @@ class ProcessOperations:
         if sort is not None and isinstance(sort, str):
             sort = [sort]
 
-        return self._kuflow_client.process.find_processes(size=size, page=page, sort=sort, **kwargs)
+        return self._kuflow_client.process.find_processes(
+            size=size, page=page, sort=sort, **kwargs
+        )
 
-    def create_process(self, process: _models.Process, **kwargs: Any) -> _models.Process:
+    def create_process(
+        self, process: _models.Process, **kwargs: Any
+    ) -> _models.Process:
         """Create a new process.
 
         Creates a process. This option has direct correspondence to the action of starting a process in
@@ -128,7 +136,9 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_change_initiator(id=id, command=command, **kwargs)
+        return self._kuflow_client.process.actions_process_change_initiator(
+            id=id, command=command, **kwargs
+        )
 
     def actions_process_save_element(
         self, id: str, command: _models.ProcessSaveElementCommand, **kwargs: Any
@@ -151,7 +161,9 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_save_element(id=id, command=command, **kwargs)
+        return self._kuflow_client.process.actions_process_save_element(
+            id=id, command=command, **kwargs
+        )
 
     def actions_process_delete_element(
         self, id: str, command: _models.ProcessDeleteElementCommand, **kwargs: Any
@@ -170,7 +182,9 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_delete_element(id=id, command=command, **kwargs)
+        return self._kuflow_client.process.actions_process_delete_element(
+            id=id, command=command, **kwargs
+        )
 
     def actions_process_complete(self, id: str, **kwargs: Any) -> _models.Process:
         """Complete a Process.
@@ -205,7 +219,11 @@ class ProcessOperations:
         return self._kuflow_client.process.actions_process_cancel(id=id, **kwargs)
 
     def actions_process_save_user_action_value_document(
-        self, id: str, file: _models.Document, command: _models.ProcessSaveUserActionValueDocumentCommand, **kwargs: Any
+        self,
+        id: str,
+        file: _models.Document,
+        command: _models.ProcessSaveUserActionValueDocumentCommand,
+        **kwargs: Any,
     ) -> Optional[_models.Process]:
         """Upload and save a document in a user action.
 
@@ -221,11 +239,13 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process or None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_save_user_action_value_document(
-            id=id,
-            file=file.file_content,
-            file_content_type=file.content_type,
-            file_name=file.file_mame,
-            user_action_value_id=command.user_action_value_id,
-            **kwargs,
+        return (
+            self._kuflow_client.process.actions_process_save_user_action_value_document(
+                id=id,
+                file=file.file_content,
+                file_content_type=file.content_type,
+                file_name=file.file_mame,
+                user_action_value_id=command.user_action_value_id,
+                **kwargs,
+            )
         )

@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -24,6 +23,7 @@
 #
 
 from .robot_framework_activities import RobotFrameworkActivities
+
 
 __all__ = ["RobotFrameworkActivities"]
 

@@ -121,20 +121,38 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
     """
 
     def __init__(
-        self, credential: "TokenCredential", *, endpoint: str = "https://api.kuflow.com/v2022-10-08", **kwargs: Any
+        self,
+        credential: "TokenCredential",
+        *,
+        endpoint: str = "https://api.kuflow.com/v2022-10-08",
+        **kwargs: Any,
     ) -> None:
         self._config = KuFlowRestClientConfiguration(credential=credential, **kwargs)
-        self._client: PipelineClient = PipelineClient(base_url=endpoint, config=self._config, **kwargs)
+        self._client: PipelineClient = PipelineClient(
+            base_url=endpoint, config=self._config, **kwargs
+        )
 
-        client_models = {k: v for k, v in _models.__dict__.items() if isinstance(v, type)}
+        client_models = {
+            k: v for k, v in _models.__dict__.items() if isinstance(v, type)
+        }
         self._serialize = Serializer(client_models)
         self._deserialize = Deserializer(client_models)
         self._serialize.client_side_validation = False
-        self.authentication = AuthenticationOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.principal = PrincipalOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.process = ProcessOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.task = TaskOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.worker = WorkerOperations(self._client, self._config, self._serialize, self._deserialize)
+        self.authentication = AuthenticationOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
+        self.principal = PrincipalOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
+        self.process = ProcessOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
+        self.task = TaskOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
+        self.worker = WorkerOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
 
     def send_request(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
         """Runs the network request through the client's chained policies.

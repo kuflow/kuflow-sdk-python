@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -38,6 +37,7 @@ from temporalio.converter import (
 from kuflow_rest import models as models_rest
 
 from . import models as models_temporal
+
 
 with workflow.unsafe.imports_passed_through():
     from kuflow_rest import Deserializer, Model, Serializer
