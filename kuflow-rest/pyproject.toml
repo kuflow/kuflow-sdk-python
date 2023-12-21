@@ -32,11 +32,6 @@ log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(linen
 testpaths = ["tests"]
 python_files = "test_*.py"
 
-# [tool.ruff]
-# exclude = [
-#   "_generated"
-# ]
-
 [tool.ruff.lint]
 exclude = [
   "_generated"
@@ -48,5 +43,5 @@ exclude = [
   "E722",  # "Do not use bare except"
   "C408",  # "Unnecessary {obj_type} call (rewrite as a literal)"
   "E731",  # "Do not assign a lambda expression, use a def"
-  "F403", # Use a dictionary comprehension instead of a for-loop
+  "F403",  # Use a dictionary comprehension instead of a for-loop
 ]
