@@ -6,8 +6,7 @@ This doc is intended for contributors to `kuflow-temporal-activity-kuflow`
 
 - Python 3.8+
 - Poetry
-- Black (code formatter)
-- Flake 8 (linter)
+- Ruff (code formatter - linter - organize imports)
 - PyTest
 
 ## Build
@@ -17,9 +16,7 @@ This doc is intended for contributors to `kuflow-temporal-activity-kuflow`
 To format code:
 
 ```bash
-poetry run black
-# Or
-npm run black
+poetry run ruff format
 ```
 
 ## Test
