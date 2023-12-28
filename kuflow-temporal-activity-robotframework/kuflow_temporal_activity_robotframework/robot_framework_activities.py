@@ -50,14 +50,14 @@ class ExecuteRobotRequest:
         tests: Paths to test case files/directories to be executed similarly
             as when running the ``robot`` command on the command line.
             If the KUFLOW_ROBOT_PATH environment variable defined in the
-            activity worker exists, its content is prefixed to the value passed
-            in `text`
+            activity worker exists, its content is added as a prefix to the
+            value of this field.
         variables: Options to configure and control execution.
-            Take precedence over "variable" key in :param options. Values are merged.
+            Take precedence over possible "variable" key present in :param options.
             Take precedence over default_variables in :class:`RobotFrameworkActivities`.
             Values are merged.
             Please see :func:`robot.run.run` docstring to more info
-        options: Options to configure and control execution. Please see
+        options: Options to configure and control execution.
             Take precedence over default_options in :class:`RobotFrameworkActivities`
             Values are merged.
             Please see :func:`robot.run.run` docstring to more info
