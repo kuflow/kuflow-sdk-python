@@ -31,7 +31,18 @@
 #
 # --------------------------------------------------------------------------
 from io import IOBase
-from typing import Any, Callable, Dict, IO, Iterator, List, Optional, TypeVar, Union, overload
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    IO,
+    Iterator,
+    List,
+    Optional,
+    TypeVar,
+    Union,
+    overload,
+)
 
 from azure.core.exceptions import (
     ClientAuthenticationError,
@@ -50,7 +61,9 @@ from .. import models as _models
 from .._serialization import Serializer
 
 T = TypeVar("T")
-ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
+ClsType = Optional[
+    Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]
+]
 
 _SERIALIZER = Serializer()
 _SERIALIZER.client_side_validation = False
@@ -76,31 +89,47 @@ def build_find_tasks_request(
 
     # Construct parameters
     if size is not None:
-        _params["size"] = _SERIALIZER.query("size", size, "int", maximum=1000, minimum=0)
+        _params["size"] = _SERIALIZER.query(
+            "size", size, "int", maximum=1000, minimum=0
+        )
     if page is not None:
         _params["page"] = _SERIALIZER.query("page", page, "int", minimum=0)
     if sort is not None:
-        _params["sort"] = [_SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort]
+        _params["sort"] = [
+            _SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort
+        ]
     if process_id is not None:
-        _params["processId"] = [_SERIALIZER.query("process_id", q, "str") if q is not None else "" for q in process_id]
+        _params["processId"] = [
+            _SERIALIZER.query("process_id", q, "str") if q is not None else ""
+            for q in process_id
+        ]
     if state is not None:
-        _params["state"] = [_SERIALIZER.query("state", q, "str") if q is not None else "" for q in state]
+        _params["state"] = [
+            _SERIALIZER.query("state", q, "str") if q is not None else "" for q in state
+        ]
     if task_definition_code is not None:
         _params["taskDefinitionCode"] = [
-            _SERIALIZER.query("task_definition_code", q, "str") if q is not None else "" for q in task_definition_code
+            _SERIALIZER.query("task_definition_code", q, "str") if q is not None else ""
+            for q in task_definition_code
         ]
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
+    return HttpRequest(
+        method="GET", url=_url, params=_params, headers=_headers, **kwargs
+    )
 
 
-def build_create_task_request(*, activity_token: Optional[str] = None, **kwargs: Any) -> HttpRequest:
+def build_create_task_request(
+    *, activity_token: Optional[str] = None, **kwargs: Any
+) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    content_type: Optional[str] = kwargs.pop(
+        "content_type", _headers.pop("Content-Type", None)
+    )
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -108,14 +137,20 @@ def build_create_task_request(*, activity_token: Optional[str] = None, **kwargs:
 
     # Construct parameters
     if activity_token is not None:
-        _params["activityToken"] = _SERIALIZER.query("activity_token", activity_token, "str")
+        _params["activityToken"] = _SERIALIZER.query(
+            "activity_token", activity_token, "str"
+        )
 
     # Construct headers
     if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+        _headers["Content-Type"] = _SERIALIZER.header(
+            "content_type", content_type, "str"
+        )
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, **kwargs)
+    return HttpRequest(
+        method="POST", url=_url, params=_params, headers=_headers, **kwargs
+    )
 
 
 def build_retrieve_task_request(id: str, **kwargs: Any) -> HttpRequest:
@@ -159,7 +194,9 @@ def build_actions_task_claim_request(id: str, **kwargs: Any) -> HttpRequest:
 def build_actions_task_assign_request(id: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    content_type: Optional[str] = kwargs.pop(
+        "content_type", _headers.pop("Content-Type", None)
+    )
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -172,7 +209,9 @@ def build_actions_task_assign_request(id: str, **kwargs: Any) -> HttpRequest:
 
     # Construct headers
     if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+        _headers["Content-Type"] = _SERIALIZER.header(
+            "content_type", content_type, "str"
+        )
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
@@ -181,7 +220,9 @@ def build_actions_task_assign_request(id: str, **kwargs: Any) -> HttpRequest:
 def build_actions_task_save_element_request(id: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    content_type: Optional[str] = kwargs.pop(
+        "content_type", _headers.pop("Content-Type", None)
+    )
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -194,7 +235,9 @@ def build_actions_task_save_element_request(id: str, **kwargs: Any) -> HttpReque
 
     # Construct headers
     if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+        _headers["Content-Type"] = _SERIALIZER.header(
+            "content_type", content_type, "str"
+        )
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
@@ -214,7 +257,9 @@ def build_actions_task_save_element_value_document_request(  # pylint: disable=n
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    content_type: Optional[str] = kwargs.pop(
+        "content_type", _headers.pop("Content-Type", None)
+    )
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -226,26 +271,45 @@ def build_actions_task_save_element_value_document_request(  # pylint: disable=n
     _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
-    _params["fileContentType"] = _SERIALIZER.query("file_content_type", file_content_type, "str")
+    _params["fileContentType"] = _SERIALIZER.query(
+        "file_content_type", file_content_type, "str"
+    )
     _params["fileName"] = _SERIALIZER.query("file_name", file_name, "str")
-    _params["elementDefinitionCode"] = _SERIALIZER.query("element_definition_code", element_definition_code, "str")
+    _params["elementDefinitionCode"] = _SERIALIZER.query(
+        "element_definition_code", element_definition_code, "str"
+    )
     if element_value_id is not None:
-        _params["elementValueId"] = _SERIALIZER.query("element_value_id", element_value_id, "str")
+        _params["elementValueId"] = _SERIALIZER.query(
+            "element_value_id", element_value_id, "str"
+        )
     if element_value_valid is not None:
-        _params["elementValueValid"] = _SERIALIZER.query("element_value_valid", element_value_valid, "bool")
+        _params["elementValueValid"] = _SERIALIZER.query(
+            "element_value_valid", element_value_valid, "bool"
+        )
 
     # Construct headers
     if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+        _headers["Content-Type"] = _SERIALIZER.header(
+            "content_type", content_type, "str"
+        )
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, content=content, **kwargs)
+    return HttpRequest(
+        method="POST",
+        url=_url,
+        params=_params,
+        headers=_headers,
+        content=content,
+        **kwargs,
+    )
 
 
 def build_actions_task_delete_element_request(id: str, **kwargs: Any) -> HttpRequest:  # pylint: disable=name-too-long
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    content_type: Optional[str] = kwargs.pop(
+        "content_type", _headers.pop("Content-Type", None)
+    )
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -258,7 +322,9 @@ def build_actions_task_delete_element_request(id: str, **kwargs: Any) -> HttpReq
 
     # Construct headers
     if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+        _headers["Content-Type"] = _SERIALIZER.header(
+            "content_type", content_type, "str"
+        )
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
@@ -269,7 +335,9 @@ def build_actions_task_delete_element_value_document_request(  # pylint: disable
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    content_type: Optional[str] = kwargs.pop(
+        "content_type", _headers.pop("Content-Type", None)
+    )
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -282,7 +350,9 @@ def build_actions_task_delete_element_value_document_request(  # pylint: disable
 
     # Construct headers
     if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+        _headers["Content-Type"] = _SERIALIZER.header(
+            "content_type", content_type, "str"
+        )
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
@@ -310,7 +380,9 @@ def build_actions_task_download_element_value_document_request(  # pylint: disab
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
+    return HttpRequest(
+        method="GET", url=_url, params=_params, headers=_headers, **kwargs
+    )
 
 
 def build_actions_task_download_element_value_rendered_request(  # pylint: disable=name-too-long
@@ -319,7 +391,9 @@ def build_actions_task_download_element_value_rendered_request(  # pylint: disab
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-    accept = _headers.pop("Accept", "application/pdf, application/zip, application/json")
+    accept = _headers.pop(
+        "Accept", "application/pdf, application/zip, application/json"
+    )
 
     # Construct URL
     _url = "/tasks/{id}/~actions/download-element-value-form-rendered"
@@ -330,12 +404,16 @@ def build_actions_task_download_element_value_rendered_request(  # pylint: disab
     _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
-    _params["elementDefinitionCode"] = _SERIALIZER.query("element_definition_code", element_definition_code, "str")
+    _params["elementDefinitionCode"] = _SERIALIZER.query(
+        "element_definition_code", element_definition_code, "str"
+    )
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
+    return HttpRequest(
+        method="GET", url=_url, params=_params, headers=_headers, **kwargs
+    )
 
 
 def build_actions_task_save_json_forms_value_data_request(  # pylint: disable=name-too-long
@@ -343,7 +421,9 @@ def build_actions_task_save_json_forms_value_data_request(  # pylint: disable=na
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    content_type: Optional[str] = kwargs.pop(
+        "content_type", _headers.pop("Content-Type", None)
+    )
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -356,19 +436,29 @@ def build_actions_task_save_json_forms_value_data_request(  # pylint: disable=na
 
     # Construct headers
     if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+        _headers["Content-Type"] = _SERIALIZER.header(
+            "content_type", content_type, "str"
+        )
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
 def build_actions_task_save_json_forms_value_document_request(  # pylint: disable=name-too-long
-    id: str, *, file_content_type: str, file_name: str, schema_path: str, content: IO, **kwargs: Any
+    id: str,
+    *,
+    file_content_type: str,
+    file_name: str,
+    schema_path: str,
+    content: IO,
+    **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    content_type: Optional[str] = kwargs.pop(
+        "content_type", _headers.pop("Content-Type", None)
+    )
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -380,16 +470,27 @@ def build_actions_task_save_json_forms_value_document_request(  # pylint: disabl
     _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
-    _params["fileContentType"] = _SERIALIZER.query("file_content_type", file_content_type, "str")
+    _params["fileContentType"] = _SERIALIZER.query(
+        "file_content_type", file_content_type, "str"
+    )
     _params["fileName"] = _SERIALIZER.query("file_name", file_name, "str")
     _params["schemaPath"] = _SERIALIZER.query("schema_path", schema_path, "str")
 
     # Construct headers
     if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+        _headers["Content-Type"] = _SERIALIZER.header(
+            "content_type", content_type, "str"
+        )
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, content=content, **kwargs)
+    return HttpRequest(
+        method="POST",
+        url=_url,
+        params=_params,
+        headers=_headers,
+        content=content,
+        **kwargs,
+    )
 
 
 def build_actions_task_download_json_forms_value_document_request(  # pylint: disable=name-too-long
@@ -414,7 +515,9 @@ def build_actions_task_download_json_forms_value_document_request(  # pylint: di
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
+    return HttpRequest(
+        method="GET", url=_url, params=_params, headers=_headers, **kwargs
+    )
 
 
 def build_actions_task_complete_request(id: str, **kwargs: Any) -> HttpRequest:
@@ -439,7 +542,9 @@ def build_actions_task_complete_request(id: str, **kwargs: Any) -> HttpRequest:
 def build_actions_task_append_log_request(id: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    content_type: Optional[str] = kwargs.pop(
+        "content_type", _headers.pop("Content-Type", None)
+    )
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -452,7 +557,9 @@ def build_actions_task_append_log_request(id: str, **kwargs: Any) -> HttpRequest
 
     # Construct headers
     if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+        _headers["Content-Type"] = _SERIALIZER.header(
+            "content_type", content_type, "str"
+        )
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
@@ -475,7 +582,9 @@ class TaskOperations:
         self._client = input_args.pop(0) if input_args else kwargs.pop("client")
         self._config = input_args.pop(0) if input_args else kwargs.pop("config")
         self._serialize = input_args.pop(0) if input_args else kwargs.pop("serializer")
-        self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
+        self._deserialize = (
+            input_args.pop(0) if input_args else kwargs.pop("deserializer")
+        )
 
     @distributed_trace
     def find_tasks(
@@ -553,8 +662,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("TaskPage", pipeline_response)
@@ -610,7 +723,12 @@ class TaskOperations:
 
     @overload
     def create_task(
-        self, task: IO, *, activity_token: Optional[str] = None, content_type: str = "application/json", **kwargs: Any
+        self,
+        task: IO,
+        *,
+        activity_token: Optional[str] = None,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Task:
         """Create a new Task in the selected Process.
 
@@ -649,7 +767,11 @@ class TaskOperations:
 
     @distributed_trace
     def create_task(
-        self, task: Union[_models.Task, IO], *, activity_token: Optional[str] = None, **kwargs: Any
+        self,
+        task: Union[_models.Task, IO],
+        *,
+        activity_token: Optional[str] = None,
+        **kwargs: Any,
     ) -> _models.Task:
         """Create a new Task in the selected Process.
 
@@ -696,7 +818,9 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -727,8 +851,12 @@ class TaskOperations:
         if response.status_code not in [200, 201]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         if response.status_code == 200:
@@ -784,8 +912,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -837,8 +969,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -850,7 +986,12 @@ class TaskOperations:
 
     @overload
     def actions_task_assign(
-        self, id: str, command: _models.TaskAssignCommand, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        command: _models.TaskAssignCommand,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Task:
         """Assign a task.
 
@@ -870,7 +1011,12 @@ class TaskOperations:
 
     @overload
     def actions_task_assign(
-        self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        command: IO,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Task:
         """Assign a task.
 
@@ -919,7 +1065,9 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -950,8 +1098,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -963,7 +1115,12 @@ class TaskOperations:
 
     @overload
     def actions_task_save_element(
-        self, id: str, command: _models.TaskSaveElementCommand, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        command: _models.TaskSaveElementCommand,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Task:
         """Save an element.
 
@@ -991,7 +1148,12 @@ class TaskOperations:
 
     @overload
     def actions_task_save_element(
-        self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        command: IO,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Task:
         """Save an element.
 
@@ -1056,7 +1218,9 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -1087,8 +1251,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -1148,7 +1316,9 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/octet-stream"))
+        content_type: str = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", "application/octet-stream")
+        )
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         _content = file
@@ -1177,8 +1347,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -1217,7 +1391,12 @@ class TaskOperations:
 
     @overload
     def actions_task_delete_element(
-        self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        command: IO,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Task:
         """Delete an element by code.
 
@@ -1239,7 +1418,10 @@ class TaskOperations:
 
     @distributed_trace
     def actions_task_delete_element(
-        self, id: str, command: Union[_models.TaskDeleteElementCommand, IO], **kwargs: Any
+        self,
+        id: str,
+        command: Union[_models.TaskDeleteElementCommand, IO],
+        **kwargs: Any,
     ) -> _models.Task:
         """Delete an element by code.
 
@@ -1270,7 +1452,9 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -1301,8 +1485,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -1342,7 +1530,12 @@ class TaskOperations:
 
     @overload
     def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
-        self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        command: IO,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Task:
         """Delete an element document value.
 
@@ -1365,7 +1558,10 @@ class TaskOperations:
 
     @distributed_trace
     def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
-        self, id: str, command: Union[_models.TaskDeleteElementValueDocumentCommand, IO], **kwargs: Any
+        self,
+        id: str,
+        command: Union[_models.TaskDeleteElementValueDocumentCommand, IO],
+        **kwargs: Any,
     ) -> _models.Task:
         """Delete an element document value.
 
@@ -1397,7 +1593,9 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -1406,7 +1604,9 @@ class TaskOperations:
         if isinstance(command, (IOBase, bytes)):
             _content = command
         else:
-            _json = self._serialize.body(command, "TaskDeleteElementValueDocumentCommand")
+            _json = self._serialize.body(
+                command, "TaskDeleteElementValueDocumentCommand"
+            )
 
         request = build_actions_task_delete_element_value_document_request(
             id=id,
@@ -1428,8 +1628,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -1486,8 +1690,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = response.iter_bytes()
@@ -1548,8 +1756,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = response.iter_bytes()
@@ -1588,7 +1800,12 @@ class TaskOperations:
 
     @overload
     def actions_task_save_json_forms_value_data(
-        self, id: str, command: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        command: IO,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Task:
         """Save JSON data.
 
@@ -1610,7 +1827,10 @@ class TaskOperations:
 
     @distributed_trace
     def actions_task_save_json_forms_value_data(
-        self, id: str, command: Union[_models.TaskSaveJsonFormsValueDataCommand, IO], **kwargs: Any
+        self,
+        id: str,
+        command: Union[_models.TaskSaveJsonFormsValueDataCommand, IO],
+        **kwargs: Any,
     ) -> _models.Task:
         """Save JSON data.
 
@@ -1641,7 +1861,9 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -1672,8 +1894,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -1685,7 +1911,14 @@ class TaskOperations:
 
     @distributed_trace
     def actions_task_save_json_forms_value_document(  # pylint: disable=name-too-long
-        self, id: str, file: IO, *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
+        self,
+        id: str,
+        file: IO,
+        *,
+        file_content_type: str,
+        file_name: str,
+        schema_path: str,
+        **kwargs: Any,
     ) -> _models.TaskSaveJsonFormsValueDocumentResponseCommand:
         """Save a JSON Forms document.
 
@@ -1717,8 +1950,12 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/octet-stream"))
-        cls: ClsType[_models.TaskSaveJsonFormsValueDocumentResponseCommand] = kwargs.pop("cls", None)
+        content_type: str = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", "application/octet-stream")
+        )
+        cls: ClsType[
+            _models.TaskSaveJsonFormsValueDocumentResponseCommand
+        ] = kwargs.pop("cls", None)
 
         _content = file
 
@@ -1744,11 +1981,17 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("TaskSaveJsonFormsValueDocumentResponseCommand", pipeline_response)
+        deserialized = self._deserialize(
+            "TaskSaveJsonFormsValueDocumentResponseCommand", pipeline_response
+        )
 
         if cls:
             return cls(pipeline_response, deserialized, {})
@@ -1802,8 +2045,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = response.iter_bytes()
@@ -1855,8 +2102,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -1868,7 +2119,12 @@ class TaskOperations:
 
     @overload
     def actions_task_append_log(
-        self, id: str, log: _models.Log, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        log: _models.Log,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Task:
         """Append a log to the task.
 
@@ -1909,7 +2165,9 @@ class TaskOperations:
         """
 
     @distributed_trace
-    def actions_task_append_log(self, id: str, log: Union[_models.Log, IO], **kwargs: Any) -> _models.Task:
+    def actions_task_append_log(
+        self, id: str, log: Union[_models.Log, IO], **kwargs: Any
+    ) -> _models.Task:
         """Append a log to the task.
 
         A log entry is added to the task. If the number of log entries is reached, the oldest log entry
@@ -1937,7 +2195,9 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: Optional[str] = kwargs.pop(
+            "content_type", _headers.pop("Content-Type", None)
+        )
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -1968,8 +2228,12 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            map_error(
+                status_code=response.status_code, response=response, error_map=error_map
+            )
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError, pipeline_response
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)

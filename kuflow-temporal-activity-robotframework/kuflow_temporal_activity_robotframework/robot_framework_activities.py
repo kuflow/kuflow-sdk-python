@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -23,6 +22,7 @@
 # SOFTWARE.
 #
 
+import os
 from dataclasses import dataclass, field
 from typing import List, Optional
 
@@ -49,12 +49,15 @@ class ExecuteRobotRequest:
     Attributes:
         tests: Paths to test case files/directories to be executed similarly
             as when running the ``robot`` command on the command line.
+            If the KUFLOW_ROBOT_PATH environment variable defined in the
+            activity worker exists, its content is added as a prefix to the
+            value of this field.
         variables: Options to configure and control execution.
-            Take precedence over "variable" key in :param options. Values are merged.
+            Take precedence over possible "variable" key present in :param options.
             Take precedence over default_variables in :class:`RobotFrameworkActivities`.
             Values are merged.
             Please see :func:`robot.run.run` docstring to more info
-        options: Options to configure and control execution. Please see
+        options: Options to configure and control execution.
             Take precedence over default_options in :class:`RobotFrameworkActivities`
             Values are merged.
             Please see :func:`robot.run.run` docstring to more info
@@ -110,8 +113,10 @@ class RobotFrameworkActivities:
         )
         options = {**self._default_options, **{"variable": merge_variables_in_default}}
 
+        tests = self.prepend_robot_path_variable(request.tests)
+
         # Run
-        robot_code = robot.run(request.tests, **options)
+        robot_code = robot.run(tests, **options)
 
         if robot_code != 0:
             raise ApplicationError(
@@ -120,13 +125,25 @@ class RobotFrameworkActivities:
             )
 
     def _merge_variables(self, variables: List = None, variables_overwrite: List = None):
-        # First variables defined take priority
+        # Merge two lists of variables, giving priority to those in variables_overwrite
         if variables_overwrite is None:
             variables_overwrite = []
         if variables is None:
             variables = []
 
         merge_variables = variables_overwrite + variables
+        # Remove duplicates
         unique_variables = list({s.split(":")[0]: s for s in merge_variables}.values())
 
         return unique_variables
+
+    def _prepend_robot_path_variable(relative_path):
+        # Check if the "KUFLOW_ROBOT_PATH" environment variable is defined
+        robot_path = os.getenv("KUFLOW_ROBOT_PATH")
+
+        # If is defined, prepend it to the relative path
+        if robot_path is not None:
+            absolute_path = os.path.join(robot_path, relative_path)
+            return absolute_path
+        else:
+            return relative_path

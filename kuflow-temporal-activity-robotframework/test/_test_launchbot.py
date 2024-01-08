@@ -3,6 +3,7 @@ import asyncio
 from kuflow_temporal_activity_robotframework import RobotFrameworkActivities
 from kuflow_temporal_activity_robotframework.robot_framework_activities import ExecuteRobotRequest
 
+
 my_var = "My custom variable value"
 
 my_nested_dict = {}

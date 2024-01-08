@@ -52,10 +52,16 @@ class KuFlowClientTokenCredential:
         self.client_id = client_id
         self.client_secret = client_secret
 
-        self.token = base64.b64encode("{}:{}".format(client_id, client_secret).encode("utf-8")).decode("utf-8")
+        self.token = base64.b64encode(
+            "{}:{}".format(client_id, client_secret).encode("utf-8")
+        ).decode("utf-8")
 
     def get_token(
-        self, *scopes: str, claims: Optional[str] = None, tenant_id: Optional[str] = None, **kwargs: Any
+        self,
+        *scopes: str,
+        claims: Optional[str] = None,
+        tenant_id: Optional[str] = None,
+        **kwargs: Any,
     ) -> AccessToken:
         """Request an access token for `scopes`.
 
@@ -178,7 +184,9 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
             endpoint = endpoint + "/" + KuFlowRestClient.API_VERSION
 
         self._kuflow_client = KuFlowRestClientGenerated(
-            credential=KuFlowClientTokenCredential(client_id=client_id, client_secret=client_secret),  # type: ignore
+            credential=KuFlowClientTokenCredential(
+                client_id=client_id, client_secret=client_secret
+            ),  # type: ignore
             endpoint=endpoint,
             api_version=kwargs.pop("api_version", VERSION),
             credential_scopes="https://api.kuflow.com/v2022-10-08/.default",

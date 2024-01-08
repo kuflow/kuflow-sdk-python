@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -24,6 +23,7 @@
 #
 
 from .kuflow_activities import KuFlowActivities
+
 
 KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK = "KuFlow_Engine_Signal_Completed_Task"
 

@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -33,6 +32,7 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 from kuflow_rest import KuFlowRestClient, models
+
 
 logger = logging.getLogger(__name__)
 

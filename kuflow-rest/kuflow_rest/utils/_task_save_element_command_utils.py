@@ -27,7 +27,11 @@ from datetime import date
 from typing import List, Optional
 
 from .._generated.models import TaskElementValue
-from ..models import TaskElementValueDocumentItem, TaskElementValuePrincipalItem, TaskSaveElementCommand
+from ..models import (
+    TaskElementValueDocumentItem,
+    TaskElementValuePrincipalItem,
+    TaskSaveElementCommand,
+)
 from .element_values import (
     ElementValueSimpleType,
     ElementValueUnion,
@@ -80,7 +84,9 @@ class CurrentElementValueAccessor(TaskElementValueAccessor):
 
 class TaskSaveElementCommandUtils:
     @staticmethod
-    def get_element_value_valid(task_save_element_command: TaskSaveElementCommand) -> bool:
+    def get_element_value_valid(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> bool:
         """
         Check if all related valid values are TRUE.
 
@@ -90,7 +96,9 @@ class TaskSaveElementCommandUtils:
         Returns:
             True if all related valid values are TRUE, otherwise False.
         """
-        return get_element_value_valid(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_valid(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
     def get_element_value_valid_at(
@@ -108,7 +116,9 @@ class TaskSaveElementCommandUtils:
         Returns:
             The requested valid value if it exists, otherwise None.
         """
-        return get_element_value_valid_at(CurrentElementValueAccessor(task_save_element_command), index)
+        return get_element_value_valid_at(
+            CurrentElementValueAccessor(task_save_element_command), index
+        )
 
     @staticmethod
     def set_element_value_valid(
@@ -124,13 +134,17 @@ class TaskSaveElementCommandUtils:
         Returns:
             The passed task.
         """
-        set_element_value_valid(CurrentElementValueAccessor(task_save_element_command), valid)
+        set_element_value_valid(
+            CurrentElementValueAccessor(task_save_element_command), valid
+        )
 
         return task_save_element_command
 
     @staticmethod
     def set_element_value_valid_at(
-        task_save_element_command: TaskSaveElementCommand, valid: Optional[bool], index: int
+        task_save_element_command: TaskSaveElementCommand,
+        valid: Optional[bool],
+        index: int,
     ) -> TaskSaveElementCommand:
         """
         Set the valid value for the selected element value.
@@ -143,13 +157,16 @@ class TaskSaveElementCommandUtils:
         Returns:
             The passed task.
         """
-        set_element_value_valid_at(CurrentElementValueAccessor(task_save_element_command), valid, index)
+        set_element_value_valid_at(
+            CurrentElementValueAccessor(task_save_element_command), valid, index
+        )
 
         return task_save_element_command
 
     @staticmethod
     def set_element_value(
-        task_save_element_command: TaskSaveElementCommand, element_value: Optional[ElementValueSimpleType] = None
+        task_save_element_command: TaskSaveElementCommand,
+        element_value: Optional[ElementValueSimpleType] = None,
     ) -> TaskSaveElementCommand:
         """
         Set an element value.
@@ -161,13 +178,16 @@ class TaskSaveElementCommandUtils:
         Returns:
             The passed task.
         """
-        set_element_value(CurrentElementValueAccessor(task_save_element_command), element_value)
+        set_element_value(
+            CurrentElementValueAccessor(task_save_element_command), element_value
+        )
 
         return task_save_element_command
 
     @staticmethod
     def set_element_value_list(
-        task_save_element_command: TaskSaveElementCommand, element_values: Optional[List[ElementValueSimpleType]] = None
+        task_save_element_command: TaskSaveElementCommand,
+        element_values: Optional[List[ElementValueSimpleType]] = None,
     ) -> TaskSaveElementCommand:
         """
         Set an element value.
@@ -179,13 +199,16 @@ class TaskSaveElementCommandUtils:
         Returns:
             The passed task.
         """
-        set_element_value_list(CurrentElementValueAccessor(task_save_element_command), element_values)
+        set_element_value_list(
+            CurrentElementValueAccessor(task_save_element_command), element_values
+        )
 
         return task_save_element_command
 
     @staticmethod
     def add_element_value(
-        task_save_element_command: TaskSaveElementCommand, element_value: Optional[ElementValueSimpleType] = None
+        task_save_element_command: TaskSaveElementCommand,
+        element_value: Optional[ElementValueSimpleType] = None,
     ) -> TaskSaveElementCommand:
         """
         Add an element value.
@@ -197,13 +220,16 @@ class TaskSaveElementCommandUtils:
         Returns:
             The passed task.
         """
-        add_element_value(CurrentElementValueAccessor(task_save_element_command), element_value)
+        add_element_value(
+            CurrentElementValueAccessor(task_save_element_command), element_value
+        )
 
         return task_save_element_command
 
     @staticmethod
     def add_element_value_list(
-        task_save_element_command: TaskSaveElementCommand, element_values: Optional[List[ElementValueSimpleType]] = None
+        task_save_element_command: TaskSaveElementCommand,
+        element_values: Optional[List[ElementValueSimpleType]] = None,
     ) -> TaskSaveElementCommand:
         """
         Add element values.
@@ -215,12 +241,16 @@ class TaskSaveElementCommandUtils:
         Returns:
             The passed model related object.
         """
-        add_element_value_list(CurrentElementValueAccessor(task_save_element_command), element_values)
+        add_element_value_list(
+            CurrentElementValueAccessor(task_save_element_command), element_values
+        )
 
         return task_save_element_command
 
     @staticmethod
-    def get_element_value_as_str(task_save_element_command: TaskSaveElementCommand) -> str:
+    def get_element_value_as_str(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> str:
         """
         Get an element as a str.
 
@@ -230,10 +260,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a str.
         """
-        return get_element_value_as_str(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_str(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def find_element_value_as_str(task_save_element_command: TaskSaveElementCommand) -> Optional[str]:
+    def find_element_value_as_str(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> Optional[str]:
         """
         Try to get an element as a str.
 
@@ -243,10 +277,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a str.
         """
-        return find_element_value_as_str(CurrentElementValueAccessor(task_save_element_command))
+        return find_element_value_as_str(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def get_element_value_as_str_list(task_save_element_command: TaskSaveElementCommand) -> List[str]:
+    def get_element_value_as_str_list(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> List[str]:
         """
         Try to get an element as a str list.
 
@@ -256,10 +294,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element values as a str list.
         """
-        return get_element_value_as_str_list(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_str_list(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def get_element_value_as_float(task_save_element_command: TaskSaveElementCommand) -> float:
+    def get_element_value_as_float(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> float:
         """
         Get an element as a float.
 
@@ -269,10 +311,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_float(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def find_element_value_as_float(task_save_element_command: TaskSaveElementCommand) -> float:
+    def find_element_value_as_float(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> float:
         """
         Try to get an element as a float.
 
@@ -282,10 +328,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a float.
         """
-        return find_element_value_as_float(CurrentElementValueAccessor(task_save_element_command))
+        return find_element_value_as_float(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def get_element_value_as_float_list(task_save_element_command: TaskSaveElementCommand) -> List[float]:
+    def get_element_value_as_float_list(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> List[float]:
         """
         Get all elements as a float list.
 
@@ -295,10 +345,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float_list(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_float_list(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def get_element_value_as_date(task_save_element_command: TaskSaveElementCommand) -> date:
+    def get_element_value_as_date(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> date:
         """
         Get an element as a date.
 
@@ -308,10 +362,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a date.
         """
-        return get_element_value_as_date(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_date(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def find_element_value_as_date(task_save_element_command: TaskSaveElementCommand) -> Optional[date]:
+    def find_element_value_as_date(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> Optional[date]:
         """
         Try to get  an element as a date.
 
@@ -321,10 +379,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a date.
         """
-        return find_element_value_as_date(CurrentElementValueAccessor(task_save_element_command))
+        return find_element_value_as_date(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def get_element_value_as_date_list(task_save_element_command: TaskSaveElementCommand) -> Optional[List[date]]:
+    def get_element_value_as_date_list(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> Optional[List[date]]:
         """
         Get all elements as date list.
 
@@ -334,10 +396,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element values as date list.
         """
-        return get_element_value_as_date_list(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_date_list(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def get_element_value_as_dict(task_save_element_command: TaskSaveElementCommand) -> dict:
+    def get_element_value_as_dict(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> dict:
         """
         Get an element as a dict.
 
@@ -347,10 +413,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a dict.
         """
-        return get_element_value_as_dict(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_dict(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def find_element_value_as_dict(task_save_element_command: TaskSaveElementCommand) -> Optional[dict]:
+    def find_element_value_as_dict(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> Optional[dict]:
         """
         Try to get an element as a dict.
 
@@ -360,10 +430,14 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a dict.
         """
-        return find_element_value_as_dict(CurrentElementValueAccessor(task_save_element_command))
+        return find_element_value_as_dict(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
-    def get_element_value_as_dict_list(task_save_element_command: TaskSaveElementCommand) -> Optional[List[dict]]:
+    def get_element_value_as_dict_list(
+        task_save_element_command: TaskSaveElementCommand,
+    ) -> Optional[List[dict]]:
         """
         Get all elements as dict list.
 
@@ -373,7 +447,9 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element values as dict list.
         """
-        return get_element_value_as_dict_list(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_dict_list(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
     def get_element_value_as_document(
@@ -388,7 +464,9 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a TaskElementValueDocumentItem.
         """
-        return get_element_value_as_document(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_document(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
     def find_element_value_as_document(
@@ -403,7 +481,9 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a TaskElementValueDocumentItem.
         """
-        return find_element_value_as_document(CurrentElementValueAccessor(task_save_element_command))
+        return find_element_value_as_document(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
     def get_element_value_as_document_list(
@@ -418,7 +498,9 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element values as TaskElementValueDocumentItem list.
         """
-        return get_element_value_as_document_list(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_document_list(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
     def get_element_value_as_principal(
@@ -433,7 +515,9 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a TaskElementValuePrincipalItem.
         """
-        return get_element_value_as_principal(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_principal(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
     def find_element_value_as_principal(
@@ -448,7 +532,9 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element value as a TaskElementValuePrincipalItem.
         """
-        return find_element_value_as_principal(CurrentElementValueAccessor(task_save_element_command))
+        return find_element_value_as_principal(
+            CurrentElementValueAccessor(task_save_element_command)
+        )
 
     @staticmethod
     def get_element_value_as_principal_list(
@@ -463,4 +549,6 @@ class TaskSaveElementCommandUtils:
         Returns:
             The element values as TaskElementValuePrincipalItem list.
         """
-        return get_element_value_as_principal_list(CurrentElementValueAccessor(task_save_element_command))
+        return get_element_value_as_principal_list(
+            CurrentElementValueAccessor(task_save_element_command)
+        )

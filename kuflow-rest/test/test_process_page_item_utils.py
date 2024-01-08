@@ -39,32 +39,46 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
     def test_get_element_value_valid(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.get_element_value_valid(process_page_item, "EV_STRING")
+        value = ProcessPageItemUtils.get_element_value_valid(
+            process_page_item, "EV_STRING"
+        )
         self.assertFalse(value)
 
-        value = ProcessPageItemUtils.get_element_value_valid(process_page_item, "EV_NUMBER")
+        value = ProcessPageItemUtils.get_element_value_valid(
+            process_page_item, "EV_NUMBER"
+        )
         self.assertTrue(value)
 
-        value = ProcessPageItemUtils.get_element_value_valid(process_page_item, "EV_DATE")
+        value = ProcessPageItemUtils.get_element_value_valid(
+            process_page_item, "EV_DATE"
+        )
         self.assertFalse(value)
 
     def test_get_element_value_valid_at(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.get_element_value_valid_at(process_page_item, "EV_STRING", 0)
+        value = ProcessPageItemUtils.get_element_value_valid_at(
+            process_page_item, "EV_STRING", 0
+        )
         self.assertTrue(value)
 
-        value = ProcessPageItemUtils.get_element_value_valid_at(process_page_item, "EV_STRING", 1)
+        value = ProcessPageItemUtils.get_element_value_valid_at(
+            process_page_item, "EV_STRING", 1
+        )
         self.assertFalse(value)
 
         with self.assertRaises(IndexError) as context:
-            ProcessPageItemUtils.get_element_value_valid_at(process_page_item, "EV_STRING", 10)
+            ProcessPageItemUtils.get_element_value_valid_at(
+                process_page_item, "EV_STRING", 10
+            )
         self.assertEqual(str(context.exception), "Array index out of bound: 10")
 
     def test_set_element_value_valid(self):
         process_page_item = prepare_process_page_item()
 
-        ProcessPageItemUtils.set_element_value_valid(process_page_item, "EV_STRING", True)
+        ProcessPageItemUtils.set_element_value_valid(
+            process_page_item, "EV_STRING", True
+        )
         self.assertEqual(
             process_page_item.element_values.get("EV_STRING"),
             [
@@ -73,7 +87,9 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
             ],
         )
 
-        ProcessPageItemUtils.set_element_value_valid(process_page_item, "EV_STRING", False)
+        ProcessPageItemUtils.set_element_value_valid(
+            process_page_item, "EV_STRING", False
+        )
         self.assertEqual(
             process_page_item.element_values.get("EV_STRING"),
             [
@@ -85,8 +101,12 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
     def test_set_element_value_valid_at(self):
         process_page_item = prepare_process_page_item()
 
-        ProcessPageItemUtils.set_element_value_valid_at(process_page_item, "EV_STRING", False, 0)
-        ProcessPageItemUtils.set_element_value_valid_at(process_page_item, "EV_STRING", True, 1)
+        ProcessPageItemUtils.set_element_value_valid_at(
+            process_page_item, "EV_STRING", False, 0
+        )
+        ProcessPageItemUtils.set_element_value_valid_at(
+            process_page_item, "EV_STRING", True, 1
+        )
         self.assertEqual(
             process_page_item.element_values.get("EV_STRING"),
             [
@@ -96,13 +116,17 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
         )
 
         with self.assertRaises(IndexError) as context:
-            ProcessPageItemUtils.set_element_value_valid_at(process_page_item, "EV_STRING", False, 10)
+            ProcessPageItemUtils.set_element_value_valid_at(
+                process_page_item, "EV_STRING", False, 10
+            )
         self.assertEqual(str(context.exception), "Array index out of bound: 10")
 
     def test_get_element_value_as_str(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.get_element_value_as_str(process_page_item, "EV_STRING")
+        value = ProcessPageItemUtils.get_element_value_as_str(
+            process_page_item, "EV_STRING"
+        )
         self.assertEqual(value, "MY TEXT 1")
 
         with self.assertRaises(ValueError) as context:
@@ -112,25 +136,35 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
     def test_find_element_value_as_str(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.find_element_value_as_str(process_page_item, "EV_STRING")
+        value = ProcessPageItemUtils.find_element_value_as_str(
+            process_page_item, "EV_STRING"
+        )
         self.assertEqual(value, "MY TEXT 1")
 
-        value = ProcessPageItemUtils.find_element_value_as_str(process_page_item, "OTHER")
+        value = ProcessPageItemUtils.find_element_value_as_str(
+            process_page_item, "OTHER"
+        )
         self.assertIsNone(value)
 
     def test_get_element_value_as_str_list(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.get_element_value_as_str_list(process_page_item, "EV_STRING")
+        value = ProcessPageItemUtils.get_element_value_as_str_list(
+            process_page_item, "EV_STRING"
+        )
         self.assertEqual(value, ["MY TEXT 1", "MY TEXT 2"])
 
-        value = ProcessPageItemUtils.get_element_value_as_str_list(process_page_item, "OTHER")
+        value = ProcessPageItemUtils.get_element_value_as_str_list(
+            process_page_item, "OTHER"
+        )
         self.assertEqual(value, [])
 
     def test_set_element_value_as_str(self):
         process_page_item = prepare_process_page_item()
 
-        ProcessPageItemUtils.set_element_value(process_page_item, "EV_STRING", "MY TEXT NEW")
+        ProcessPageItemUtils.set_element_value(
+            process_page_item, "EV_STRING", "MY TEXT NEW"
+        )
         self.assertEqual(
             process_page_item.element_values.get("EV_STRING"),
             [
@@ -144,7 +178,9 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
     def test_set_element_value_as_str_list(self):
         process_page_item = prepare_process_page_item()
 
-        ProcessPageItemUtils.set_element_value_list(process_page_item, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"])
+        ProcessPageItemUtils.set_element_value_list(
+            process_page_item, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"]
+        )
         self.assertEqual(
             process_page_item.element_values.get("EV_STRING"),
             [
@@ -159,22 +195,30 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
     def test_add_element_value_as_str(self):
         process_page_item = prepare_process_page_item()
 
-        ProcessPageItemUtils.add_element_value(process_page_item, "EV_STRING", "MY TEXT NEW1")
+        ProcessPageItemUtils.add_element_value(
+            process_page_item, "EV_STRING", "MY TEXT NEW1"
+        )
 
         expected_element_values = [
             ProcessElementValueString(value="MY TEXT 1", valid=True),
             ProcessElementValueString(value="MY TEXT 2", valid=False),
             ProcessElementValueString(value="MY TEXT NEW1", valid=True),
         ]
-        self.assertEqual(process_page_item.element_values.get("EV_STRING"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_STRING"), expected_element_values
+        )
 
         ProcessPageItemUtils.add_element_value(process_page_item, "EV_STRING", None)
-        self.assertEqual(process_page_item.element_values.get("EV_STRING"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_STRING"), expected_element_values
+        )
 
     def test_add_element_value_as_str_list(self):
         process_page_item = prepare_process_page_item()
 
-        ProcessPageItemUtils.add_element_value_list(process_page_item, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"])
+        ProcessPageItemUtils.add_element_value_list(
+            process_page_item, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"]
+        )
 
         expected_element_values = [
             ProcessElementValueString(value="MY TEXT 1", valid=True),
@@ -182,18 +226,28 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
             ProcessElementValueString(value="MY TEXT NEW1", valid=True),
             ProcessElementValueString(value="MY TEXT NEW2", valid=True),
         ]
-        self.assertEqual(process_page_item.element_values.get("EV_STRING"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_STRING"), expected_element_values
+        )
 
-        ProcessPageItemUtils.add_element_value_list(process_page_item, "EV_STRING", None)
-        self.assertEqual(process_page_item.element_values.get("EV_STRING"), expected_element_values)
+        ProcessPageItemUtils.add_element_value_list(
+            process_page_item, "EV_STRING", None
+        )
+        self.assertEqual(
+            process_page_item.element_values.get("EV_STRING"), expected_element_values
+        )
 
         ProcessPageItemUtils.add_element_value_list(process_page_item, "EV_STRING", [])
-        self.assertEqual(process_page_item.element_values.get("EV_STRING"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_STRING"), expected_element_values
+        )
 
     def test_get_element_value_as_float(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.get_element_value_as_float(process_page_item, "EV_NUMBER")
+        value = ProcessPageItemUtils.get_element_value_as_float(
+            process_page_item, "EV_NUMBER"
+        )
         self.assertEqual(value, 500)
 
         with self.assertRaises(ValueError) as context:
@@ -203,19 +257,27 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
     def test_find_element_value_as_float(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.find_element_value_as_float(process_page_item, "EV_NUMBER")
+        value = ProcessPageItemUtils.find_element_value_as_float(
+            process_page_item, "EV_NUMBER"
+        )
         self.assertEqual(value, 500)
 
-        value = ProcessPageItemUtils.find_element_value_as_float(process_page_item, "OTHER")
+        value = ProcessPageItemUtils.find_element_value_as_float(
+            process_page_item, "OTHER"
+        )
         self.assertIsNone(value)
 
     def test_get_element_value_as_float_list(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.get_element_value_as_float_list(process_page_item, "EV_NUMBER")
+        value = ProcessPageItemUtils.get_element_value_as_float_list(
+            process_page_item, "EV_NUMBER"
+        )
         self.assertEqual(value, [500, 600])
 
-        value = ProcessPageItemUtils.get_element_value_as_float_list(process_page_item, "OTHER")
+        value = ProcessPageItemUtils.get_element_value_as_float_list(
+            process_page_item, "OTHER"
+        )
         self.assertEqual(value, [])
 
     def test_set_element_value_as_float(self):
@@ -235,7 +297,9 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
     def test_set_element_value_as_float_list(self):
         process_page_item = prepare_process_page_item()
 
-        ProcessPageItemUtils.set_element_value_list(process_page_item, "EV_NUMBER", [700, 800])
+        ProcessPageItemUtils.set_element_value_list(
+            process_page_item, "EV_NUMBER", [700, 800]
+        )
         self.assertEqual(
             process_page_item.element_values.get("EV_NUMBER"),
             [
@@ -257,15 +321,21 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
             ProcessElementValueNumber(value=600, valid=True),
             ProcessElementValueNumber(value=800, valid=True),
         ]
-        self.assertEqual(process_page_item.element_values.get("EV_NUMBER"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_NUMBER"), expected_element_values
+        )
 
         ProcessPageItemUtils.add_element_value(process_page_item, "EV_NUMBER", None)
-        self.assertEqual(process_page_item.element_values.get("EV_NUMBER"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_NUMBER"), expected_element_values
+        )
 
     def test_add_element_value_as_float_list(self):
         process_page_item = prepare_process_page_item()
 
-        ProcessPageItemUtils.add_element_value_list(process_page_item, "EV_NUMBER", [800, 900])
+        ProcessPageItemUtils.add_element_value_list(
+            process_page_item, "EV_NUMBER", [800, 900]
+        )
 
         expected_element_values = [
             ProcessElementValueNumber(value=500, valid=True),
@@ -278,16 +348,24 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
             expected_element_values,
         )
 
-        ProcessPageItemUtils.add_element_value_list(process_page_item, "EV_NUMBER", None)
-        self.assertEqual(process_page_item.element_values.get("EV_NUMBER"), expected_element_values)
+        ProcessPageItemUtils.add_element_value_list(
+            process_page_item, "EV_NUMBER", None
+        )
+        self.assertEqual(
+            process_page_item.element_values.get("EV_NUMBER"), expected_element_values
+        )
 
         ProcessPageItemUtils.add_element_value_list(process_page_item, "EV_NUMBER", [])
-        self.assertEqual(process_page_item.element_values.get("EV_NUMBER"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_NUMBER"), expected_element_values
+        )
 
     def test_get_element_value_as_date(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.get_element_value_as_date(process_page_item, "EV_DATE")
+        value = ProcessPageItemUtils.get_element_value_as_date(
+            process_page_item, "EV_DATE"
+        )
         self.assertEqual(value, date.fromisoformat("2000-01-01"))
 
         with self.assertRaises(ValueError) as context:
@@ -297,25 +375,37 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
     def test_find_element_value_as_date(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.find_element_value_as_date(process_page_item, "EV_DATE")
+        value = ProcessPageItemUtils.find_element_value_as_date(
+            process_page_item, "EV_DATE"
+        )
         self.assertEqual(value, date.fromisoformat("2000-01-01"))
 
-        value = ProcessPageItemUtils.find_element_value_as_date(process_page_item, "OTHER")
+        value = ProcessPageItemUtils.find_element_value_as_date(
+            process_page_item, "OTHER"
+        )
         self.assertIsNone(value)
 
     def test_get_element_value_as_date_list(self):
         process_page_item = prepare_process_page_item()
 
-        value = ProcessPageItemUtils.get_element_value_as_date_list(process_page_item, "EV_DATE")
-        self.assertEqual(value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")])
+        value = ProcessPageItemUtils.get_element_value_as_date_list(
+            process_page_item, "EV_DATE"
+        )
+        self.assertEqual(
+            value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")]
+        )
 
-        value = ProcessPageItemUtils.get_element_value_as_date_list(process_page_item, "OTHER")
+        value = ProcessPageItemUtils.get_element_value_as_date_list(
+            process_page_item, "OTHER"
+        )
         self.assertEqual(value, [])
 
     def test_set_element_value_as_date(self):
         process_page_item = prepare_process_page_item()
 
-        ProcessPageItemUtils.set_element_value(process_page_item, "EV_DATE", date.fromisoformat("2020-05-05"))
+        ProcessPageItemUtils.set_element_value(
+            process_page_item, "EV_DATE", date.fromisoformat("2020-05-05")
+        )
         self.assertEqual(
             process_page_item.element_values.get("EV_DATE"),
             [
@@ -330,7 +420,9 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
         process_page_item = prepare_process_page_item()
 
         ProcessPageItemUtils.set_element_value_list(
-            process_page_item, "EV_DATE", [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")]
+            process_page_item,
+            "EV_DATE",
+            [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")],
         )
         self.assertEqual(
             process_page_item.element_values.get("EV_DATE"),
@@ -346,22 +438,30 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
     def test_add_element_value_as_date(self):
         process_page_item = prepare_process_page_item()
 
-        ProcessPageItemUtils.add_element_value(process_page_item, "EV_DATE", date.fromisoformat("2020-08-08"))
+        ProcessPageItemUtils.add_element_value(
+            process_page_item, "EV_DATE", date.fromisoformat("2020-08-08")
+        )
         expected_element_values = [
             ProcessElementValueString(value="2000-01-01", valid=False),
             ProcessElementValueString(value="1980-01-01", valid=False),
             ProcessElementValueString(value="2020-08-08", valid=True),
         ]
-        self.assertEqual(process_page_item.element_values.get("EV_DATE"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_DATE"), expected_element_values
+        )
 
         ProcessPageItemUtils.add_element_value(process_page_item, "EV_DATE", None)
-        self.assertEqual(process_page_item.element_values.get("EV_DATE"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_DATE"), expected_element_values
+        )
 
     def test_add_element_value_as_date_list(self):
         process_page_item = prepare_process_page_item()
 
         ProcessPageItemUtils.add_element_value_list(
-            process_page_item, "EV_DATE", [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")]
+            process_page_item,
+            "EV_DATE",
+            [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")],
         )
         expected_element_values = [
             ProcessElementValueString(value="2000-01-01", valid=False),
@@ -369,13 +469,19 @@ class ProcessPageItemUtilsTest(unittest.TestCase):
             ProcessElementValueString(value="2020-05-05", valid=True),
             ProcessElementValueString(value="2020-08-08", valid=True),
         ]
-        self.assertEqual(process_page_item.element_values.get("EV_DATE"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_DATE"), expected_element_values
+        )
 
         ProcessPageItemUtils.add_element_value_list(process_page_item, "EV_DATE", None)
-        self.assertEqual(process_page_item.element_values.get("EV_DATE"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_DATE"), expected_element_values
+        )
 
         ProcessPageItemUtils.add_element_value_list(process_page_item, "EV_DATE", [])
-        self.assertEqual(process_page_item.element_values.get("EV_DATE"), expected_element_values)
+        self.assertEqual(
+            process_page_item.element_values.get("EV_DATE"), expected_element_values
+        )
 
 
 def prepare_process_page_item() -> ProcessPageItem:

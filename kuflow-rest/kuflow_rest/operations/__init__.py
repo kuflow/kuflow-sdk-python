@@ -30,4 +30,10 @@ from ._process_operations import ProcessOperations
 from ._task_operations import TaskOperations
 from ._worker_operations import WorkerOperations
 
-__all__ = ["AuthenticationOperations", "PrincipalOperations", "ProcessOperations", "TaskOperations", "WorkerOperations"]
+__all__ = [
+    "AuthenticationOperations",
+    "PrincipalOperations",
+    "ProcessOperations",
+    "TaskOperations",
+    "WorkerOperations",
+]

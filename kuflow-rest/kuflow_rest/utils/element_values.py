@@ -68,7 +68,14 @@ ElementValuesDicModels = Union[Process, ProcessPageItem, Task, TaskPageItem]
 ElementValuesListModels = Union[ProcessSaveElementCommand, TaskSaveElementCommand]
 
 ElementValueSimpleType = Union[
-    str, int, float, bool, date, Dict[str, any], TaskElementValueDocumentItem, TaskElementValuePrincipalItem
+    str,
+    int,
+    float,
+    bool,
+    date,
+    Dict[str, any],
+    TaskElementValueDocumentItem,
+    TaskElementValuePrincipalItem,
 ]
 
 
@@ -82,7 +89,9 @@ class ElementValueAccessor(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def to_element_value_object(self, element_value: Optional[ElementValueSimpleType]) -> Optional[ElementValueUnion]:
+    def to_element_value_object(
+        self, element_value: Optional[ElementValueSimpleType]
+    ) -> Optional[ElementValueUnion]:
         raise NotImplementedError
 
 
@@ -93,7 +102,9 @@ class ProcessElementValueAccessor(ElementValueAccessor):
     def set_element_values(self, element_values: List[ElementValueUnion]):
         raise NotImplementedError
 
-    def to_element_value_object(self, element_value: Optional[ElementValueSimpleType]) -> Optional[ElementValueUnion]:
+    def to_element_value_object(
+        self, element_value: Optional[ElementValueSimpleType]
+    ) -> Optional[ElementValueUnion]:
         if element_value is None:
             return None
         elif isinstance(element_value, str):
@@ -117,7 +128,9 @@ class TaskElementValueAccessor(ElementValueAccessor):
     def set_element_values(self, element_values: List[ElementValueUnion]):
         raise NotImplementedError
 
-    def to_element_value_object(self, element_value: Optional[ElementValueSimpleType]) -> Optional[ElementValueUnion]:
+    def to_element_value_object(
+        self, element_value: Optional[ElementValueSimpleType]
+    ) -> Optional[ElementValueUnion]:
         if element_value is None:
             return None
         elif isinstance(element_value, str):
@@ -180,7 +193,9 @@ def get_element_value_valid_at(accessor: ElementValueAccessor, index: int) -> bo
     return element_values[index].valid
 
 
-def set_element_value_valid(accessor: ElementValueAccessor, valid: Optional[bool]) -> ElementValueAccessor:
+def set_element_value_valid(
+    accessor: ElementValueAccessor, valid: Optional[bool]
+) -> ElementValueAccessor:
     """
     Set the valid value for all element values.
 
@@ -222,7 +237,8 @@ def set_element_value_valid_at(
 
 
 def set_element_value(
-    accessor: ElementValueAccessor, element_value: Optional[ElementValueSimpleType] = None
+    accessor: ElementValueAccessor,
+    element_value: Optional[ElementValueSimpleType] = None,
 ) -> ElementValueAccessor:
     """
     Set an element value.
@@ -234,11 +250,14 @@ def set_element_value(
     Returns:
         The passed model related object.
     """
-    return set_element_value_list(accessor, [element_value] if element_value is not None else None)
+    return set_element_value_list(
+        accessor, [element_value] if element_value is not None else None
+    )
 
 
 def set_element_value_list(
-    accessor: ElementValueAccessor, element_values: Optional[List[ElementValueSimpleType]] = None
+    accessor: ElementValueAccessor,
+    element_values: Optional[List[ElementValueSimpleType]] = None,
 ) -> ElementValueAccessor:
     """
     Set an element value.
@@ -257,7 +276,8 @@ def set_element_value_list(
 
 
 def add_element_value(
-    accessor: ElementValueAccessor, element_value: Optional[ElementValueSimpleType] = None
+    accessor: ElementValueAccessor,
+    element_value: Optional[ElementValueSimpleType] = None,
 ) -> ElementValueAccessor:
     """
     Add an element value.
@@ -269,7 +289,9 @@ def add_element_value(
     Returns:
         The passed model related object.
     """
-    return add_element_value_list(accessor, [element_value] if element_value is not None else None)
+    return add_element_value_list(
+        accessor, [element_value] if element_value is not None else None
+    )
 
 
 def add_element_value_list(
@@ -346,7 +368,8 @@ def get_element_value_as_str_list(accessor: ElementValueAccessor) -> List[str]:
     return [
         str(elementValue.value)
         for elementValue in element_values
-        if elementValue.value is not None and (elementValue.type == "STRING" or elementValue.type == "NUMBER")
+        if elementValue.value is not None
+        and (elementValue.type == "STRING" or elementValue.type == "NUMBER")
     ]
 
 
@@ -401,7 +424,8 @@ def get_element_value_as_float_list(accessor: ElementValueAccessor) -> List[floa
     return [
         float(elementValue.value)
         for elementValue in element_values
-        if elementValue.value is not None and (elementValue.type == "STRING" or elementValue.type == "NUMBER")
+        if elementValue.value is not None
+        and (elementValue.type == "STRING" or elementValue.type == "NUMBER")
     ]
 
 
@@ -519,7 +543,9 @@ def get_element_value_as_dict_list(accessor: ElementValueAccessor) -> List[dict]
     ]
 
 
-def get_element_value_as_document(accessor: ElementValueAccessor) -> TaskElementValueDocumentItem:
+def get_element_value_as_document(
+    accessor: ElementValueAccessor,
+) -> TaskElementValueDocumentItem:
     """
     Get an element as a TaskElementValueDocumentItem.
 
@@ -537,7 +563,9 @@ def get_element_value_as_document(accessor: ElementValueAccessor) -> TaskElement
     return element_value
 
 
-def find_element_value_as_document(accessor: ElementValueAccessor) -> Optional[TaskElementValueDocumentItem]:
+def find_element_value_as_document(
+    accessor: ElementValueAccessor,
+) -> Optional[TaskElementValueDocumentItem]:
     """
     Try to get an element as a TaskElementValueDocumentItem.
 
@@ -555,7 +583,9 @@ def find_element_value_as_document(accessor: ElementValueAccessor) -> Optional[T
     return element_values[0]
 
 
-def get_element_value_as_document_list(accessor: ElementValueAccessor) -> List[TaskElementValueDocumentItem]:
+def get_element_value_as_document_list(
+    accessor: ElementValueAccessor,
+) -> List[TaskElementValueDocumentItem]:
     """
     Get all elements as TaskElementValueDocumentItem list.
 
@@ -573,7 +603,9 @@ def get_element_value_as_document_list(accessor: ElementValueAccessor) -> List[T
     ]
 
 
-def get_element_value_as_principal(accessor: ElementValueAccessor) -> TaskElementValuePrincipalItem:
+def get_element_value_as_principal(
+    accessor: ElementValueAccessor,
+) -> TaskElementValuePrincipalItem:
     """
     Get an element as a TaskElementValuePrincipalItem.
 
@@ -591,7 +623,9 @@ def get_element_value_as_principal(accessor: ElementValueAccessor) -> TaskElemen
     return element_value
 
 
-def find_element_value_as_principal(accessor: ElementValueAccessor) -> Optional[TaskElementValuePrincipalItem]:
+def find_element_value_as_principal(
+    accessor: ElementValueAccessor,
+) -> Optional[TaskElementValuePrincipalItem]:
     """
     Try to get an element as a TaskElementValuePrincipalItem.
 
@@ -609,7 +643,9 @@ def find_element_value_as_principal(accessor: ElementValueAccessor) -> Optional[
     return element_values[0]
 
 
-def get_element_value_as_principal_list(accessor: ElementValueAccessor) -> List[TaskElementValuePrincipalItem]:
+def get_element_value_as_principal_list(
+    accessor: ElementValueAccessor,
+) -> List[TaskElementValuePrincipalItem]:
     """
     Get all elements as TaskElementValuePrincipalItem list.
 
@@ -628,9 +664,12 @@ def get_element_value_as_principal_list(accessor: ElementValueAccessor) -> List[
 
 
 def _to_element_value_objects(
-    accessor: ElementValueAccessor, element_values: Optional[List[ElementValueSimpleType]] = None
+    accessor: ElementValueAccessor,
+    element_values: Optional[List[ElementValueSimpleType]] = None,
 ) -> List[Union[ProcessElementValueUnion, TaskElementValueUnion]]:
-    element_value_objects: List[Union[ProcessElementValueUnion, TaskElementValueUnion]] = []
+    element_value_objects: List[
+        Union[ProcessElementValueUnion, TaskElementValueUnion]
+    ] = []
     for element_value in element_values or []:
         element_value = _transform_element_value(element_value)
 
@@ -641,12 +680,17 @@ def _to_element_value_objects(
     return element_value_objects
 
 
-def _transform_element_value(element_value: ElementValueSimpleType) -> ElementValueSimpleType:
+def _transform_element_value(
+    element_value: ElementValueSimpleType,
+) -> ElementValueSimpleType:
     if isinstance(element_value, (str, float, int)):
         element_value = element_value
     elif isinstance(element_value, date):
         element_value = element_value.isoformat()
-    elif isinstance(element_value, (dict, TaskElementValueDocumentItem, TaskElementValuePrincipalItem)):
+    elif isinstance(
+        element_value,
+        (dict, TaskElementValueDocumentItem, TaskElementValuePrincipalItem),
+    ):
         element_value = element_value
     else:
         raise Exception(f"Unsupported value {element_value.__class__}")

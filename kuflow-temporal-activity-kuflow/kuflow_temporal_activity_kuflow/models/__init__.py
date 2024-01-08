@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -63,6 +62,7 @@ from ._models import (
     WorkflowRequest,
     WorkflowResponse,
 )
+
 
 __all__ = [
     "AppendTaskLogRequest",

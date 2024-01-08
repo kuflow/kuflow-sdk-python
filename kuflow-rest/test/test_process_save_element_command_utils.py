@@ -26,7 +26,11 @@
 import unittest
 from datetime import date
 
-from kuflow_rest.models import ProcessElementValueNumber, ProcessElementValueString, ProcessSaveElementCommand
+from kuflow_rest.models import (
+    ProcessElementValueNumber,
+    ProcessElementValueString,
+    ProcessSaveElementCommand,
+)
 from kuflow_rest.utils import ProcessSaveElementCommandUtils
 
 
@@ -133,7 +137,9 @@ class SaveProcessElementUtilsTest(unittest.TestCase):
     def test_set_element_value_as_str_list(self):
         request = prepare_process_save_element_command_str()
 
-        ProcessSaveElementCommandUtils.set_element_value_list(request, ["MY TEXT NEW1", "MY TEXT NEW2"])
+        ProcessSaveElementCommandUtils.set_element_value_list(
+            request, ["MY TEXT NEW1", "MY TEXT NEW2"]
+        )
         self.assertEqual(
             request.element_values,
             [
@@ -163,7 +169,9 @@ class SaveProcessElementUtilsTest(unittest.TestCase):
     def test_add_element_value_as_str_list(self):
         request = prepare_process_save_element_command_str()
 
-        ProcessSaveElementCommandUtils.add_element_value_list(request, ["MY TEXT NEW1", "MY TEXT NEW2"])
+        ProcessSaveElementCommandUtils.add_element_value_list(
+            request, ["MY TEXT NEW1", "MY TEXT NEW2"]
+        )
 
         expected_element_values = [
             ProcessElementValueString(value="MY TEXT 1", valid=True),
@@ -306,7 +314,9 @@ class SaveProcessElementUtilsTest(unittest.TestCase):
         request = prepare_process_save_element_command_date()
 
         value = ProcessSaveElementCommandUtils.get_element_value_as_date_list(request)
-        self.assertEqual(value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")])
+        self.assertEqual(
+            value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")]
+        )
 
         request.element_values = []
 
@@ -316,7 +326,9 @@ class SaveProcessElementUtilsTest(unittest.TestCase):
     def test_set_element_value_as_date(self):
         request = prepare_process_save_element_command_date()
 
-        ProcessSaveElementCommandUtils.set_element_value(request, date.fromisoformat("2020-05-05"))
+        ProcessSaveElementCommandUtils.set_element_value(
+            request, date.fromisoformat("2020-05-05")
+        )
         self.assertEqual(
             request.element_values,
             [
@@ -331,7 +343,8 @@ class SaveProcessElementUtilsTest(unittest.TestCase):
         request = prepare_process_save_element_command_date()
 
         ProcessSaveElementCommandUtils.set_element_value_list(
-            request, [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")]
+            request,
+            [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")],
         )
         self.assertEqual(
             request.element_values,
@@ -347,7 +360,9 @@ class SaveProcessElementUtilsTest(unittest.TestCase):
     def test_add_element_value_as_date(self):
         request = prepare_process_save_element_command_date()
 
-        ProcessSaveElementCommandUtils.add_element_value(request, date.fromisoformat("2020-08-08"))
+        ProcessSaveElementCommandUtils.add_element_value(
+            request, date.fromisoformat("2020-08-08")
+        )
         expected_element_values = [
             ProcessElementValueString(value="2000-01-01", valid=True),
             ProcessElementValueString(value="1980-01-01", valid=False),
@@ -362,7 +377,8 @@ class SaveProcessElementUtilsTest(unittest.TestCase):
         request = prepare_process_save_element_command_date()
 
         ProcessSaveElementCommandUtils.add_element_value_list(
-            request, [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")]
+            request,
+            [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")],
         )
         expected_element_values = [
             ProcessElementValueString(value="2000-01-01", valid=True),

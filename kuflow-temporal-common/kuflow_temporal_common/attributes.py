@@ -22,4 +22,20 @@
 # SOFTWARE.
 #
 
-__version__ = "1.1.4.dev0"
+from enum import Enum
+
+from temporalio.common import SearchAttributeIndexedValueType
+
+
+class WorkflowSearchAttribute(Enum):
+    KUFLOW_WORKFLOW_VERSION = "KuFlowWorkflowVersion", SearchAttributeIndexedValueType.INDEXED_VALUE_TYPE_INT
+
+    def __init__(self, key, indexed_value_type):
+        self.key = key
+        self.indexed_value_type = indexed_value_type
+
+    def get_key(self):
+        return self.key
+
+    def get_indexed_value_type(self):
+        return self.indexed_value_type

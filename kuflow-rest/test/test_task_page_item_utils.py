@@ -56,14 +56,20 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_get_element_value_valid_at(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.get_element_value_valid_at(task_page_item, "EV_STRING", 0)
+        value = TaskPageItemUtils.get_element_value_valid_at(
+            task_page_item, "EV_STRING", 0
+        )
         self.assertTrue(value)
 
-        value = TaskPageItemUtils.get_element_value_valid_at(task_page_item, "EV_STRING", 1)
+        value = TaskPageItemUtils.get_element_value_valid_at(
+            task_page_item, "EV_STRING", 1
+        )
         self.assertFalse(value)
 
         with self.assertRaises(IndexError) as context:
-            TaskPageItemUtils.get_element_value_valid_at(task_page_item, "EV_STRING", 10)
+            TaskPageItemUtils.get_element_value_valid_at(
+                task_page_item, "EV_STRING", 10
+            )
         self.assertEqual(str(context.exception), "Array index out of bound: 10")
 
     def test_set_element_value_valid(self):
@@ -90,8 +96,12 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_set_element_value_valid_at(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.set_element_value_valid_at(task_page_item, "EV_STRING", False, 0)
-        TaskPageItemUtils.set_element_value_valid_at(task_page_item, "EV_STRING", True, 1)
+        TaskPageItemUtils.set_element_value_valid_at(
+            task_page_item, "EV_STRING", False, 0
+        )
+        TaskPageItemUtils.set_element_value_valid_at(
+            task_page_item, "EV_STRING", True, 1
+        )
         self.assertEqual(
             task_page_item.element_values.get("EV_STRING"),
             [
@@ -101,7 +111,9 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
         )
 
         with self.assertRaises(IndexError) as context:
-            TaskPageItemUtils.set_element_value_valid_at(task_page_item, "EV_STRING", False, 10)
+            TaskPageItemUtils.set_element_value_valid_at(
+                task_page_item, "EV_STRING", False, 10
+            )
         self.assertEqual(str(context.exception), "Array index out of bound: 10")
 
     def test_get_element_value_as_str(self):
@@ -126,7 +138,9 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_get_element_value_as_str_list(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.get_element_value_as_str_list(task_page_item, "EV_STRING")
+        value = TaskPageItemUtils.get_element_value_as_str_list(
+            task_page_item, "EV_STRING"
+        )
         self.assertEqual(value, ["MY TEXT 1", "MY TEXT 2"])
 
         value = TaskPageItemUtils.get_element_value_as_str_list(task_page_item, "OTHER")
@@ -149,7 +163,9 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_set_element_value_as_str_list(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.set_element_value_list(task_page_item, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"])
+        TaskPageItemUtils.set_element_value_list(
+            task_page_item, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"]
+        )
         self.assertEqual(
             task_page_item.element_values.get("EV_STRING"),
             [
@@ -171,15 +187,21 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
             TaskElementValueString(value="MY TEXT 2", valid=False),
             TaskElementValueString(value="MY TEXT NEW1", valid=True),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_STRING"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_STRING"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value(task_page_item, "EV_STRING", None)
-        self.assertEqual(task_page_item.element_values.get("EV_STRING"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_STRING"), expected_element_values
+        )
 
     def test_add_element_value_as_str_list(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.add_element_value_list(task_page_item, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"])
+        TaskPageItemUtils.add_element_value_list(
+            task_page_item, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"]
+        )
 
         expected_element_values = [
             TaskElementValueString(value="MY TEXT 1", valid=True),
@@ -187,18 +209,26 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
             TaskElementValueString(value="MY TEXT NEW1", valid=True),
             TaskElementValueString(value="MY TEXT NEW2", valid=True),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_STRING"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_STRING"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_STRING", None)
-        self.assertEqual(task_page_item.element_values.get("EV_STRING"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_STRING"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_STRING", [])
-        self.assertEqual(task_page_item.element_values.get("EV_STRING"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_STRING"), expected_element_values
+        )
 
     def test_get_element_value_as_float(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.get_element_value_as_float(task_page_item, "EV_NUMBER")
+        value = TaskPageItemUtils.get_element_value_as_float(
+            task_page_item, "EV_NUMBER"
+        )
         self.assertEqual(value, 500)
 
         with self.assertRaises(ValueError) as context:
@@ -208,7 +238,9 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_find_element_value_as_float(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.find_element_value_as_float(task_page_item, "EV_NUMBER")
+        value = TaskPageItemUtils.find_element_value_as_float(
+            task_page_item, "EV_NUMBER"
+        )
         self.assertEqual(value, 500)
 
         value = TaskPageItemUtils.find_element_value_as_float(task_page_item, "OTHER")
@@ -217,10 +249,14 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_get_element_value_as_float_list(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.get_element_value_as_float_list(task_page_item, "EV_NUMBER")
+        value = TaskPageItemUtils.get_element_value_as_float_list(
+            task_page_item, "EV_NUMBER"
+        )
         self.assertEqual(value, [500, 600])
 
-        value = TaskPageItemUtils.get_element_value_as_float_list(task_page_item, "OTHER")
+        value = TaskPageItemUtils.get_element_value_as_float_list(
+            task_page_item, "OTHER"
+        )
         self.assertEqual(value, [])
 
     def test_set_element_value_as_float(self):
@@ -240,7 +276,9 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_set_element_value_as_float_list(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.set_element_value_list(task_page_item, "EV_NUMBER", [700, 800])
+        TaskPageItemUtils.set_element_value_list(
+            task_page_item, "EV_NUMBER", [700, 800]
+        )
         self.assertEqual(
             task_page_item.element_values.get("EV_NUMBER"),
             [
@@ -262,15 +300,21 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
             TaskElementValueNumber(value=600, valid=True),
             TaskElementValueNumber(value=800, valid=True),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_NUMBER"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_NUMBER"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value(task_page_item, "EV_NUMBER", None)
-        self.assertEqual(task_page_item.element_values.get("EV_NUMBER"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_NUMBER"), expected_element_values
+        )
 
     def test_add_element_value_as_float_list(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.add_element_value_list(task_page_item, "EV_NUMBER", [800, 900])
+        TaskPageItemUtils.add_element_value_list(
+            task_page_item, "EV_NUMBER", [800, 900]
+        )
 
         expected_element_values = [
             TaskElementValueNumber(value=500, valid=True),
@@ -284,10 +328,14 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
         )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_NUMBER", None)
-        self.assertEqual(task_page_item.element_values.get("EV_NUMBER"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_NUMBER"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_NUMBER", [])
-        self.assertEqual(task_page_item.element_values.get("EV_NUMBER"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_NUMBER"), expected_element_values
+        )
 
     def test_get_element_value_as_date(self):
         task_page_item = prepare_task_page_item()
@@ -311,16 +359,24 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_get_element_value_as_date_list(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.get_element_value_as_date_list(task_page_item, "EV_DATE")
-        self.assertEqual(value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")])
+        value = TaskPageItemUtils.get_element_value_as_date_list(
+            task_page_item, "EV_DATE"
+        )
+        self.assertEqual(
+            value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")]
+        )
 
-        value = TaskPageItemUtils.get_element_value_as_date_list(task_page_item, "OTHER")
+        value = TaskPageItemUtils.get_element_value_as_date_list(
+            task_page_item, "OTHER"
+        )
         self.assertEqual(value, [])
 
     def test_set_element_value_as_date(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.set_element_value(task_page_item, "EV_DATE", date.fromisoformat("2020-05-05"))
+        TaskPageItemUtils.set_element_value(
+            task_page_item, "EV_DATE", date.fromisoformat("2020-05-05")
+        )
         self.assertEqual(
             task_page_item.element_values.get("EV_DATE"),
             [
@@ -335,7 +391,9 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
         task_page_item = prepare_task_page_item()
 
         TaskPageItemUtils.set_element_value_list(
-            task_page_item, "EV_DATE", [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")]
+            task_page_item,
+            "EV_DATE",
+            [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")],
         )
         self.assertEqual(
             task_page_item.element_values.get("EV_DATE"),
@@ -351,22 +409,30 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_add_element_value_as_date(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.add_element_value(task_page_item, "EV_DATE", date.fromisoformat("2020-08-08"))
+        TaskPageItemUtils.add_element_value(
+            task_page_item, "EV_DATE", date.fromisoformat("2020-08-08")
+        )
         expected_element_values = [
             TaskElementValueString(value="2000-01-01", valid=False),
             TaskElementValueString(value="1980-01-01", valid=False),
             TaskElementValueString(value="2020-08-08", valid=True),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_DATE"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_DATE"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value(task_page_item, "EV_DATE", None)
-        self.assertEqual(task_page_item.element_values.get("EV_DATE"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_DATE"), expected_element_values
+        )
 
     def test_add_element_value_as_date_list(self):
         task_page_item = prepare_task_page_item()
 
         TaskPageItemUtils.add_element_value_list(
-            task_page_item, "EV_DATE", [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")]
+            task_page_item,
+            "EV_DATE",
+            [date.fromisoformat("2020-05-05"), date.fromisoformat("2020-08-08")],
         )
         expected_element_values = [
             TaskElementValueString(value="2000-01-01", valid=False),
@@ -374,13 +440,19 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
             TaskElementValueString(value="2020-05-05", valid=True),
             TaskElementValueString(value="2020-08-08", valid=True),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_DATE"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_DATE"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_DATE", None)
-        self.assertEqual(task_page_item.element_values.get("EV_DATE"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_DATE"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_DATE", [])
-        self.assertEqual(task_page_item.element_values.get("EV_DATE"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_DATE"), expected_element_values
+        )
 
     def test_get_element_value_as_dict(self):
         task_page_item = prepare_task_page_item()
@@ -395,7 +467,9 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_find_element_value_as_dict(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.find_element_value_as_dict(task_page_item, "EV_OBJECT")
+        value = TaskPageItemUtils.find_element_value_as_dict(
+            task_page_item, "EV_OBJECT"
+        )
         self.assertEqual(value, {"key": "value 1"})
 
         value = TaskPageItemUtils.find_element_value_as_dict(task_page_item, "OTHER")
@@ -404,16 +478,22 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_get_element_value_as_dict_list(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.get_element_value_as_dict_list(task_page_item, "EV_OBJECT")
+        value = TaskPageItemUtils.get_element_value_as_dict_list(
+            task_page_item, "EV_OBJECT"
+        )
         self.assertEqual(value, [{"key": "value 1"}, {"key": "value 2"}])
 
-        value = TaskPageItemUtils.get_element_value_as_dict_list(task_page_item, "OTHER")
+        value = TaskPageItemUtils.get_element_value_as_dict_list(
+            task_page_item, "OTHER"
+        )
         self.assertEqual(value, [])
 
     def test_set_element_value_as_dict(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.set_element_value(task_page_item, "EV_OBJECT", {"key": "value 3"})
+        TaskPageItemUtils.set_element_value(
+            task_page_item, "EV_OBJECT", {"key": "value 3"}
+        )
         self.assertEqual(
             task_page_item.element_values.get("EV_OBJECT"),
             [
@@ -427,7 +507,9 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_set_element_value_as_dict_list(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.set_element_value_list(task_page_item, "EV_OBJECT", [{"key": "value 3"}, {"key": "value 4"}])
+        TaskPageItemUtils.set_element_value_list(
+            task_page_item, "EV_OBJECT", [{"key": "value 3"}, {"key": "value 4"}]
+        )
         self.assertEqual(
             task_page_item.element_values.get("EV_OBJECT"),
             [
@@ -442,22 +524,30 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_add_element_value_as_dict(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.add_element_value(task_page_item, "EV_OBJECT", {"key": "value 3"})
+        TaskPageItemUtils.add_element_value(
+            task_page_item, "EV_OBJECT", {"key": "value 3"}
+        )
 
         expected_element_values = [
             TaskElementValueObject(value={"key": "value 1"}, valid=True),
             TaskElementValueObject(value={"key": "value 2"}, valid=False),
             TaskElementValueObject(value={"key": "value 3"}, valid=True),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_OBJECT"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_OBJECT"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value(task_page_item, "EV_OBJECT", None)
-        self.assertEqual(task_page_item.element_values.get("EV_OBJECT"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_OBJECT"), expected_element_values
+        )
 
     def test_add_element_value_as_dict_list(self):
         task_page_item = prepare_task_page_item()
 
-        TaskPageItemUtils.add_element_value_list(task_page_item, "EV_OBJECT", [{"key": "value 3"}, {"key": "value 4"}])
+        TaskPageItemUtils.add_element_value_list(
+            task_page_item, "EV_OBJECT", [{"key": "value 3"}, {"key": "value 4"}]
+        )
 
         expected_element_values = [
             TaskElementValueObject(value={"key": "value 1"}, valid=True),
@@ -465,18 +555,26 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
             TaskElementValueObject(value={"key": "value 3"}, valid=True),
             TaskElementValueObject(value={"key": "value 4"}, valid=True),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_OBJECT"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_OBJECT"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_OBJECT", None)
-        self.assertEqual(task_page_item.element_values.get("EV_OBJECT"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_OBJECT"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_OBJECT", [])
-        self.assertEqual(task_page_item.element_values.get("EV_OBJECT"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_OBJECT"), expected_element_values
+        )
 
     def test_get_element_value_as_document(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.get_element_value_as_document(task_page_item, "EV_DOCUMENT")
+        value = TaskPageItemUtils.get_element_value_as_document(
+            task_page_item, "EV_DOCUMENT"
+        )
         self.assertEqual(value, prepare_task_element_value_document_item("1"))
 
         with self.assertRaises(ValueError) as context:
@@ -486,21 +584,33 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_find_element_value_as_document(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.find_element_value_as_document(task_page_item, "EV_DOCUMENT")
+        value = TaskPageItemUtils.find_element_value_as_document(
+            task_page_item, "EV_DOCUMENT"
+        )
         self.assertEqual(value, prepare_task_element_value_document_item("1"))
 
-        value = TaskPageItemUtils.find_element_value_as_document(task_page_item, "OTHER")
+        value = TaskPageItemUtils.find_element_value_as_document(
+            task_page_item, "OTHER"
+        )
         self.assertIsNone(value)
 
     def test_get_element_value_as_document_list(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.get_element_value_as_document_list(task_page_item, "EV_DOCUMENT")
+        value = TaskPageItemUtils.get_element_value_as_document_list(
+            task_page_item, "EV_DOCUMENT"
+        )
         self.assertEqual(
-            value, [prepare_task_element_value_document_item("1"), prepare_task_element_value_document_item("2")]
+            value,
+            [
+                prepare_task_element_value_document_item("1"),
+                prepare_task_element_value_document_item("2"),
+            ],
         )
 
-        value = TaskPageItemUtils.get_element_value_as_document_list(task_page_item, "OTHER")
+        value = TaskPageItemUtils.get_element_value_as_document_list(
+            task_page_item, "OTHER"
+        )
         self.assertEqual(value, [])
 
     def test_set_element_value_as_document(self):
@@ -512,7 +622,9 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
         self.assertEqual(
             task_page_item.element_values.get("EV_DOCUMENT"),
             [
-                TaskElementValueDocument(value=prepare_task_element_value_document_item("3"), valid=True),
+                TaskElementValueDocument(
+                    value=prepare_task_element_value_document_item("3"), valid=True
+                ),
             ],
         )
 
@@ -525,13 +637,20 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
         TaskPageItemUtils.set_element_value_list(
             task_page_item,
             "EV_DOCUMENT",
-            [prepare_task_element_value_document_item("3"), prepare_task_element_value_document_item("4")],
+            [
+                prepare_task_element_value_document_item("3"),
+                prepare_task_element_value_document_item("4"),
+            ],
         )
         self.assertEqual(
             task_page_item.element_values.get("EV_DOCUMENT"),
             [
-                TaskElementValueDocument(value=prepare_task_element_value_document_item("3"), valid=True),
-                TaskElementValueDocument(value=prepare_task_element_value_document_item("4"), valid=True),
+                TaskElementValueDocument(
+                    value=prepare_task_element_value_document_item("3"), valid=True
+                ),
+                TaskElementValueDocument(
+                    value=prepare_task_element_value_document_item("4"), valid=True
+                ),
             ],
         )
 
@@ -559,10 +678,14 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
                 valid=True,
             ),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_DOCUMENT"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_DOCUMENT"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value(task_page_item, "EV_DOCUMENT", None)
-        self.assertEqual(task_page_item.element_values.get("EV_DOCUMENT"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_DOCUMENT"), expected_element_values
+        )
 
     def test_add_element_value_as_document_list(self):
         task_page_item = prepare_task_page_item()
@@ -570,7 +693,10 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
         TaskPageItemUtils.add_element_value_list(
             task_page_item,
             "EV_DOCUMENT",
-            [prepare_task_element_value_document_item("3"), prepare_task_element_value_document_item("4")],
+            [
+                prepare_task_element_value_document_item("3"),
+                prepare_task_element_value_document_item("4"),
+            ],
         )
 
         expected_element_values = [
@@ -591,18 +717,26 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
                 valid=True,
             ),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_DOCUMENT"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_DOCUMENT"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_DOCUMENT", None)
-        self.assertEqual(task_page_item.element_values.get("EV_DOCUMENT"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_DOCUMENT"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_DOCUMENT", [])
-        self.assertEqual(task_page_item.element_values.get("EV_DOCUMENT"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_DOCUMENT"), expected_element_values
+        )
 
     def test_get_element_value_as_principal(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.get_element_value_as_principal(task_page_item, "EV_PRINCIPAL")
+        value = TaskPageItemUtils.get_element_value_as_principal(
+            task_page_item, "EV_PRINCIPAL"
+        )
         self.assertEqual(value, prepare_task_element_value_principal_item("1"))
 
         with self.assertRaises(ValueError) as context:
@@ -612,33 +746,49 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
     def test_find_element_value_as_principal(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.find_element_value_as_principal(task_page_item, "EV_PRINCIPAL")
+        value = TaskPageItemUtils.find_element_value_as_principal(
+            task_page_item, "EV_PRINCIPAL"
+        )
         self.assertEqual(value, prepare_task_element_value_principal_item("1"))
 
-        value = TaskPageItemUtils.find_element_value_as_principal(task_page_item, "OTHER")
+        value = TaskPageItemUtils.find_element_value_as_principal(
+            task_page_item, "OTHER"
+        )
         self.assertIsNone(value)
 
     def test_get_element_value_as_principal_list(self):
         task_page_item = prepare_task_page_item()
 
-        value = TaskPageItemUtils.get_element_value_as_principal_list(task_page_item, "EV_PRINCIPAL")
+        value = TaskPageItemUtils.get_element_value_as_principal_list(
+            task_page_item, "EV_PRINCIPAL"
+        )
         self.assertEqual(
-            value, [prepare_task_element_value_principal_item("1"), prepare_task_element_value_principal_item("2")]
+            value,
+            [
+                prepare_task_element_value_principal_item("1"),
+                prepare_task_element_value_principal_item("2"),
+            ],
         )
 
-        value = TaskPageItemUtils.get_element_value_as_principal_list(task_page_item, "OTHER")
+        value = TaskPageItemUtils.get_element_value_as_principal_list(
+            task_page_item, "OTHER"
+        )
         self.assertEqual(value, [])
 
     def test_set_element_value_as_principal(self):
         task_page_item = prepare_task_page_item()
 
         TaskPageItemUtils.set_element_value(
-            task_page_item, "EV_PRINCIPAL", prepare_task_element_value_principal_item("3")
+            task_page_item,
+            "EV_PRINCIPAL",
+            prepare_task_element_value_principal_item("3"),
         )
         self.assertEqual(
             task_page_item.element_values.get("EV_PRINCIPAL"),
             [
-                TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("3"), valid=True),
+                TaskElementValuePrincipal(
+                    value=prepare_task_element_value_principal_item("3"), valid=True
+                ),
             ],
         )
 
@@ -651,13 +801,20 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
         TaskPageItemUtils.set_element_value_list(
             task_page_item,
             "EV_PRINCIPAL",
-            [prepare_task_element_value_principal_item("3"), prepare_task_element_value_principal_item("4")],
+            [
+                prepare_task_element_value_principal_item("3"),
+                prepare_task_element_value_principal_item("4"),
+            ],
         )
         self.assertEqual(
             task_page_item.element_values.get("EV_PRINCIPAL"),
             [
-                TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("3"), valid=True),
-                TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("4"), valid=True),
+                TaskElementValuePrincipal(
+                    value=prepare_task_element_value_principal_item("3"), valid=True
+                ),
+                TaskElementValuePrincipal(
+                    value=prepare_task_element_value_principal_item("4"), valid=True
+                ),
             ],
         )
 
@@ -668,7 +825,9 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
         task_page_item = prepare_task_page_item()
 
         TaskPageItemUtils.add_element_value(
-            task_page_item, "EV_PRINCIPAL", prepare_task_element_value_principal_item("3")
+            task_page_item,
+            "EV_PRINCIPAL",
+            prepare_task_element_value_principal_item("3"),
         )
 
         expected_element_values = [
@@ -685,10 +844,14 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
                 valid=True,
             ),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_PRINCIPAL"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_PRINCIPAL"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value(task_page_item, "EV_PRINCIPAL", None)
-        self.assertEqual(task_page_item.element_values.get("EV_PRINCIPAL"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_PRINCIPAL"), expected_element_values
+        )
 
     def test_add_element_value_as_principal_list(self):
         task_page_item = prepare_task_page_item()
@@ -696,7 +859,10 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
         TaskPageItemUtils.add_element_value_list(
             task_page_item,
             "EV_PRINCIPAL",
-            [prepare_task_element_value_principal_item("3"), prepare_task_element_value_principal_item("4")],
+            [
+                prepare_task_element_value_principal_item("3"),
+                prepare_task_element_value_principal_item("4"),
+            ],
         )
 
         expected_element_values = [
@@ -717,13 +883,19 @@ class TaskPageItemsUtilsTest(unittest.TestCase):
                 valid=True,
             ),
         ]
-        self.assertEqual(task_page_item.element_values.get("EV_PRINCIPAL"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_PRINCIPAL"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_PRINCIPAL", None)
-        self.assertEqual(task_page_item.element_values.get("EV_PRINCIPAL"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_PRINCIPAL"), expected_element_values
+        )
 
         TaskPageItemUtils.add_element_value_list(task_page_item, "EV_PRINCIPAL", [])
-        self.assertEqual(task_page_item.element_values.get("EV_PRINCIPAL"), expected_element_values)
+        self.assertEqual(
+            task_page_item.element_values.get("EV_PRINCIPAL"), expected_element_values
+        )
 
 
 def prepare_task_page_item() -> TaskPageItem:
@@ -773,7 +945,9 @@ def prepare_task_page_item() -> TaskPageItem:
     )
 
 
-def prepare_task_element_value_document_item(suffix: str) -> TaskElementValueDocumentItem:
+def prepare_task_element_value_document_item(
+    suffix: str,
+) -> TaskElementValueDocumentItem:
     return TaskElementValueDocumentItem(
         id=f"id_{suffix}",
         uri=f"uri_{suffix}",
@@ -784,7 +958,9 @@ def prepare_task_element_value_document_item(suffix: str) -> TaskElementValueDoc
     )
 
 
-def prepare_task_element_value_principal_item(suffix: str) -> TaskElementValuePrincipalItem:
+def prepare_task_element_value_principal_item(
+    suffix: str,
+) -> TaskElementValuePrincipalItem:
     return TaskElementValuePrincipalItem(
         id=f"id_{suffix}",
         type="USER",

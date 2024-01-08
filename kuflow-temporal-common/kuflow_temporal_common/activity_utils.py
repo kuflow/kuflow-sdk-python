@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -30,6 +29,7 @@ from functools import wraps
 from typing import Any, Awaitable, Callable, TypeVar, cast
 
 from temporalio import activity
+
 
 logger = logging.getLogger(__name__)
 

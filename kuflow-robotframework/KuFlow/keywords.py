@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -60,7 +59,7 @@ class Keywords:
         | Set Client Authentication | identifier | token
         | Set Client Authentication | identifier | token | https://api.kuflow.com/v1.0
         """
-        if is_string(endpoint) and (endpoint.strip() == '' or endpoint.lower() == 'none'):
+        if is_string(endpoint) and (endpoint.strip() == "" or endpoint.lower() == "none"):
             endpoint = None
 
         self._client = KuFlowRestClient(

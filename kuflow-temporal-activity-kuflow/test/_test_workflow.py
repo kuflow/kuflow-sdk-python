@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -28,6 +27,7 @@ from typing import List
 
 from temporalio import workflow
 from temporalio.common import RetryPolicy
+
 
 with workflow.unsafe.imports_passed_through():
     from kuflow_rest import models

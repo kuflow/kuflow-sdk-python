@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -40,8 +39,9 @@ from kuflow_temporal_common.connection import (
     TemporalWorkerConfig,
 )
 
+
 # Load configuration
-with open(Path(__file__).with_name("application-local.yaml"), "r") as file:
+with open(Path(__file__).with_name("application-local.yaml")) as file:
     yaml_data = yaml.safe_load(file)
 
     endpoint = yaml_data["kuflow"]["api"]["endpoint"]
