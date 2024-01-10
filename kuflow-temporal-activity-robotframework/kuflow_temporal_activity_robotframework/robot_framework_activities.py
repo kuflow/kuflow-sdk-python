@@ -103,7 +103,7 @@ class RobotFrameworkActivities:
         self._default_options = options
         self.activities = [self.execute_robot]
 
-    @activity.defn
+    @activity.defn(name="KuFlow_RobotFramework_ExecuteRobot")
     @auto_heartbeater
     async def execute_robot(self, request: ExecuteRobotRequest):
         # Prepare
@@ -113,7 +113,7 @@ class RobotFrameworkActivities:
         )
         options = {**self._default_options, **{"variable": merge_variables_in_default}}
 
-        tests = self.prepend_robot_path_variable(request.tests)
+        tests = self._prepend_robot_path_variable(request.tests)
 
         # Run
         robot_code = robot.run(tests, **options)
@@ -133,11 +133,11 @@ class RobotFrameworkActivities:
 
         merge_variables = variables_overwrite + variables
         # Remove duplicates
-        unique_variables = list({s.split(":")[0]: s for s in merge_variables}.values())
+        unique_variables = list({s.split(":", 1)[0]: s for s in merge_variables}.values())
 
         return unique_variables
 
-    def _prepend_robot_path_variable(relative_path):
+    def _prepend_robot_path_variable(self, relative_path):
         # Check if the "KUFLOW_ROBOT_PATH" environment variable is defined
         robot_path = os.getenv("KUFLOW_ROBOT_PATH")
 
