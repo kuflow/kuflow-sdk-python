@@ -22,4 +22,4 @@
 # SOFTWARE.
 #
 
-__version__ = "1.1.5.dev0"
+__version__ = "1.1.5"
