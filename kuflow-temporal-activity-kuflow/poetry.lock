@@ -224,7 +224,7 @@ six = "*"
 
 [[package]]
 name = "kuflow-rest"
-version = "1.1.4.dev0"
+version = "1.1.5"
 description = "Client for KuFlow Rest Api"
 category = "main"
 optional = false
@@ -242,7 +242,7 @@ url = "../kuflow-rest"
 
 [[package]]
 name = "kuflow-temporal-common"
-version = "1.1.4.dev0"
+version = "1.1.5"
 description = "KuFlow utilities to use Temporal.io"
 category = "main"
 optional = false
@@ -254,7 +254,7 @@ develop = true
 azure-core = "^1.26.4"
 isodate = "^0.6.1"
 kuflow-rest = {path = "../kuflow-rest", develop = true}
-temporalio = "~1.4.0"
+temporalio = "~1.5.0"
 
 [package.source]
 type = "directory"
@@ -532,18 +532,18 @@ files = [
 
 [[package]]
 name = "temporalio"
-version = "1.4.0"
+version = "1.5.0"
 description = "Temporal.io Python SDK"
 category = "main"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "temporalio-1.4.0-cp37-abi3-macosx_10_9_x86_64.whl", hash = "sha256:344a75f559d9a0aabde59da0072688523a0c344e8c916d5b5597e6a618696dd4"},
-    {file = "temporalio-1.4.0-cp37-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:f39b7977d1f7f2e3938172980764ec5c50755653fd986d6e68c6b4db242594d6"},
-    {file = "temporalio-1.4.0-cp37-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:58e29300bdb586160b8d8f2208106ff9e9d9f740bfb3385b82a509fa38d9a743"},
-    {file = "temporalio-1.4.0-cp37-abi3-win_amd64.whl", hash = "sha256:16bc76cb4d57e633f9e26381d941e3c251a42b5bef6b3668cc4cc2fc08ad6696"},
-    {file = "temporalio-1.4.0-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:209369da8e529838a238fc6ec464727f7c922d9314ec0ab8f4c19be6dddf0339"},
-    {file = "temporalio-1.4.0.tar.gz", hash = "sha256:56ef81b4b57e709e8f52d49e16b5c7a77d4b63cb697b1d991dd9eaa7fbbda591"},
+    {file = "temporalio-1.5.0-cp38-abi3-macosx_10_9_x86_64.whl", hash = "sha256:a95811fff7aaca3ea513f5f080706323682a94e50aee1d85d50b31b7dcb53a46"},
+    {file = "temporalio-1.5.0-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:3748516bc4e302fb0ab8e44ae3bffd9689eb033a1d49f69ff2d93432e943ec1d"},
+    {file = "temporalio-1.5.0-cp38-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:87fbb275844b6a8912861c0b40fb2fd4f18eb12445f231c78703560fc4707c9c"},
+    {file = "temporalio-1.5.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:536becaf9c9f544f8ed122dc8bcd706d8db1f65e2e38e0cc47dd81acefdaeb3c"},
+    {file = "temporalio-1.5.0-cp38-abi3-win_amd64.whl", hash = "sha256:a06ddd545b3d8a5f31adfe86b31408463886827694cdb0b9f5fba24a3c6954ef"},
+    {file = "temporalio-1.5.0.tar.gz", hash = "sha256:813224a360f60fba42e7d48786ea3ba4c804993e55df030c986acc58a4823464"},
 ]
 
 [package.dependencies]
@@ -553,7 +553,7 @@ types-protobuf = ">=3.20"
 typing-extensions = ">=4.2.0,<5.0.0"
 
 [package.extras]
-grpc = ["grpcio (>=1.53.0,<2.0.0)"]
+grpc = ["grpcio (>=1.59.0,<2.0.0)"]
 opentelemetry = ["opentelemetry-api (>=1.11.1,<2.0.0)", "opentelemetry-sdk (>=1.11.1,<2.0.0)"]
 
 [[package]]
