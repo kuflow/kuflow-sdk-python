@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 #
@@ -125,7 +125,7 @@ class AuthenticationOperations:
     @overload
     def create_authentication(
         self,
-        authentication: IO,
+        authentication: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
@@ -135,7 +135,7 @@ class AuthenticationOperations:
         Create an authentication for the current principal.
 
         :param authentication: Authentication to be created. Required.
-        :type authentication: IO
+        :type authentication: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -146,15 +146,15 @@ class AuthenticationOperations:
 
     @distributed_trace
     def create_authentication(
-        self, authentication: Union[_models.Authentication, IO], **kwargs: Any
+        self, authentication: Union[_models.Authentication, IO[bytes]], **kwargs: Any
     ) -> _models.Authentication:
         """Create an authentication for the current principal.
 
         Create an authentication for the current principal.
 
-        :param authentication: Authentication to be created. Is either a Authentication type or a IO
-         type. Required.
-        :type authentication: ~kuflow.rest.models.Authentication or IO
+        :param authentication: Authentication to be created. Is either a Authentication type or a
+         IO[bytes] type. Required.
+        :type authentication: ~kuflow.rest.models.Authentication or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -186,18 +186,18 @@ class AuthenticationOperations:
         else:
             _json = self._serialize.body(authentication, "Authentication")
 
-        request = build_create_authentication_request(
+        _request = build_create_authentication_request(
             content_type=content_type,
             json=_json,
             content=_content,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -216,6 +216,6 @@ class AuthenticationOperations:
         deserialized = self._deserialize("Authentication", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore

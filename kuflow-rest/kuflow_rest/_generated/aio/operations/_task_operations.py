@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 #
@@ -158,7 +158,7 @@ class TaskOperations:
 
         cls: ClsType[_models.TaskPage] = kwargs.pop("cls", None)
 
-        request = build_find_tasks_request(
+        _request = build_find_tasks_request(
             size=size,
             page=page,
             sort=sort,
@@ -168,11 +168,11 @@ class TaskOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -191,9 +191,9 @@ class TaskOperations:
         deserialized = self._deserialize("TaskPage", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @overload
     async def create_task(
@@ -242,7 +242,7 @@ class TaskOperations:
     @overload
     async def create_task(
         self,
-        task: IO,
+        task: IO[bytes],
         *,
         activity_token: Optional[str] = None,
         content_type: str = "application/json",
@@ -268,7 +268,7 @@ class TaskOperations:
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param task: Task to be created. Required.
-        :type task: IO
+        :type task: IO[bytes]
         :keyword activity_token: [DEPRECATED] When create a KuFlow Task backed with a Temporal.io
          servers, this value is required and must be
          set with the context task token of Temporal.io activity. It is no longer necessary because it
@@ -286,7 +286,7 @@ class TaskOperations:
     @distributed_trace_async
     async def create_task(
         self,
-        task: Union[_models.Task, IO],
+        task: Union[_models.Task, IO[bytes]],
         *,
         activity_token: Optional[str] = None,
         **kwargs: Any,
@@ -310,8 +310,8 @@ class TaskOperations:
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param task: Task to be created. Is either a Task type or a IO type. Required.
-        :type task: ~kuflow.rest.models.Task or IO
+        :param task: Task to be created. Is either a Task type or a IO[bytes] type. Required.
+        :type task: ~kuflow.rest.models.Task or IO[bytes]
         :keyword activity_token: [DEPRECATED] When create a KuFlow Task backed with a Temporal.io
          servers, this value is required and must be
          set with the context task token of Temporal.io activity. It is no longer necessary because it
@@ -349,7 +349,7 @@ class TaskOperations:
         else:
             _json = self._serialize.body(task, "Task")
 
-        request = build_create_task_request(
+        _request = build_create_task_request(
             activity_token=activity_token,
             content_type=content_type,
             json=_json,
@@ -357,11 +357,11 @@ class TaskOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -413,16 +413,16 @@ class TaskOperations:
 
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
-        request = build_retrieve_task_request(
+        _request = build_retrieve_task_request(
             id=id,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -441,9 +441,9 @@ class TaskOperations:
         deserialized = self._deserialize("Task", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def actions_task_claim(self, id: str, **kwargs: Any) -> _models.Task:
@@ -470,16 +470,16 @@ class TaskOperations:
 
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
-        request = build_actions_task_claim_request(
+        _request = build_actions_task_claim_request(
             id=id,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -498,9 +498,9 @@ class TaskOperations:
         deserialized = self._deserialize("Task", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @overload
     async def actions_task_assign(
@@ -531,7 +531,7 @@ class TaskOperations:
     async def actions_task_assign(
         self,
         id: str,
-        command: IO,
+        command: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
@@ -543,7 +543,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to change the task owner. Required.
-        :type command: IO
+        :type command: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -554,7 +554,10 @@ class TaskOperations:
 
     @distributed_trace_async
     async def actions_task_assign(
-        self, id: str, command: Union[_models.TaskAssignCommand, IO], **kwargs: Any
+        self,
+        id: str,
+        command: Union[_models.TaskAssignCommand, IO[bytes]],
+        **kwargs: Any,
     ) -> _models.Task:
         """Assign a task.
 
@@ -562,9 +565,9 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to change the task owner. Is either a TaskAssignCommand type or a IO
-         type. Required.
-        :type command: ~kuflow.rest.models.TaskAssignCommand or IO
+        :param command: Command to change the task owner. Is either a TaskAssignCommand type or a
+         IO[bytes] type. Required.
+        :type command: ~kuflow.rest.models.TaskAssignCommand or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -596,7 +599,7 @@ class TaskOperations:
         else:
             _json = self._serialize.body(command, "TaskAssignCommand")
 
-        request = build_actions_task_assign_request(
+        _request = build_actions_task_assign_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -604,11 +607,11 @@ class TaskOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -627,9 +630,9 @@ class TaskOperations:
         deserialized = self._deserialize("Task", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @overload
     async def actions_task_save_element(
@@ -668,7 +671,7 @@ class TaskOperations:
     async def actions_task_save_element(
         self,
         id: str,
-        command: IO,
+        command: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
@@ -688,7 +691,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to save an element. Required.
-        :type command: IO
+        :type command: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -699,7 +702,10 @@ class TaskOperations:
 
     @distributed_trace_async
     async def actions_task_save_element(
-        self, id: str, command: Union[_models.TaskSaveElementCommand, IO], **kwargs: Any
+        self,
+        id: str,
+        command: Union[_models.TaskSaveElementCommand, IO[bytes]],
+        **kwargs: Any,
     ) -> _models.Task:
         """Save an element.
 
@@ -715,9 +721,9 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to save an element. Is either a TaskSaveElementCommand type or a IO
-         type. Required.
-        :type command: ~kuflow.rest.models.TaskSaveElementCommand or IO
+        :param command: Command to save an element. Is either a TaskSaveElementCommand type or a
+         IO[bytes] type. Required.
+        :type command: ~kuflow.rest.models.TaskSaveElementCommand or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -749,7 +755,7 @@ class TaskOperations:
         else:
             _json = self._serialize.body(command, "TaskSaveElementCommand")
 
-        request = build_actions_task_save_element_request(
+        _request = build_actions_task_save_element_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -757,11 +763,11 @@ class TaskOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -780,15 +786,15 @@ class TaskOperations:
         deserialized = self._deserialize("Task", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def actions_task_save_element_value_document(
         self,
         id: str,
-        file: IO,
+        file: IO[bytes],
         *,
         file_content_type: str,
         file_name: str,
@@ -808,7 +814,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param file: Command to save a document element value. Required.
-        :type file: IO
+        :type file: IO[bytes]
         :keyword file_content_type: Document content type. Required.
         :paramtype file_content_type: str
         :keyword file_name: Document name. Required.
@@ -841,7 +847,7 @@ class TaskOperations:
 
         _content = file
 
-        request = build_actions_task_save_element_value_document_request(
+        _request = build_actions_task_save_element_value_document_request(
             id=id,
             file_content_type=file_content_type,
             file_name=file_name,
@@ -853,11 +859,11 @@ class TaskOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -876,9 +882,9 @@ class TaskOperations:
         deserialized = self._deserialize("Task", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @overload
     async def actions_task_delete_element(
@@ -911,7 +917,7 @@ class TaskOperations:
     async def actions_task_delete_element(
         self,
         id: str,
-        command: IO,
+        command: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
@@ -925,7 +931,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete an element. Required.
-        :type command: IO
+        :type command: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -938,7 +944,7 @@ class TaskOperations:
     async def actions_task_delete_element(
         self,
         id: str,
-        command: Union[_models.TaskDeleteElementCommand, IO],
+        command: Union[_models.TaskDeleteElementCommand, IO[bytes]],
         **kwargs: Any,
     ) -> _models.Task:
         """Delete an element by code.
@@ -949,9 +955,9 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to delete an element. Is either a TaskDeleteElementCommand type or a IO
-         type. Required.
-        :type command: ~kuflow.rest.models.TaskDeleteElementCommand or IO
+        :param command: Command to delete an element. Is either a TaskDeleteElementCommand type or a
+         IO[bytes] type. Required.
+        :type command: ~kuflow.rest.models.TaskDeleteElementCommand or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -983,7 +989,7 @@ class TaskOperations:
         else:
             _json = self._serialize.body(command, "TaskDeleteElementCommand")
 
-        request = build_actions_task_delete_element_request(
+        _request = build_actions_task_delete_element_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -991,11 +997,11 @@ class TaskOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1014,9 +1020,9 @@ class TaskOperations:
         deserialized = self._deserialize("Task", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @overload
     async def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
@@ -1050,7 +1056,7 @@ class TaskOperations:
     async def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
         self,
         id: str,
-        command: IO,
+        command: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
@@ -1065,7 +1071,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete a document element value. Required.
-        :type command: IO
+        :type command: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -1078,7 +1084,7 @@ class TaskOperations:
     async def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
         self,
         id: str,
-        command: Union[_models.TaskDeleteElementValueDocumentCommand, IO],
+        command: Union[_models.TaskDeleteElementValueDocumentCommand, IO[bytes]],
         **kwargs: Any,
     ) -> _models.Task:
         """Delete an element document value.
@@ -1091,8 +1097,8 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete a document element value. Is either a
-         TaskDeleteElementValueDocumentCommand type or a IO type. Required.
-        :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand or IO
+         TaskDeleteElementValueDocumentCommand type or a IO[bytes] type. Required.
+        :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -1126,7 +1132,7 @@ class TaskOperations:
                 command, "TaskDeleteElementValueDocumentCommand"
             )
 
-        request = build_actions_task_delete_element_value_document_request(
+        _request = build_actions_task_delete_element_value_document_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -1134,11 +1140,11 @@ class TaskOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1157,9 +1163,9 @@ class TaskOperations:
         deserialized = self._deserialize("Task", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def actions_task_download_element_value_document(  # pylint: disable=name-too-long
@@ -1190,17 +1196,17 @@ class TaskOperations:
 
         cls: ClsType[AsyncIterator[bytes]] = kwargs.pop("cls", None)
 
-        request = build_actions_task_download_element_value_document_request(
+        _request = build_actions_task_download_element_value_document_request(
             id=id,
             document_id=document_id,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = True
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1256,17 +1262,17 @@ class TaskOperations:
 
         cls: ClsType[AsyncIterator[bytes]] = kwargs.pop("cls", None)
 
-        request = build_actions_task_download_element_value_rendered_request(
+        _request = build_actions_task_download_element_value_rendered_request(
             id=id,
             element_definition_code=element_definition_code,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = True
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1320,7 +1326,7 @@ class TaskOperations:
     async def actions_task_save_json_forms_value_data(
         self,
         id: str,
-        command: IO,
+        command: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
@@ -1334,7 +1340,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to save the JSON value. Required.
-        :type command: IO
+        :type command: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -1347,7 +1353,7 @@ class TaskOperations:
     async def actions_task_save_json_forms_value_data(
         self,
         id: str,
-        command: Union[_models.TaskSaveJsonFormsValueDataCommand, IO],
+        command: Union[_models.TaskSaveJsonFormsValueDataCommand, IO[bytes]],
         **kwargs: Any,
     ) -> _models.Task:
         """Save JSON data.
@@ -1359,8 +1365,8 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to save the JSON value. Is either a TaskSaveJsonFormsValueDataCommand
-         type or a IO type. Required.
-        :type command: ~kuflow.rest.models.TaskSaveJsonFormsValueDataCommand or IO
+         type or a IO[bytes] type. Required.
+        :type command: ~kuflow.rest.models.TaskSaveJsonFormsValueDataCommand or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -1392,7 +1398,7 @@ class TaskOperations:
         else:
             _json = self._serialize.body(command, "TaskSaveJsonFormsValueDataCommand")
 
-        request = build_actions_task_save_json_forms_value_data_request(
+        _request = build_actions_task_save_json_forms_value_data_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -1400,11 +1406,11 @@ class TaskOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1423,15 +1429,15 @@ class TaskOperations:
         deserialized = self._deserialize("Task", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def actions_task_save_json_forms_value_document(  # pylint: disable=name-too-long
         self,
         id: str,
-        file: IO,
+        file: IO[bytes],
         *,
         file_content_type: str,
         file_name: str,
@@ -1445,7 +1451,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param file: Document to save. Required.
-        :type file: IO
+        :type file: IO[bytes]
         :keyword file_content_type: Document content type. Required.
         :paramtype file_content_type: str
         :keyword file_name: Document name. Required.
@@ -1477,7 +1483,7 @@ class TaskOperations:
 
         _content = file
 
-        request = build_actions_task_save_json_forms_value_document_request(
+        _request = build_actions_task_save_json_forms_value_document_request(
             id=id,
             file_content_type=file_content_type,
             file_name=file_name,
@@ -1487,11 +1493,11 @@ class TaskOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1512,9 +1518,9 @@ class TaskOperations:
         )
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def actions_task_download_json_forms_value_document(  # pylint: disable=name-too-long
@@ -1545,17 +1551,17 @@ class TaskOperations:
 
         cls: ClsType[AsyncIterator[bytes]] = kwargs.pop("cls", None)
 
-        request = build_actions_task_download_json_forms_value_document_request(
+        _request = build_actions_task_download_json_forms_value_document_request(
             id=id,
             document_uri=document_uri,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = True
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1603,16 +1609,16 @@ class TaskOperations:
 
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
-        request = build_actions_task_complete_request(
+        _request = build_actions_task_complete_request(
             id=id,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1631,9 +1637,9 @@ class TaskOperations:
         deserialized = self._deserialize("Task", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @overload
     async def actions_task_append_log(
@@ -1663,7 +1669,12 @@ class TaskOperations:
 
     @overload
     async def actions_task_append_log(
-        self, id: str, log: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        id: str,
+        log: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Task:
         """Append a log to the task.
 
@@ -1673,7 +1684,7 @@ class TaskOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param log: Log to be created. Required.
-        :type log: IO
+        :type log: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -1684,7 +1695,7 @@ class TaskOperations:
 
     @distributed_trace_async
     async def actions_task_append_log(
-        self, id: str, log: Union[_models.Log, IO], **kwargs: Any
+        self, id: str, log: Union[_models.Log, IO[bytes]], **kwargs: Any
     ) -> _models.Task:
         """Append a log to the task.
 
@@ -1693,8 +1704,8 @@ class TaskOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param log: Log to be created. Is either a Log type or a IO type. Required.
-        :type log: ~kuflow.rest.models.Log or IO
+        :param log: Log to be created. Is either a Log type or a IO[bytes] type. Required.
+        :type log: ~kuflow.rest.models.Log or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -1726,7 +1737,7 @@ class TaskOperations:
         else:
             _json = self._serialize.body(log, "Log")
 
-        request = build_actions_task_append_log_request(
+        _request = build_actions_task_append_log_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -1734,11 +1745,11 @@ class TaskOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1757,6 +1768,6 @@ class TaskOperations:
         deserialized = self._deserialize("Task", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore

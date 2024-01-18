@@ -48,6 +48,8 @@ def main() -> int:
     group_id_owners = "f0565aee-7a90-463f-9a24-65f5e9da0210"
 
     # Test group operations
+    principals = client.principal.find_principals()
+    print(principals)
     principals = client.principal.find_principals(group_id=group_id_users)
     print(principals)
     principals = client.principal.find_principals(group_id=[group_id_users])

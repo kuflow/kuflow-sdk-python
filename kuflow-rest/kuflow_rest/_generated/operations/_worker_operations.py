@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 #
@@ -127,7 +127,11 @@ class WorkerOperations:
 
     @overload
     def create_worker(
-        self, worker: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        worker: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Worker:
         """Create or update a worker.
 
@@ -137,7 +141,7 @@ class WorkerOperations:
         If already exist a worker for the same identity, the worker will be updated.
 
         :param worker: Worker to create or update. Required.
-        :type worker: IO
+        :type worker: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -148,7 +152,7 @@ class WorkerOperations:
 
     @distributed_trace
     def create_worker(
-        self, worker: Union[_models.Worker, IO], **kwargs: Any
+        self, worker: Union[_models.Worker, IO[bytes]], **kwargs: Any
     ) -> _models.Worker:
         """Create or update a worker.
 
@@ -157,8 +161,9 @@ class WorkerOperations:
 
         If already exist a worker for the same identity, the worker will be updated.
 
-        :param worker: Worker to create or update. Is either a Worker type or a IO type. Required.
-        :type worker: ~kuflow.rest.models.Worker or IO
+        :param worker: Worker to create or update. Is either a Worker type or a IO[bytes] type.
+         Required.
+        :type worker: ~kuflow.rest.models.Worker or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -190,18 +195,18 @@ class WorkerOperations:
         else:
             _json = self._serialize.body(worker, "Worker")
 
-        request = build_create_worker_request(
+        _request = build_create_worker_request(
             content_type=content_type,
             json=_json,
             content=_content,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response

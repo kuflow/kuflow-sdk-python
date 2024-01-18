@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 #
@@ -157,7 +157,9 @@ def build_actions_process_change_initiator_request(  # pylint: disable=name-too-
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_process_save_element_request(id: str, **kwargs: Any) -> HttpRequest:  # pylint: disable=name-too-long
+def build_actions_process_save_element_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop(
@@ -255,7 +257,7 @@ def build_actions_process_save_user_action_value_document_request(  # pylint: di
     file_content_type: str,
     file_name: str,
     user_action_value_id: str,
-    content: IO,
+    content: IO[bytes],
     **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -364,18 +366,18 @@ class ProcessOperations:
 
         cls: ClsType[_models.ProcessPage] = kwargs.pop("cls", None)
 
-        request = build_find_processes_request(
+        _request = build_find_processes_request(
             size=size,
             page=page,
             sort=sort,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -394,9 +396,9 @@ class ProcessOperations:
         deserialized = self._deserialize("ProcessPage", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @overload
     def create_process(
@@ -434,7 +436,11 @@ class ProcessOperations:
 
     @overload
     def create_process(
-        self, process: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        process: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Process:
         """Create a new process.
 
@@ -453,7 +459,7 @@ class ProcessOperations:
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param process: Process to create. Required.
-        :type process: IO
+        :type process: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -464,7 +470,7 @@ class ProcessOperations:
 
     @distributed_trace
     def create_process(
-        self, process: Union[_models.Process, IO], **kwargs: Any
+        self, process: Union[_models.Process, IO[bytes]], **kwargs: Any
     ) -> _models.Process:
         """Create a new process.
 
@@ -482,8 +488,8 @@ class ProcessOperations:
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process: Process to create. Is either a Process type or a IO type. Required.
-        :type process: ~kuflow.rest.models.Process or IO
+        :param process: Process to create. Is either a Process type or a IO[bytes] type. Required.
+        :type process: ~kuflow.rest.models.Process or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -515,18 +521,18 @@ class ProcessOperations:
         else:
             _json = self._serialize.body(process, "Process")
 
-        request = build_create_process_request(
+        _request = build_create_process_request(
             content_type=content_type,
             json=_json,
             content=_content,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -578,16 +584,16 @@ class ProcessOperations:
 
         cls: ClsType[_models.Process] = kwargs.pop("cls", None)
 
-        request = build_retrieve_process_request(
+        _request = build_retrieve_process_request(
             id=id,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -606,9 +612,9 @@ class ProcessOperations:
         deserialized = self._deserialize("Process", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @overload
     def actions_process_change_initiator(
@@ -643,7 +649,7 @@ class ProcessOperations:
     def actions_process_change_initiator(
         self,
         id: str,
-        command: IO,
+        command: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
@@ -659,7 +665,7 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to change the process initiator. Required.
-        :type command: IO
+        :type command: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -672,7 +678,7 @@ class ProcessOperations:
     def actions_process_change_initiator(
         self,
         id: str,
-        command: Union[_models.ProcessChangeInitiatorCommand, IO],
+        command: Union[_models.ProcessChangeInitiatorCommand, IO[bytes]],
         **kwargs: Any,
     ) -> _models.Process:
         """Change process initiator.
@@ -686,8 +692,8 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to change the process initiator. Is either a
-         ProcessChangeInitiatorCommand type or a IO type. Required.
-        :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand or IO
+         ProcessChangeInitiatorCommand type or a IO[bytes] type. Required.
+        :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -719,7 +725,7 @@ class ProcessOperations:
         else:
             _json = self._serialize.body(command, "ProcessChangeInitiatorCommand")
 
-        request = build_actions_process_change_initiator_request(
+        _request = build_actions_process_change_initiator_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -727,11 +733,11 @@ class ProcessOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -750,9 +756,9 @@ class ProcessOperations:
         deserialized = self._deserialize("Process", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @overload
     def actions_process_save_element(
@@ -789,7 +795,7 @@ class ProcessOperations:
     def actions_process_save_element(
         self,
         id: str,
-        command: IO,
+        command: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
@@ -807,7 +813,7 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to save an element. Required.
-        :type command: IO
+        :type command: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -820,7 +826,7 @@ class ProcessOperations:
     def actions_process_save_element(
         self,
         id: str,
-        command: Union[_models.ProcessSaveElementCommand, IO],
+        command: Union[_models.ProcessSaveElementCommand, IO[bytes]],
         **kwargs: Any,
     ) -> _models.Process:
         """Save a process element, aka: metadata.
@@ -835,9 +841,9 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to save an element. Is either a ProcessSaveElementCommand type or a IO
-         type. Required.
-        :type command: ~kuflow.rest.models.ProcessSaveElementCommand or IO
+        :param command: Command to save an element. Is either a ProcessSaveElementCommand type or a
+         IO[bytes] type. Required.
+        :type command: ~kuflow.rest.models.ProcessSaveElementCommand or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -869,7 +875,7 @@ class ProcessOperations:
         else:
             _json = self._serialize.body(command, "ProcessSaveElementCommand")
 
-        request = build_actions_process_save_element_request(
+        _request = build_actions_process_save_element_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -877,11 +883,11 @@ class ProcessOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -900,9 +906,9 @@ class ProcessOperations:
         deserialized = self._deserialize("Process", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @overload
     def actions_process_delete_element(
@@ -935,7 +941,7 @@ class ProcessOperations:
     def actions_process_delete_element(
         self,
         id: str,
-        command: IO,
+        command: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
@@ -949,7 +955,7 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete an element. Required.
-        :type command: IO
+        :type command: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -962,7 +968,7 @@ class ProcessOperations:
     def actions_process_delete_element(
         self,
         id: str,
-        command: Union[_models.ProcessDeleteElementCommand, IO],
+        command: Union[_models.ProcessDeleteElementCommand, IO[bytes]],
         **kwargs: Any,
     ) -> _models.Process:
         """Delete an element by code.
@@ -974,8 +980,8 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param command: Command to delete an element. Is either a ProcessDeleteElementCommand type or a
-         IO type. Required.
-        :type command: ~kuflow.rest.models.ProcessDeleteElementCommand or IO
+         IO[bytes] type. Required.
+        :type command: ~kuflow.rest.models.ProcessDeleteElementCommand or IO[bytes]
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -1007,7 +1013,7 @@ class ProcessOperations:
         else:
             _json = self._serialize.body(command, "ProcessDeleteElementCommand")
 
-        request = build_actions_process_delete_element_request(
+        _request = build_actions_process_delete_element_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -1015,11 +1021,11 @@ class ProcessOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1038,9 +1044,9 @@ class ProcessOperations:
         deserialized = self._deserialize("Process", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @distributed_trace
     def actions_process_complete(self, id: str, **kwargs: Any) -> _models.Process:
@@ -1069,16 +1075,16 @@ class ProcessOperations:
 
         cls: ClsType[_models.Process] = kwargs.pop("cls", None)
 
-        request = build_actions_process_complete_request(
+        _request = build_actions_process_complete_request(
             id=id,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1097,9 +1103,9 @@ class ProcessOperations:
         deserialized = self._deserialize("Process", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @distributed_trace
     def actions_process_cancel(self, id: str, **kwargs: Any) -> _models.Process:
@@ -1130,16 +1136,16 @@ class ProcessOperations:
 
         cls: ClsType[_models.Process] = kwargs.pop("cls", None)
 
-        request = build_actions_process_cancel_request(
+        _request = build_actions_process_cancel_request(
             id=id,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1158,15 +1164,15 @@ class ProcessOperations:
         deserialized = self._deserialize("Process", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @distributed_trace
     def actions_process_save_user_action_value_document(  # pylint: disable=name-too-long
         self,
         id: str,
-        file: IO,
+        file: IO[bytes],
         *,
         file_content_type: str,
         file_name: str,
@@ -1180,7 +1186,7 @@ class ProcessOperations:
         :param id: The resource ID. Required.
         :type id: str
         :param file: Document to save. Required.
-        :type file: IO
+        :type file: IO[bytes]
         :keyword file_content_type: Document content type. Required.
         :paramtype file_content_type: str
         :keyword file_name: Document name. Required.
@@ -1209,7 +1215,7 @@ class ProcessOperations:
 
         _content = file
 
-        request = build_actions_process_save_user_action_value_document_request(
+        _request = build_actions_process_save_user_action_value_document_request(
             id=id,
             file_content_type=file_content_type,
             file_name=file_name,
@@ -1219,11 +1225,11 @@ class ProcessOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1244,6 +1250,6 @@ class ProcessOperations:
             deserialized = self._deserialize("Process", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore

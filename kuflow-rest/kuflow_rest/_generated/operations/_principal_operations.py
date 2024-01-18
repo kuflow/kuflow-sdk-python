@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 #
@@ -191,7 +191,7 @@ class PrincipalOperations:
 
         cls: ClsType[_models.PrincipalPage] = kwargs.pop("cls", None)
 
-        request = build_find_principals_request(
+        _request = build_find_principals_request(
             size=size,
             page=page,
             sort=sort,
@@ -200,11 +200,11 @@ class PrincipalOperations:
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -223,9 +223,9 @@ class PrincipalOperations:
         deserialized = self._deserialize("PrincipalPage", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
 
     @distributed_trace
     def retrieve_principal(self, id: str, **kwargs: Any) -> _models.Principal:
@@ -252,16 +252,16 @@ class PrincipalOperations:
 
         cls: ClsType[_models.Principal] = kwargs.pop("cls", None)
 
-        request = build_retrieve_principal_request(
+        _request = build_retrieve_principal_request(
             id=id,
             headers=_headers,
             params=_params,
         )
-        request.url = self._client.format_url(request.url)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -280,6 +280,6 @@ class PrincipalOperations:
         deserialized = self._deserialize("Principal", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
+        return deserialized  # type: ignore
