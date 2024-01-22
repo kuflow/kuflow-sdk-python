@@ -28,4 +28,4 @@ from .kuflow_activities import KuFlowActivities
 KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK = "KuFlow_Engine_Signal_Completed_Task"
 
 __all__ = ["KuFlowActivities", "KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK"]
-__version__ = "1.1.6.dev0"
+__version__ = "1.2.0"
