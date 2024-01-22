@@ -74,6 +74,9 @@ from ._models import TaskPageItem
 from ._models import TaskSaveElementCommand
 from ._models import TaskSaveJsonFormsValueDataCommand
 from ._models import TaskSaveJsonFormsValueDocumentResponseCommand
+from ._models import TenantUser
+from ._models import TenantUserMetadata
+from ._models import TenantUserPage
 from ._models import WebhookEvent
 from ._models import WebhookEventProcessStateChanged
 from ._models import WebhookEventProcessStateChangedData
@@ -121,6 +124,7 @@ __all__ = [
     "ProcessPage",
     "ProcessPageItem",
     "ProcessSaveElementCommand",
+    "TenantUserPage",
     "RelatedProcess",
     "Task",
     "TaskAssignCommand",
@@ -140,6 +144,9 @@ __all__ = [
     "TaskSaveElementCommand",
     "TaskSaveJsonFormsValueDataCommand",
     "TaskSaveJsonFormsValueDocumentResponseCommand",
+    "TenantUser",
+    "TenantUserMetadata",
+    "TenantUserPage",
     "WebhookEvent",
     "WebhookEventProcessStateChanged",
     "WebhookEventProcessStateChangedData",

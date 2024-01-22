@@ -6,7 +6,7 @@ function removeUnnecessaryUnionOptions() {
 
   {
     // _models
-    const file = `${process.cwd()}/../../kuflow_rest/_generated/models/_models.py`
+    const file = `${process.cwd()}/../kuflow_rest/_generated/models/_models.py`
 
     const fileData = fs.readFileSync(file)
     let fileAsStr = fileData.toString('utf8')

@@ -38,6 +38,7 @@ class AuditedObjectType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Audited object Types."""
 
     AUTHENTICATION = "AUTHENTICATION"
+    TENANT_USER = "TENANT_USER"
     PROCESS = "PROCESS"
     PROCESS_PAGE_ITEM = "PROCESS_PAGE_ITEM"
     TASK = "TASK"
@@ -65,6 +66,7 @@ class PagedObjectType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Paged Model types."""
 
     PRINCIPAL_PAGE = "PRINCIPAL_PAGE"
+    TENANT_USER_PAGE = "TENANT_USER_PAGE"
     PROCESS_PAGE = "PROCESS_PAGE"
     TASK_PAGE = "TASK_PAGE"
 

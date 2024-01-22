@@ -23,7 +23,6 @@
 # SOFTWARE.
 #
 
-
 from typing import Any
 
 from .. import models as _models

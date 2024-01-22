@@ -29,7 +29,7 @@ from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
 from .._generated import models as _models
 
 
-class PrincipalOperations:
+class TenantUserOperations:
     """
     .. warning::
         **DO NOT** instantiate this class directly.
@@ -42,37 +42,40 @@ class PrincipalOperations:
     def __init__(self, kuflow_client: KuFlowRestClientGenerated):
         self._kuflow_client = kuflow_client
 
-    def find_principals(
+    def find_tenant_users(
         self,
         size: int = 25,
         page: int = 0,
         sort: Optional[Union[str, List[str]]] = None,
         type: Optional[_models.PrincipalType] = None,
         group_id: Optional[Union[str, List[str]]] = None,
+        email: Optional[Union[str, List[str]]] = None,
         **kwargs: Any,
-    ) -> _models.PrincipalPage:
-        """Find all accessible Principals.
+    ) -> _models.TenantUserPage:
+        """Find all accessible Tenant Users.
 
-        List all the Principals that have been created and the used credentials has access.
+        List all the Tenant Users that have been created and the used credentials has access.
 
         Available sort query values: id, name.
 
         :keyword size: The number of records returned within a single API call. Default value is 25.
-        :type size: int
-        :keyword page: The page number of the current page in the returned records, 0 is the first page.
-                       Default value is 0.
-        :type page: int
+        :paramtype size: int
+        :keyword page: The page number of the current page in the returned records, 0 is the first
+         page. Default value is 0.
+        :paramtype page: int
         :keyword sort: Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-                       Default sort order is ascending. Multiple sort criteria are supported.
-                       Please refer to the method description for supported properties. Default value is None.
-        :type sort: Optional[Union[str, List[str]]]
-        :keyword type: Filter principals by type. Known values are: "USER", "APPLICATION", and
-                      "SYSTEM". Default value is None.
-        :type type: Optional[_models.PrincipalType]
-        :keyword group_id: Filter principals that exists in one of group ids. Default value is None.
-        :type group_id: Optional[Union[str, List[str]]]
-        :return: PrincipalPage
-        :rtype: ~kuflow.rest.models.PrincipalPage
+
+         Default sort order is ascending. Multiple sort criteria are supported.
+
+         Please refer to the method description for supported properties. Default value is None.
+        :paramtype sort: list[str]
+        :keyword group_id: Filter tenant users that exists in one of the group ids. Default value is
+         None.
+        :paramtype group_id: list[str]
+        :keyword email: Filter tenant users that have one of the emails. Default value is None.
+        :paramtype email: list[str]
+        :return: TenantUserPage
+        :rtype: ~kuflow.rest.models.TenantUserPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         if sort is not None and isinstance(sort, str):
@@ -81,11 +84,20 @@ class PrincipalOperations:
         if group_id is not None and isinstance(group_id, str):
             group_id = [group_id]
 
-        return self._kuflow_client.principal.find_principals(
-            size=size, page=page, sort=sort, type=type, group_id=group_id, **kwargs
+        if email is not None and isinstance(email, str):
+            email = [email]
+
+        return self._kuflow_client.tenant_user.find_tenant_users(
+            size=size,
+            page=page,
+            sort=sort,
+            type=type,
+            group_id=group_id,
+            email=email,
+            **kwargs,
         )
 
-    def retrieve_principal(self, id: str, **kwargs: Any) -> _models.Principal:
+    def retrieve_tenant_user(self, id: str, **kwargs: Any) -> _models.TenantUser:
         """Get a Principal by ID.
 
         Returns the requested Principal when has access to do it.
@@ -96,4 +108,4 @@ class PrincipalOperations:
         :rtype: ~kuflow.rest.models.Principal
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.principal.retrieve_principal(id=id, **kwargs)
+        return self._kuflow_client.tenant_user.retrieve_tenant_user(id=id, **kwargs)

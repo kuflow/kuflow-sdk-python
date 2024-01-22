@@ -23,7 +23,6 @@
 # SOFTWARE.
 #
 
-
 from typing import Any, Iterator, List, Optional, Union
 
 from .. import models as _models

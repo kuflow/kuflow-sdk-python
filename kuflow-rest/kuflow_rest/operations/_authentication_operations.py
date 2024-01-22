@@ -23,7 +23,6 @@
 # SOFTWARE.
 #
 
-
 from typing import Any
 
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
