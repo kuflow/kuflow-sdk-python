@@ -23,13 +23,12 @@
 # SOFTWARE.
 #
 
-
 import base64
 import platform
 import sys
 from typing import Any, Optional
 
-from azure.core.credentials import AccessToken
+from azure.core.credentials import AccessToken, TokenCredential
 from azure.core.pipeline.policies import SansIOHTTPPolicy
 
 from ._generated import VERSION
@@ -39,11 +38,12 @@ from .operations import (
     PrincipalOperations,
     ProcessOperations,
     TaskOperations,
+    TenantUserOperations,
     WorkerOperations,
 )
 
 
-class KuFlowClientTokenCredential:
+class KuFlowClientTokenCredential(TokenCredential):
     def __init__(
         self,
         client_id: str,
@@ -61,6 +61,7 @@ class KuFlowClientTokenCredential:
         *scopes: str,
         claims: Optional[str] = None,
         tenant_id: Optional[str] = None,
+        enable_cae: bool = False,
         **kwargs: Any,
     ) -> AccessToken:
         """Request an access token for `scopes`.
@@ -72,6 +73,10 @@ class KuFlowClientTokenCredential:
         :type claims: Optional[str]
         :keyword tenant_id: Optional tenant to include in the token request.
         :type tenant_id: Optional[str]
+        :keyword bool enable_cae: Indicates whether to enable Continuous Access Evaluation (CAE) for the requested
+                                  token. Defaults to False.
+        :type enable_cae: bool
+
         :rtype: AccessToken
         :return: An AccessToken instance containing the token string and its expiration time in Unix time.
         """
@@ -198,6 +203,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
 
         self.authentication = AuthenticationOperations(self._kuflow_client)
         self.principal = PrincipalOperations(self._kuflow_client)
+        self.tenant_user = TenantUserOperations(self._kuflow_client)
         self.process = ProcessOperations(self._kuflow_client)
         self.task = TaskOperations(self._kuflow_client)
         self.worker = WorkerOperations(self._kuflow_client)

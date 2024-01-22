@@ -138,6 +138,34 @@ class RetrievePrincipalResponse(_serialization.Model):
         self.principal = principal
 
 
+class RetrieveTenantUserRequest(_serialization.Model):
+    _attribute_map = {
+        "tenant_user_id": {"key": "tenantUserId", "type": "str"},
+    }
+
+    def __init__(self, tenant_user_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            tenant_user_id: Identifier of the requested tenant user
+        """
+        super().__init__(**kwargs)
+        self.tenant_user_id = tenant_user_id
+
+
+class RetrieveTenantUserResponse(_serialization.Model):
+    _attribute_map = {
+        "tenant_user": {"key": "tenantUser", "type": "Principal"},
+    }
+
+    def __init__(self, tenant_user: models_rest.TenantUser, **kwargs: Any) -> None:
+        """
+        Parameters:
+            tenant_user: tenant_user data requested
+        """
+        super().__init__(**kwargs)
+        self.tenant_user = tenant_user
+
+
 class FindProcessesRequest(_serialization.Model):
     _attribute_map = {
         "page": {"key": "page", "type": "int"},

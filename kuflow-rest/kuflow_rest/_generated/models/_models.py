@@ -44,13 +44,8 @@ if TYPE_CHECKING:
 class AbstractAudited(_serialization.Model):
     """AbstractAudited.
 
-    You probably want to use the sub-classes and not this class directly. Known sub-classes are:
-    Authentication, ProcessPageItem, Process, TaskPageItem, Task, Worker
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -62,10 +57,6 @@ class AbstractAudited(_serialization.Model):
     :vartype last_modified_at: ~datetime.datetime
     """
 
-    _validation = {
-        "object_type": {"required": True},
-    }
-
     _attribute_map = {
         "object_type": {"key": "objectType", "type": "str"},
         "created_by": {"key": "createdBy", "type": "str"},
@@ -74,20 +65,10 @@ class AbstractAudited(_serialization.Model):
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
     }
 
-    _subtype_map = {
-        "object_type": {
-            "AUTHENTICATION": "Authentication",
-            "PROCESS_PAGE_ITEM": "ProcessPageItem",
-            "PROCESS": "Process",
-            "TASK_PAGE_ITEM": "TaskPageItem",
-            "TASK": "Task",
-            "WORKER": "Worker",
-        }
-    }
-
     def __init__(
         self,
         *,
+        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -95,6 +76,9 @@ class AbstractAudited(_serialization.Model):
         **kwargs: Any,
     ) -> None:
         """
+        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -105,7 +89,7 @@ class AbstractAudited(_serialization.Model):
         :paramtype last_modified_at: ~datetime.datetime
         """
         super().__init__(**kwargs)
-        self.object_type: Optional[str] = None
+        self.object_type = object_type
         self.created_by = created_by
         self.created_at = created_at
         self.last_modified_by = last_modified_by
@@ -115,10 +99,8 @@ class AbstractAudited(_serialization.Model):
 class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """Authentication.
 
-    All required parameters must be populated in order to send to server.
-
-    :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -146,10 +128,6 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
     :vartype engine_certificate: ~kuflow.rest.models.AuthenticationEngineCertificate
     """
 
-    _validation = {
-        "object_type": {"required": True},
-    }
-
     _attribute_map = {
         "object_type": {"key": "objectType", "type": "str"},
         "created_by": {"key": "createdBy", "type": "str"},
@@ -170,6 +148,7 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
     def __init__(
         self,
         *,
+        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -183,6 +162,9 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         **kwargs: Any,
     ) -> None:
         """
+        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -209,13 +191,13 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         :paramtype engine_certificate: ~kuflow.rest.models.AuthenticationEngineCertificate
         """
         super().__init__(
+            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
             **kwargs,
         )
-        self.object_type: str = "AUTHENTICATION"
         self.id = id
         self.type = type
         self.token = token
@@ -540,12 +522,9 @@ class Log(_serialization.Model):
 class Page(_serialization.Model):
     """Page.
 
-    You probably want to use the sub-classes and not this class directly. Known sub-classes are:
-    PrincipalPage, ProcessPage, TaskPage
-
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
+    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
      "PROCESS_PAGE", and "TASK_PAGE".
     :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
@@ -553,7 +532,6 @@ class Page(_serialization.Model):
     """
 
     _validation = {
-        "object_type": {"required": True},
         "metadata": {"required": True},
     }
 
@@ -562,21 +540,22 @@ class Page(_serialization.Model):
         "metadata": {"key": "metadata", "type": "PageMetadata"},
     }
 
-    _subtype_map = {
-        "object_type": {
-            "PRINCIPAL_PAGE": "PrincipalPage",
-            "PROCESS_PAGE": "ProcessPage",
-            "TASK_PAGE": "TaskPage",
-        }
-    }
-
-    def __init__(self, *, metadata: "_models.PageMetadata", **kwargs: Any) -> None:
+    def __init__(
+        self,
+        *,
+        metadata: "_models.PageMetadata",
+        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
+        **kwargs: Any,
+    ) -> None:
         """
+        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
+         "TENANT_USER_PAGE", "PROCESS_PAGE", and "TASK_PAGE".
+        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
         """
         super().__init__(**kwargs)
-        self.object_type: Optional[str] = None
+        self.object_type = object_type
         self.metadata = metadata
 
 
@@ -718,7 +697,7 @@ class PrincipalPage(Page):
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
+    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
      "PROCESS_PAGE", and "TASK_PAGE".
     :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
@@ -728,7 +707,6 @@ class PrincipalPage(Page):
     """
 
     _validation = {
-        "object_type": {"required": True},
         "metadata": {"required": True},
         "content": {"required": True},
     }
@@ -744,16 +722,19 @@ class PrincipalPage(Page):
         *,
         metadata: "_models.PageMetadata",
         content: List["_models.Principal"],
+        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
         **kwargs: Any,
     ) -> None:
         """
+        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
+         "TENANT_USER_PAGE", "PROCESS_PAGE", and "TASK_PAGE".
+        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
         :keyword content: Required.
         :paramtype content: list[~kuflow.rest.models.Principal]
         """
-        super().__init__(metadata=metadata, **kwargs)
-        self.object_type: str = "PRINCIPAL_PAGE"
+        super().__init__(object_type=object_type, metadata=metadata, **kwargs)
         self.content = content
 
 
@@ -794,8 +775,8 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -822,7 +803,6 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """
 
     _validation = {
-        "object_type": {"required": True},
         "subject": {"max_length": 255, "min_length": 1},
         "process_definition": {"required": True},
     }
@@ -849,6 +829,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         self,
         *,
         process_definition: "_models.ProcessDefinitionSummary",
+        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -862,6 +843,9 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         **kwargs: Any,
     ) -> None:
         """
+        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -886,13 +870,13 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype related_process: ~kuflow.rest.models.RelatedProcess
         """
         super().__init__(
+            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
             **kwargs,
         )
-        self.object_type: str = "PROCESS"
         self.id = id
         self.subject = subject
         self.state = state
@@ -1125,7 +1109,7 @@ class ProcessPage(Page):
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
+    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
      "PROCESS_PAGE", and "TASK_PAGE".
     :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
@@ -1135,7 +1119,6 @@ class ProcessPage(Page):
     """
 
     _validation = {
-        "object_type": {"required": True},
         "metadata": {"required": True},
         "content": {"required": True},
     }
@@ -1151,16 +1134,19 @@ class ProcessPage(Page):
         *,
         metadata: "_models.PageMetadata",
         content: List["_models.ProcessPageItem"],
+        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
         **kwargs: Any,
     ) -> None:
         """
+        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
+         "TENANT_USER_PAGE", "PROCESS_PAGE", and "TASK_PAGE".
+        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
         :keyword content: Required.
         :paramtype content: list[~kuflow.rest.models.ProcessPageItem]
         """
-        super().__init__(metadata=metadata, **kwargs)
-        self.object_type: str = "PROCESS_PAGE"
+        super().__init__(object_type=object_type, metadata=metadata, **kwargs)
         self.content = content
 
 
@@ -1169,8 +1155,8 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -1195,7 +1181,6 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
     """
 
     _validation = {
-        "object_type": {"required": True},
         "subject": {"max_length": 255, "min_length": 1},
         "process_definition": {"required": True},
     }
@@ -1221,6 +1206,7 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
         self,
         *,
         process_definition: "_models.ProcessDefinitionSummary",
+        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -1233,6 +1219,9 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
         **kwargs: Any,
     ) -> None:
         """
+        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -1255,13 +1244,13 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
         :paramtype initiator: ~kuflow.rest.models.Principal
         """
         super().__init__(
+            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
             **kwargs,
         )
-        self.object_type: str = "PROCESS_PAGE_ITEM"
         self.id = id
         self.subject = subject
         self.state = state
@@ -1345,8 +1334,8 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -1377,7 +1366,6 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """
 
     _validation = {
-        "object_type": {"required": True},
         "task_definition": {"required": True},
         "process_id": {"required": True},
     }
@@ -1403,6 +1391,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         *,
         task_definition: "_models.TaskDefinitionSummary",
         process_id: str,
+        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -1416,6 +1405,9 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         **kwargs: Any,
     ) -> None:
         """
+        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -1445,13 +1437,13 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype owner: ~kuflow.rest.models.Principal
         """
         super().__init__(
+            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
             **kwargs,
         )
-        self.object_type: str = "TASK"
         self.id = id
         self.state = state
         self.task_definition = task_definition
@@ -1954,7 +1946,7 @@ class TaskPage(Page):
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Paged Model types. Required. Known values are: "PRINCIPAL_PAGE",
+    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
      "PROCESS_PAGE", and "TASK_PAGE".
     :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
@@ -1964,7 +1956,6 @@ class TaskPage(Page):
     """
 
     _validation = {
-        "object_type": {"required": True},
         "metadata": {"required": True},
         "content": {"required": True},
     }
@@ -1980,16 +1971,19 @@ class TaskPage(Page):
         *,
         metadata: "_models.PageMetadata",
         content: List["_models.TaskPageItem"],
+        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
         **kwargs: Any,
     ) -> None:
         """
+        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
+         "TENANT_USER_PAGE", "PROCESS_PAGE", and "TASK_PAGE".
+        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
         :keyword content: Required.
         :paramtype content: list[~kuflow.rest.models.TaskPageItem]
         """
-        super().__init__(metadata=metadata, **kwargs)
-        self.object_type: str = "TASK_PAGE"
+        super().__init__(object_type=object_type, metadata=metadata, **kwargs)
         self.content = content
 
 
@@ -1998,8 +1992,8 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -2026,7 +2020,6 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
     """
 
     _validation = {
-        "object_type": {"required": True},
         "task_definition": {"required": True},
         "process_id": {"required": True},
     }
@@ -2051,6 +2044,7 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         *,
         task_definition: "_models.TaskDefinitionSummary",
         process_id: str,
+        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -2063,6 +2057,9 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         **kwargs: Any,
     ) -> None:
         """
+        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -2088,13 +2085,13 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         :paramtype owner: ~kuflow.rest.models.Principal
         """
         super().__init__(
+            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
             **kwargs,
         )
-        self.object_type: str = "TASK_PAGE_ITEM"
         self.id = id
         self.state = state
         self.task_definition = task_definition
@@ -2192,6 +2189,170 @@ class TaskSaveJsonFormsValueDocumentResponseCommand(_serialization.Model):  # py
         """
         super().__init__(**kwargs)
         self.value = value
+
+
+class TenantUser(AbstractAudited):
+    """TenantUser.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Required.
+    :vartype id: str
+    :ivar metadata:
+    :vartype metadata: ~kuflow.rest.models.TenantUserMetadata
+    :ivar principal: Required.
+    :vartype principal: ~kuflow.rest.models.Principal
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "principal": {"required": True},
+    }
+
+    _attribute_map = {
+        "object_type": {"key": "objectType", "type": "str"},
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "metadata": {"key": "metadata", "type": "TenantUserMetadata"},
+        "principal": {"key": "principal", "type": "Principal"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        principal: "_models.Principal",
+        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        metadata: Optional["_models.TenantUserMetadata"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword metadata:
+        :paramtype metadata: ~kuflow.rest.models.TenantUserMetadata
+        :keyword principal: Required.
+        :paramtype principal: ~kuflow.rest.models.Principal
+        """
+        super().__init__(
+            object_type=object_type,
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.metadata = metadata
+        self.principal = principal
+
+
+class TenantUserMetadata(_serialization.Model):
+    """TenantUserMetadata.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar valid: Required.
+    :vartype valid: bool
+    :ivar value: Dictionary of :code:`<any>`. Required.
+    :vartype value: dict[str, any]
+    """
+
+    _validation = {
+        "valid": {"required": True},
+        "value": {"required": True},
+    }
+
+    _attribute_map = {
+        "valid": {"key": "valid", "type": "bool"},
+        "value": {"key": "value", "type": "{object}"},
+    }
+
+    def __init__(self, *, valid: bool, value: Dict[str, Any], **kwargs: Any) -> None:
+        """
+        :keyword valid: Required.
+        :paramtype valid: bool
+        :keyword value: Dictionary of :code:`<any>`. Required.
+        :paramtype value: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.valid = valid
+        self.value = value
+
+
+class TenantUserPage(Page):
+    """TenantUserPage.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
+     "PROCESS_PAGE", and "TASK_PAGE".
+    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
+    :ivar metadata: Required.
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
+    :ivar content: Required.
+    :vartype content: list[~kuflow.rest.models.TenantUser]
+    """
+
+    _validation = {
+        "metadata": {"required": True},
+        "content": {"required": True},
+    }
+
+    _attribute_map = {
+        "object_type": {"key": "objectType", "type": "str"},
+        "metadata": {"key": "metadata", "type": "PageMetadata"},
+        "content": {"key": "content", "type": "[TenantUser]"},
+    }
+
+    def __init__(
+        self,
+        *,
+        metadata: "_models.PageMetadata",
+        content: List["_models.TenantUser"],
+        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
+         "TENANT_USER_PAGE", "PROCESS_PAGE", and "TASK_PAGE".
+        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        :keyword content: Required.
+        :paramtype content: list[~kuflow.rest.models.TenantUser]
+        """
+        super().__init__(object_type=object_type, metadata=metadata, **kwargs)
+        self.content = content
 
 
 class WebhookEvent(_serialization.Model):
@@ -2454,8 +2615,8 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Identifies the concrete type of the audited model. Required. Known values
-     are: "AUTHENTICATION", "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -2482,7 +2643,6 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """
 
     _validation = {
-        "object_type": {"required": True},
         "identity": {"required": True, "max_length": 255, "min_length": 1},
         "task_queue": {"required": True, "max_length": 255, "min_length": 1},
         "hostname": {"required": True, "max_length": 255, "min_length": 1},
@@ -2511,6 +2671,7 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         task_queue: str,
         hostname: str,
         ip: str,
+        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -2521,6 +2682,9 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         **kwargs: Any,
     ) -> None:
         """
+        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -2545,13 +2709,13 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype ip: str
         """
         super().__init__(
+            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
             **kwargs,
         )
-        self.object_type: str = "WORKER"
         self.id = id
         self.identity = identity
         self.task_queue = task_queue

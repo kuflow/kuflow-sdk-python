@@ -46,7 +46,7 @@ class GreetingWorkflow:
 
     @workflow.run
     async def run(self, request: models_temporal.WorkflowRequest) -> models_temporal.WorkflowResponse:
-        id = workflow.uuid4()
+        id = str(workflow.uuid4())
 
         task_definition = models.TaskDefinitionSummary(code="T_ONE")
         task = models.Task(id=id, process_id=request.process_id, task_definition=task_definition)

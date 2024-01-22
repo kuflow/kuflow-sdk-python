@@ -34,7 +34,16 @@ def validate_retrieve_principal_request(
 ) -> None:
     if not request.principal_id:
         raise ApplicationError(
-            "'processId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'principal_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+        )
+
+
+def validate_retrieve_tenant_user_request(
+    request: models_temporal.RetrieveTenantUserRequest,
+) -> None:
+    if not request.tenant_user_id:
+        raise ApplicationError(
+            "'tenant_user_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
 
@@ -43,7 +52,7 @@ def validate_retrieve_process_request(
 ) -> None:
     if not request.process_id:
         raise ApplicationError(
-            "'processId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'process_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
 
@@ -52,12 +61,12 @@ def validate_save_process_element_request(
 ) -> None:
     if not request.process_id:
         raise ApplicationError(
-            "'processId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'process_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
     if not request.element_definition_code:
         raise ApplicationError(
-            "'elementDefinitionCode' is required",
+            "'element_definition_code' is required",
             type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
             non_retryable=True,
         )
@@ -68,12 +77,12 @@ def validate_delete_process_element_request(
 ) -> None:
     if not request.process_id:
         raise ApplicationError(
-            "'processId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'process_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
     if not request.element_definition_code:
         raise ApplicationError(
-            "'elementDefinitionCode' is required",
+            "'element_definition_code' is required",
             type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
             non_retryable=True,
         )
@@ -84,12 +93,12 @@ def validate_change_process_initiator_request(
 ) -> None:
     if not request.process_id:
         raise ApplicationError(
-            "'processId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'process_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
     if not request.email and not request.principal_id:
         raise ApplicationError(
-            "'email' or 'principalId' is required",
+            "'email' or 'principal_id' is required",
             type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
             non_retryable=True,
         )
@@ -100,7 +109,7 @@ def validate_retrieve_task_request(
 ) -> None:
     if not request.task_id:
         raise ApplicationError(
-            "'taskId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'task_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
 
@@ -119,7 +128,7 @@ def validate_create_task_request(
 
     if not request.task.task_definition.code:
         raise ApplicationError(
-            "'task.taskDefinition.code' is required",
+            "'task.task_definition.code' is required",
             type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
             non_retryable=True,
         )
@@ -130,7 +139,7 @@ def validate_complete_task_request(
 ) -> None:
     if not request.task_id:
         raise ApplicationError(
-            "'taskId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'task_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
 
@@ -139,7 +148,7 @@ def validate_claim_task_request(
 ) -> None:
     if not request.task_id:
         raise ApplicationError(
-            "'taskId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'task_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
 
@@ -148,12 +157,12 @@ def validate_assign_task_request(
 ) -> None:
     if not request.task_id:
         raise ApplicationError(
-            "'taskId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'task_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
     if not request.email and not request.principal_id:
         raise ApplicationError(
-            "'email' or 'principalId' is required",
+            "'email' or 'principal_id' is required",
             type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
             non_retryable=True,
         )
@@ -164,12 +173,12 @@ def validate_save_task_element_request(
 ) -> None:
     if not request.task_id:
         raise ApplicationError(
-            "'taskId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'task_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
     if not request.element_definition_code:
         raise ApplicationError(
-            "'elementDefinitionCode' is required",
+            "'element_definition_code' is required",
             type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
             non_retryable=True,
         )
@@ -180,12 +189,12 @@ def validate_delete_task_element_request(
 ) -> None:
     if not request.task_id:
         raise ApplicationError(
-            "'taskId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'task_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
     if not request.element_definition_code:
         raise ApplicationError(
-            "'elementDefinitionCode' is required",
+            "'element_definition_code' is required",
             type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
             non_retryable=True,
         )
@@ -196,12 +205,12 @@ def validate_delete_task_element_value_document_request(
 ) -> None:
     if not request.task_id:
         raise ApplicationError(
-            "'taskId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'task_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
     if not request.document_id:
         raise ApplicationError(
-            "'documentId' is required",
+            "'document_id' is required",
             type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
             non_retryable=True,
         )
@@ -212,7 +221,7 @@ def validate_save_task_json_forms_value_data(
 ) -> None:
     if not request.task_id:
         raise ApplicationError(
-            "'taskId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'task_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
     if not request.data:
@@ -228,7 +237,7 @@ def validate_append_task_log_request(
 ) -> None:
     if not request.task_id:
         raise ApplicationError(
-            "'taskId' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+            "'task_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
         )
 
     if not request.log.level:

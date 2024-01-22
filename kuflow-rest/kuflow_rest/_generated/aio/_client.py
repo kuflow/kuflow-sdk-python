@@ -45,6 +45,7 @@ from .operations import (
     PrincipalOperations,
     ProcessOperations,
     TaskOperations,
+    TenantUserOperations,
     WorkerOperations,
 )
 
@@ -109,6 +110,8 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
     :vartype authentication: kuflow.rest.aio.operations.AuthenticationOperations
     :ivar principal: PrincipalOperations operations
     :vartype principal: kuflow.rest.aio.operations.PrincipalOperations
+    :ivar tenant_user: TenantUserOperations operations
+    :vartype tenant_user: kuflow.rest.aio.operations.TenantUserOperations
     :ivar process: ProcessOperations operations
     :vartype process: kuflow.rest.aio.operations.ProcessOperations
     :ivar task: TaskOperations operations
@@ -162,6 +165,9 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
             self._client, self._config, self._serialize, self._deserialize
         )
         self.principal = PrincipalOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
+        self.tenant_user = TenantUserOperations(
             self._client, self._config, self._serialize, self._deserialize
         )
         self.process = ProcessOperations(

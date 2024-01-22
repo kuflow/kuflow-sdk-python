@@ -37,6 +37,7 @@ class KuFlowActivities:
         self._kuflow_client = kuflow_client
         self.activities = [
             self.retrieve_principal,
+            self.retrieve_tenant_user,
             self.find_processes,
             self.retrieve_process,
             self.save_process_element,
@@ -66,6 +67,21 @@ class KuFlowActivities:
             principal = self._kuflow_client.principal.retrieve_principal(id=request.principal_id)
 
             return models_temporal.RetrievePrincipalResponse(principal=principal)
+        except Exception as err:
+            raise exceptions.create_application_error(err) from err
+
+    @activity.defn(name="KuFlow_Engine_retrieveTenantUser")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
+    async def retrieve_tenant_user(
+        self,
+        request: models_temporal.RetrieveTenantUserRequest,
+    ) -> models_temporal.RetrieveTenantUserResponse:
+        try:
+            validation.validate_retrieve_tenant_user_request(request)
+
+            tenant_user = self._kuflow_client.tenant_user.retrieve_tenant_user(id=request.tenant_user_id)
+
+            return models_temporal.RetrieveTenantUserResponse(tenant_user=tenant_user)
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 

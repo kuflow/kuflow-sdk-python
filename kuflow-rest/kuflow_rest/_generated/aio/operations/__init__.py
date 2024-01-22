@@ -32,6 +32,7 @@
 
 from ._authentication_operations import AuthenticationOperations
 from ._principal_operations import PrincipalOperations
+from ._tenant_user_operations import TenantUserOperations
 from ._process_operations import ProcessOperations
 from ._task_operations import TaskOperations
 from ._worker_operations import WorkerOperations
@@ -43,6 +44,7 @@ from ._patch import patch_sdk as _patch_sdk
 __all__ = [
     "AuthenticationOperations",
     "PrincipalOperations",
+    "TenantUserOperations",
     "ProcessOperations",
     "TaskOperations",
     "WorkerOperations",

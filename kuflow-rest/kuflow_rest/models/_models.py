@@ -23,7 +23,6 @@
 # SOFTWARE.
 #
 
-
 from typing import IO, Optional
 
 from .._generated.models import PrincipalType

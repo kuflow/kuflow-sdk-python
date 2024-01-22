@@ -32,6 +32,7 @@ from ._task_save_json_forms_value_data_utils import (
     TaskSaveJsonFormsValueDataCommandUtils,
 )
 from ._task_utils import TaskUtils
+from ._tenant_user_utils import TenantUserUtils
 from .element_values import (
     ElementValueSimpleType,
     ElementValueUnion,
@@ -51,4 +52,5 @@ __all__ = [
     "TaskSaveElementCommandUtils",
     "TaskSaveJsonFormsValueDataCommandUtils",
     "TaskUtils",
+    "TenantUserUtils",
 ]
