@@ -174,9 +174,9 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
 
     def __init__(
         self,
-        client_id: Optional[str],
-        client_secret: Optional[str],
-        credential: Optional[TokenCredential],
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
+        credential: Optional[TokenCredential] = None,
         endpoint: Optional[str] = None,
         allow_insecure_connection: Optional[bool] = None,
         **kwargs: Any,
