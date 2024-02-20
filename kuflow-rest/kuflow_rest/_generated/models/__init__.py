@@ -124,7 +124,6 @@ __all__ = [
     "ProcessPage",
     "ProcessPageItem",
     "ProcessSaveElementCommand",
-    "TenantUserPage",
     "RelatedProcess",
     "Task",
     "TaskAssignCommand",
