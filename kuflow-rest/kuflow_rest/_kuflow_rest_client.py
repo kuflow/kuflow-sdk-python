@@ -52,9 +52,7 @@ class ClientSecretCredential:
         self.client_id = client_id
         self.client_secret = client_secret
 
-        self.token = base64.b64encode(
-            "{}:{}".format(client_id, client_secret).encode("utf-8")
-        ).decode("utf-8")
+        self.token = base64.b64encode("{}:{}".format(client_id, client_secret).encode("utf-8")).decode("utf-8")
 
     def get_token(
         self,
@@ -192,9 +190,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
             endpoint = endpoint + "/" + KuFlowRestClient.API_VERSION
 
         if client_id is not None and client_secret is not None:
-            credential = ClientSecretCredential(
-                client_id=client_id, client_secret=client_secret
-            )
+            credential = ClientSecretCredential(client_id=client_id, client_secret=client_secret)
 
         if credential is None:
             raise Exception("client_id/client_secrets or credential is required")

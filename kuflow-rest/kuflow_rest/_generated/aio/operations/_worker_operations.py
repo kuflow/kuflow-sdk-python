@@ -50,9 +50,7 @@ from ... import models as _models
 from ...operations._worker_operations import build_create_worker_request
 
 T = TypeVar("T")
-ClsType = Optional[
-    Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]
-]
+ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
 
 class WorkerOperations:
@@ -72,17 +70,11 @@ class WorkerOperations:
         self._client = input_args.pop(0) if input_args else kwargs.pop("client")
         self._config = input_args.pop(0) if input_args else kwargs.pop("config")
         self._serialize = input_args.pop(0) if input_args else kwargs.pop("serializer")
-        self._deserialize = (
-            input_args.pop(0) if input_args else kwargs.pop("deserializer")
-        )
+        self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
     @overload
     async def create_worker(
-        self,
-        worker: _models.Worker,
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, worker: _models.Worker, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Worker:
         """Create or update a worker.
 
@@ -103,11 +95,7 @@ class WorkerOperations:
 
     @overload
     async def create_worker(
-        self,
-        worker: IO[bytes],
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, worker: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Worker:
         """Create or update a worker.
 
@@ -127,9 +115,7 @@ class WorkerOperations:
         """
 
     @distributed_trace_async
-    async def create_worker(
-        self, worker: Union[_models.Worker, IO[bytes]], **kwargs: Any
-    ) -> _models.Worker:
+    async def create_worker(self, worker: Union[_models.Worker, IO[bytes]], **kwargs: Any) -> _models.Worker:
         """Create or update a worker.
 
         Register a worker in KuFlow, this allows the platform to have a catalogue of all registered
@@ -158,9 +144,7 @@ class WorkerOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop(
-            "content_type", _headers.pop("Content-Type", None)
-        )
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
         cls: ClsType[_models.Worker] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -190,12 +174,8 @@ class WorkerOperations:
         if response.status_code not in [200, 201]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         if response.status_code == 200:

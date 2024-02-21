@@ -54,9 +54,7 @@ def main() -> int:
     print(principals)
     principals = client.principal.find_principals(group_id=[group_id_users])
     print(principals)
-    principals = client.principal.find_principals(
-        group_id=[group_id_users, group_id_owners]
-    )
+    principals = client.principal.find_principals(group_id=[group_id_users, group_id_owners])
     print(principals)
 
     # Test authentication tokens operations
@@ -103,9 +101,7 @@ def main() -> int:
         file_content=open("etc/sample/data/samples_01.jpg", "rb"),
     )
     command = models.TaskSaveElementValueDocumentCommand(element_definition_code="DOC")
-    task = client.task.actions_task_save_element_value_document(
-        id=task.id, file=file, command=command
-    )
+    task = client.task.actions_task_save_element_value_document(id=task.id, file=file, command=command)
     print(task)
 
     # Complete task

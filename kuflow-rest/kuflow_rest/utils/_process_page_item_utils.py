@@ -53,9 +53,7 @@ from .element_values import (
 
 
 class CurrentElementValueAccessor(ProcessElementValueAccessor):
-    def __init__(
-        self, process_page_item: ProcessPageItem, element_definition_code: str
-    ):
+    def __init__(self, process_page_item: ProcessPageItem, element_definition_code: str):
         self.process_page_item = process_page_item
         self.element_definition_code = element_definition_code
 
@@ -64,21 +62,15 @@ class CurrentElementValueAccessor(ProcessElementValueAccessor):
             self.process_page_item.element_values = {}
 
         if len(element_values) == 0:
-            self.process_page_item.element_values.pop(
-                self.element_definition_code, None
-            )
+            self.process_page_item.element_values.pop(self.element_definition_code, None)
         else:
-            self.process_page_item.element_values[
-                self.element_definition_code
-            ] = element_values
+            self.process_page_item.element_values[self.element_definition_code] = element_values
 
     def get_element_values(self) -> List[ProcessElementValue]:
         if self.process_page_item.element_values is None:
             return []
 
-        element_values_by_code = self.process_page_item.element_values.get(
-            self.element_definition_code
-        )
+        element_values_by_code = self.process_page_item.element_values.get(self.element_definition_code)
         if element_values_by_code is None or len(element_values_by_code) == 0:
             return []
 
@@ -87,9 +79,7 @@ class CurrentElementValueAccessor(ProcessElementValueAccessor):
 
 class ProcessPageItemUtils:
     @staticmethod
-    def get_element_value_valid(
-        process_page_item: ProcessPageItem, element_definition_code: str
-    ) -> bool:
+    def get_element_value_valid(process_page_item: ProcessPageItem, element_definition_code: str) -> bool:
         """
         Check if all related valid values are TRUE.
 
@@ -100,9 +90,7 @@ class ProcessPageItemUtils:
         Returns:
             True if all related valid values are TRUE, otherwise False.
         """
-        return get_element_value_valid(
-            CurrentElementValueAccessor(process_page_item, element_definition_code)
-        )
+        return get_element_value_valid(CurrentElementValueAccessor(process_page_item, element_definition_code))
 
     @staticmethod
     def get_element_value_valid_at(
@@ -274,9 +262,7 @@ class ProcessPageItemUtils:
         return process_page_item
 
     @staticmethod
-    def get_element_value_as_str(
-        process_page_item: ProcessPageItem, element_definition_code: str
-    ) -> str:
+    def get_element_value_as_str(process_page_item: ProcessPageItem, element_definition_code: str) -> str:
         """
         Get an element as a str.
 
@@ -287,14 +273,10 @@ class ProcessPageItemUtils:
         Returns:
             The element value as a str.
         """
-        return get_element_value_as_str(
-            CurrentElementValueAccessor(process_page_item, element_definition_code)
-        )
+        return get_element_value_as_str(CurrentElementValueAccessor(process_page_item, element_definition_code))
 
     @staticmethod
-    def find_element_value_as_str(
-        process_page_item: ProcessPageItem, element_definition_code: str
-    ) -> Optional[str]:
+    def find_element_value_as_str(process_page_item: ProcessPageItem, element_definition_code: str) -> Optional[str]:
         """
         Try to get an element as a str.
 
@@ -305,14 +287,10 @@ class ProcessPageItemUtils:
         Returns:
             The element value as a str.
         """
-        return find_element_value_as_str(
-            CurrentElementValueAccessor(process_page_item, element_definition_code)
-        )
+        return find_element_value_as_str(CurrentElementValueAccessor(process_page_item, element_definition_code))
 
     @staticmethod
-    def get_element_value_as_str_list(
-        process_page_item: ProcessPageItem, element_definition_code: str
-    ) -> List[str]:
+    def get_element_value_as_str_list(process_page_item: ProcessPageItem, element_definition_code: str) -> List[str]:
         """
         Try to get an element as a str list.
 
@@ -323,14 +301,10 @@ class ProcessPageItemUtils:
         Returns:
             The element values as a str list.
         """
-        return get_element_value_as_str_list(
-            CurrentElementValueAccessor(process_page_item, element_definition_code)
-        )
+        return get_element_value_as_str_list(CurrentElementValueAccessor(process_page_item, element_definition_code))
 
     @staticmethod
-    def get_element_value_as_float(
-        process_page_item: ProcessPageItem, element_definition_code: str
-    ) -> float:
+    def get_element_value_as_float(process_page_item: ProcessPageItem, element_definition_code: str) -> float:
         """
         Get an element as a float.
 
@@ -341,14 +315,10 @@ class ProcessPageItemUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float(
-            CurrentElementValueAccessor(process_page_item, element_definition_code)
-        )
+        return get_element_value_as_float(CurrentElementValueAccessor(process_page_item, element_definition_code))
 
     @staticmethod
-    def find_element_value_as_float(
-        process_page_item: ProcessPageItem, element_definition_code: str
-    ) -> float:
+    def find_element_value_as_float(process_page_item: ProcessPageItem, element_definition_code: str) -> float:
         """
         Try to get an element as a float.
 
@@ -359,9 +329,7 @@ class ProcessPageItemUtils:
         Returns:
             The element value as a float.
         """
-        return find_element_value_as_float(
-            CurrentElementValueAccessor(process_page_item, element_definition_code)
-        )
+        return find_element_value_as_float(CurrentElementValueAccessor(process_page_item, element_definition_code))
 
     @staticmethod
     def get_element_value_as_float_list(
@@ -377,14 +345,10 @@ class ProcessPageItemUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float_list(
-            CurrentElementValueAccessor(process_page_item, element_definition_code)
-        )
+        return get_element_value_as_float_list(CurrentElementValueAccessor(process_page_item, element_definition_code))
 
     @staticmethod
-    def get_element_value_as_date(
-        process_page_item: ProcessPageItem, element_definition_code: str
-    ) -> date:
+    def get_element_value_as_date(process_page_item: ProcessPageItem, element_definition_code: str) -> date:
         """
         Get an element as a date.
 
@@ -395,14 +359,10 @@ class ProcessPageItemUtils:
         Returns:
             The element value as a date.
         """
-        return get_element_value_as_date(
-            CurrentElementValueAccessor(process_page_item, element_definition_code)
-        )
+        return get_element_value_as_date(CurrentElementValueAccessor(process_page_item, element_definition_code))
 
     @staticmethod
-    def find_element_value_as_date(
-        process_page_item: ProcessPageItem, element_definition_code: str
-    ) -> Optional[date]:
+    def find_element_value_as_date(process_page_item: ProcessPageItem, element_definition_code: str) -> Optional[date]:
         """
         Try to get  an element as a date.
 
@@ -413,14 +373,10 @@ class ProcessPageItemUtils:
         Returns:
             The element value as a date.
         """
-        return find_element_value_as_date(
-            CurrentElementValueAccessor(process_page_item, element_definition_code)
-        )
+        return find_element_value_as_date(CurrentElementValueAccessor(process_page_item, element_definition_code))
 
     @staticmethod
-    def get_element_value_as_date_list(
-        process_page_item: ProcessPageItem, element_definition_code: str
-    ) -> List[date]:
+    def get_element_value_as_date_list(process_page_item: ProcessPageItem, element_definition_code: str) -> List[date]:
         """
         Get all elements as date list.
 
@@ -431,6 +387,4 @@ class ProcessPageItemUtils:
         Returns:
             The element value as a date.
         """
-        return get_element_value_as_date_list(
-            CurrentElementValueAccessor(process_page_item, element_definition_code)
-        )
+        return get_element_value_as_date_list(CurrentElementValueAccessor(process_page_item, element_definition_code))

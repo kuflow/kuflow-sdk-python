@@ -8,8 +8,7 @@ Main tools:
 
 - Python 3.8+
 - Poetry
-- Black (code formatter)
-- Flake 8 (linter)
+- ruff (code formatter, linter)
 - PyTest
 
 We strongly recommend the use of python [virtual environments](https://packaging.python.org/en/latest/tutorials/installing-packages/#creating-virtual-environments) to work with.

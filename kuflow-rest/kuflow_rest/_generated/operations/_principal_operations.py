@@ -49,9 +49,7 @@ from .. import models as _models
 from .._serialization import Serializer
 
 T = TypeVar("T")
-ClsType = Optional[
-    Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]
-]
+ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
 
 _SERIALIZER = Serializer()
 _SERIALIZER.client_side_validation = False
@@ -76,29 +74,20 @@ def build_find_principals_request(
 
     # Construct parameters
     if size is not None:
-        _params["size"] = _SERIALIZER.query(
-            "size", size, "int", maximum=1000, minimum=0
-        )
+        _params["size"] = _SERIALIZER.query("size", size, "int", maximum=1000, minimum=0)
     if page is not None:
         _params["page"] = _SERIALIZER.query("page", page, "int", minimum=0)
     if sort is not None:
-        _params["sort"] = [
-            _SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort
-        ]
+        _params["sort"] = [_SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort]
     if type is not None:
         _params["type"] = _SERIALIZER.query("type", type, "str")
     if group_id is not None:
-        _params["groupId"] = [
-            _SERIALIZER.query("group_id", q, "str") if q is not None else ""
-            for q in group_id
-        ]
+        _params["groupId"] = [_SERIALIZER.query("group_id", q, "str") if q is not None else "" for q in group_id]
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(
-        method="GET", url=_url, params=_params, headers=_headers, **kwargs
-    )
+    return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
 
 
 def build_retrieve_principal_request(id: str, **kwargs: Any) -> HttpRequest:
@@ -137,9 +126,7 @@ class PrincipalOperations:
         self._client = input_args.pop(0) if input_args else kwargs.pop("client")
         self._config = input_args.pop(0) if input_args else kwargs.pop("config")
         self._serialize = input_args.pop(0) if input_args else kwargs.pop("serializer")
-        self._deserialize = (
-            input_args.pop(0) if input_args else kwargs.pop("deserializer")
-        )
+        self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
     @distributed_trace
     def find_principals(
@@ -212,12 +199,8 @@ class PrincipalOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("PrincipalPage", pipeline_response)
@@ -269,12 +252,8 @@ class PrincipalOperations:
         if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Principal", pipeline_response)

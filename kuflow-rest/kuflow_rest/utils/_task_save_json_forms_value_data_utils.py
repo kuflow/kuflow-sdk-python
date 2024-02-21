@@ -69,9 +69,7 @@ class CurrentJsonFormDataAccessor(JsonFormDataAccessor):
 
 class TaskSaveJsonFormsValueDataCommandUtils:
     @staticmethod
-    def get_json_forms_property_as_str(
-        command: TaskSaveJsonFormsValueDataCommand, property_path: str
-    ) -> str:
+    def get_json_forms_property_as_str(command: TaskSaveJsonFormsValueDataCommand, property_path: str) -> str:
         """
         Get a json property as "str" following the "propertyPath" passed.
 
@@ -85,9 +83,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_str(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return get_json_forms_property_as_str(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def find_json_forms_property_as_str(
@@ -106,14 +102,10 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_str(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return find_json_forms_property_as_str(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
-    def get_json_forms_property_as_int(
-        command: TaskSaveJsonFormsValueDataCommand, property_path: str
-    ) -> int:
+    def get_json_forms_property_as_int(command: TaskSaveJsonFormsValueDataCommand, property_path: str) -> int:
         """
         Get a json property as "int" following the "propertyPath" passed.
 
@@ -127,9 +119,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_int(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return get_json_forms_property_as_int(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def find_json_forms_property_as_int(
@@ -148,14 +138,10 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_int(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return find_json_forms_property_as_int(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
-    def get_json_forms_property_as_float(
-        command: TaskSaveJsonFormsValueDataCommand, property_path: str
-    ) -> float:
+    def get_json_forms_property_as_float(command: TaskSaveJsonFormsValueDataCommand, property_path: str) -> float:
         """
         Get a json property as "float" following the "propertyPath" passed.
 
@@ -169,9 +155,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_float(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return get_json_forms_property_as_float(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def find_json_forms_property_as_float(
@@ -190,14 +174,10 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_float(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return find_json_forms_property_as_float(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
-    def get_json_forms_property_as_date(
-        command: TaskSaveJsonFormsValueDataCommand, property_path: str
-    ) -> date:
+    def get_json_forms_property_as_date(command: TaskSaveJsonFormsValueDataCommand, property_path: str) -> date:
         """
         Get a json property as "date" following the "propertyPath" passed.
 
@@ -211,9 +191,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_date(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return get_json_forms_property_as_date(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def find_json_forms_property_as_date(
@@ -232,14 +210,10 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_date(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return find_json_forms_property_as_date(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
-    def get_json_forms_property_as_datetime(
-        command: TaskSaveJsonFormsValueDataCommand, property_path: str
-    ) -> datetime:
+    def get_json_forms_property_as_datetime(command: TaskSaveJsonFormsValueDataCommand, property_path: str) -> datetime:
         """
         Get a json property as "datetime" following the "propertyPath" passed.
 
@@ -253,9 +227,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_datetime(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return get_json_forms_property_as_datetime(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def find_json_forms_property_as_datetime(
@@ -274,9 +246,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_datetime(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return find_json_forms_property_as_datetime(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def get_json_forms_property_as_file(
@@ -295,9 +265,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_json_forms_file(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return get_json_forms_property_as_json_forms_file(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def find_json_forms_property_as_file(
@@ -316,9 +284,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_json_forms_file(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return find_json_forms_property_as_json_forms_file(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def get_json_forms_property_as_principal(
@@ -337,9 +303,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_json_forms_principal(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return get_json_forms_property_as_json_forms_principal(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def find_json_forms_property_as_principal(
@@ -358,14 +322,10 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_json_forms_principal(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return find_json_forms_property_as_json_forms_principal(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
-    def get_json_forms_property_as_list(
-        command: TaskSaveJsonFormsValueDataCommand, property_path: str
-    ) -> list:
+    def get_json_forms_property_as_list(command: TaskSaveJsonFormsValueDataCommand, property_path: str) -> list:
         """
         Get a json property as "list" following the "propertyPath" passed.
 
@@ -379,9 +339,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_list(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return get_json_forms_property_as_list(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def find_json_forms_property_as_list(
@@ -400,14 +358,10 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_list(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return find_json_forms_property_as_list(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
-    def get_json_forms_property_as_dict(
-        command: TaskSaveJsonFormsValueDataCommand, property_path: str
-    ) -> dict:
+    def get_json_forms_property_as_dict(command: TaskSaveJsonFormsValueDataCommand, property_path: str) -> dict:
         """
         Get a json property as "dict" following the "propertyPath" passed.
 
@@ -421,9 +375,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_dict(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return get_json_forms_property_as_dict(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def find_json_forms_property_as_dict(
@@ -442,9 +394,7 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_dict(
-            CurrentJsonFormDataAccessor(command), property_path
-        )
+        return find_json_forms_property_as_dict(CurrentJsonFormDataAccessor(command), property_path)
 
     @staticmethod
     def update_json_forms_property(
@@ -463,6 +413,4 @@ class TaskSaveJsonFormsValueDataCommandUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        update_json_forms_property(
-            CurrentJsonFormDataAccessor(command), property_path, value
-        )
+        update_json_forms_property(CurrentJsonFormDataAccessor(command), property_path, value)

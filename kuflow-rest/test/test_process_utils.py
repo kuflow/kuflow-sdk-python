@@ -144,9 +144,7 @@ class ProcessUtilsTest(unittest.TestCase):
     def test_set_element_value_as_str_list(self):
         process = prepare_process()
 
-        ProcessUtils.set_element_value_list(
-            process, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"]
-        )
+        ProcessUtils.set_element_value_list(process, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"])
         self.assertEqual(
             process.element_values.get("EV_STRING"),
             [
@@ -168,21 +166,15 @@ class ProcessUtilsTest(unittest.TestCase):
             ProcessElementValueString(value="MY TEXT 2", valid=False),
             ProcessElementValueString(value="MY TEXT NEW1", valid=True),
         ]
-        self.assertEqual(
-            process.element_values.get("EV_STRING"), expected_element_values
-        )
+        self.assertEqual(process.element_values.get("EV_STRING"), expected_element_values)
 
         ProcessUtils.add_element_value(process, "EV_STRING", None)
-        self.assertEqual(
-            process.element_values.get("EV_STRING"), expected_element_values
-        )
+        self.assertEqual(process.element_values.get("EV_STRING"), expected_element_values)
 
     def test_add_element_value_as_str_list(self):
         process = prepare_process()
 
-        ProcessUtils.add_element_value_list(
-            process, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"]
-        )
+        ProcessUtils.add_element_value_list(process, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"])
 
         expected_element_values = [
             ProcessElementValueString(value="MY TEXT 1", valid=True),
@@ -190,19 +182,13 @@ class ProcessUtilsTest(unittest.TestCase):
             ProcessElementValueString(value="MY TEXT NEW1", valid=True),
             ProcessElementValueString(value="MY TEXT NEW2", valid=True),
         ]
-        self.assertEqual(
-            process.element_values.get("EV_STRING"), expected_element_values
-        )
+        self.assertEqual(process.element_values.get("EV_STRING"), expected_element_values)
 
         ProcessUtils.add_element_value_list(process, "EV_STRING", None)
-        self.assertEqual(
-            process.element_values.get("EV_STRING"), expected_element_values
-        )
+        self.assertEqual(process.element_values.get("EV_STRING"), expected_element_values)
 
         ProcessUtils.add_element_value_list(process, "EV_STRING", [])
-        self.assertEqual(
-            process.element_values.get("EV_STRING"), expected_element_values
-        )
+        self.assertEqual(process.element_values.get("EV_STRING"), expected_element_values)
 
     def test_get_element_value_as_float(self):
         process = prepare_process()
@@ -271,14 +257,10 @@ class ProcessUtilsTest(unittest.TestCase):
             ProcessElementValueNumber(value=600, valid=True),
             ProcessElementValueNumber(value=800, valid=True),
         ]
-        self.assertEqual(
-            process.element_values.get("EV_NUMBER"), expected_element_values
-        )
+        self.assertEqual(process.element_values.get("EV_NUMBER"), expected_element_values)
 
         ProcessUtils.add_element_value(process, "EV_NUMBER", None)
-        self.assertEqual(
-            process.element_values.get("EV_NUMBER"), expected_element_values
-        )
+        self.assertEqual(process.element_values.get("EV_NUMBER"), expected_element_values)
 
     def test_add_element_value_as_float_list(self):
         process = prepare_process()
@@ -297,14 +279,10 @@ class ProcessUtilsTest(unittest.TestCase):
         )
 
         ProcessUtils.add_element_value_list(process, "EV_NUMBER", None)
-        self.assertEqual(
-            process.element_values.get("EV_NUMBER"), expected_element_values
-        )
+        self.assertEqual(process.element_values.get("EV_NUMBER"), expected_element_values)
 
         ProcessUtils.add_element_value_list(process, "EV_NUMBER", [])
-        self.assertEqual(
-            process.element_values.get("EV_NUMBER"), expected_element_values
-        )
+        self.assertEqual(process.element_values.get("EV_NUMBER"), expected_element_values)
 
     def test_get_element_value_as_date(self):
         process = prepare_process()
@@ -329,9 +307,7 @@ class ProcessUtilsTest(unittest.TestCase):
         process = prepare_process()
 
         value = ProcessUtils.get_element_value_as_date_list(process, "EV_DATE")
-        self.assertEqual(
-            value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")]
-        )
+        self.assertEqual(value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")])
 
         value = ProcessUtils.get_element_value_as_date_list(process, "OTHER")
         self.assertEqual(value, [])
@@ -339,9 +315,7 @@ class ProcessUtilsTest(unittest.TestCase):
     def test_set_element_value_as_date(self):
         process = prepare_process()
 
-        ProcessUtils.set_element_value(
-            process, "EV_DATE", date.fromisoformat("2020-05-05")
-        )
+        ProcessUtils.set_element_value(process, "EV_DATE", date.fromisoformat("2020-05-05"))
         self.assertEqual(
             process.element_values.get("EV_DATE"),
             [
@@ -374,9 +348,7 @@ class ProcessUtilsTest(unittest.TestCase):
     def test_add_element_value_as_date(self):
         process = prepare_process()
 
-        ProcessUtils.add_element_value(
-            process, "EV_DATE", date.fromisoformat("2020-08-08")
-        )
+        ProcessUtils.add_element_value(process, "EV_DATE", date.fromisoformat("2020-08-08"))
         expected_element_values = [
             ProcessElementValueString(value="2000-01-01", valid=False),
             ProcessElementValueString(value="1980-01-01", valid=False),

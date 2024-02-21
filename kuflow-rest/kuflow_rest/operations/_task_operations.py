@@ -151,9 +151,7 @@ class TaskOperations:
         """
         return self._kuflow_client.task.actions_task_claim(id=id, **kwargs)
 
-    def actions_task_assign(
-        self, id: str, command: _models.TaskAssignCommand, **kwargs: Any
-    ) -> _models.Task:
+    def actions_task_assign(self, id: str, command: _models.TaskAssignCommand, **kwargs: Any) -> _models.Task:
         """Assign a task.
 
         Allow to assign a task to a user or application. Only one option will be necessary.
@@ -166,9 +164,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.task.actions_task_assign(
-            id=id, command=command, **kwargs
-        )
+        return self._kuflow_client.task.actions_task_assign(id=id, command=command, **kwargs)
 
     def actions_task_save_element(
         self, id: str, command: _models.TaskSaveElementCommand, **kwargs: Any
@@ -193,9 +189,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.task.actions_task_save_element(
-            id=id, command=command, **kwargs
-        )
+        return self._kuflow_client.task.actions_task_save_element(id=id, command=command, **kwargs)
 
     def actions_task_save_element_value_document(
         self,
@@ -250,9 +244,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.task.actions_task_delete_element(
-            id=id, command=command, **kwargs
-        )
+        return self._kuflow_client.task.actions_task_delete_element(id=id, command=command, **kwargs)
 
     def actions_task_delete_element_value_document(
         self,
@@ -275,13 +267,9 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.task.actions_task_delete_element_value_document(
-            id=id, command=command, **kwargs
-        )
+        return self._kuflow_client.task.actions_task_delete_element_value_document(id=id, command=command, **kwargs)
 
-    def actions_task_download_element_value_document(
-        self, id: str, document_id: str, **kwargs: Any
-    ) -> Iterator[bytes]:
+    def actions_task_download_element_value_document(self, id: str, document_id: str, **kwargs: Any) -> Iterator[bytes]:
         """Download document.
 
         Given a task, download a document from an element of document type.
@@ -340,9 +328,7 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.task.actions_task_save_json_forms_value_data(
-            id=id, command=command, **kwargs
-        )
+        return self._kuflow_client.task.actions_task_save_json_forms_value_data(id=id, command=command, **kwargs)
 
     def actions_task_save_json_forms_value_document(
         self,
@@ -408,9 +394,7 @@ class TaskOperations:
         """
         return self._kuflow_client.task.actions_task_complete(id=id, **kwargs)
 
-    def actions_task_append_log(
-        self, id: str, log: _models.Log, **kwargs: Any
-    ) -> _models.Task:
+    def actions_task_append_log(self, id: str, log: _models.Log, **kwargs: Any) -> _models.Task:
         """Append a log to the task.
 
         A log entry is added to the task. If the number of log entries is reached, the oldest log entry
@@ -424,6 +408,4 @@ class TaskOperations:
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.task.actions_task_append_log(
-            id=id, log=log, **kwargs
-        )
+        return self._kuflow_client.task.actions_task_append_log(id=id, log=log, **kwargs)

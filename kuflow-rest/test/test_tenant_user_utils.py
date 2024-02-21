@@ -44,27 +44,19 @@ class TenantUserUtilsTest(unittest.TestCase):
         value = TenantUserUtils.get_metadata_property_as_str(tenant_user, "key1")
         self.assertEqual(value, "value_key1")
 
-        value = TenantUserUtils.get_metadata_property_as_str(
-            tenant_user, "key2.0.key2_key1.0.key2_key1_key2"
-        )
+        value = TenantUserUtils.get_metadata_property_as_str(tenant_user, "key2.0.key2_key1.0.key2_key1_key2")
         self.assertEqual(value, "value_key2_key1_key2")
 
         with self.assertRaises(ValueError) as context:
-            TenantUserUtils.get_metadata_property_as_str(
-                tenant_user, "key2.0.key2_key1.0.unknown"
-            )
+            TenantUserUtils.get_metadata_property_as_str(tenant_user, "key2.0.key2_key1.0.unknown")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as context:
-            TenantUserUtils.get_metadata_property_as_str(
-                tenant_user, "key2.0.key2_key1.10"
-            )
+            TenantUserUtils.get_metadata_property_as_str(tenant_user, "key2.0.key2_key1.10")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as context:
-            TenantUserUtils.get_metadata_property_as_str(
-                tenant_user, "key2.0.key2_key1.100.key2_key1_key2"
-            )
+            TenantUserUtils.get_metadata_property_as_str(tenant_user, "key2.0.key2_key1.100.key2_key1_key2")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
     def test_find_json_forms_property_as_str(self):
@@ -73,24 +65,16 @@ class TenantUserUtilsTest(unittest.TestCase):
         value = TenantUserUtils.find_metadata_property_as_str(tenant_user, "key1")
         self.assertEqual(value, "value_key1")
 
-        value = TenantUserUtils.find_metadata_property_as_str(
-            tenant_user, "key2.0.key2_key1.0.key2_key1_key2"
-        )
+        value = TenantUserUtils.find_metadata_property_as_str(tenant_user, "key2.0.key2_key1.0.key2_key1_key2")
         self.assertEqual(value, "value_key2_key1_key2")
 
-        value = TenantUserUtils.find_metadata_property_as_str(
-            tenant_user, "key2.0.key2_key1.0.unknown"
-        )
+        value = TenantUserUtils.find_metadata_property_as_str(tenant_user, "key2.0.key2_key1.0.unknown")
         self.assertIsNone(value)
 
-        value = TenantUserUtils.find_metadata_property_as_str(
-            tenant_user, "key2.0.key2_key1.10"
-        )
+        value = TenantUserUtils.find_metadata_property_as_str(tenant_user, "key2.0.key2_key1.10")
         self.assertIsNone(value)
 
-        value = TenantUserUtils.find_metadata_property_as_str(
-            tenant_user, "key2.0.key2_key1.100.key2_key1_key2"
-        )
+        value = TenantUserUtils.find_metadata_property_as_str(tenant_user, "key2.0.key2_key1.100.key2_key1_key2")
         self.assertIsNone(value)
 
     def test_get_metadata_property_as_int(self):
@@ -123,9 +107,7 @@ class TenantUserUtilsTest(unittest.TestCase):
         value = TenantUserUtils.find_metadata_property_as_int(tenant_user, "key3.1")
         self.assertEqual(value, 1000)
 
-        value = TenantUserUtils.find_metadata_property_as_int(
-            tenant_user, "key_xxxxxxx"
-        )
+        value = TenantUserUtils.find_metadata_property_as_int(tenant_user, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as context:
@@ -168,9 +150,7 @@ class TenantUserUtilsTest(unittest.TestCase):
         value = TenantUserUtils.find_metadata_property_as_float(tenant_user, "key3.2")
         self.assertEqual(value, 2000.1)
 
-        value = TenantUserUtils.find_metadata_property_as_float(
-            tenant_user, "key_xxxxxxx"
-        )
+        value = TenantUserUtils.find_metadata_property_as_float(tenant_user, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as context:
@@ -189,9 +169,7 @@ class TenantUserUtilsTest(unittest.TestCase):
 
         with self.assertRaises(ValueError) as cm:
             TenantUserUtils.get_metadata_property_as_date(tenant_user, "key1")
-        self.assertEqual(
-            str(cm.exception), "Property key1 is not a date following ISO 8601 format"
-        )
+        self.assertEqual(str(cm.exception), "Property key1 is not a date following ISO 8601 format")
 
     def test_find_json_forms_property_as_date(self):
         tenant_user = prepare_tenant_user()
@@ -199,16 +177,12 @@ class TenantUserUtilsTest(unittest.TestCase):
         value = TenantUserUtils.find_metadata_property_as_date(tenant_user, "key5.0")
         self.assertEqual(value, date.fromisoformat("2000-01-01"))
 
-        value = TenantUserUtils.find_metadata_property_as_date(
-            tenant_user, "key_xxxxxxx"
-        )
+        value = TenantUserUtils.find_metadata_property_as_date(tenant_user, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as cm:
             TenantUserUtils.find_metadata_property_as_date(tenant_user, "key1")
-        self.assertEqual(
-            str(cm.exception), "Property key1 is not a date following ISO 8601 format"
-        )
+        self.assertEqual(str(cm.exception), "Property key1 is not a date following ISO 8601 format")
 
     def test_get_metadata_property_as_datetime(self):
         tenant_user = prepare_tenant_user()
@@ -217,9 +191,7 @@ class TenantUserUtilsTest(unittest.TestCase):
         self.assertEqual(value, datetime.fromisoformat("2000-01-01T10:10:05+01:00"))
 
         with self.assertRaises(ValueError) as cm:
-            TenantUserUtils.get_metadata_property_as_datetime(
-                tenant_user, "key_xxxxxxx"
-            )
+            TenantUserUtils.get_metadata_property_as_datetime(tenant_user, "key_xxxxxxx")
         self.assertEqual(str(cm.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as cm:
@@ -232,14 +204,10 @@ class TenantUserUtilsTest(unittest.TestCase):
     def test_find_json_forms_property_as_datetime(self):
         tenant_user = prepare_tenant_user()
 
-        value = TenantUserUtils.find_metadata_property_as_datetime(
-            tenant_user, "key5.1"
-        )
+        value = TenantUserUtils.find_metadata_property_as_datetime(tenant_user, "key5.1")
         self.assertEqual(value, datetime.fromisoformat("2000-01-01T10:10:05+01:00"))
 
-        value = TenantUserUtils.find_metadata_property_as_datetime(
-            tenant_user, "key_xxxxxxx"
-        )
+        value = TenantUserUtils.find_metadata_property_as_datetime(tenant_user, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as cm:
@@ -275,9 +243,7 @@ class TenantUserUtilsTest(unittest.TestCase):
         self.assertEqual(value.name, "dummy.pdf")
         self.assertEqual(value.size, 500)
 
-        value = TenantUserUtils.find_metadata_property_as_file(
-            tenant_user, "key_xxxxxxx"
-        )
+        value = TenantUserUtils.find_metadata_property_as_file(tenant_user, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as cm:
@@ -293,9 +259,7 @@ class TenantUserUtilsTest(unittest.TestCase):
         self.assertEqual(value.name, "Homer Simpson")
 
         with self.assertRaises(ValueError) as cm:
-            TenantUserUtils.get_metadata_property_as_principal(
-                tenant_user, "key_xxxxxxx"
-            )
+            TenantUserUtils.get_metadata_property_as_principal(tenant_user, "key_xxxxxxx")
         self.assertEqual(str(cm.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as cm:
@@ -310,9 +274,7 @@ class TenantUserUtilsTest(unittest.TestCase):
         self.assertEqual(value.type, "USER")
         self.assertEqual(value.name, "Homer Simpson")
 
-        value = TenantUserUtils.find_metadata_property_as_principal(
-            tenant_user, "key_xxxxxxx"
-        )
+        value = TenantUserUtils.find_metadata_property_as_principal(tenant_user, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as cm:
@@ -339,17 +301,13 @@ class TenantUserUtilsTest(unittest.TestCase):
         value1 = TenantUserUtils.find_metadata_property_as_list(tenant_user, "key3")
         self.assertEqual(value1, [500, "1000", 2000.1])
 
-        value = TenantUserUtils.find_metadata_property_as_list(
-            tenant_user, "key_xxxxxxx"
-        )
+        value = TenantUserUtils.find_metadata_property_as_list(tenant_user, "key_xxxxxxx")
         self.assertIsNone(value)
 
     def test_get_metadata_property_as_dict(self):
         tenant_user = prepare_tenant_user()
 
-        value = TenantUserUtils.get_metadata_property_as_dict(
-            tenant_user, "key2.0.key2_key1.0"
-        )
+        value = TenantUserUtils.get_metadata_property_as_dict(tenant_user, "key2.0.key2_key1.0")
         self.assertEqual(
             value,
             {
@@ -369,9 +327,7 @@ class TenantUserUtilsTest(unittest.TestCase):
     def test_find_json_forms_property_as_dict(self):
         tenant_user = prepare_tenant_user()
 
-        value = TenantUserUtils.find_metadata_property_as_dict(
-            tenant_user, "key2.0.key2_key1.0"
-        )
+        value = TenantUserUtils.find_metadata_property_as_dict(tenant_user, "key2.0.key2_key1.0")
         self.assertEqual(
             value,
             {
@@ -380,9 +336,7 @@ class TenantUserUtilsTest(unittest.TestCase):
             },
         )
 
-        value = TenantUserUtils.find_metadata_property_as_dict(
-            tenant_user, "key_xxxxxxx"
-        )
+        value = TenantUserUtils.find_metadata_property_as_dict(tenant_user, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(Exception) as context:
@@ -408,13 +362,9 @@ class TenantUserUtilsTest(unittest.TestCase):
 
         TenantUserUtils.update_metadata_property(tenant_user, "key1", "text")
         TenantUserUtils.update_metadata_property(tenant_user, "key2.0.key1", True)
-        TenantUserUtils.update_metadata_property(
-            tenant_user, "key2.0.key2", date.fromisoformat("2020-01-01")
-        )
+        TenantUserUtils.update_metadata_property(tenant_user, "key2.0.key2", date.fromisoformat("2020-01-01"))
         TenantUserUtils.update_metadata_property(tenant_user, "key2.1.key1", False)
-        TenantUserUtils.update_metadata_property(
-            tenant_user, "key2.1.key2", date.fromisoformat("3030-01-01")
-        )
+        TenantUserUtils.update_metadata_property(tenant_user, "key2.1.key2", date.fromisoformat("3030-01-01"))
         TenantUserUtils.update_metadata_property(tenant_user, "key2.2.key1", False)
         TenantUserUtils.update_metadata_property(
             tenant_user,

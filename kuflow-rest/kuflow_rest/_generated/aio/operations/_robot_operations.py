@@ -30,7 +30,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 #
 # --------------------------------------------------------------------------
-from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
+from typing import Any, AsyncIterator, Callable, Dict, List, Optional, TypeVar, Union
 
 from azure.core.exceptions import (
     ClientAuthenticationError,
@@ -45,20 +45,25 @@ from azure.core.rest import AsyncHttpResponse, HttpRequest
 from azure.core.tracing.decorator_async import distributed_trace_async
 
 from ... import models as _models
-from ...operations._principal_operations import build_find_principals_request, build_retrieve_principal_request
+from ...operations._robot_operations import (
+    build_actions_robot_download_asset_request,
+    build_actions_robot_download_source_code_request,
+    build_find_robots_request,
+    build_retrieve_robot_request,
+)
 
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
 
-class PrincipalOperations:
+class RobotOperations:
     """
     .. warning::
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
         :class:`~kuflow.rest.aio.KuFlowRestClient`'s
-        :attr:`principal` attribute.
+        :attr:`robot` attribute.
     """
 
     models = _models
@@ -71,21 +76,20 @@ class PrincipalOperations:
         self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
     @distributed_trace_async
-    async def find_principals(
+    async def find_robots(
         self,
         *,
         size: int = 25,
         page: int = 0,
         sort: Optional[List[str]] = None,
-        type: Optional[Union[str, _models.PrincipalType]] = None,
-        group_id: Optional[List[str]] = None,
+        tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
-    ) -> _models.PrincipalPage:
-        """Find all accessible Principals.
+    ) -> _models.RobotPage:
+        """Find all accessible Robots.
 
-        List all the Principals that have been created and the used credentials has access.
+        List all the Robots that have been created and the credentials has access.
 
-        Available sort query values: id, name.
+        Available sort query values: createdAt, lastModifiedAt.
 
         :keyword size: The number of records returned within a single API call. Default value is 25.
         :paramtype size: int
@@ -98,13 +102,10 @@ class PrincipalOperations:
 
          Please refer to the method description for supported properties. Default value is None.
         :paramtype sort: list[str]
-        :keyword type: Filter principals by type. Known values are: "USER", "APPLICATION", and
-         "SYSTEM". Default value is None.
-        :paramtype type: str or ~kuflow.rest.models.PrincipalType
-        :keyword group_id: Filter principals that exists in one of group ids. Default value is None.
-        :paramtype group_id: list[str]
-        :return: PrincipalPage
-        :rtype: ~kuflow.rest.models.PrincipalPage
+        :keyword tenant_id: Filter by tenantId. Default value is None.
+        :paramtype tenant_id: list[str]
+        :return: RobotPage
+        :rtype: ~kuflow.rest.models.RobotPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -118,14 +119,13 @@ class PrincipalOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.PrincipalPage] = kwargs.pop("cls", None)
+        cls: ClsType[_models.RobotPage] = kwargs.pop("cls", None)
 
-        _request = build_find_principals_request(
+        _request = build_find_robots_request(
             size=size,
             page=page,
             sort=sort,
-            type=type,
-            group_id=group_id,
+            tenant_id=tenant_id,
             headers=_headers,
             params=_params,
         )
@@ -145,7 +145,7 @@ class PrincipalOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("PrincipalPage", pipeline_response)
+        deserialized = self._deserialize("RobotPage", pipeline_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -153,15 +153,15 @@ class PrincipalOperations:
         return deserialized  # type: ignore
 
     @distributed_trace_async
-    async def retrieve_principal(self, id: str, **kwargs: Any) -> _models.Principal:
-        """Get a Principal by ID.
+    async def retrieve_robot(self, id: str, **kwargs: Any) -> _models.Robot:
+        """Get a Robot by ID.
 
-        Returns the requested Principal when has access to do it.
+        Returns the requested Robot when has access to do it.
 
         :param id: The resource ID. Required.
         :type id: str
-        :return: Principal
-        :rtype: ~kuflow.rest.models.Principal
+        :return: Robot
+        :rtype: ~kuflow.rest.models.Robot
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map = {
@@ -175,9 +175,9 @@ class PrincipalOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.Principal] = kwargs.pop("cls", None)
+        cls: ClsType[_models.Robot] = kwargs.pop("cls", None)
 
-        _request = build_retrieve_principal_request(
+        _request = build_retrieve_robot_request(
             id=id,
             headers=_headers,
             params=_params,
@@ -198,7 +198,137 @@ class PrincipalOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Principal", pipeline_response)
+        deserialized = self._deserialize("Robot", pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace_async
+    async def actions_robot_download_source_code(self, id: str, **kwargs: Any) -> AsyncIterator[bytes]:
+        """Download robot code.
+
+        Given a robot, download the source code.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: Async iterator of the response bytes
+        :rtype: AsyncIterator[bytes]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[AsyncIterator[bytes]] = kwargs.pop("cls", None)
+
+        _request = build_actions_robot_download_source_code_request(
+            id=id,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = True
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = response.iter_bytes()
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace_async
+    async def actions_robot_download_asset(
+        self,
+        id: str,
+        *,
+        type: Union[str, _models.RobotAssetType],
+        version: str,
+        platform: Union[str, _models.RobotAssetPlatform],
+        architecture: Union[str, _models.RobotAssetArchitecture],
+        **kwargs: Any,
+    ) -> AsyncIterator[bytes]:
+        """Download robot asset.
+
+        Given a robot, download the requested asset.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :keyword type: The asset type. Known values are: "PYTHON", "PYTHON_PIP", and "NODEJS".
+         Required.
+        :paramtype type: str or ~kuflow.rest.models.RobotAssetType
+        :keyword version: The asset version. Required.
+        :paramtype version: str
+        :keyword platform: The asset platform. Known values are: "WINDOWS", "MAC_OS", and "LINUX".
+         Required.
+        :paramtype platform: str or ~kuflow.rest.models.RobotAssetPlatform
+        :keyword architecture: The asset platform architecture. Known values are: "X86_32" and
+         "X86_64". Required.
+        :paramtype architecture: str or ~kuflow.rest.models.RobotAssetArchitecture
+        :return: Async iterator of the response bytes
+        :rtype: AsyncIterator[bytes]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[AsyncIterator[bytes]] = kwargs.pop("cls", None)
+
+        _request = build_actions_robot_download_asset_request(
+            id=id,
+            type=type,
+            version=version,
+            platform=platform,
+            architecture=architecture,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = True
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = response.iter_bytes()
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore

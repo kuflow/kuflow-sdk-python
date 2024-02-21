@@ -38,9 +38,7 @@ from ..models import (
     TaskSaveJsonFormsValueDataCommand,
 )
 
-JsonFormsSimpleType = Union[
-    str, int, float, bool, date, JsonFormsPrincipal, JsonFormsFile
-]
+JsonFormsSimpleType = Union[str, int, float, bool, date, JsonFormsPrincipal, JsonFormsFile]
 
 ContainerArrayType = List["ComplexType"]
 
@@ -70,9 +68,7 @@ class JsonFormsProperty:
         self.value = value
 
 
-def get_json_forms_property_as_str(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> str:
+def get_json_forms_property_as_str(accessor: JsonFormDataAccessor, property_path: str) -> str:
     """
     Get a json property as "str" following the "propertyPath" passed.
 
@@ -92,9 +88,7 @@ def get_json_forms_property_as_str(
     return value
 
 
-def find_json_forms_property_as_str(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> Optional[str]:
+def find_json_forms_property_as_str(accessor: JsonFormDataAccessor, property_path: str) -> Optional[str]:
     """
     Try to find a json property as "str" following the "propertyPath" passed.
 
@@ -114,9 +108,7 @@ def find_json_forms_property_as_str(
     return None
 
 
-def get_json_forms_property_as_int(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> int:
+def get_json_forms_property_as_int(accessor: JsonFormDataAccessor, property_path: str) -> int:
     """
     Get a json property as "int" following the "propertyPath" passed.
 
@@ -136,9 +128,7 @@ def get_json_forms_property_as_int(
     return value
 
 
-def find_json_forms_property_as_int(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> Optional[int]:
+def find_json_forms_property_as_int(accessor: JsonFormDataAccessor, property_path: str) -> Optional[int]:
     """
     Try to find a json property as "int" following the "propertyPath" passed.
 
@@ -169,9 +159,7 @@ def find_json_forms_property_as_int(
     raise ValueError(f"Property {property_path} is not a int")
 
 
-def get_json_forms_property_as_float(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> float:
+def get_json_forms_property_as_float(accessor: JsonFormDataAccessor, property_path: str) -> float:
     """
     Get a json property as "float" following the "propertyPath" passed.
 
@@ -191,9 +179,7 @@ def get_json_forms_property_as_float(
     return value
 
 
-def find_json_forms_property_as_float(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> Optional[float]:
+def find_json_forms_property_as_float(accessor: JsonFormDataAccessor, property_path: str) -> Optional[float]:
     """
     Try to find a json property as "float" following the "propertyPath" passed.
 
@@ -228,9 +214,7 @@ def find_json_forms_property_as_float(
     raise ValueError(f"Property {property_path} is not a float")
 
 
-def get_json_forms_property_as_date(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> date:
+def get_json_forms_property_as_date(accessor: JsonFormDataAccessor, property_path: str) -> date:
     """
     Get a json property as "date" following the "propertyPath" passed.
 
@@ -250,9 +234,7 @@ def get_json_forms_property_as_date(
     return value
 
 
-def find_json_forms_property_as_date(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> Optional[date]:
+def find_json_forms_property_as_date(accessor: JsonFormDataAccessor, property_path: str) -> Optional[date]:
     """
     Try to find a json property as "date" following the "propertyPath" passed.
 
@@ -279,14 +261,10 @@ def find_json_forms_property_as_date(
         except ValueError:
             pass
 
-    raise ValueError(
-        f"Property {property_path} is not a date following ISO 8601 format"
-    )
+    raise ValueError(f"Property {property_path} is not a date following ISO 8601 format")
 
 
-def get_json_forms_property_as_datetime(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> datetime:
+def get_json_forms_property_as_datetime(accessor: JsonFormDataAccessor, property_path: str) -> datetime:
     """
     Get a json property as "datetime" following the "propertyPath" passed.
 
@@ -306,9 +284,7 @@ def get_json_forms_property_as_datetime(
     return value
 
 
-def find_json_forms_property_as_datetime(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> Optional[datetime]:
+def find_json_forms_property_as_datetime(accessor: JsonFormDataAccessor, property_path: str) -> Optional[datetime]:
     """
     Try to find a json property as "datetime" following the "propertyPath" passed.
 
@@ -335,14 +311,10 @@ def find_json_forms_property_as_datetime(
         except ValueError:
             pass
 
-    raise ValueError(
-        f"Property {property_path} is not a date-time following ISO 8601 format"
-    )
+    raise ValueError(f"Property {property_path} is not a date-time following ISO 8601 format")
 
 
-def get_json_forms_property_as_json_forms_file(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> JsonFormsFile:
+def get_json_forms_property_as_json_forms_file(accessor: JsonFormDataAccessor, property_path: str) -> JsonFormsFile:
     """
     Get a json property as "JsonFormsFile" following the "propertyPath" passed.
 
@@ -438,9 +410,7 @@ def find_json_forms_property_as_json_forms_principal(
     return json_forms_file
 
 
-def get_json_forms_property_as_list(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> list:
+def get_json_forms_property_as_list(accessor: JsonFormDataAccessor, property_path: str) -> list:
     """
     Get a json property as "list" following the "propertyPath" passed.
 
@@ -460,9 +430,7 @@ def get_json_forms_property_as_list(
     return value
 
 
-def find_json_forms_property_as_list(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> Optional[list]:
+def find_json_forms_property_as_list(accessor: JsonFormDataAccessor, property_path: str) -> Optional[list]:
     """
     Try to find a json property as "list" following the "propertyPath" passed.
 
@@ -486,9 +454,7 @@ def find_json_forms_property_as_list(
     raise ValueError(f"Property {property_path} is not a list")
 
 
-def get_json_forms_property_as_dict(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> dict:
+def get_json_forms_property_as_dict(accessor: JsonFormDataAccessor, property_path: str) -> dict:
     """
     Get a json property as "dict" following the "propertyPath" passed.
 
@@ -508,9 +474,7 @@ def get_json_forms_property_as_dict(
     return value
 
 
-def find_json_forms_property_as_dict(
-    accessor: JsonFormDataAccessor, property_path: str
-) -> Optional[dict]:
+def find_json_forms_property_as_dict(accessor: JsonFormDataAccessor, property_path: str) -> Optional[dict]:
     """
     Try to find a json property as "dict" following the "propertyPath" passed.
 
@@ -572,9 +536,7 @@ def update_json_forms_property(
     json_forms_property_path = property.path
     if isinstance(json_forms_property_container, list):
         if not json_forms_property_path.isdigit():
-            raise ValueError(
-                f"Incorrect property path {json_forms_property_path}, parent path is not a List"
-            )
+            raise ValueError(f"Incorrect property path {json_forms_property_path}, parent path is not a List")
 
         json_forms_property_path_index = int(json_forms_property_path)
         if value is not None:
@@ -631,10 +593,7 @@ def find_json_forms_property(
                 raise ValueError(f"Wrong list index {property_value_path}")
 
             property_value_path_as_integer = int(property_value_path)
-            if (
-                property_value_path_as_integer < 0
-                or property_value_path_as_integer > len(property_container)
-            ):
+            if property_value_path_as_integer < 0 or property_value_path_as_integer > len(property_container):
                 return None
             elif property_value_path_as_integer == len(property_container):
                 if not create_missing_parents:
@@ -671,17 +630,11 @@ def find_json_forms_property(
                 elif is_json_forms_type_container_record(property_container):
                     property_container[property_value_path] = property_value
 
-        if (
-            property_value is not None
-            and is_json_forms_type_container(property_value)
-            and idx + 1 < len(paths)
-        ):
+        if property_value is not None and is_json_forms_type_container(property_value) and idx + 1 < len(paths):
             property_container = property_value
             property_value = None
 
-    return JsonFormsProperty(
-        container=property_container, path=property_value_path, value=property_value
-    )
+    return JsonFormsProperty(container=property_container, path=property_value_path, value=property_value)
 
 
 def transform_json_forms_property_value(
@@ -790,9 +743,7 @@ def try_parse_json_forms_principal(value: ComplexType) -> Optional[JsonFormsPrin
 
 
 def is_json_forms_type_container(value: Optional[ComplexType]) -> bool:
-    return is_json_forms_type_container_record(
-        value
-    ) or is_json_forms_type_container_array(value)
+    return is_json_forms_type_container_record(value) or is_json_forms_type_container_array(value)
 
 
 def is_json_forms_type_container_record(value: Optional[ComplexType]) -> bool:
@@ -803,9 +754,7 @@ def is_json_forms_type_container_array(value: Optional[ComplexType]) -> bool:
     return isinstance(value, list)
 
 
-def get_json_forms_value_data(
-    accessor: JsonFormDataAccessor, create_missing_parents: bool
-) -> Optional[ContainerType]:
+def get_json_forms_value_data(accessor: JsonFormDataAccessor, create_missing_parents: bool) -> Optional[ContainerType]:
     data: Optional[ContainerType] = accessor.get_data()
 
     if data is None and create_missing_parents:

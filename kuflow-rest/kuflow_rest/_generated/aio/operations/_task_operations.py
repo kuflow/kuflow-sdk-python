@@ -31,18 +31,7 @@
 #
 # --------------------------------------------------------------------------
 from io import IOBase
-from typing import (
-    Any,
-    AsyncIterator,
-    Callable,
-    Dict,
-    IO,
-    List,
-    Optional,
-    TypeVar,
-    Union,
-    overload,
-)
+from typing import Any, AsyncIterator, Callable, Dict, IO, List, Optional, TypeVar, Union, overload
 
 from azure.core.exceptions import (
     ClientAuthenticationError,
@@ -78,9 +67,7 @@ from ...operations._task_operations import (
 )
 
 T = TypeVar("T")
-ClsType = Optional[
-    Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]
-]
+ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
 
 class TaskOperations:
@@ -100,9 +87,7 @@ class TaskOperations:
         self._client = input_args.pop(0) if input_args else kwargs.pop("client")
         self._config = input_args.pop(0) if input_args else kwargs.pop("config")
         self._serialize = input_args.pop(0) if input_args else kwargs.pop("serializer")
-        self._deserialize = (
-            input_args.pop(0) if input_args else kwargs.pop("deserializer")
-        )
+        self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
     @distributed_trace_async
     async def find_tasks(
@@ -180,12 +165,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("TaskPage", pipeline_response)
@@ -285,11 +266,7 @@ class TaskOperations:
 
     @distributed_trace_async
     async def create_task(
-        self,
-        task: Union[_models.Task, IO[bytes]],
-        *,
-        activity_token: Optional[str] = None,
-        **kwargs: Any,
+        self, task: Union[_models.Task, IO[bytes]], *, activity_token: Optional[str] = None, **kwargs: Any
     ) -> _models.Task:
         """Create a new Task in the selected Process.
 
@@ -336,9 +313,7 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop(
-            "content_type", _headers.pop("Content-Type", None)
-        )
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -369,12 +344,8 @@ class TaskOperations:
         if response.status_code not in [200, 201]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         if response.status_code == 200:
@@ -430,12 +401,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -487,12 +454,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -504,12 +467,7 @@ class TaskOperations:
 
     @overload
     async def actions_task_assign(
-        self,
-        id: str,
-        command: _models.TaskAssignCommand,
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, id: str, command: _models.TaskAssignCommand, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Assign a task.
 
@@ -529,12 +487,7 @@ class TaskOperations:
 
     @overload
     async def actions_task_assign(
-        self,
-        id: str,
-        command: IO[bytes],
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, id: str, command: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Assign a task.
 
@@ -554,10 +507,7 @@ class TaskOperations:
 
     @distributed_trace_async
     async def actions_task_assign(
-        self,
-        id: str,
-        command: Union[_models.TaskAssignCommand, IO[bytes]],
-        **kwargs: Any,
+        self, id: str, command: Union[_models.TaskAssignCommand, IO[bytes]], **kwargs: Any
     ) -> _models.Task:
         """Assign a task.
 
@@ -586,9 +536,7 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop(
-            "content_type", _headers.pop("Content-Type", None)
-        )
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -619,12 +567,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -636,12 +580,7 @@ class TaskOperations:
 
     @overload
     async def actions_task_save_element(
-        self,
-        id: str,
-        command: _models.TaskSaveElementCommand,
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, id: str, command: _models.TaskSaveElementCommand, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Save an element.
 
@@ -669,12 +608,7 @@ class TaskOperations:
 
     @overload
     async def actions_task_save_element(
-        self,
-        id: str,
-        command: IO[bytes],
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, id: str, command: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Save an element.
 
@@ -702,10 +636,7 @@ class TaskOperations:
 
     @distributed_trace_async
     async def actions_task_save_element(
-        self,
-        id: str,
-        command: Union[_models.TaskSaveElementCommand, IO[bytes]],
-        **kwargs: Any,
+        self, id: str, command: Union[_models.TaskSaveElementCommand, IO[bytes]], **kwargs: Any
     ) -> _models.Task:
         """Save an element.
 
@@ -742,9 +673,7 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop(
-            "content_type", _headers.pop("Content-Type", None)
-        )
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -775,12 +704,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -840,9 +765,7 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: str = kwargs.pop(
-            "content_type", _headers.pop("Content-Type", "application/octet-stream")
-        )
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/octet-stream"))
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         _content = file
@@ -871,12 +794,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -915,12 +834,7 @@ class TaskOperations:
 
     @overload
     async def actions_task_delete_element(
-        self,
-        id: str,
-        command: IO[bytes],
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, id: str, command: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Delete an element by code.
 
@@ -942,10 +856,7 @@ class TaskOperations:
 
     @distributed_trace_async
     async def actions_task_delete_element(
-        self,
-        id: str,
-        command: Union[_models.TaskDeleteElementCommand, IO[bytes]],
-        **kwargs: Any,
+        self, id: str, command: Union[_models.TaskDeleteElementCommand, IO[bytes]], **kwargs: Any
     ) -> _models.Task:
         """Delete an element by code.
 
@@ -976,9 +887,7 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop(
-            "content_type", _headers.pop("Content-Type", None)
-        )
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -1009,12 +918,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -1054,12 +959,7 @@ class TaskOperations:
 
     @overload
     async def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
-        self,
-        id: str,
-        command: IO[bytes],
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, id: str, command: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Delete an element document value.
 
@@ -1082,10 +982,7 @@ class TaskOperations:
 
     @distributed_trace_async
     async def actions_task_delete_element_value_document(  # pylint: disable=name-too-long
-        self,
-        id: str,
-        command: Union[_models.TaskDeleteElementValueDocumentCommand, IO[bytes]],
-        **kwargs: Any,
+        self, id: str, command: Union[_models.TaskDeleteElementValueDocumentCommand, IO[bytes]], **kwargs: Any
     ) -> _models.Task:
         """Delete an element document value.
 
@@ -1117,9 +1014,7 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop(
-            "content_type", _headers.pop("Content-Type", None)
-        )
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -1128,9 +1023,7 @@ class TaskOperations:
         if isinstance(command, (IOBase, bytes)):
             _content = command
         else:
-            _json = self._serialize.body(
-                command, "TaskDeleteElementValueDocumentCommand"
-            )
+            _json = self._serialize.body(command, "TaskDeleteElementValueDocumentCommand")
 
         _request = build_actions_task_delete_element_value_document_request(
             id=id,
@@ -1152,12 +1045,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -1214,12 +1103,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = response.iter_bytes()
@@ -1280,12 +1165,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = response.iter_bytes()
@@ -1324,12 +1205,7 @@ class TaskOperations:
 
     @overload
     async def actions_task_save_json_forms_value_data(
-        self,
-        id: str,
-        command: IO[bytes],
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, id: str, command: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Save JSON data.
 
@@ -1351,10 +1227,7 @@ class TaskOperations:
 
     @distributed_trace_async
     async def actions_task_save_json_forms_value_data(
-        self,
-        id: str,
-        command: Union[_models.TaskSaveJsonFormsValueDataCommand, IO[bytes]],
-        **kwargs: Any,
+        self, id: str, command: Union[_models.TaskSaveJsonFormsValueDataCommand, IO[bytes]], **kwargs: Any
     ) -> _models.Task:
         """Save JSON data.
 
@@ -1385,9 +1258,7 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop(
-            "content_type", _headers.pop("Content-Type", None)
-        )
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -1418,12 +1289,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -1435,14 +1302,7 @@ class TaskOperations:
 
     @distributed_trace_async
     async def actions_task_save_json_forms_value_document(  # pylint: disable=name-too-long
-        self,
-        id: str,
-        file: IO[bytes],
-        *,
-        file_content_type: str,
-        file_name: str,
-        schema_path: str,
-        **kwargs: Any,
+        self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
     ) -> _models.TaskSaveJsonFormsValueDocumentResponseCommand:
         """Save a JSON Forms document.
 
@@ -1474,12 +1334,8 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: str = kwargs.pop(
-            "content_type", _headers.pop("Content-Type", "application/octet-stream")
-        )
-        cls: ClsType[
-            _models.TaskSaveJsonFormsValueDocumentResponseCommand
-        ] = kwargs.pop("cls", None)
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/octet-stream"))
+        cls: ClsType[_models.TaskSaveJsonFormsValueDocumentResponseCommand] = kwargs.pop("cls", None)
 
         _content = file
 
@@ -1505,17 +1361,11 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize(
-            "TaskSaveJsonFormsValueDocumentResponseCommand", pipeline_response
-        )
+        deserialized = self._deserialize("TaskSaveJsonFormsValueDocumentResponseCommand", pipeline_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -1569,12 +1419,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = response.iter_bytes()
@@ -1626,12 +1472,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)
@@ -1643,12 +1485,7 @@ class TaskOperations:
 
     @overload
     async def actions_task_append_log(
-        self,
-        id: str,
-        log: _models.Log,
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, id: str, log: _models.Log, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Append a log to the task.
 
@@ -1669,12 +1506,7 @@ class TaskOperations:
 
     @overload
     async def actions_task_append_log(
-        self,
-        id: str,
-        log: IO[bytes],
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
+        self, id: str, log: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Task:
         """Append a log to the task.
 
@@ -1694,9 +1526,7 @@ class TaskOperations:
         """
 
     @distributed_trace_async
-    async def actions_task_append_log(
-        self, id: str, log: Union[_models.Log, IO[bytes]], **kwargs: Any
-    ) -> _models.Task:
+    async def actions_task_append_log(self, id: str, log: Union[_models.Log, IO[bytes]], **kwargs: Any) -> _models.Task:
         """Append a log to the task.
 
         A log entry is added to the task. If the number of log entries is reached, the oldest log entry
@@ -1724,9 +1554,7 @@ class TaskOperations:
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop(
-            "content_type", _headers.pop("Content-Type", None)
-        )
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
         cls: ClsType[_models.Task] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
@@ -1757,12 +1585,8 @@ class TaskOperations:
         if response.status_code not in [200]:
             if _stream:
                 await response.read()  # Load the body in memory and close the socket
-            map_error(
-                status_code=response.status_code, response=response, error_map=error_map
-            )
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError, pipeline_response
-            )
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Task", pipeline_response)

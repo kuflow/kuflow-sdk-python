@@ -153,9 +153,7 @@ class TaskUtilsTest(unittest.TestCase):
     def test_set_element_value_as_str_list(self):
         task = prepare_task_element_values()
 
-        TaskUtils.set_element_value_list(
-            task, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"]
-        )
+        TaskUtils.set_element_value_list(task, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"])
         self.assertEqual(
             task.element_values.get("EV_STRING"),
             [
@@ -185,9 +183,7 @@ class TaskUtilsTest(unittest.TestCase):
     def test_add_element_value_as_str_list(self):
         task = prepare_task_element_values()
 
-        TaskUtils.add_element_value_list(
-            task, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"]
-        )
+        TaskUtils.add_element_value_list(task, "EV_STRING", ["MY TEXT NEW1", "MY TEXT NEW2"])
 
         expected_element_values = [
             TaskElementValueString(value="MY TEXT 1", valid=True),
@@ -320,9 +316,7 @@ class TaskUtilsTest(unittest.TestCase):
         task = prepare_task_element_values()
 
         value = TaskUtils.get_element_value_as_date_list(task, "EV_DATE")
-        self.assertEqual(
-            value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")]
-        )
+        self.assertEqual(value, [date.fromisoformat("2000-01-01"), date.fromisoformat("1980-01-01")])
 
         value = TaskUtils.get_element_value_as_date_list(task, "OTHER")
         self.assertEqual(value, [])
@@ -441,9 +435,7 @@ class TaskUtilsTest(unittest.TestCase):
     def test_set_element_value_as_dict_list(self):
         task = prepare_task_element_values()
 
-        TaskUtils.set_element_value_list(
-            task, "EV_OBJECT", [{"key": "value 3"}, {"key": "value 4"}]
-        )
+        TaskUtils.set_element_value_list(task, "EV_OBJECT", [{"key": "value 3"}, {"key": "value 4"}])
         self.assertEqual(
             task.element_values.get("EV_OBJECT"),
             [
@@ -473,9 +465,7 @@ class TaskUtilsTest(unittest.TestCase):
     def test_add_element_value_as_dict_list(self):
         task = prepare_task_element_values()
 
-        TaskUtils.add_element_value_list(
-            task, "EV_OBJECT", [{"key": "value 3"}, {"key": "value 4"}]
-        )
+        TaskUtils.add_element_value_list(task, "EV_OBJECT", [{"key": "value 3"}, {"key": "value 4"}])
 
         expected_element_values = [
             TaskElementValueObject(value={"key": "value 1"}, valid=True),
@@ -528,15 +518,11 @@ class TaskUtilsTest(unittest.TestCase):
     def test_set_element_value_as_document(self):
         task = prepare_task_element_values()
 
-        TaskUtils.set_element_value(
-            task, "EV_DOCUMENT", prepare_task_element_value_document_item("3")
-        )
+        TaskUtils.set_element_value(task, "EV_DOCUMENT", prepare_task_element_value_document_item("3"))
         self.assertEqual(
             task.element_values.get("EV_DOCUMENT"),
             [
-                TaskElementValueDocument(
-                    value=prepare_task_element_value_document_item("3"), valid=True
-                ),
+                TaskElementValueDocument(value=prepare_task_element_value_document_item("3"), valid=True),
             ],
         )
 
@@ -557,12 +543,8 @@ class TaskUtilsTest(unittest.TestCase):
         self.assertEqual(
             task.element_values.get("EV_DOCUMENT"),
             [
-                TaskElementValueDocument(
-                    value=prepare_task_element_value_document_item("3"), valid=True
-                ),
-                TaskElementValueDocument(
-                    value=prepare_task_element_value_document_item("4"), valid=True
-                ),
+                TaskElementValueDocument(value=prepare_task_element_value_document_item("3"), valid=True),
+                TaskElementValueDocument(value=prepare_task_element_value_document_item("4"), valid=True),
             ],
         )
 
@@ -572,9 +554,7 @@ class TaskUtilsTest(unittest.TestCase):
     def test_add_element_value_as_document(self):
         task = prepare_task_element_values()
 
-        TaskUtils.add_element_value(
-            task, "EV_DOCUMENT", prepare_task_element_value_document_item("3")
-        )
+        TaskUtils.add_element_value(task, "EV_DOCUMENT", prepare_task_element_value_document_item("3"))
 
         expected_element_values = [
             TaskElementValueDocument(
@@ -590,14 +570,10 @@ class TaskUtilsTest(unittest.TestCase):
                 valid=True,
             ),
         ]
-        self.assertEqual(
-            task.element_values.get("EV_DOCUMENT"), expected_element_values
-        )
+        self.assertEqual(task.element_values.get("EV_DOCUMENT"), expected_element_values)
 
         TaskUtils.add_element_value(task, "EV_DOCUMENT", None)
-        self.assertEqual(
-            task.element_values.get("EV_DOCUMENT"), expected_element_values
-        )
+        self.assertEqual(task.element_values.get("EV_DOCUMENT"), expected_element_values)
 
     def test_add_element_value_as_document_list(self):
         task = prepare_task_element_values()
@@ -629,19 +605,13 @@ class TaskUtilsTest(unittest.TestCase):
                 valid=True,
             ),
         ]
-        self.assertEqual(
-            task.element_values.get("EV_DOCUMENT"), expected_element_values
-        )
+        self.assertEqual(task.element_values.get("EV_DOCUMENT"), expected_element_values)
 
         TaskUtils.add_element_value_list(task, "EV_DOCUMENT", None)
-        self.assertEqual(
-            task.element_values.get("EV_DOCUMENT"), expected_element_values
-        )
+        self.assertEqual(task.element_values.get("EV_DOCUMENT"), expected_element_values)
 
         TaskUtils.add_element_value_list(task, "EV_DOCUMENT", [])
-        self.assertEqual(
-            task.element_values.get("EV_DOCUMENT"), expected_element_values
-        )
+        self.assertEqual(task.element_values.get("EV_DOCUMENT"), expected_element_values)
 
     def test_get_element_value_as_principal(self):
         task = prepare_task_element_values()
@@ -680,15 +650,11 @@ class TaskUtilsTest(unittest.TestCase):
     def test_set_element_value_as_principal(self):
         task = prepare_task_element_values()
 
-        TaskUtils.set_element_value(
-            task, "EV_PRINCIPAL", prepare_task_element_value_principal_item("3")
-        )
+        TaskUtils.set_element_value(task, "EV_PRINCIPAL", prepare_task_element_value_principal_item("3"))
         self.assertEqual(
             task.element_values.get("EV_PRINCIPAL"),
             [
-                TaskElementValuePrincipal(
-                    value=prepare_task_element_value_principal_item("3"), valid=True
-                ),
+                TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("3"), valid=True),
             ],
         )
 
@@ -709,12 +675,8 @@ class TaskUtilsTest(unittest.TestCase):
         self.assertEqual(
             task.element_values.get("EV_PRINCIPAL"),
             [
-                TaskElementValuePrincipal(
-                    value=prepare_task_element_value_principal_item("3"), valid=True
-                ),
-                TaskElementValuePrincipal(
-                    value=prepare_task_element_value_principal_item("4"), valid=True
-                ),
+                TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("3"), valid=True),
+                TaskElementValuePrincipal(value=prepare_task_element_value_principal_item("4"), valid=True),
             ],
         )
 
@@ -724,9 +686,7 @@ class TaskUtilsTest(unittest.TestCase):
     def test_add_element_value_as_principal(self):
         task = prepare_task_element_values()
 
-        TaskUtils.add_element_value(
-            task, "EV_PRINCIPAL", prepare_task_element_value_principal_item("3")
-        )
+        TaskUtils.add_element_value(task, "EV_PRINCIPAL", prepare_task_element_value_principal_item("3"))
 
         expected_element_values = [
             TaskElementValuePrincipal(
@@ -742,14 +702,10 @@ class TaskUtilsTest(unittest.TestCase):
                 valid=True,
             ),
         ]
-        self.assertEqual(
-            task.element_values.get("EV_PRINCIPAL"), expected_element_values
-        )
+        self.assertEqual(task.element_values.get("EV_PRINCIPAL"), expected_element_values)
 
         TaskUtils.add_element_value(task, "EV_PRINCIPAL", None)
-        self.assertEqual(
-            task.element_values.get("EV_PRINCIPAL"), expected_element_values
-        )
+        self.assertEqual(task.element_values.get("EV_PRINCIPAL"), expected_element_values)
 
     def test_add_element_value_as_principal_list(self):
         task = prepare_task_element_values()
@@ -781,28 +737,20 @@ class TaskUtilsTest(unittest.TestCase):
                 valid=True,
             ),
         ]
-        self.assertEqual(
-            task.element_values.get("EV_PRINCIPAL"), expected_element_values
-        )
+        self.assertEqual(task.element_values.get("EV_PRINCIPAL"), expected_element_values)
 
         TaskUtils.add_element_value_list(task, "EV_PRINCIPAL", None)
-        self.assertEqual(
-            task.element_values.get("EV_PRINCIPAL"), expected_element_values
-        )
+        self.assertEqual(task.element_values.get("EV_PRINCIPAL"), expected_element_values)
 
         TaskUtils.add_element_value_list(task, "EV_PRINCIPAL", [])
-        self.assertEqual(
-            task.element_values.get("EV_PRINCIPAL"), expected_element_values
-        )
+        self.assertEqual(task.element_values.get("EV_PRINCIPAL"), expected_element_values)
 
     def test_get_json_forms_property_as_str(self):
         task = prepare_task_json_forms()
         value = TaskUtils.get_json_forms_property_as_str(task, "key1")
         self.assertEqual(value, "value_key1")
 
-        value = TaskUtils.get_json_forms_property_as_str(
-            task, "key2.0.key2_key1.0.key2_key1_key2"
-        )
+        value = TaskUtils.get_json_forms_property_as_str(task, "key2.0.key2_key1.0.key2_key1_key2")
         self.assertEqual(value, "value_key2_key1_key2")
 
         with self.assertRaises(ValueError) as context:
@@ -814,9 +762,7 @@ class TaskUtilsTest(unittest.TestCase):
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as context:
-            TaskUtils.get_json_forms_property_as_str(
-                task, "key2.0.key2_key1.100.key2_key1_key2"
-            )
+            TaskUtils.get_json_forms_property_as_str(task, "key2.0.key2_key1.100.key2_key1_key2")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
     def test_find_json_forms_property_as_str(self):
@@ -825,22 +771,16 @@ class TaskUtilsTest(unittest.TestCase):
         value = TaskUtils.find_json_forms_property_as_str(task, "key1")
         self.assertEqual(value, "value_key1")
 
-        value = TaskUtils.find_json_forms_property_as_str(
-            task, "key2.0.key2_key1.0.key2_key1_key2"
-        )
+        value = TaskUtils.find_json_forms_property_as_str(task, "key2.0.key2_key1.0.key2_key1_key2")
         self.assertEqual(value, "value_key2_key1_key2")
 
-        value = TaskUtils.find_json_forms_property_as_str(
-            task, "key2.0.key2_key1.0.unknown"
-        )
+        value = TaskUtils.find_json_forms_property_as_str(task, "key2.0.key2_key1.0.unknown")
         self.assertIsNone(value)
 
         value = TaskUtils.find_json_forms_property_as_str(task, "key2.0.key2_key1.10")
         self.assertIsNone(value)
 
-        value = TaskUtils.find_json_forms_property_as_str(
-            task, "key2.0.key2_key1.100.key2_key1_key2"
-        )
+        value = TaskUtils.find_json_forms_property_as_str(task, "key2.0.key2_key1.100.key2_key1_key2")
         self.assertIsNone(value)
 
     def test_get_json_forms_property_as_int(self):
@@ -935,9 +875,7 @@ class TaskUtilsTest(unittest.TestCase):
 
         with self.assertRaises(ValueError) as cm:
             TaskUtils.get_json_forms_property_as_date(task, "key1")
-        self.assertEqual(
-            str(cm.exception), "Property key1 is not a date following ISO 8601 format"
-        )
+        self.assertEqual(str(cm.exception), "Property key1 is not a date following ISO 8601 format")
 
     def test_find_json_forms_property_as_date(self):
         task = prepare_task_json_forms()
@@ -950,9 +888,7 @@ class TaskUtilsTest(unittest.TestCase):
 
         with self.assertRaises(ValueError) as cm:
             TaskUtils.find_json_forms_property_as_date(task, "key1")
-        self.assertEqual(
-            str(cm.exception), "Property key1 is not a date following ISO 8601 format"
-        )
+        self.assertEqual(str(cm.exception), "Property key1 is not a date following ISO 8601 format")
 
     def test_get_json_forms_property_as_datetime(self):
         task = prepare_task_json_forms()
@@ -1132,17 +1068,11 @@ class TaskUtilsTest(unittest.TestCase):
 
         TaskUtils.update_json_forms_property(task, "key1", "text")
         TaskUtils.update_json_forms_property(task, "key2.0.key1", True)
-        TaskUtils.update_json_forms_property(
-            task, "key2.0.key2", date.fromisoformat("2020-01-01")
-        )
+        TaskUtils.update_json_forms_property(task, "key2.0.key2", date.fromisoformat("2020-01-01"))
         TaskUtils.update_json_forms_property(task, "key2.1.key1", False)
-        TaskUtils.update_json_forms_property(
-            task, "key2.1.key2", date.fromisoformat("3030-01-01")
-        )
+        TaskUtils.update_json_forms_property(task, "key2.1.key2", date.fromisoformat("3030-01-01"))
         TaskUtils.update_json_forms_property(task, "key2.2.key1", False)
-        TaskUtils.update_json_forms_property(
-            task, "key2.2.key2", datetime.fromisoformat("3030-01-01T10:10:00+01:00")
-        )
+        TaskUtils.update_json_forms_property(task, "key2.2.key2", datetime.fromisoformat("3030-01-01T10:10:00+01:00"))
         TaskUtils.update_json_forms_property(task, "key3", 100)
         TaskUtils.update_json_forms_property(task, "key4", file)
         TaskUtils.update_json_forms_property(task, "key5", principal)
@@ -1270,9 +1200,7 @@ def prepare_task_element_value_principal_item(
 
 def prepare_task_json_forms() -> Task:
     return Task(
-        task_definition=TaskDefinitionSummary(
-            id="e68d8136-1166-455c-93d6-d106201c1856"
-        ),
+        task_definition=TaskDefinitionSummary(id="e68d8136-1166-455c-93d6-d106201c1856"),
         process_id="3b755d5e-b64f-4ec2-a830-173f006bdf8e",
         json_forms_value=JsonFormsValue(
             valid=True,

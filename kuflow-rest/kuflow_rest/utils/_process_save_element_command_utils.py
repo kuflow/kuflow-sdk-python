@@ -83,9 +83,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             True if all related valid values are TRUE, otherwise False.
         """
-        return get_element_value_valid(
-            CurrentElementValueAccessor(process_save_element_command)
-        )
+        return get_element_value_valid(CurrentElementValueAccessor(process_save_element_command))
 
     @staticmethod
     def get_element_value_valid_at(
@@ -102,9 +100,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The requested valid value if it exists, otherwise None.
         """
-        return get_element_value_valid_at(
-            CurrentElementValueAccessor(process_save_element_command), index
-        )
+        return get_element_value_valid_at(CurrentElementValueAccessor(process_save_element_command), index)
 
     @staticmethod
     def set_element_value_valid(
@@ -120,9 +116,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The passed process.
         """
-        set_element_value_valid(
-            CurrentElementValueAccessor(process_save_element_command), valid
-        )
+        set_element_value_valid(CurrentElementValueAccessor(process_save_element_command), valid)
 
         return process_save_element_command
 
@@ -143,9 +137,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The passed process.
         """
-        set_element_value_valid_at(
-            CurrentElementValueAccessor(process_save_element_command), valid, index
-        )
+        set_element_value_valid_at(CurrentElementValueAccessor(process_save_element_command), valid, index)
 
         return process_save_element_command
 
@@ -164,9 +156,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The passed process.
         """
-        set_element_value(
-            CurrentElementValueAccessor(process_save_element_command), element_value
-        )
+        set_element_value(CurrentElementValueAccessor(process_save_element_command), element_value)
 
         return process_save_element_command
 
@@ -185,9 +175,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The passed process.
         """
-        set_element_value_list(
-            CurrentElementValueAccessor(process_save_element_command), element_values
-        )
+        set_element_value_list(CurrentElementValueAccessor(process_save_element_command), element_values)
 
         return process_save_element_command
 
@@ -206,9 +194,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The passed process.
         """
-        add_element_value(
-            CurrentElementValueAccessor(process_save_element_command), element_value
-        )
+        add_element_value(CurrentElementValueAccessor(process_save_element_command), element_value)
 
         return process_save_element_command
 
@@ -227,9 +213,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The passed model related object.
         """
-        add_element_value_list(
-            CurrentElementValueAccessor(process_save_element_command), element_values
-        )
+        add_element_value_list(CurrentElementValueAccessor(process_save_element_command), element_values)
 
         return process_save_element_command
 
@@ -246,9 +230,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The element value as a str.
         """
-        return get_element_value_as_str(
-            CurrentElementValueAccessor(process_save_element_command)
-        )
+        return get_element_value_as_str(CurrentElementValueAccessor(process_save_element_command))
 
     @staticmethod
     def find_element_value_as_str(
@@ -263,9 +245,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The element value as a str.
         """
-        return find_element_value_as_str(
-            CurrentElementValueAccessor(process_save_element_command)
-        )
+        return find_element_value_as_str(CurrentElementValueAccessor(process_save_element_command))
 
     @staticmethod
     def get_element_value_as_str_list(
@@ -280,9 +260,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The element values as a str list.
         """
-        return get_element_value_as_str_list(
-            CurrentElementValueAccessor(process_save_element_command)
-        )
+        return get_element_value_as_str_list(CurrentElementValueAccessor(process_save_element_command))
 
     @staticmethod
     def get_element_value_as_float(
@@ -297,9 +275,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float(
-            CurrentElementValueAccessor(process_save_element_command)
-        )
+        return get_element_value_as_float(CurrentElementValueAccessor(process_save_element_command))
 
     @staticmethod
     def find_element_value_as_float(
@@ -314,9 +290,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The element value as a float.
         """
-        return find_element_value_as_float(
-            CurrentElementValueAccessor(process_save_element_command)
-        )
+        return find_element_value_as_float(CurrentElementValueAccessor(process_save_element_command))
 
     @staticmethod
     def get_element_value_as_float_list(
@@ -331,9 +305,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float_list(
-            CurrentElementValueAccessor(process_save_element_command)
-        )
+        return get_element_value_as_float_list(CurrentElementValueAccessor(process_save_element_command))
 
     @staticmethod
     def get_element_value_as_date(
@@ -348,9 +320,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The element value as a date.
         """
-        return get_element_value_as_date(
-            CurrentElementValueAccessor(process_save_element_command)
-        )
+        return get_element_value_as_date(CurrentElementValueAccessor(process_save_element_command))
 
     @staticmethod
     def find_element_value_as_date(
@@ -365,9 +335,7 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The element value as a date.
         """
-        return find_element_value_as_date(
-            CurrentElementValueAccessor(process_save_element_command)
-        )
+        return find_element_value_as_date(CurrentElementValueAccessor(process_save_element_command))
 
     @staticmethod
     def get_element_value_as_date_list(
@@ -382,6 +350,4 @@ class ProcessSaveElementCommandUtils:
         Returns:
             The element value as a date.
         """
-        return get_element_value_as_date_list(
-            CurrentElementValueAccessor(process_save_element_command)
-        )
+        return get_element_value_as_date_list(CurrentElementValueAccessor(process_save_element_command))

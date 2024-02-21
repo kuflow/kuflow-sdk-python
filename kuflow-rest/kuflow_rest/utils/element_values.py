@@ -89,9 +89,7 @@ class ElementValueAccessor(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def to_element_value_object(
-        self, element_value: Optional[ElementValueSimpleType]
-    ) -> Optional[ElementValueUnion]:
+    def to_element_value_object(self, element_value: Optional[ElementValueSimpleType]) -> Optional[ElementValueUnion]:
         raise NotImplementedError
 
 
@@ -102,9 +100,7 @@ class ProcessElementValueAccessor(ElementValueAccessor):
     def set_element_values(self, element_values: List[ElementValueUnion]):
         raise NotImplementedError
 
-    def to_element_value_object(
-        self, element_value: Optional[ElementValueSimpleType]
-    ) -> Optional[ElementValueUnion]:
+    def to_element_value_object(self, element_value: Optional[ElementValueSimpleType]) -> Optional[ElementValueUnion]:
         if element_value is None:
             return None
         elif isinstance(element_value, str):
@@ -128,9 +124,7 @@ class TaskElementValueAccessor(ElementValueAccessor):
     def set_element_values(self, element_values: List[ElementValueUnion]):
         raise NotImplementedError
 
-    def to_element_value_object(
-        self, element_value: Optional[ElementValueSimpleType]
-    ) -> Optional[ElementValueUnion]:
+    def to_element_value_object(self, element_value: Optional[ElementValueSimpleType]) -> Optional[ElementValueUnion]:
         if element_value is None:
             return None
         elif isinstance(element_value, str):
@@ -193,9 +187,7 @@ def get_element_value_valid_at(accessor: ElementValueAccessor, index: int) -> bo
     return element_values[index].valid
 
 
-def set_element_value_valid(
-    accessor: ElementValueAccessor, valid: Optional[bool]
-) -> ElementValueAccessor:
+def set_element_value_valid(accessor: ElementValueAccessor, valid: Optional[bool]) -> ElementValueAccessor:
     """
     Set the valid value for all element values.
 
@@ -250,9 +242,7 @@ def set_element_value(
     Returns:
         The passed model related object.
     """
-    return set_element_value_list(
-        accessor, [element_value] if element_value is not None else None
-    )
+    return set_element_value_list(accessor, [element_value] if element_value is not None else None)
 
 
 def set_element_value_list(
@@ -289,9 +279,7 @@ def add_element_value(
     Returns:
         The passed model related object.
     """
-    return add_element_value_list(
-        accessor, [element_value] if element_value is not None else None
-    )
+    return add_element_value_list(accessor, [element_value] if element_value is not None else None)
 
 
 def add_element_value_list(
@@ -368,8 +356,7 @@ def get_element_value_as_str_list(accessor: ElementValueAccessor) -> List[str]:
     return [
         str(elementValue.value)
         for elementValue in element_values
-        if elementValue.value is not None
-        and (elementValue.type == "STRING" or elementValue.type == "NUMBER")
+        if elementValue.value is not None and (elementValue.type == "STRING" or elementValue.type == "NUMBER")
     ]
 
 
@@ -424,8 +411,7 @@ def get_element_value_as_float_list(accessor: ElementValueAccessor) -> List[floa
     return [
         float(elementValue.value)
         for elementValue in element_values
-        if elementValue.value is not None
-        and (elementValue.type == "STRING" or elementValue.type == "NUMBER")
+        if elementValue.value is not None and (elementValue.type == "STRING" or elementValue.type == "NUMBER")
     ]
 
 
@@ -667,9 +653,7 @@ def _to_element_value_objects(
     accessor: ElementValueAccessor,
     element_values: Optional[List[ElementValueSimpleType]] = None,
 ) -> List[Union[ProcessElementValueUnion, TaskElementValueUnion]]:
-    element_value_objects: List[
-        Union[ProcessElementValueUnion, TaskElementValueUnion]
-    ] = []
+    element_value_objects: List[Union[ProcessElementValueUnion, TaskElementValueUnion]] = []
     for element_value in element_values or []:
         element_value = _transform_element_value(element_value)
 

@@ -77,17 +77,13 @@ class CurrentElementValueAccessor(TaskElementValueAccessor):
         if len(element_values) == 0:
             self.task_page_item.element_values.pop(self.element_definition_code, None)
         else:
-            self.task_page_item.element_values[
-                self.element_definition_code
-            ] = element_values
+            self.task_page_item.element_values[self.element_definition_code] = element_values
 
     def get_element_values(self) -> List[TaskElementValue]:
         if self.task_page_item.element_values is None:
             return []
 
-        element_values_by_code = self.task_page_item.element_values.get(
-            self.element_definition_code
-        )
+        element_values_by_code = self.task_page_item.element_values.get(self.element_definition_code)
         if element_values_by_code is None or len(element_values_by_code) == 0:
             return []
 
@@ -96,9 +92,7 @@ class CurrentElementValueAccessor(TaskElementValueAccessor):
 
 class TaskPageItemUtils:
     @staticmethod
-    def get_element_value_valid(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> bool:
+    def get_element_value_valid(task_page_item: TaskPageItem, element_definition_code: str) -> bool:
         """
         Check if all related valid values are TRUE.
 
@@ -109,9 +103,7 @@ class TaskPageItemUtils:
         Returns:
             True if all related valid values are TRUE, otherwise False.
         """
-        return get_element_value_valid(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_valid(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
     def get_element_value_valid_at(
@@ -130,9 +122,7 @@ class TaskPageItemUtils:
         Returns:
             The requested valid value if it exists, otherwise None.
         """
-        return get_element_value_valid_at(
-            CurrentElementValueAccessor(task_page_item, element_definition_code), index
-        )
+        return get_element_value_valid_at(CurrentElementValueAccessor(task_page_item, element_definition_code), index)
 
     @staticmethod
     def set_element_value_valid(
@@ -151,9 +141,7 @@ class TaskPageItemUtils:
         Returns:
             The passed task.
         """
-        set_element_value_valid(
-            CurrentElementValueAccessor(task_page_item, element_definition_code), valid
-        )
+        set_element_value_valid(CurrentElementValueAccessor(task_page_item, element_definition_code), valid)
 
         return task_page_item
 
@@ -281,9 +269,7 @@ class TaskPageItemUtils:
         return task_page_item
 
     @staticmethod
-    def get_element_value_as_str(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> str:
+    def get_element_value_as_str(task_page_item: TaskPageItem, element_definition_code: str) -> str:
         """
         Get an element as a str.
 
@@ -294,14 +280,10 @@ class TaskPageItemUtils:
         Returns:
             The element value as a str.
         """
-        return get_element_value_as_str(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_str(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
-    def find_element_value_as_str(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> Optional[str]:
+    def find_element_value_as_str(task_page_item: TaskPageItem, element_definition_code: str) -> Optional[str]:
         """
         Try to get an element as a str.
 
@@ -312,14 +294,10 @@ class TaskPageItemUtils:
         Returns:
             The element value as a str.
         """
-        return find_element_value_as_str(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return find_element_value_as_str(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
-    def get_element_value_as_str_list(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> List[str]:
+    def get_element_value_as_str_list(task_page_item: TaskPageItem, element_definition_code: str) -> List[str]:
         """
         Try to get an element as a str list.
 
@@ -330,14 +308,10 @@ class TaskPageItemUtils:
         Returns:
             The element values as a str list.
         """
-        return get_element_value_as_str_list(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_str_list(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
-    def get_element_value_as_float(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> float:
+    def get_element_value_as_float(task_page_item: TaskPageItem, element_definition_code: str) -> float:
         """
         Get an element as a float.
 
@@ -348,14 +322,10 @@ class TaskPageItemUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_float(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
-    def find_element_value_as_float(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> float:
+    def find_element_value_as_float(task_page_item: TaskPageItem, element_definition_code: str) -> float:
         """
         Try to get an element as a float.
 
@@ -366,14 +336,10 @@ class TaskPageItemUtils:
         Returns:
             The element value as a float.
         """
-        return find_element_value_as_float(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return find_element_value_as_float(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
-    def get_element_value_as_float_list(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> List[float]:
+    def get_element_value_as_float_list(task_page_item: TaskPageItem, element_definition_code: str) -> List[float]:
         """
         Get all elements as a float list.
 
@@ -384,14 +350,10 @@ class TaskPageItemUtils:
         Returns:
             The element value as a float.
         """
-        return get_element_value_as_float_list(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_float_list(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
-    def get_element_value_as_date(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> date:
+    def get_element_value_as_date(task_page_item: TaskPageItem, element_definition_code: str) -> date:
         """
         Get an element as a date.
 
@@ -402,14 +364,10 @@ class TaskPageItemUtils:
         Returns:
             The element value as a date.
         """
-        return get_element_value_as_date(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_date(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
-    def find_element_value_as_date(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> Optional[date]:
+    def find_element_value_as_date(task_page_item: TaskPageItem, element_definition_code: str) -> Optional[date]:
         """
         Try to get  an element as a date.
 
@@ -420,9 +378,7 @@ class TaskPageItemUtils:
         Returns:
             The element value as a date.
         """
-        return find_element_value_as_date(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return find_element_value_as_date(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
     def get_element_value_as_date_list(
@@ -438,14 +394,10 @@ class TaskPageItemUtils:
         Returns:
             The element values as date list.
         """
-        return get_element_value_as_date_list(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_date_list(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
-    def get_element_value_as_dict(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> dict:
+    def get_element_value_as_dict(task_page_item: TaskPageItem, element_definition_code: str) -> dict:
         """
         Get an element as a dict.
 
@@ -456,14 +408,10 @@ class TaskPageItemUtils:
         Returns:
             The element value as a dict.
         """
-        return get_element_value_as_dict(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_dict(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
-    def find_element_value_as_dict(
-        task_page_item: TaskPageItem, element_definition_code: str
-    ) -> Optional[dict]:
+    def find_element_value_as_dict(task_page_item: TaskPageItem, element_definition_code: str) -> Optional[dict]:
         """
         Try to get an element as a dict.
 
@@ -474,9 +422,7 @@ class TaskPageItemUtils:
         Returns:
             The element value as a dict.
         """
-        return find_element_value_as_dict(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return find_element_value_as_dict(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
     def get_element_value_as_dict_list(
@@ -492,9 +438,7 @@ class TaskPageItemUtils:
         Returns:
             The element values as dict list.
         """
-        return get_element_value_as_dict_list(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_dict_list(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
     def get_element_value_as_document(
@@ -510,9 +454,7 @@ class TaskPageItemUtils:
         Returns:
             The element value as a TaskElementValueDocumentItem.
         """
-        return get_element_value_as_document(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_document(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
     def find_element_value_as_document(
@@ -528,9 +470,7 @@ class TaskPageItemUtils:
         Returns:
             The element value as a TaskElementValueDocumentItem.
         """
-        return find_element_value_as_document(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return find_element_value_as_document(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
     def get_element_value_as_document_list(
@@ -546,9 +486,7 @@ class TaskPageItemUtils:
         Returns:
             The element values as TaskElementValueDocumentItem list.
         """
-        return get_element_value_as_document_list(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_document_list(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
     def get_element_value_as_principal(
@@ -564,9 +502,7 @@ class TaskPageItemUtils:
         Returns:
             The element value as a TaskElementValuePrincipalItem.
         """
-        return get_element_value_as_principal(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_principal(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
     def find_element_value_as_principal(
@@ -582,9 +518,7 @@ class TaskPageItemUtils:
         Returns:
             The element value as a TaskElementValuePrincipalItem.
         """
-        return find_element_value_as_principal(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return find_element_value_as_principal(CurrentElementValueAccessor(task_page_item, element_definition_code))
 
     @staticmethod
     def get_element_value_as_principal_list(
@@ -600,6 +534,4 @@ class TaskPageItemUtils:
         Returns:
             The element values as TaskElementValuePrincipalItem list.
         """
-        return get_element_value_as_principal_list(
-            CurrentElementValueAccessor(task_page_item, element_definition_code)
-        )
+        return get_element_value_as_principal_list(CurrentElementValueAccessor(task_page_item, element_definition_code))

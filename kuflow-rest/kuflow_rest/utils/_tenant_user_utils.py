@@ -76,9 +76,7 @@ class CurrentJsonFormDataAccessor(JsonFormDataAccessor):
 
 class TenantUserUtils:
     @staticmethod
-    def get_metadata_property_as_str(
-        tenant_user: TenantUser, property_path: str
-    ) -> str:
+    def get_metadata_property_as_str(tenant_user: TenantUser, property_path: str) -> str:
         """
         Get a json property as "str" following the "propertyPath" passed.
 
@@ -92,14 +90,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_str(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return get_json_forms_property_as_str(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def find_metadata_property_as_str(
-        tenant_user: TenantUser, property_path: str
-    ) -> Optional[str]:
+    def find_metadata_property_as_str(tenant_user: TenantUser, property_path: str) -> Optional[str]:
         """
         Try to find a json property as "str" following the "propertyPath" passed.
 
@@ -113,14 +107,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_str(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return find_json_forms_property_as_str(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def get_metadata_property_as_int(
-        tenant_user: TenantUser, property_path: str
-    ) -> int:
+    def get_metadata_property_as_int(tenant_user: TenantUser, property_path: str) -> int:
         """
         Get a json property as "int" following the "propertyPath" passed.
 
@@ -134,14 +124,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_int(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return get_json_forms_property_as_int(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def find_metadata_property_as_int(
-        tenant_user: TenantUser, property_path: str
-    ) -> Optional[int]:
+    def find_metadata_property_as_int(tenant_user: TenantUser, property_path: str) -> Optional[int]:
         """
         Try to find a json property as "int" following the "propertyPath" passed.
 
@@ -155,14 +141,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_int(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return find_json_forms_property_as_int(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def get_metadata_property_as_float(
-        tenant_user: TenantUser, property_path: str
-    ) -> float:
+    def get_metadata_property_as_float(tenant_user: TenantUser, property_path: str) -> float:
         """
         Get a json property as "float" following the "propertyPath" passed.
 
@@ -176,14 +158,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_float(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return get_json_forms_property_as_float(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def find_metadata_property_as_float(
-        tenant_user: TenantUser, property_path: str
-    ) -> Optional[float]:
+    def find_metadata_property_as_float(tenant_user: TenantUser, property_path: str) -> Optional[float]:
         """
         Try to find a json property as "float" following the "propertyPath" passed.
 
@@ -197,14 +175,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_float(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return find_json_forms_property_as_float(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def get_metadata_property_as_date(
-        tenant_user: TenantUser, property_path: str
-    ) -> date:
+    def get_metadata_property_as_date(tenant_user: TenantUser, property_path: str) -> date:
         """
         Get a json property as "date" following the "propertyPath" passed.
 
@@ -218,14 +192,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_date(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return get_json_forms_property_as_date(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def find_metadata_property_as_date(
-        tenant_user: TenantUser, property_path: str
-    ) -> Optional[date]:
+    def find_metadata_property_as_date(tenant_user: TenantUser, property_path: str) -> Optional[date]:
         """
         Try to find a json property as "date" following the "propertyPath" passed.
 
@@ -239,14 +209,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_date(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return find_json_forms_property_as_date(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def get_metadata_property_as_datetime(
-        tenant_user: TenantUser, property_path: str
-    ) -> datetime:
+    def get_metadata_property_as_datetime(tenant_user: TenantUser, property_path: str) -> datetime:
         """
         Get a json property as "datetime" following the "propertyPath" passed.
 
@@ -260,14 +226,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_datetime(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return get_json_forms_property_as_datetime(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def find_metadata_property_as_datetime(
-        tenant_user: TenantUser, property_path: str
-    ) -> Optional[datetime]:
+    def find_metadata_property_as_datetime(tenant_user: TenantUser, property_path: str) -> Optional[datetime]:
         """
         Try to find a json property as "datetime" following the "propertyPath" passed.
 
@@ -281,14 +243,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_datetime(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return find_json_forms_property_as_datetime(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def get_metadata_property_as_file(
-        tenant_user: TenantUser, property_path: str
-    ) -> JsonFormsFile:
+    def get_metadata_property_as_file(tenant_user: TenantUser, property_path: str) -> JsonFormsFile:
         """
         Get a json property as "JsonFormsFile" following the "propertyPath" passed.
 
@@ -302,14 +260,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_json_forms_file(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return get_json_forms_property_as_json_forms_file(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def find_metadata_property_as_file(
-        tenant_user: TenantUser, property_path: str
-    ) -> Optional[JsonFormsFile]:
+    def find_metadata_property_as_file(tenant_user: TenantUser, property_path: str) -> Optional[JsonFormsFile]:
         """
         Try to find a json property as "JsonFormsFile" following the "propertyPath" passed.
 
@@ -323,14 +277,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_json_forms_file(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return find_json_forms_property_as_json_forms_file(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def get_metadata_property_as_principal(
-        tenant_user: TenantUser, property_path: str
-    ) -> JsonFormsPrincipal:
+    def get_metadata_property_as_principal(tenant_user: TenantUser, property_path: str) -> JsonFormsPrincipal:
         """
         Get a json property as "JsonFormsPrincipal" following the "propertyPath" passed.
 
@@ -344,9 +294,7 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_json_forms_principal(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return get_json_forms_property_as_json_forms_principal(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
     def find_metadata_property_as_principal(
@@ -365,14 +313,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_json_forms_principal(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return find_json_forms_property_as_json_forms_principal(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def get_metadata_property_as_list(
-        tenant_user: TenantUser, property_path: str
-    ) -> list:
+    def get_metadata_property_as_list(tenant_user: TenantUser, property_path: str) -> list:
         """
         Get a json property as "list" following the "propertyPath" passed.
 
@@ -386,14 +330,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_list(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return get_json_forms_property_as_list(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def find_metadata_property_as_list(
-        tenant_user: TenantUser, property_path: str
-    ) -> Optional[list]:
+    def find_metadata_property_as_list(tenant_user: TenantUser, property_path: str) -> Optional[list]:
         """
         Try to find a json property as "list" following the "propertyPath" passed.
 
@@ -407,14 +347,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_list(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return find_json_forms_property_as_list(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def get_metadata_property_as_dict(
-        tenant_user: TenantUser, property_path: str
-    ) -> dict:
+    def get_metadata_property_as_dict(tenant_user: TenantUser, property_path: str) -> dict:
         """
         Get a json property as "dict" following the "propertyPath" passed.
 
@@ -428,14 +364,10 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value doesn't exist or has incorrect format
         """
-        return get_json_forms_property_as_dict(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return get_json_forms_property_as_dict(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
-    def find_metadata_property_as_dict(
-        tenant_user: TenantUser, property_path: str
-    ) -> Optional[dict]:
+    def find_metadata_property_as_dict(tenant_user: TenantUser, property_path: str) -> Optional[dict]:
         """
         Try to find a json property as "dict" following the "propertyPath" passed.
 
@@ -449,9 +381,7 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        return find_json_forms_property_as_dict(
-            CurrentJsonFormDataAccessor(tenant_user), property_path
-        )
+        return find_json_forms_property_as_dict(CurrentJsonFormDataAccessor(tenant_user), property_path)
 
     @staticmethod
     def update_metadata_property(
@@ -470,6 +400,4 @@ class TenantUserUtils:
         Raises:
             ValueError: If property value has incorrect format
         """
-        update_json_forms_property(
-            CurrentJsonFormDataAccessor(tenant_user), property_path, value
-        )
+        update_json_forms_property(CurrentJsonFormDataAccessor(tenant_user), property_path, value)

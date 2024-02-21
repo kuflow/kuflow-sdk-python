@@ -38,9 +38,7 @@ from kuflow_rest.utils import TaskSaveJsonFormsValueDataCommandUtils
 class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
     def test_get_json_forms_property_as_str(self):
         command = prepare_task_save_json_forms_data_command()
-        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_str(
-            command, "key1"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_str(command, "key1")
         self.assertEqual(value, "value_key1")
 
         value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_str(
@@ -49,15 +47,11 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
         self.assertEqual(value, "value_key2_key1_key2")
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_str(
-                command, "key2.0.key2_key1.0.unknown"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_str(command, "key2.0.key2_key1.0.unknown")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_str(
-                command, "key2.0.key2_key1.10"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_str(command, "key2.0.key2_key1.10")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as context:
@@ -69,9 +63,7 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
     def test_find_json_forms_property_as_str(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_str(
-            command, "key1"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_str(command, "key1")
         self.assertEqual(value, "value_key1")
 
         value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_str(
@@ -84,9 +76,7 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
         )
         self.assertIsNone(value)
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_str(
-            command, "key2.0.key2_key1.10"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_str(command, "key2.0.key2_key1.10")
         self.assertIsNone(value)
 
         value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_str(
@@ -97,194 +87,122 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
     def test_get_json_forms_property_as_int(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_int(
-            command, "key3.0"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_int(command, "key3.0")
         self.assertEqual(value, 500)
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_int(
-            command, "key3.1"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_int(command, "key3.1")
         self.assertEqual(value, 1000)
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_int(
-                command, "key_xxxxxxx"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_int(command, "key_xxxxxxx")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_int(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_int(command, "key1")
         self.assertEqual(str(context.exception), "Property key1 is not a int")
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_int(
-                command, "key3.2"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_int(command, "key3.2")
         self.assertEqual(str(context.exception), "Property key3.2 is not a int")
 
     def test_find_json_forms_property_as_int(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_int(
-            command, "key3.0"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_int(command, "key3.0")
         self.assertEqual(value, 500)
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_int(
-            command, "key3.1"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_int(command, "key3.1")
         self.assertEqual(value, 1000)
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_int(
-            command, "key_xxxxxxx"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_int(command, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_int(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_int(command, "key1")
         self.assertEqual(str(context.exception), "Property key1 is not a int")
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_int(
-                command, "key3.2"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_int(command, "key3.2")
         self.assertEqual(str(context.exception), "Property key3.2 is not a int")
 
     def test_get_json_forms_property_as_float(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_float(
-            command, "key3.0"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_float(command, "key3.0")
         self.assertEqual(value, 500)
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_float(
-            command, "key3.1"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_float(command, "key3.1")
         self.assertEqual(value, 1000)
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_float(
-            command, "key3.2"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_float(command, "key3.2")
         self.assertEqual(value, 2000.1)
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_float(
-                command, "key_xxxxxxx"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_float(command, "key_xxxxxxx")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_float(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_float(command, "key1")
         self.assertEqual(str(context.exception), "Property key1 is not a float")
 
     def test_find_json_forms_property_as_float(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = (
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_float(
-                command, "key3.0"
-            )
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_float(command, "key3.0")
         self.assertEqual(value, 500)
 
-        value = (
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_float(
-                command, "key3.1"
-            )
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_float(command, "key3.1")
         self.assertEqual(value, 1000)
 
-        value = (
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_float(
-                command, "key3.2"
-            )
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_float(command, "key3.2")
         self.assertEqual(value, 2000.1)
 
-        value = (
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_float(
-                command, "key_xxxxxxx"
-            )
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_float(command, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_float(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_float(command, "key1")
         self.assertEqual(str(context.exception), "Property key1 is not a float")
 
     def test_get_json_forms_property_as_date(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_date(
-            command, "key5.0"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_date(command, "key5.0")
         self.assertEqual(value, date.fromisoformat("2000-01-01"))
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_date(
-                command, "key_xxxxxxx"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_date(command, "key_xxxxxxx")
         self.assertEqual(str(cm.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_date(
-                command, "key1"
-            )
-        self.assertEqual(
-            str(cm.exception), "Property key1 is not a date following ISO 8601 format"
-        )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_date(command, "key1")
+        self.assertEqual(str(cm.exception), "Property key1 is not a date following ISO 8601 format")
 
     def test_find_json_forms_property_as_date(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_date(
-            command, "key5.0"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_date(command, "key5.0")
         self.assertEqual(value, date.fromisoformat("2000-01-01"))
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_date(
-            command, "key_xxxxxxx"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_date(command, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_date(
-                command, "key1"
-            )
-        self.assertEqual(
-            str(cm.exception), "Property key1 is not a date following ISO 8601 format"
-        )
+            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_date(command, "key1")
+        self.assertEqual(str(cm.exception), "Property key1 is not a date following ISO 8601 format")
 
     def test_get_json_forms_property_as_datetime(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = (
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_datetime(
-                command, "key5.1"
-            )
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_datetime(command, "key5.1")
         self.assertEqual(value, datetime.fromisoformat("2000-01-01T10:10:05+01:00"))
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_datetime(
-                command, "key_xxxxxxx"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_datetime(command, "key_xxxxxxx")
         self.assertEqual(str(cm.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_datetime(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_datetime(command, "key1")
         self.assertEqual(
             str(cm.exception),
             "Property key1 is not a date-time following ISO 8601 format",
@@ -293,24 +211,14 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
     def test_find_json_forms_property_as_datetime(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = (
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_datetime(
-                command, "key5.1"
-            )
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_datetime(command, "key5.1")
         self.assertEqual(value, datetime.fromisoformat("2000-01-01T10:10:05+01:00"))
 
-        value = (
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_datetime(
-                command, "key_xxxxxxx"
-            )
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_datetime(command, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_datetime(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_datetime(command, "key1")
         self.assertEqual(
             str(cm.exception),
             "Property key1 is not a date-time following ISO 8601 format",
@@ -319,134 +227,94 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
     def test_get_json_forms_property_as_file(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_file(
-            command, "key6"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_file(command, "key6")
         self.assertEqual(value.uri, "xxx-yyy-zzz")
         self.assertEqual(value.type, "application/pdf")
         self.assertEqual(value.name, "dummy.pdf")
         self.assertEqual(value.size, 500)
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_file(
-                command, "key_xxxxxxx"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_file(command, "key_xxxxxxx")
         self.assertEqual(str(cm.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_file(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_file(command, "key1")
         self.assertEqual(str(cm.exception), "Property key1 is not a file")
 
     def test_find_json_forms_property_as_file(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_file(
-            command, "key6"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_file(command, "key6")
         self.assertEqual(value.uri, "xxx-yyy-zzz")
         self.assertEqual(value.type, "application/pdf")
         self.assertEqual(value.name, "dummy.pdf")
         self.assertEqual(value.size, 500)
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_file(
-            command, "key_xxxxxxx"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_file(command, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_file(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_file(command, "key1")
         self.assertEqual(str(cm.exception), "Property key1 is not a file")
 
     def test_get_json_forms_property_as_principal(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = (
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_principal(
-                command, "key7"
-            )
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_principal(command, "key7")
         self.assertEqual(value.id, "xxx-yyy-zzz")
         self.assertEqual(value.type, "USER")
         self.assertEqual(value.name, "Homer Simpson")
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_principal(
-                command, "key_xxxxxxx"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_principal(command, "key_xxxxxxx")
         self.assertEqual(str(cm.exception), "Property value doesn't exist")
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_principal(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_principal(command, "key1")
         self.assertEqual(str(cm.exception), "Property key1 is not a principal")
 
     def test_find_json_forms_property_as_principal(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_principal(
-            command, "key7"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_principal(command, "key7")
         self.assertEqual(value.id, "xxx-yyy-zzz")
         self.assertEqual(value.type, "USER")
         self.assertEqual(value.name, "Homer Simpson")
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_principal(
-            command, "key_xxxxxxx"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_principal(command, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(ValueError) as cm:
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_principal(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_principal(command, "key1")
         self.assertEqual(str(cm.exception), "Property key1 is not a principal")
 
     def test_get_json_forms_property_as_list(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_list(
-            command, "key3"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_list(command, "key3")
         self.assertEqual(value, [500, "1000", 2000.1])
 
         with self.assertRaises(Exception) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_list(
-                command, "key_xxxxxxx"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_list(command, "key_xxxxxxx")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(Exception) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_list(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_list(command, "key1")
         self.assertEqual(str(context.exception), "Property key1 is not a list")
 
     def test_find_json_forms_property_as_list(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value1 = (
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_list(
-                command, "key3"
-            )
-        )
+        value1 = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_list(command, "key3")
         self.assertEqual(value1, [500, "1000", 2000.1])
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_list(
-            command, "key_xxxxxxx"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_list(command, "key_xxxxxxx")
         self.assertIsNone(value)
 
     def test_get_json_forms_property_as_dict(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_dict(
-            command, "key2.0.key2_key1.0"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_dict(command, "key2.0.key2_key1.0")
         self.assertEqual(
             value,
             {
@@ -456,23 +324,17 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
         )
 
         with self.assertRaises(Exception) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_dict(
-                command, "key_xxxxxxx"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_dict(command, "key_xxxxxxx")
         self.assertEqual(str(context.exception), "Property value doesn't exist")
 
         with self.assertRaises(Exception) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_dict(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.get_json_forms_property_as_dict(command, "key1")
         self.assertEqual(str(context.exception), "Property key1 is not a dict")
 
     def test_find_json_forms_property_as_dict(self):
         command = prepare_task_save_json_forms_data_command()
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_dict(
-            command, "key2.0.key2_key1.0"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_dict(command, "key2.0.key2_key1.0")
         self.assertEqual(
             value,
             {
@@ -481,15 +343,11 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
             },
         )
 
-        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_dict(
-            command, "key_xxxxxxx"
-        )
+        value = TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_dict(command, "key_xxxxxxx")
         self.assertIsNone(value)
 
         with self.assertRaises(Exception) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_dict(
-                command, "key1"
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.find_json_forms_property_as_dict(command, "key1")
         self.assertEqual(str(context.exception), "Property key1 is not a dict")
 
     def test_update_json_forms_property(self):
@@ -509,36 +367,22 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
             name="Homer Simpson",
         )
 
-        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-            command, "key1", "text"
-        )
-        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-            command, "key2.0.key1", True
-        )
+        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key1", "text")
+        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key2.0.key1", True)
         TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
             command, "key2.0.key2", date.fromisoformat("2020-01-01")
         )
-        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-            command, "key2.1.key1", False
-        )
+        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key2.1.key1", False)
         TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
             command, "key2.1.key2", date.fromisoformat("3030-01-01")
         )
-        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-            command, "key2.2.key1", False
-        )
+        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key2.2.key1", False)
         TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
             command, "key2.2.key2", datetime.fromisoformat("3030-01-01T10:10:00+01:00")
         )
-        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-            command, "key3", 100
-        )
-        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-            command, "key4", file
-        )
-        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-            command, "key5", principal
-        )
+        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key3", 100)
+        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key4", file)
+        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key5", principal)
 
         self.assertEqual(
             command.data,
@@ -564,15 +408,9 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
             },
         )
 
-        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-            command, "key1", None
-        )
-        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-            command, "key2.0", None
-        )
-        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-            command, "key2.0.key1", None
-        )
+        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key1", None)
+        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key2.0", None)
+        TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key2.0.key1", None)
 
         self.assertEqual(
             command.data,
@@ -593,9 +431,7 @@ class TaskSaveJsonFormsValueDataCommandUtilsTest(unittest.TestCase):
         )
 
         with self.assertRaises(ValueError) as context:
-            TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(
-                command, "key2.100.key1", None
-            )
+            TaskSaveJsonFormsValueDataCommandUtils.update_json_forms_property(command, "key2.100.key1", None)
         self.assertEqual(str(context.exception), "Property key2.100.key1 doesn't exist")
 
 
