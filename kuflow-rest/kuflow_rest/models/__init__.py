@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -97,6 +96,7 @@ from ._models import (
     TaskSaveElementValueDocumentCommand,
     TaskSaveJsonFormsValueDocumentRequestCommand,
 )
+
 
 __all__ = [
     # From _generated.models

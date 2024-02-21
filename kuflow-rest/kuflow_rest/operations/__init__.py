@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -30,6 +29,7 @@ from ._process_operations import ProcessOperations
 from ._task_operations import TaskOperations
 from ._tenant_user_operations import TenantUserOperations
 from ._worker_operations import WorkerOperations
+
 
 __all__ = [
     "AuthenticationOperations",

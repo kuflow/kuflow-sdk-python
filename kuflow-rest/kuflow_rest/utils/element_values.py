@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -44,6 +43,7 @@ from ..models import (
     TaskPageItem,
     TaskSaveElementCommand,
 )
+
 
 ProcessElementValueUnion = Union[ProcessElementValueString, ProcessElementValueNumber]
 TaskElementValueUnion = Union[

@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -39,6 +38,7 @@ from .element_values import (
     ProcessElementValueAccessor,
     TaskElementValueAccessor,
 )
+
 
 __all__ = [
     "ElementValueSimpleType",

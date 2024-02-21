@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -37,6 +36,7 @@ from ..models import (
     TaskPageItem,
     TaskSaveJsonFormsValueDataCommand,
 )
+
 
 JsonFormsSimpleType = Union[str, int, float, bool, date, JsonFormsPrincipal, JsonFormsFile]
 

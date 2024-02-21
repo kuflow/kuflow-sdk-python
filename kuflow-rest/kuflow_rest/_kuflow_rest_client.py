@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 # MIT License
 #
@@ -52,7 +51,7 @@ class ClientSecretCredential:
         self.client_id = client_id
         self.client_secret = client_secret
 
-        self.token = base64.b64encode("{}:{}".format(client_id, client_secret).encode("utf-8")).decode("utf-8")
+        self.token = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode("utf-8")
 
     def get_token(
         self,
