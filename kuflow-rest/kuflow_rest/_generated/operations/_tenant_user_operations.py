@@ -62,6 +62,7 @@ def build_find_tenant_users_request(
     sort: Optional[List[str]] = None,
     group_id: Optional[List[str]] = None,
     email: Optional[List[str]] = None,
+    tenant_id: Optional[List[str]] = None,
     **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -82,7 +83,9 @@ def build_find_tenant_users_request(
     if group_id is not None:
         _params["groupId"] = [_SERIALIZER.query("group_id", q, "str") if q is not None else "" for q in group_id]
     if email is not None:
-        _params["email"] = _SERIALIZER.query("email", email, "[str]")
+        _params["email"] = [_SERIALIZER.query("email", q, "str") if q is not None else "" for q in email]
+    if tenant_id is not None:
+        _params["tenantId"] = [_SERIALIZER.query("tenant_id", q, "str") if q is not None else "" for q in tenant_id]
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -137,6 +140,7 @@ class TenantUserOperations:
         sort: Optional[List[str]] = None,
         group_id: Optional[List[str]] = None,
         email: Optional[List[str]] = None,
+        tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> _models.TenantUserPage:
         """Find all accessible Tenant Users.
@@ -156,11 +160,12 @@ class TenantUserOperations:
 
          Please refer to the method description for supported properties. Default value is None.
         :paramtype sort: list[str]
-        :keyword group_id: Filter tenant users that exists in one of the group ids. Default value is
-         None.
+        :keyword group_id: Filter by group ids. Default value is None.
         :paramtype group_id: list[str]
-        :keyword email: Filter tenant users that have one of the emails. Default value is None.
+        :keyword email: Filter by email. Default value is None.
         :paramtype email: list[str]
+        :keyword tenant_id: Filter by tenantId. Default value is None.
+        :paramtype tenant_id: list[str]
         :return: TenantUserPage
         :rtype: ~kuflow.rest.models.TenantUserPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -184,6 +189,7 @@ class TenantUserOperations:
             sort=sort,
             group_id=group_id,
             email=email,
+            tenant_id=tenant_id,
             headers=_headers,
             params=_params,
         )

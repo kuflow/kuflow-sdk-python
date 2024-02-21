@@ -79,6 +79,7 @@ class PrincipalOperations:
         sort: Optional[List[str]] = None,
         type: Optional[Union[str, _models.PrincipalType]] = None,
         group_id: Optional[List[str]] = None,
+        tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> _models.PrincipalPage:
         """Find all accessible Principals.
@@ -101,8 +102,10 @@ class PrincipalOperations:
         :keyword type: Filter principals by type. Known values are: "USER", "APPLICATION", and
          "SYSTEM". Default value is None.
         :paramtype type: str or ~kuflow.rest.models.PrincipalType
-        :keyword group_id: Filter principals that exists in one of group ids. Default value is None.
+        :keyword group_id: Filter by group ids. Default value is None.
         :paramtype group_id: list[str]
+        :keyword tenant_id: Filter by tenantId. Default value is None.
+        :paramtype tenant_id: list[str]
         :return: PrincipalPage
         :rtype: ~kuflow.rest.models.PrincipalPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -126,6 +129,7 @@ class PrincipalOperations:
             sort=sort,
             type=type,
             group_id=group_id,
+            tenant_id=tenant_id,
             headers=_headers,
             params=_params,
         )

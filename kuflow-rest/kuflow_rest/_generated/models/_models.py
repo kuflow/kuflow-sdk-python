@@ -45,7 +45,7 @@ class AbstractAudited(_serialization.Model):
     """AbstractAudited.
 
     :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -77,7 +77,7 @@ class AbstractAudited(_serialization.Model):
     ) -> None:
         """
         :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
         :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -100,7 +100,7 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
     """Authentication.
 
     :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -114,6 +114,10 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
     :vartype id: str
     :ivar type: Known values are: "ENGINE", "ENGINE_TOKEN", and "ENGINE_CERTIFICATE".
     :vartype type: str or ~kuflow.rest.models.AuthenticationType
+    :ivar tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is used.
+    :vartype tenant_id: str
+    :ivar robot_id: Robot id. This attribute is required when an OAuth2 authentication is used.
+    :vartype robot_id: str
     :ivar token: Engine authentication token.
 
      @deprecated use engineToken.token.
@@ -136,6 +140,8 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
         "type": {"key": "type", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "robot_id": {"key": "robotId", "type": "str"},
         "token": {"key": "token", "type": "str"},
         "expired_at": {"key": "expiredAt", "type": "iso-8601"},
         "engine_token": {"key": "engineToken", "type": "AuthenticationEngineToken"},
@@ -152,6 +158,8 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         last_modified_at: Optional[datetime.datetime] = None,
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         type: Optional[Union[str, "_models.AuthenticationType"]] = None,
+        tenant_id: Optional[str] = None,
+        robot_id: Optional[str] = None,
         token: Optional[str] = None,
         expired_at: Optional[datetime.datetime] = None,
         engine_token: Optional["_models.AuthenticationEngineToken"] = None,
@@ -160,7 +168,7 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
     ) -> None:
         """
         :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
         :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -174,6 +182,11 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         :paramtype id: str
         :keyword type: Known values are: "ENGINE", "ENGINE_TOKEN", and "ENGINE_CERTIFICATE".
         :paramtype type: str or ~kuflow.rest.models.AuthenticationType
+        :keyword tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is
+         used.
+        :paramtype tenant_id: str
+        :keyword robot_id: Robot id. This attribute is required when an OAuth2 authentication is used.
+        :paramtype robot_id: str
         :keyword token: Engine authentication token.
 
          @deprecated use engineToken.token.
@@ -197,6 +210,8 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         )
         self.id = id
         self.type = type
+        self.tenant_id = tenant_id
+        self.robot_id = robot_id
         self.token = token
         self.expired_at = expired_at
         self.engine_token = engine_token
@@ -503,7 +518,7 @@ class Page(_serialization.Model):
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", and "TASK_PAGE".
+     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
     :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.models.PageMetadata
@@ -527,7 +542,7 @@ class Page(_serialization.Model):
     ) -> None:
         """
         :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", and "TASK_PAGE".
+         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
         :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
@@ -668,7 +683,7 @@ class PrincipalPage(Page):
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", and "TASK_PAGE".
+     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
     :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.models.PageMetadata
@@ -697,7 +712,7 @@ class PrincipalPage(Page):
     ) -> None:
         """
         :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", and "TASK_PAGE".
+         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
         :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
@@ -746,7 +761,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -770,6 +785,8 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :vartype initiator: ~kuflow.rest.models.Principal
     :ivar related_process:
     :vartype related_process: ~kuflow.rest.models.RelatedProcess
+    :ivar tenant_id: Tenant ID.
+    :vartype tenant_id: str
     """
 
     _validation = {
@@ -790,6 +807,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "element_values": {"key": "elementValues", "type": "{[ProcessElementValue]}"},
         "initiator": {"key": "initiator", "type": "Principal"},
         "related_process": {"key": "relatedProcess", "type": "RelatedProcess"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
     def __init__(
@@ -807,11 +825,12 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         element_values: Optional[Dict[str, List["_models.ProcessElementValue"]]] = None,
         initiator: Optional["_models.Principal"] = None,
         related_process: Optional["_models.RelatedProcess"] = None,
+        tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
         :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
         :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -835,6 +854,8 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype initiator: ~kuflow.rest.models.Principal
         :keyword related_process:
         :paramtype related_process: ~kuflow.rest.models.RelatedProcess
+        :keyword tenant_id: Tenant ID.
+        :paramtype tenant_id: str
         """
         super().__init__(
             object_type=object_type,
@@ -851,6 +872,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         self.element_values = element_values
         self.initiator = initiator
         self.related_process = related_process
+        self.tenant_id = tenant_id
 
 
 class ProcessChangeInitiatorCommand(_serialization.Model):
@@ -1062,7 +1084,7 @@ class ProcessPage(Page):
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", and "TASK_PAGE".
+     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
     :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.models.PageMetadata
@@ -1091,7 +1113,7 @@ class ProcessPage(Page):
     ) -> None:
         """
         :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", and "TASK_PAGE".
+         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
         :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
@@ -1108,7 +1130,7 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -1130,6 +1152,8 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
     :vartype element_values: dict[str, list[~kuflow.rest.models.ProcessElementValue]]
     :ivar initiator:
     :vartype initiator: ~kuflow.rest.models.Principal
+    :ivar tenant_id: Tenant ID.
+    :vartype tenant_id: str
     """
 
     _validation = {
@@ -1149,6 +1173,7 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
         "process_definition": {"key": "processDefinition", "type": "ProcessDefinitionSummary"},
         "element_values": {"key": "elementValues", "type": "{[ProcessElementValue]}"},
         "initiator": {"key": "initiator", "type": "Principal"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
     def __init__(
@@ -1165,11 +1190,12 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
         state: Optional[Union[str, "_models.ProcessState"]] = None,
         element_values: Optional[Dict[str, List["_models.ProcessElementValue"]]] = None,
         initiator: Optional["_models.Principal"] = None,
+        tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
         :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
         :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -1191,6 +1217,8 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
         :paramtype element_values: dict[str, list[~kuflow.rest.models.ProcessElementValue]]
         :keyword initiator:
         :paramtype initiator: ~kuflow.rest.models.Principal
+        :keyword tenant_id: Tenant ID.
+        :paramtype tenant_id: str
         """
         super().__init__(
             object_type=object_type,
@@ -1206,6 +1234,7 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
         self.process_definition = process_definition
         self.element_values = element_values
         self.initiator = initiator
+        self.tenant_id = tenant_id
 
 
 class ProcessSaveElementCommand(_serialization.Model):
@@ -1274,13 +1303,246 @@ class RelatedProcess(_serialization.Model):
         self.outcoming = outcoming
 
 
+class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
+    """Robot.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
+    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Robot ID. Required.
+    :vartype id: str
+    :ivar code: Robot Code. Required.
+    :vartype code: str
+    :ivar name: Robot name. Required.
+    :vartype name: str
+    :ivar description: Robot description.
+    :vartype description: str
+    :ivar source_type: Robot source type. Required. Default value is
+     "ROBOT_FRAMEWORK_PYTHON_WHEEL".
+    :vartype source_type: str
+    :ivar source_file: Robot source type.
+    :vartype source_file: ~kuflow.rest.models.RobotSourceFile
+    :ivar environment_variables: Environment variables to load when the robot is executed.
+    :vartype environment_variables: dict[str, str]
+    :ivar tenant_id: Tenant ID.
+    :vartype tenant_id: str
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "code": {"required": True, "max_length": 50, "min_length": 1},
+        "name": {"required": True, "max_length": 50, "min_length": 1},
+        "description": {"max_length": 4000, "min_length": 1},
+        "source_type": {"required": True, "constant": True},
+    }
+
+    _attribute_map = {
+        "object_type": {"key": "objectType", "type": "str"},
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "code": {"key": "code", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+        "description": {"key": "description", "type": "str"},
+        "source_type": {"key": "sourceType", "type": "str"},
+        "source_file": {"key": "sourceFile", "type": "RobotSourceFile"},
+        "environment_variables": {"key": "environmentVariables", "type": "{str}"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+    }
+
+    source_type = "ROBOT_FRAMEWORK_PYTHON_WHEEL"
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        code: str,
+        name: str,
+        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        description: Optional[str] = None,
+        source_file: Optional["_models.RobotSourceFile"] = None,
+        environment_variables: Optional[Dict[str, str]] = None,
+        tenant_id: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
+        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Robot ID. Required.
+        :paramtype id: str
+        :keyword code: Robot Code. Required.
+        :paramtype code: str
+        :keyword name: Robot name. Required.
+        :paramtype name: str
+        :keyword description: Robot description.
+        :paramtype description: str
+        :keyword source_file: Robot source type.
+        :paramtype source_file: ~kuflow.rest.models.RobotSourceFile
+        :keyword environment_variables: Environment variables to load when the robot is executed.
+        :paramtype environment_variables: dict[str, str]
+        :keyword tenant_id: Tenant ID.
+        :paramtype tenant_id: str
+        """
+        super().__init__(
+            object_type=object_type,
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.code = code
+        self.name = name
+        self.description = description
+        self.source_file = source_file
+        self.environment_variables = environment_variables
+        self.tenant_id = tenant_id
+
+
+class RobotPage(Page):
+    """RobotPage.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
+     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
+    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
+    :ivar metadata: Required.
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
+    :ivar content: Required.
+    :vartype content: list[~kuflow.rest.models.Robot]
+    """
+
+    _validation = {
+        "metadata": {"required": True},
+        "content": {"required": True},
+    }
+
+    _attribute_map = {
+        "object_type": {"key": "objectType", "type": "str"},
+        "metadata": {"key": "metadata", "type": "PageMetadata"},
+        "content": {"key": "content", "type": "[Robot]"},
+    }
+
+    def __init__(
+        self,
+        *,
+        metadata: "_models.PageMetadata",
+        content: List["_models.Robot"],
+        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
+         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
+        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        :keyword content: Required.
+        :paramtype content: list[~kuflow.rest.models.Robot]
+        """
+        super().__init__(object_type=object_type, metadata=metadata, **kwargs)
+        self.content = content
+
+
+class RobotSourceFile(_serialization.Model):
+    """Robot source type.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Robot ID. Required.
+    :vartype id: str
+    :ivar name: Source file name. Required.
+    :vartype name: str
+    :ivar content_type: Source file content type. Required.
+    :vartype content_type: str
+    :ivar content_length: Source file length. Required.
+    :vartype content_length: int
+    :ivar content_hash: Source file to check the integrity. Required.
+    :vartype content_hash: str
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "name": {"required": True},
+        "content_type": {"required": True},
+        "content_length": {"required": True},
+        "content_hash": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+        "content_type": {"key": "contentType", "type": "str"},
+        "content_length": {"key": "contentLength", "type": "int"},
+        "content_hash": {"key": "contentHash", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        name: str,
+        content_type: str,
+        content_length: int,
+        content_hash: str,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Robot ID. Required.
+        :paramtype id: str
+        :keyword name: Source file name. Required.
+        :paramtype name: str
+        :keyword content_type: Source file content type. Required.
+        :paramtype content_type: str
+        :keyword content_length: Source file length. Required.
+        :paramtype content_length: int
+        :keyword content_hash: Source file to check the integrity. Required.
+        :paramtype content_hash: str
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.name = name
+        self.content_type = content_type
+        self.content_length = content_length
+        self.content_hash = content_hash
+
+
 class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """Task.
 
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -1308,6 +1570,8 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :vartype logs: list[~kuflow.rest.models.Log]
     :ivar owner:
     :vartype owner: ~kuflow.rest.models.Principal
+    :ivar tenant_id: Tenant ID.
+    :vartype tenant_id: str
     """
 
     _validation = {
@@ -1329,6 +1593,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "json_forms_value": {"key": "jsonFormsValue", "type": "JsonFormsValue"},
         "logs": {"key": "logs", "type": "[Log]"},
         "owner": {"key": "owner", "type": "Principal"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
     def __init__(
@@ -1347,11 +1612,12 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         json_forms_value: Optional["_models.JsonFormsValue"] = None,
         logs: Optional[List["_models.Log"]] = None,
         owner: Optional["_models.Principal"] = None,
+        tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
         :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
         :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -1380,6 +1646,8 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype logs: list[~kuflow.rest.models.Log]
         :keyword owner:
         :paramtype owner: ~kuflow.rest.models.Principal
+        :keyword tenant_id: Tenant ID.
+        :paramtype tenant_id: str
         """
         super().__init__(
             object_type=object_type,
@@ -1397,6 +1665,7 @@ class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         self.json_forms_value = json_forms_value
         self.logs = logs
         self.owner = owner
+        self.tenant_id = tenant_id
 
 
 class TaskAssignCommand(_serialization.Model):
@@ -1868,7 +2137,7 @@ class TaskPage(Page):
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", and "TASK_PAGE".
+     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
     :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.models.PageMetadata
@@ -1897,7 +2166,7 @@ class TaskPage(Page):
     ) -> None:
         """
         :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", and "TASK_PAGE".
+         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
         :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
@@ -1914,7 +2183,7 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -1938,6 +2207,8 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
     :vartype json_forms_value: ~kuflow.rest.models.JsonFormsValue
     :ivar owner:
     :vartype owner: ~kuflow.rest.models.Principal
+    :ivar tenant_id: Tenant ID.
+    :vartype tenant_id: str
     """
 
     _validation = {
@@ -1958,6 +2229,7 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         "element_values": {"key": "elementValues", "type": "{[TaskElementValue]}"},
         "json_forms_value": {"key": "jsonFormsValue", "type": "JsonFormsValue"},
         "owner": {"key": "owner", "type": "Principal"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
     def __init__(
@@ -1975,11 +2247,12 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         element_values: Optional[Dict[str, List["_models.TaskElementValue"]]] = None,
         json_forms_value: Optional["_models.JsonFormsValue"] = None,
         owner: Optional["_models.Principal"] = None,
+        tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
         :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
         :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -2004,6 +2277,8 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         :paramtype json_forms_value: ~kuflow.rest.models.JsonFormsValue
         :keyword owner:
         :paramtype owner: ~kuflow.rest.models.Principal
+        :keyword tenant_id: Tenant ID.
+        :paramtype tenant_id: str
         """
         super().__init__(
             object_type=object_type,
@@ -2020,6 +2295,7 @@ class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attrib
         self.element_values = element_values
         self.json_forms_value = json_forms_value
         self.owner = owner
+        self.tenant_id = tenant_id
 
 
 class TaskSaveElementCommand(_serialization.Model):
@@ -2118,7 +2394,7 @@ class TenantUser(AbstractAudited):
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -2134,6 +2410,8 @@ class TenantUser(AbstractAudited):
     :vartype metadata: ~kuflow.rest.models.TenantUserMetadata
     :ivar principal: Required.
     :vartype principal: ~kuflow.rest.models.Principal
+    :ivar tenant_id:
+    :vartype tenant_id: str
     """
 
     _validation = {
@@ -2150,6 +2428,7 @@ class TenantUser(AbstractAudited):
         "id": {"key": "id", "type": "str"},
         "metadata": {"key": "metadata", "type": "TenantUserMetadata"},
         "principal": {"key": "principal", "type": "Principal"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
     def __init__(
@@ -2163,11 +2442,12 @@ class TenantUser(AbstractAudited):
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
         metadata: Optional["_models.TenantUserMetadata"] = None,
+        tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
         :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
         :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -2183,6 +2463,8 @@ class TenantUser(AbstractAudited):
         :paramtype metadata: ~kuflow.rest.models.TenantUserMetadata
         :keyword principal: Required.
         :paramtype principal: ~kuflow.rest.models.Principal
+        :keyword tenant_id:
+        :paramtype tenant_id: str
         """
         super().__init__(
             object_type=object_type,
@@ -2195,6 +2477,7 @@ class TenantUser(AbstractAudited):
         self.id = id
         self.metadata = metadata
         self.principal = principal
+        self.tenant_id = tenant_id
 
 
 class TenantUserMetadata(_serialization.Model):
@@ -2236,7 +2519,7 @@ class TenantUserPage(Page):
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", and "TASK_PAGE".
+     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
     :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.models.PageMetadata
@@ -2265,7 +2548,7 @@ class TenantUserPage(Page):
     ) -> None:
         """
         :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", and "TASK_PAGE".
+         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
         :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
@@ -2531,7 +2814,7 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
     :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
@@ -2555,6 +2838,8 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :vartype hostname: str
     :ivar ip: Required.
     :vartype ip: str
+    :ivar tenant_id: Tenant ID.
+    :vartype tenant_id: str
     """
 
     _validation = {
@@ -2577,6 +2862,7 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "activity_types": {"key": "activityTypes", "type": "[str]"},
         "hostname": {"key": "hostname", "type": "str"},
         "ip": {"key": "ip", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
     def __init__(
@@ -2594,11 +2880,12 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         workflow_types: Optional[List[str]] = None,
         activity_types: Optional[List[str]] = None,
+        tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
         :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", and "WORKER".
+         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
         :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
@@ -2622,6 +2909,8 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype hostname: str
         :keyword ip: Required.
         :paramtype ip: str
+        :keyword tenant_id: Tenant ID.
+        :paramtype tenant_id: str
         """
         super().__init__(
             object_type=object_type,
@@ -2638,3 +2927,4 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         self.activity_types = activity_types
         self.hostname = hostname
         self.ip = ip
+        self.tenant_id = tenant_id
