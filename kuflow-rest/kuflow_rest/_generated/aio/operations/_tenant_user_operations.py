@@ -79,6 +79,7 @@ class TenantUserOperations:
         sort: Optional[List[str]] = None,
         group_id: Optional[List[str]] = None,
         email: Optional[List[str]] = None,
+        tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> _models.TenantUserPage:
         """Find all accessible Tenant Users.
@@ -98,11 +99,12 @@ class TenantUserOperations:
 
          Please refer to the method description for supported properties. Default value is None.
         :paramtype sort: list[str]
-        :keyword group_id: Filter tenant users that exists in one of the group ids. Default value is
-         None.
+        :keyword group_id: Filter by group ids. Default value is None.
         :paramtype group_id: list[str]
-        :keyword email: Filter tenant users that have one of the emails. Default value is None.
+        :keyword email: Filter by email. Default value is None.
         :paramtype email: list[str]
+        :keyword tenant_id: Filter by tenantId. Default value is None.
+        :paramtype tenant_id: list[str]
         :return: TenantUserPage
         :rtype: ~kuflow.rest.models.TenantUserPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -126,6 +128,7 @@ class TenantUserOperations:
             sort=sort,
             group_id=group_id,
             email=email,
+            tenant_id=tenant_id,
             headers=_headers,
             params=_params,
         )

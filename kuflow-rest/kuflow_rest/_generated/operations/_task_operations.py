@@ -64,6 +64,7 @@ def build_find_tasks_request(
     process_id: Optional[List[str]] = None,
     state: Optional[List[Union[str, _models.TaskState]]] = None,
     task_definition_code: Optional[List[str]] = None,
+    tenant_id: Optional[List[str]] = None,
     **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -89,6 +90,8 @@ def build_find_tasks_request(
         _params["taskDefinitionCode"] = [
             _SERIALIZER.query("task_definition_code", q, "str") if q is not None else "" for q in task_definition_code
         ]
+    if tenant_id is not None:
+        _params["tenantId"] = [_SERIALIZER.query("tenant_id", q, "str") if q is not None else "" for q in tenant_id]
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -489,6 +492,7 @@ class TaskOperations:
         process_id: Optional[List[str]] = None,
         state: Optional[List[Union[str, _models.TaskState]]] = None,
         task_definition_code: Optional[List[str]] = None,
+        tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> _models.TaskPage:
         """Find all accessible Tasks.
@@ -516,6 +520,8 @@ class TaskOperations:
         :keyword task_definition_code: Filter by an array of task definition codes. Default value is
          None.
         :paramtype task_definition_code: list[str]
+        :keyword tenant_id: Filter by tenantId. Default value is None.
+        :paramtype tenant_id: list[str]
         :return: TaskPage
         :rtype: ~kuflow.rest.models.TaskPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -540,6 +546,7 @@ class TaskOperations:
             process_id=process_id,
             state=state,
             task_definition_code=task_definition_code,
+            tenant_id=tenant_id,
             headers=_headers,
             params=_params,
         )
@@ -685,9 +692,6 @@ class TaskOperations:
          will be never
          used for the latest SDKs versions. Default value is None.
         :paramtype activity_token: str
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -908,9 +912,6 @@ class TaskOperations:
         :param command: Command to change the task owner. Is either a TaskAssignCommand type or a
          IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.TaskAssignCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -1045,9 +1046,6 @@ class TaskOperations:
         :param command: Command to save an element. Is either a TaskSaveElementCommand type or a
          IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.TaskSaveElementCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -1259,9 +1257,6 @@ class TaskOperations:
         :param command: Command to delete an element. Is either a TaskDeleteElementCommand type or a
          IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.TaskDeleteElementCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -1386,9 +1381,6 @@ class TaskOperations:
         :param command: Command to delete a document element value. Is either a
          TaskDeleteElementValueDocumentCommand type or a IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.TaskDeleteElementValueDocumentCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -1630,9 +1622,6 @@ class TaskOperations:
         :param command: Command to save the JSON value. Is either a TaskSaveJsonFormsValueDataCommand
          type or a IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.TaskSaveJsonFormsValueDataCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -1926,9 +1915,6 @@ class TaskOperations:
         :type id: str
         :param log: Log to be created. Is either a Log type or a IO[bytes] type. Required.
         :type log: ~kuflow.rest.models.Log or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Task
         :rtype: ~kuflow.rest.models.Task
         :raises ~azure.core.exceptions.HttpResponseError:

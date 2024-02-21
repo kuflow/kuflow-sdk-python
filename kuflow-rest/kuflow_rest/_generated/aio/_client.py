@@ -44,6 +44,7 @@ from .operations import (
     AuthenticationOperations,
     PrincipalOperations,
     ProcessOperations,
+    RobotOperations,
     TaskOperations,
     TenantUserOperations,
     WorkerOperations,
@@ -54,7 +55,7 @@ if TYPE_CHECKING:
     from azure.core.credentials_async import AsyncTokenCredential
 
 
-class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
+class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,too-many-instance-attributes
     """Introduction
     ============
 
@@ -118,6 +119,8 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
     :vartype task: kuflow.rest.aio.operations.TaskOperations
     :ivar worker: WorkerOperations operations
     :vartype worker: kuflow.rest.aio.operations.WorkerOperations
+    :ivar robot: RobotOperations operations
+    :vartype robot: kuflow.rest.aio.operations.RobotOperations
     :param credential: Credential needed for the client to connect to Azure. Required.
     :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :keyword endpoint: Service URL. Default value is "https://api.kuflow.com/v2022-10-08".
@@ -157,6 +160,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         self.process = ProcessOperations(self._client, self._config, self._serialize, self._deserialize)
         self.task = TaskOperations(self._client, self._config, self._serialize, self._deserialize)
         self.worker = WorkerOperations(self._client, self._config, self._serialize, self._deserialize)
+        self.robot = RobotOperations(self._client, self._config, self._serialize, self._deserialize)
 
     def send_request(
         self, request: HttpRequest, *, stream: bool = False, **kwargs: Any

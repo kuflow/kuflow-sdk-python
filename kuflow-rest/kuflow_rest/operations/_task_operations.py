@@ -49,6 +49,7 @@ class TaskOperations:
         process_id: Optional[Union[str, List[str]]] = None,
         state: Optional[Union[_models.TaskState, List[_models.TaskState]]] = None,
         task_definition_code: Optional[Union[str, List[str]]] = None,
+        tenant_id: Optional[Union[str, List[str]]] = None,
         **kwargs: Any,
     ) -> _models.TaskPage:
         """Find all accessible Tasks.
@@ -73,18 +74,26 @@ class TaskOperations:
         :type state: list[str or ~kuflow.rest.models.TaskState]
         :keyword task_definition_code: Filter by an array of task definition codes. Default value is None.
         :type task_definition_code: list[str]
+        :keyword tenant_id: Filter tasks that exists in one of tenant ids. Default value is None.
+        :type tenant_id: Optional[Union[str, List[str]]]
         :return: TaskPage
         :rtype: ~kuflow.rest.models.TaskPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         if sort is not None and isinstance(sort, str):
             sort = [sort]
+
         if process_id is not None and isinstance(process_id, str):
             process_id = [process_id]
+
         if state is not None and isinstance(state, _models.TaskState):
             state = [state]
+
         if task_definition_code is not None and isinstance(task_definition_code, str):
             task_definition_code = [task_definition_code]
+
+        if tenant_id is not None and isinstance(tenant_id, str):
+            tenant_id = [tenant_id]
 
         return self._kuflow_client.task.find_tasks(
             size=size,
@@ -93,6 +102,7 @@ class TaskOperations:
             process_id=process_id,
             state=state,
             task_definition_code=task_definition_code,
+            tenant_id=tenant_id,
             **kwargs,
         )
 

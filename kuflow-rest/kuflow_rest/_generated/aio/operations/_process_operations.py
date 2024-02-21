@@ -84,7 +84,13 @@ class ProcessOperations:
 
     @distributed_trace_async
     async def find_processes(
-        self, *, size: int = 25, page: int = 0, sort: Optional[List[str]] = None, **kwargs: Any
+        self,
+        *,
+        size: int = 25,
+        page: int = 0,
+        sort: Optional[List[str]] = None,
+        tenant_id: Optional[List[str]] = None,
+        **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
 
@@ -103,6 +109,8 @@ class ProcessOperations:
 
          Please refer to the method description for supported properties. Default value is None.
         :paramtype sort: list[str]
+        :keyword tenant_id: Filter by tenantId. Default value is None.
+        :paramtype tenant_id: list[str]
         :return: ProcessPage
         :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -124,6 +132,7 @@ class ProcessOperations:
             size=size,
             page=page,
             sort=sort,
+            tenant_id=tenant_id,
             headers=_headers,
             params=_params,
         )
@@ -230,9 +239,6 @@ class ProcessOperations:
 
         :param process: Process to create. Is either a Process type or a IO[bytes] type. Required.
         :type process: ~kuflow.rest.models.Process or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -416,9 +422,6 @@ class ProcessOperations:
         :param command: Command to change the process initiator. Is either a
          ProcessChangeInitiatorCommand type or a IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -552,9 +555,6 @@ class ProcessOperations:
         :param command: Command to save an element. Is either a ProcessSaveElementCommand type or a
          IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.ProcessSaveElementCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -676,9 +676,6 @@ class ProcessOperations:
         :param command: Command to delete an element. Is either a ProcessDeleteElementCommand type or a
          IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.ProcessDeleteElementCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:

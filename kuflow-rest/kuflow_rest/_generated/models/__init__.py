@@ -56,6 +56,9 @@ from ._models import ProcessPage
 from ._models import ProcessPageItem
 from ._models import ProcessSaveElementCommand
 from ._models import RelatedProcess
+from ._models import Robot
+from ._models import RobotPage
+from ._models import RobotSourceFile
 from ._models import Task
 from ._models import TaskAssignCommand
 from ._models import TaskDefinitionSummary
@@ -91,6 +94,9 @@ from ._enums import PagedObjectType
 from ._enums import PrincipalType
 from ._enums import ProcessElementValueType
 from ._enums import ProcessState
+from ._enums import RobotAssetArchitecture
+from ._enums import RobotAssetPlatform
+from ._enums import RobotAssetType
 from ._enums import TaskElementValueType
 from ._enums import TaskState
 from ._enums import WebhookType
@@ -125,6 +131,9 @@ __all__ = [
     "ProcessPageItem",
     "ProcessSaveElementCommand",
     "RelatedProcess",
+    "Robot",
+    "RobotPage",
+    "RobotSourceFile",
     "Task",
     "TaskAssignCommand",
     "TaskDefinitionSummary",
@@ -159,6 +168,9 @@ __all__ = [
     "PrincipalType",
     "ProcessElementValueType",
     "ProcessState",
+    "RobotAssetArchitecture",
+    "RobotAssetPlatform",
+    "RobotAssetType",
     "TaskElementValueType",
     "TaskState",
     "WebhookType",

@@ -57,7 +57,12 @@ _SERIALIZER.client_side_validation = False
 
 
 def build_find_processes_request(
-    *, size: int = 25, page: int = 0, sort: Optional[List[str]] = None, **kwargs: Any
+    *,
+    size: int = 25,
+    page: int = 0,
+    sort: Optional[List[str]] = None,
+    tenant_id: Optional[List[str]] = None,
+    **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
@@ -74,6 +79,8 @@ def build_find_processes_request(
         _params["page"] = _SERIALIZER.query("page", page, "int", minimum=0)
     if sort is not None:
         _params["sort"] = [_SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort]
+    if tenant_id is not None:
+        _params["tenantId"] = [_SERIALIZER.query("tenant_id", q, "str") if q is not None else "" for q in tenant_id]
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -278,7 +285,13 @@ class ProcessOperations:
 
     @distributed_trace
     def find_processes(
-        self, *, size: int = 25, page: int = 0, sort: Optional[List[str]] = None, **kwargs: Any
+        self,
+        *,
+        size: int = 25,
+        page: int = 0,
+        sort: Optional[List[str]] = None,
+        tenant_id: Optional[List[str]] = None,
+        **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
 
@@ -297,6 +310,8 @@ class ProcessOperations:
 
          Please refer to the method description for supported properties. Default value is None.
         :paramtype sort: list[str]
+        :keyword tenant_id: Filter by tenantId. Default value is None.
+        :paramtype tenant_id: list[str]
         :return: ProcessPage
         :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -318,6 +333,7 @@ class ProcessOperations:
             size=size,
             page=page,
             sort=sort,
+            tenant_id=tenant_id,
             headers=_headers,
             params=_params,
         )
@@ -424,9 +440,6 @@ class ProcessOperations:
 
         :param process: Process to create. Is either a Process type or a IO[bytes] type. Required.
         :type process: ~kuflow.rest.models.Process or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -610,9 +623,6 @@ class ProcessOperations:
         :param command: Command to change the process initiator. Is either a
          ProcessChangeInitiatorCommand type or a IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -746,9 +756,6 @@ class ProcessOperations:
         :param command: Command to save an element. Is either a ProcessSaveElementCommand type or a
          IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.ProcessSaveElementCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -870,9 +877,6 @@ class ProcessOperations:
         :param command: Command to delete an element. Is either a ProcessDeleteElementCommand type or a
          IO[bytes] type. Required.
         :type command: ~kuflow.rest.models.ProcessDeleteElementCommand or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:

@@ -46,6 +46,7 @@ class ProcessOperations:
         size: int = 25,
         page: int = 0,
         sort: Optional[Union[str, List[str]]] = None,
+        tenant_id: Optional[Union[str, List[str]]] = None,
         **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
@@ -65,6 +66,8 @@ class ProcessOperations:
 
                        Please refer to the method description for supported properties. Default value is None.
         :type sort: Optional[Union[str, List[str]]]
+        :keyword tenant_id: Filter processes that exists in one of tenant ids. Default value is None.
+        :type tenant_id: Optional[Union[str, List[str]]]
         :return: ProcessPage
         :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -72,7 +75,12 @@ class ProcessOperations:
         if sort is not None and isinstance(sort, str):
             sort = [sort]
 
-        return self._kuflow_client.process.find_processes(size=size, page=page, sort=sort, **kwargs)
+        if tenant_id is not None and isinstance(tenant_id, str):
+            tenant_id = [tenant_id]
+
+        return self._kuflow_client.process.find_processes(
+            size=size, page=page, sort=sort, tenant_id=tenant_id, **kwargs
+        )
 
     def create_process(self, process: _models.Process, **kwargs: Any) -> _models.Process:
         """Create a new process.

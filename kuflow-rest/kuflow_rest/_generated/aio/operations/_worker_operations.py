@@ -126,9 +126,6 @@ class WorkerOperations:
         :param worker: Worker to create or update. Is either a Worker type or a IO[bytes] type.
          Required.
         :type worker: ~kuflow.rest.models.Worker or IO[bytes]
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
         :return: Worker
         :rtype: ~kuflow.rest.models.Worker
         :raises ~azure.core.exceptions.HttpResponseError:

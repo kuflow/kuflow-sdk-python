@@ -48,6 +48,7 @@ class PrincipalOperations:
         sort: Optional[Union[str, List[str]]] = None,
         type: Optional[_models.PrincipalType] = None,
         group_id: Optional[Union[str, List[str]]] = None,
+        tenant_id: Optional[Union[str, List[str]]] = None,
         **kwargs: Any,
     ) -> _models.PrincipalPage:
         """Find all accessible Principals.
@@ -70,6 +71,8 @@ class PrincipalOperations:
         :type type: Optional[_models.PrincipalType]
         :keyword group_id: Filter principals that exists in one of group ids. Default value is None.
         :type group_id: Optional[Union[str, List[str]]]
+        :keyword tenant_id: Filter principals that exists in one of tenant ids. Default value is None.
+        :type tenant_id: Optional[Union[str, List[str]]]
         :return: PrincipalPage
         :rtype: ~kuflow.rest.models.PrincipalPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -80,8 +83,11 @@ class PrincipalOperations:
         if group_id is not None and isinstance(group_id, str):
             group_id = [group_id]
 
+        if tenant_id is not None and isinstance(tenant_id, str):
+            tenant_id = [tenant_id]
+
         return self._kuflow_client.principal.find_principals(
-            size=size, page=page, sort=sort, type=type, group_id=group_id, **kwargs
+            size=size, page=page, sort=sort, type=type, group_id=group_id, tenant_id=tenant_id, **kwargs
         )
 
     def retrieve_principal(self, id: str, **kwargs: Any) -> _models.Principal:

@@ -44,6 +44,7 @@ class AuditedObjectType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     TASK = "TASK"
     TASK_PAGE_ITEM = "TASK_PAGE_ITEM"
     WORKER = "WORKER"
+    ROBOT = "ROBOT"
 
 
 class AuthenticationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -69,6 +70,7 @@ class PagedObjectType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     TENANT_USER_PAGE = "TENANT_USER_PAGE"
     PROCESS_PAGE = "PROCESS_PAGE"
     TASK_PAGE = "TASK_PAGE"
+    ROBOT_PAGE = "ROBOT_PAGE"
 
 
 class PrincipalType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -92,6 +94,29 @@ class ProcessState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     RUNNING = "RUNNING"
     COMPLETED = "COMPLETED"
     CANCELLED = "CANCELLED"
+
+
+class RobotAssetArchitecture(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Robot asset platform architecture."""
+
+    X86_BIT32 = "X86_32"
+    X86_BIT64 = "X86_64"
+
+
+class RobotAssetPlatform(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Robot asset platform."""
+
+    WINDOWS = "WINDOWS"
+    MAC_OS = "MAC_OS"
+    LINUX = "LINUX"
+
+
+class RobotAssetType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Robot asset type."""
+
+    PYTHON = "PYTHON"
+    PYTHON_PIP = "PYTHON_PIP"
+    NODE_JS = "NODEJS"
 
 
 class TaskElementValueType(str, Enum, metaclass=CaseInsensitiveEnumMeta):

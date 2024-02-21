@@ -116,6 +116,12 @@ class TemporalWorkerConfig:
     task_queue: str
     """Required task queue for this worker."""
 
+    tenant_id: Optional[str] = None
+    """The tenant id, required when OAuth2 is used"""
+
+    robot_id: Optional[str] = None
+    """The robot id, required when OAuth2 is used"""
+
     activities: Optional[Sequence[Callable]] = None
     """Set of activity callables decorated with :py:func:`@activity.defn<temporalio.activity.defn>`. Activities may be
     async functions or non-async functions. """
@@ -258,8 +264,8 @@ class KuFlowTemporalConnection:
 
         # Initializing an KuFlow token provider
         self._kuflow_authorization_token_provider = KuFlowAuthorizationTokenProvider(
-            kuflow_client=self._kuflow.rest_client,
-            backoff=self._kuflow.authorization_token_provider_backoff,
+            temporal_config=self._temporal,
+            kuflow_config=self._kuflow,
         )
 
         self._temporal.client.rpc_metadata = self._kuflow_authorization_token_provider.initialize_rpc_auth_metadata()
@@ -315,6 +321,7 @@ class KuFlowTemporalConnection:
 
         self._kuFlow_worker_information_notifier = KuFlowWorkerInformationNotifier(
             kuflow_client=self._kuflow.rest_client,
+            temporal_config=self._temporal,
             temporal_worker=worker,
             temporal_client=self._client,
             temporal_workflow_types=self._workflow_types,
@@ -374,7 +381,9 @@ class KuFlowTemporalConnection:
         return converters
 
     def _apply_default_configurations(self):
-        authentication = models.Authentication(type=models.AuthenticationType.ENGINE_CERTIFICATE)
+        authentication = models.Authentication(
+            type=models.AuthenticationType.ENGINE_CERTIFICATE, tenant_id=self._temporal.worker.tenant_id
+        )
         authentication = self._kuflow.rest_client.authentication.create_authentication(authentication)
 
         if self._temporal.client.tls is False:

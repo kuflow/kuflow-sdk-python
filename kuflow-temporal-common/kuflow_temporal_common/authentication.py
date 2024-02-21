@@ -29,7 +29,8 @@ from typing import Mapping, Optional
 
 from temporalio.client import Client
 
-from kuflow_rest import KuFlowRestClient, models
+from kuflow_rest import models
+from kuflow_temporal_common.connection import KuFlowConfig, TemporalConfig
 
 
 logger = logging.getLogger(__name__)
@@ -56,16 +57,18 @@ class KuFlowAuthorizationTokenProviderBackoff:
 class KuFlowAuthorizationTokenProvider:
     def __init__(
         self,
-        kuflow_client: KuFlowRestClient,
-        backoff: Optional[KuFlowAuthorizationTokenProviderBackoff] = None,
+        kuflow_config: KuFlowConfig,
+        temporal_config: TemporalConfig,
     ):
-        if backoff is None:
-            backoff = KuFlowAuthorizationTokenProviderBackoff()
-
         self._temporal_client: Optional[Client] = None
-        self._kuflow_client = kuflow_client
+        self._temporal_config = temporal_config
+        self._kuflow_config = kuflow_config
         self._consecutive_failures = 0
-        self._backoff = backoff
+        self._backoff = (
+            kuflow_config.authorization_token_provider_backoff
+            if kuflow_config.authorization_token_provider_backoff
+            else KuFlowAuthorizationTokenProviderBackoff()
+        )
 
     def initialize_rpc_auth_metadata(self, init_metadata=None) -> Mapping[str, str]:
         if init_metadata is None:
@@ -129,6 +132,9 @@ class KuFlowAuthorizationTokenProvider:
         return new_metadata
 
     def _create_authentication(self) -> models.Authentication:
-        authentication = models.Authentication(type=models.AuthenticationType.ENGINE_TOKEN)
+        authentication = models.Authentication(
+            type=models.AuthenticationType.ENGINE_TOKEN,
+            tenant_id=self._temporal_config.worker.tenant_id,
+        )
 
-        return self._kuflow_client.authentication.create_authentication(authentication)
+        return self._kuflow_config.rest_client.authentication.create_authentication(authentication)
