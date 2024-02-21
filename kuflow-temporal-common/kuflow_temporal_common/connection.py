@@ -190,7 +190,9 @@ class KuFlowTemporalConnection:
 
     def _apply_default_configurations(self):
         authentication = models.Authentication(
-            type=models.AuthenticationType.ENGINE_CERTIFICATE, tenant_id=self._temporal.worker.tenant_id
+            type=models.AuthenticationType.ENGINE_CERTIFICATE,
+            tenant_id=self._temporal.tenant_id,
+            robot_id=self._temporal.robot_id,
         )
         authentication = self._kuflow.rest_client.authentication.create_authentication(authentication)
 

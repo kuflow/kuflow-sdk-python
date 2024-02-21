@@ -137,12 +137,6 @@ class TemporalWorkerConfig:
     task_queue: str
     """Required task queue for this worker."""
 
-    tenant_id: Optional[str] = None
-    """The tenant id, required when OAuth2 is used"""
-
-    robot_id: Optional[str] = None
-    """The robot id, required when OAuth2 is used"""
-
     activities: Optional[Sequence[Callable]] = None
     """Set of activity callables decorated with :py:func:`@activity.defn<temporalio.activity.defn>`. Activities may be
     async functions or non-async functions. """
@@ -258,3 +252,9 @@ class TemporalConfig:
     client: TemporalClientConfig
 
     worker: Optional[TemporalWorkerConfig] = None
+
+    tenant_id: Optional[str] = None
+    """The tenant id, required when OAuth2 is used"""
+
+    robot_id: Optional[str] = None
+    """The robot id, required when OAuth2 is used"""

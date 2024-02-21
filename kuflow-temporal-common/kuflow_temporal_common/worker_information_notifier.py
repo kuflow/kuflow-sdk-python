@@ -79,14 +79,14 @@ class KuFlowWorkerInformationNotifier:
 
     async def _create_or_update_worker(self):
         worker_request = models.Worker(
-            tenant_id=self._temporal_config.worker.tenant_id,
-            robot_id=self._temporal_config.worker.robot_id,
             identity=self._get_worker_identity(),
             hostname=socket.gethostname(),
             ip=self._get_local_ip(),
             task_queue=self._temporal_worker.task_queue,
             workflow_types=list(self._temporal_workflow_types),
             activity_types=list(self._temporal_activity_types),
+            tenant_id=self._temporal_config.tenant_id,
+            robot_id=self._temporal_config.robot_id,
         )
 
         try:
