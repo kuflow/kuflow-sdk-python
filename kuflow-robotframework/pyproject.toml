@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuflow-robotframework"
-version = "1.3.0"
+version = "1.3.1.dev0"
 description = "KuFlow library for Robot Framework"
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
