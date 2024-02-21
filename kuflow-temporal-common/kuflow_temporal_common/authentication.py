@@ -30,28 +30,14 @@ from typing import Mapping, Optional
 from temporalio.client import Client
 
 from kuflow_rest import models
-from kuflow_temporal_common.connection import KuFlowConfig, TemporalConfig
+from kuflow_temporal_common._connection_config import (
+    KuFlowAuthorizationTokenProviderBackoff,
+    KuFlowConfig,
+    TemporalConfig,
+)
 
 
 logger = logging.getLogger(__name__)
-
-
-class KuFlowAuthorizationTokenProviderBackoff:
-    """
-    :ivar sleep: Time in seconds to sleep
-    :type sleep: int
-    :ivar max_sleep: Maximum time in seconds reached in the backoff
-    :type max_sleep: int
-    :ivar exponential_rate: Increment rate factor
-    :type exponential_rate: int
-    """
-
-    def __init__(
-        self, sleep: Optional[int] = None, max_sleep: Optional[int] = None, exponential_rate: Optional[int] = None
-    ):
-        self.sleep = sleep if sleep else 1
-        self.max_sleep = max_sleep if max_sleep else 5 * 60
-        self.exponential_rate = exponential_rate if exponential_rate else 2.5
 
 
 class KuFlowAuthorizationTokenProvider:

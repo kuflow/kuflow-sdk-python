@@ -32,23 +32,10 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 from kuflow_rest import KuFlowRestClient, models
-from kuflow_temporal_common.connection import TemporalConfig
+from kuflow_temporal_common._connection_config import KuFlowWorkerInformationNotifierBackoff, TemporalConfig
 
 
 logger = logging.getLogger(__name__)
-
-
-class KuFlowWorkerInformationNotifierBackoff:
-    """
-    :ivar sleep: Time in seconds to sleep
-    :type sleep: int
-    :ivar exponential_rate: Increment rate factor
-    :type exponential_rate: int
-    """
-
-    def __init__(self, sleep: Optional[int] = None, exponential_rate: Optional[int] = None):
-        self.sleep = sleep if sleep else 1
-        self.exponential_rate = exponential_rate if exponential_rate else 2.5
 
 
 class KuFlowWorkerInformationNotifier:
