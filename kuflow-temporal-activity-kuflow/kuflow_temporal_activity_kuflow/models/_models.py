@@ -105,6 +105,36 @@ class UserActionWorkflowResponse(_serialization.Model):
         self.message = message
 
 
+class RobotWorkflowRequest(_serialization.Model):
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "task_id": {"key": "taskId", "type": "str"},
+    }
+
+    def __init__(self, process_id: str, task_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_id: Identifier of the related created process
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.task_id = task_id
+
+
+class RobotWorkflowResponse(_serialization.Model):
+    _attribute_map = {
+        "message": {"key": "message", "type": "str"},
+    }
+
+    def __init__(self, message: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        Parameters:
+            message: Response message
+        """
+        super().__init__(**kwargs)
+        self.message = message
+
+
 ########################
 # For Activities
 ########################

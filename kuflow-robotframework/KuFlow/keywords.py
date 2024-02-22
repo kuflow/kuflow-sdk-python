@@ -32,7 +32,7 @@ import magic
 from robot.api.deco import keyword
 from robot.utils import is_dict_like, is_list_like, is_number, is_string, type_name
 
-from kuflow_rest import KuFlowRestClient, models
+from kuflow_rest import KuBotTokenCredential, KuFlowRestClient, models
 
 
 class Keywords:
@@ -41,10 +41,19 @@ class Keywords:
         self._client = None
 
     @keyword(tags=("settings",))
+    def get_kuBot_token_credential(
+        self,
+        token: str,
+        expires_on: int,
+    ) -> KuBotTokenCredential:
+        return KuBotTokenCredential(token, expires_on)
+
+    @keyword(tags=("settings",))
     def set_client_authentication(
         self,
-        client_id: str,
-        client_secret: str,
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
+        credential: Optional[KuBotTokenCredential] = None,
         endpoint: Optional[str] = None,
         allow_insecure_connection: Optional[bool] = None,
     ):
@@ -65,6 +74,7 @@ class Keywords:
         self._client = KuFlowRestClient(
             client_id=client_id,
             client_secret=client_secret,
+            credential=credential,
             endpoint=endpoint,
             allow_insecure_connection=allow_insecure_connection,
         )

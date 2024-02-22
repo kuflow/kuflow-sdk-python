@@ -23,8 +23,8 @@
 #
 
 from ._generated._serialization import Deserializer, Model, Serializer
-from ._kuflow_rest_client import KuFlowRestClient
+from ._kuflow_rest_client import KuBotTokenCredential, KuFlowRestClient
 
 
-__all__ = ["Deserializer", "KuFlowRestClient", "Model", "Serializer"]
+__all__ = ["Deserializer", "KuBotTokenCredential", "KuFlowRestClient", "Model", "Serializer"]
 __version__ = "1.3.1.dev0"

@@ -81,6 +81,28 @@ class ClientSecretCredential:
         return AccessToken(token=self.token, expires_on=sys.maxsize)
 
 
+class KuBotTokenCredential(TokenCredential):
+    def __init__(self, token: str, expires_on: int) -> None:
+        self._cached_token = token
+        self._expires_on = expires_on
+
+    def get_token(
+        self,
+        *scopes: str,
+        claims: Optional[str] = None,
+        tenant_id: Optional[str] = None,
+        enable_cae: bool = False,
+        **kwargs: Any,
+    ) -> AccessToken:
+        return AccessToken(token=self._cached_token, expires_on=self._expires_on)
+
+    def __hash__(self):
+        return hash(self._cached_token)
+
+    def __eq__(self, other):
+        return self._cached_token == other._cached_token
+
+
 class AllowHttpPolicy(SansIOHTTPPolicy):
     """A simple policy that allows http requests adding "enforce_https" to the request context."""
 
