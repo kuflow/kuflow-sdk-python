@@ -67,6 +67,16 @@ Test Settings
     ${current_instance}=    Call Method    ${instance}    get_instance
     Log To Console    library: ${instance} instance: ${current_instance}
 
+Test Settings OAuth
+
+    ${token_credential}    Get KuBot Token Credential    my_token     123
+
+    # Without endpoint (use default)
+    Set Client Authentication    credential=${token_credential}
+
+    # With endpoint
+    Set Client Authentication    credential=${token_credential}    endpoint=${KUFLOW_API_ENDPOINT}
+
 Test Convert Dictionary
     &{inner_dict}    Create Dictionary
     ...    Key1=Value1
