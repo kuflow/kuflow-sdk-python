@@ -94,7 +94,6 @@ class TenantUserOperations:
             size=size,
             page=page,
             sort=sort,
-            type=type,
             group_id=group_id,
             email=email,
             tenant_id=tenant_id,

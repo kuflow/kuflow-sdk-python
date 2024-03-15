@@ -32,7 +32,11 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 from kuflow_rest import KuFlowRestClient, models
-from kuflow_temporal_common._connection_config import KuFlowWorkerInformationNotifierBackoff, TemporalConfig
+from kuflow_temporal_common._connection_config import (
+    KuFlowConfig,
+    KuFlowWorkerInformationNotifierBackoff,
+    TemporalConfig,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -42,6 +46,7 @@ class KuFlowWorkerInformationNotifier:
     def __init__(
         self,
         kuflow_client: KuFlowRestClient,
+        kuflow_config: KuFlowConfig,
         temporal_config: TemporalConfig,
         temporal_client: Client,
         temporal_worker: Worker,
@@ -57,6 +62,7 @@ class KuFlowWorkerInformationNotifier:
             backoff = KuFlowWorkerInformationNotifierBackoff()
 
         self._kuflow_client = kuflow_client
+        self._kuflow_config = kuflow_config
         self._temporal_config = temporal_config
         self._temporal_client = temporal_client
         self._temporal_worker = temporal_worker
@@ -85,8 +91,9 @@ class KuFlowWorkerInformationNotifier:
             task_queue=self._temporal_worker.task_queue,
             workflow_types=list(self._temporal_workflow_types),
             activity_types=list(self._temporal_activity_types),
-            tenant_id=self._temporal_config.tenant_id,
-            robot_id=self._temporal_config.robot_id,
+            installation_id=self._kuflow_config.installation_id,
+            robot_ids=self._kuflow_config.robot_ids,
+            tenant_id=self._kuflow_config.tenant_id,
         )
 
         try:

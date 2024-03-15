@@ -9,7 +9,7 @@
       "autorest": "autorest",
       "generate": "npm run generate:venv-activate && npm run generate:autorest && npm run generate:ruff && npm run generate:workaround",
       "generate:venv-activate": ". ../../.venv/bin/activate",
-      "generate:autorest": "AUTOREST_HOME=$(pwd) autorest --version=3.10.1 readme.md",
+      "generate:autorest": "AUTOREST_HOME=$(pwd) autorest --version=3.10.2 readme.md",
       "generate:ruff": "cd .. && ruff format",
       "generate:workaround": "scripts/fix-discriminators.js"
     }

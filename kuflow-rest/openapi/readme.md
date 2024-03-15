@@ -28,7 +28,7 @@ python: true
 title: KuFlow
 override-client-name: KuFlowRestClient
 
-input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/a477b4e7e2ab278de1b381fac173a8682ea6d4a6/specs/api.kuflow.com/v2022-10-08/openapi.yaml
+input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/aaa950e6673c123408393c26740be8a2c1b24cee/specs/api.kuflow.com/v2022-10-08/openapi.yaml
 output-folder: ../kuflow_rest/_generated
 
 openapi-type: data-plane
@@ -77,7 +77,7 @@ license-header: |
 # hide-clients: true
 
 use-extension:
-  '@autorest/python': '6.13.1'
+  '@autorest/python': '6.13.7'
 
 modelerfour:
   seal-single-value-enum-by-default: false

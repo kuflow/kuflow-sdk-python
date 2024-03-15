@@ -120,8 +120,7 @@ class KuFlowAuthorizationTokenProvider:
     def _create_authentication(self) -> models.Authentication:
         authentication = models.Authentication(
             type=models.AuthenticationType.ENGINE_TOKEN,
-            tenant_id=self._temporal_config.tenant_id,
-            robot_id=self._temporal_config.robot_id,
+            tenant_id=self._kuflow_config.tenant_id,
         )
 
         return self._kuflow_config.rest_client.authentication.create_authentication(authentication)

@@ -26,7 +26,7 @@
 import concurrent.futures
 from dataclasses import dataclass
 from datetime import timedelta
-from typing import Awaitable, Callable, Mapping, Optional, Sequence, Type, Union
+from typing import Awaitable, Callable, List, Mapping, Optional, Sequence, Type, Union
 
 import temporalio.common
 import temporalio.converter
@@ -82,6 +82,15 @@ class KuFlowConfig:
 
     worker_information_notifier_backoff: Optional[KuFlowWorkerInformationNotifierBackoff] = None
     """Worker notifier backoff configuration"""
+
+    installation_id: Optional[str] = None
+    """Installation id"""
+
+    robot_ids: Optional[List[str]] = None
+    """Robot ids"""
+
+    tenant_id: Optional[List[str]] = None
+    """Tenant ids"""
 
 
 @dataclass
@@ -252,9 +261,3 @@ class TemporalConfig:
     client: TemporalClientConfig
 
     worker: Optional[TemporalWorkerConfig] = None
-
-    tenant_id: Optional[str] = None
-    """The tenant id, required when OAuth2 is used"""
-
-    robot_id: Optional[str] = None
-    """The robot id, required when OAuth2 is used"""

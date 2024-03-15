@@ -47,6 +47,7 @@ class RobotOperations:
         page: int = 0,
         sort: Optional[Union[str, List[str]]] = None,
         tenant_id: Optional[Union[str, List[str]]] = None,
+        filter_context: Optional[Union[str, _models.RobotFilterContext]] = None,
         **kwargs: Any,
     ) -> _models.PrincipalPage:
         """Find all accessible Robots.
@@ -68,6 +69,9 @@ class RobotOperations:
         :type sort: Optional[Union[str, List[str]]]
         :keyword tenant_id: Filter by tenantId. Default value is None.
         :type tenant_id: Optional[Union[str, List[str]]]
+        :keyword filter_context: Filter by the specified context. Known values are: "READY" and "DEFAULT".
+         Default value is None.
+        :type filter_context: str or ~kuflow.rest.models.RobotFilterContext
         :return: RobotPage
         :rtype: ~kuflow.rest.models.RobotPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -79,7 +83,7 @@ class RobotOperations:
             tenant_id = [tenant_id]
 
         return self._kuflow_client.robot.find_robots(
-            size=size, page=page, sort=sort, type=type, tenant_id=tenant_id, **kwargs
+            size=size, page=page, sort=sort, tenant_id=tenant_id, filter_context=filter_context, **kwargs
         )
 
     def retrieve_robot(self, id: str, **kwargs: Any) -> _models.Principal:

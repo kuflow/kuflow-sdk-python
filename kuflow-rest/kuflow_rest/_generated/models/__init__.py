@@ -97,6 +97,8 @@ from ._enums import ProcessState
 from ._enums import RobotAssetArchitecture
 from ._enums import RobotAssetPlatform
 from ._enums import RobotAssetType
+from ._enums import RobotFilterContext
+from ._enums import RobotSourceType
 from ._enums import TaskElementValueType
 from ._enums import TaskState
 from ._enums import WebhookType
@@ -171,6 +173,8 @@ __all__ = [
     "RobotAssetArchitecture",
     "RobotAssetPlatform",
     "RobotAssetType",
+    "RobotFilterContext",
+    "RobotSourceType",
     "TaskElementValueType",
     "TaskState",
     "WebhookType",

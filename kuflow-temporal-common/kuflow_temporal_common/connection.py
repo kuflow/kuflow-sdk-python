@@ -129,6 +129,7 @@ class KuFlowTemporalConnection:
 
         self._kuFlow_worker_information_notifier = KuFlowWorkerInformationNotifier(
             kuflow_client=self._kuflow.rest_client,
+            kuflow_config=self._kuflow,
             temporal_config=self._temporal,
             temporal_worker=worker,
             temporal_client=self._client,
@@ -191,8 +192,7 @@ class KuFlowTemporalConnection:
     def _apply_default_configurations(self):
         authentication = models.Authentication(
             type=models.AuthenticationType.ENGINE_CERTIFICATE,
-            tenant_id=self._temporal.tenant_id,
-            robot_id=self._temporal.robot_id,
+            tenant_id=self._kuflow.tenant_id,
         )
         authentication = self._kuflow.rest_client.authentication.create_authentication(authentication)
 
