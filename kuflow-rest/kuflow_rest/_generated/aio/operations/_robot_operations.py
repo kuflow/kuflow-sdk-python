@@ -83,6 +83,7 @@ class RobotOperations:
         page: int = 0,
         sort: Optional[List[str]] = None,
         tenant_id: Optional[List[str]] = None,
+        filter_context: Optional[Union[str, _models.RobotFilterContext]] = None,
         **kwargs: Any,
     ) -> _models.RobotPage:
         """Find all accessible Robots.
@@ -104,6 +105,9 @@ class RobotOperations:
         :paramtype sort: list[str]
         :keyword tenant_id: Filter by tenantId. Default value is None.
         :paramtype tenant_id: list[str]
+        :keyword filter_context: Filter by the specified context. Known values are: "READY" and
+         "DEFAULT". Default value is None.
+        :paramtype filter_context: str or ~kuflow.rest.models.RobotFilterContext
         :return: RobotPage
         :rtype: ~kuflow.rest.models.RobotPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -126,6 +130,7 @@ class RobotOperations:
             page=page,
             sort=sort,
             tenant_id=tenant_id,
+            filter_context=filter_context,
             headers=_headers,
             params=_params,
         )
@@ -213,7 +218,7 @@ class RobotOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :return: Async iterator of the response bytes
+        :return: AsyncIterator[bytes]
         :rtype: AsyncIterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
@@ -286,7 +291,7 @@ class RobotOperations:
         :keyword architecture: The asset platform architecture. Known values are: "X86_32" and
          "X86_64". Required.
         :paramtype architecture: str or ~kuflow.rest.models.RobotAssetArchitecture
-        :return: Async iterator of the response bytes
+        :return: AsyncIterator[bytes]
         :rtype: AsyncIterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """

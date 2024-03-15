@@ -1450,7 +1450,7 @@ class TaskOperations:
         :type id: str
         :keyword document_id: Document ID to download. Required.
         :paramtype document_id: str
-        :return: Iterator of the response bytes
+        :return: Iterator[bytes]
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
@@ -1512,7 +1512,7 @@ class TaskOperations:
         :keyword element_definition_code: Element definition code of a Form Element to download.
          Required.
         :paramtype element_definition_code: str
-        :return: Iterator of the response bytes
+        :return: Iterator[bytes]
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
@@ -1763,7 +1763,7 @@ class TaskOperations:
         :type id: str
         :keyword document_uri: Document URI to download. Required.
         :paramtype document_uri: str
-        :return: Iterator of the response bytes
+        :return: Iterator[bytes]
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """

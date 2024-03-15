@@ -116,8 +116,6 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
     :vartype type: str or ~kuflow.rest.models.AuthenticationType
     :ivar tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is used.
     :vartype tenant_id: str
-    :ivar robot_id: Robot id. This attribute is required when an OAuth2 authentication is used.
-    :vartype robot_id: str
     :ivar token: Engine authentication token.
 
      @deprecated use engineToken.token.
@@ -141,7 +139,6 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         "id": {"key": "id", "type": "str"},
         "type": {"key": "type", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
-        "robot_id": {"key": "robotId", "type": "str"},
         "token": {"key": "token", "type": "str"},
         "expired_at": {"key": "expiredAt", "type": "iso-8601"},
         "engine_token": {"key": "engineToken", "type": "AuthenticationEngineToken"},
@@ -159,7 +156,6 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         type: Optional[Union[str, "_models.AuthenticationType"]] = None,
         tenant_id: Optional[str] = None,
-        robot_id: Optional[str] = None,
         token: Optional[str] = None,
         expired_at: Optional[datetime.datetime] = None,
         engine_token: Optional["_models.AuthenticationEngineToken"] = None,
@@ -185,8 +181,6 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         :keyword tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is
          used.
         :paramtype tenant_id: str
-        :keyword robot_id: Robot id. This attribute is required when an OAuth2 authentication is used.
-        :paramtype robot_id: str
         :keyword token: Engine authentication token.
 
          @deprecated use engineToken.token.
@@ -211,7 +205,6 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         self.id = id
         self.type = type
         self.tenant_id = tenant_id
-        self.robot_id = robot_id
         self.token = token
         self.expired_at = expired_at
         self.engine_token = engine_token
@@ -1306,8 +1299,6 @@ class RelatedProcess(_serialization.Model):
 class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """Robot.
 
-    Variables are only populated by the server, and will be ignored when sending a request.
-
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
@@ -1329,9 +1320,9 @@ class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :vartype name: str
     :ivar description: Robot description.
     :vartype description: str
-    :ivar source_type: Robot source type. Required. Default value is
+    :ivar source_type: Robot source type. Required. Known values are: "PACKAGE" and
      "ROBOT_FRAMEWORK_PYTHON_WHEEL".
-    :vartype source_type: str
+    :vartype source_type: str or ~kuflow.rest.models.RobotSourceType
     :ivar source_file: Robot source type.
     :vartype source_file: ~kuflow.rest.models.RobotSourceFile
     :ivar environment_variables: Environment variables to load when the robot is executed.
@@ -1345,7 +1336,7 @@ class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "code": {"required": True, "max_length": 50, "min_length": 1},
         "name": {"required": True, "max_length": 50, "min_length": 1},
         "description": {"max_length": 4000, "min_length": 1},
-        "source_type": {"required": True, "constant": True},
+        "source_type": {"required": True},
     }
 
     _attribute_map = {
@@ -1364,14 +1355,13 @@ class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
-    source_type = "ROBOT_FRAMEWORK_PYTHON_WHEEL"
-
     def __init__(
         self,
         *,
         id: str,  # pylint: disable=redefined-builtin
         code: str,
         name: str,
+        source_type: Union[str, "_models.RobotSourceType"],
         object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
@@ -1403,6 +1393,9 @@ class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype name: str
         :keyword description: Robot description.
         :paramtype description: str
+        :keyword source_type: Robot source type. Required. Known values are: "PACKAGE" and
+         "ROBOT_FRAMEWORK_PYTHON_WHEEL".
+        :paramtype source_type: str or ~kuflow.rest.models.RobotSourceType
         :keyword source_file: Robot source type.
         :paramtype source_file: ~kuflow.rest.models.RobotSourceFile
         :keyword environment_variables: Environment variables to load when the robot is executed.
@@ -1422,6 +1415,7 @@ class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         self.code = code
         self.name = name
         self.description = description
+        self.source_type = source_type
         self.source_file = source_file
         self.environment_variables = environment_variables
         self.tenant_id = tenant_id
@@ -2391,6 +2385,8 @@ class TaskSaveJsonFormsValueDocumentResponseCommand(_serialization.Model):  # py
 class TenantUser(AbstractAudited):
     """TenantUser.
 
+    Variables are only populated by the server, and will be ignored when sending a request.
+
     All required parameters must be populated in order to send to server.
 
     :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
@@ -2410,13 +2406,14 @@ class TenantUser(AbstractAudited):
     :vartype metadata: ~kuflow.rest.models.TenantUserMetadata
     :ivar principal: Required.
     :vartype principal: ~kuflow.rest.models.Principal
-    :ivar tenant_id:
+    :ivar tenant_id: Required.
     :vartype tenant_id: str
     """
 
     _validation = {
         "id": {"required": True},
         "principal": {"required": True},
+        "tenant_id": {"required": True, "readonly": True},
     }
 
     _attribute_map = {
@@ -2442,7 +2439,6 @@ class TenantUser(AbstractAudited):
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
         metadata: Optional["_models.TenantUserMetadata"] = None,
-        tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -2463,8 +2459,6 @@ class TenantUser(AbstractAudited):
         :paramtype metadata: ~kuflow.rest.models.TenantUserMetadata
         :keyword principal: Required.
         :paramtype principal: ~kuflow.rest.models.Principal
-        :keyword tenant_id:
-        :paramtype tenant_id: str
         """
         super().__init__(
             object_type=object_type,
@@ -2477,7 +2471,7 @@ class TenantUser(AbstractAudited):
         self.id = id
         self.metadata = metadata
         self.principal = principal
-        self.tenant_id = tenant_id
+        self.tenant_id = None
 
 
 class TenantUserMetadata(_serialization.Model):
@@ -2838,6 +2832,10 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :vartype hostname: str
     :ivar ip: Required.
     :vartype ip: str
+    :ivar installation_id: Installation Id.
+    :vartype installation_id: str
+    :ivar robot_ids: Robot Ids that this worker implements.
+    :vartype robot_ids: list[str]
     :ivar tenant_id: Tenant ID.
     :vartype tenant_id: str
     """
@@ -2862,6 +2860,8 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "activity_types": {"key": "activityTypes", "type": "[str]"},
         "hostname": {"key": "hostname", "type": "str"},
         "ip": {"key": "ip", "type": "str"},
+        "installation_id": {"key": "installationId", "type": "str"},
+        "robot_ids": {"key": "robotIds", "type": "[str]"},
         "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
@@ -2880,6 +2880,8 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         workflow_types: Optional[List[str]] = None,
         activity_types: Optional[List[str]] = None,
+        installation_id: Optional[str] = None,
+        robot_ids: Optional[List[str]] = None,
         tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
@@ -2909,6 +2911,10 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype hostname: str
         :keyword ip: Required.
         :paramtype ip: str
+        :keyword installation_id: Installation Id.
+        :paramtype installation_id: str
+        :keyword robot_ids: Robot Ids that this worker implements.
+        :paramtype robot_ids: list[str]
         :keyword tenant_id: Tenant ID.
         :paramtype tenant_id: str
         """
@@ -2927,4 +2933,6 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         self.activity_types = activity_types
         self.hostname = hostname
         self.ip = ip
+        self.installation_id = installation_id
+        self.robot_ids = robot_ids
         self.tenant_id = tenant_id

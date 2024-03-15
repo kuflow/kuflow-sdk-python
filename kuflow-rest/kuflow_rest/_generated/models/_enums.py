@@ -119,6 +119,26 @@ class RobotAssetType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     NODE_JS = "NODEJS"
 
 
+class RobotFilterContext(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Robot filter context:
+
+
+    * READY: filters out robots ready for execution for the current credentials
+    * DEFAULT: filters out robots accessible for the current credentials (if no set this is the
+    default option).
+    """
+
+    READY = "READY"
+    DEFAULT = "DEFAULT"
+
+
+class RobotSourceType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Robot source type."""
+
+    PACKAGE = "PACKAGE"
+    ROBOT_FRAMEWORK_PYTHON_WHEEL = "ROBOT_FRAMEWORK_PYTHON_WHEEL"
+
+
 class TaskElementValueType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """TaskElementValueType."""
 
