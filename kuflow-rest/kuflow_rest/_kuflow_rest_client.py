@@ -217,15 +217,16 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         if credential is None:
             raise Exception("client_id/client_secrets or credential is required")
 
+        python_version = platform.python_version()
+        platform_id = platform.platform()
+
         self._kuflow_client = KuFlowRestClientGenerated(
             credential=credential,
             endpoint=endpoint,
             api_version=kwargs.pop("api_version", VERSION),
             credential_scopes="https://api.kuflow.com/v2022-10-08/.default",
             per_call_policies=per_call_policies,
-            base_user_agent="sdk-python-kuflow-rest/{} Python/{} ({})".format(
-                VERSION, platform.python_version(), platform.platform()
-            ),
+            base_user_agent=f"sdk-python-kuflow-rest/{VERSION} Python/{python_version} ({platform_id})",
         )
 
         self.authentication = AuthenticationOperations(self._kuflow_client)
