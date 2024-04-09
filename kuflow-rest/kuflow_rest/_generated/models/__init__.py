@@ -55,6 +55,8 @@ from ._models import ProcessElementValueString
 from ._models import ProcessPage
 from ._models import ProcessPageItem
 from ._models import ProcessSaveElementCommand
+from ._models import ProcessSaveEntityDataCommand
+from ._models import ProcessSaveEntityDocumentResponseCommand
 from ._models import RelatedProcess
 from ._models import Robot
 from ._models import RobotPage
@@ -132,6 +134,8 @@ __all__ = [
     "ProcessPage",
     "ProcessPageItem",
     "ProcessSaveElementCommand",
+    "ProcessSaveEntityDataCommand",
+    "ProcessSaveEntityDocumentResponseCommand",
     "RelatedProcess",
     "Robot",
     "RobotPage",

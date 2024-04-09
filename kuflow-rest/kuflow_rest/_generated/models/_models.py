@@ -774,6 +774,8 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :vartype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
     :ivar element_values: Process element values, an ElementValueDocument is not allowed.
     :vartype element_values: dict[str, list[~kuflow.rest.models.ProcessElementValue]]
+    :ivar entity: Json form values, used when the render type selected is JSON Forms.
+    :vartype entity: ~kuflow.rest.models.JsonFormsValue
     :ivar initiator:
     :vartype initiator: ~kuflow.rest.models.Principal
     :ivar related_process:
@@ -798,6 +800,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "state": {"key": "state", "type": "str"},
         "process_definition": {"key": "processDefinition", "type": "ProcessDefinitionSummary"},
         "element_values": {"key": "elementValues", "type": "{[ProcessElementValue]}"},
+        "entity": {"key": "entity", "type": "JsonFormsValue"},
         "initiator": {"key": "initiator", "type": "Principal"},
         "related_process": {"key": "relatedProcess", "type": "RelatedProcess"},
         "tenant_id": {"key": "tenantId", "type": "str"},
@@ -816,6 +819,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         subject: Optional[str] = None,
         state: Optional[Union[str, "_models.ProcessState"]] = None,
         element_values: Optional[Dict[str, List["_models.ProcessElementValue"]]] = None,
+        entity: Optional["_models.JsonFormsValue"] = None,
         initiator: Optional["_models.Principal"] = None,
         related_process: Optional["_models.RelatedProcess"] = None,
         tenant_id: Optional[str] = None,
@@ -843,6 +847,8 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
         :keyword element_values: Process element values, an ElementValueDocument is not allowed.
         :paramtype element_values: dict[str, list[~kuflow.rest.models.ProcessElementValue]]
+        :keyword entity: Json form values, used when the render type selected is JSON Forms.
+        :paramtype entity: ~kuflow.rest.models.JsonFormsValue
         :keyword initiator:
         :paramtype initiator: ~kuflow.rest.models.Principal
         :keyword related_process:
@@ -863,6 +869,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         self.state = state
         self.process_definition = process_definition
         self.element_values = element_values
+        self.entity = entity
         self.initiator = initiator
         self.related_process = related_process
         self.tenant_id = tenant_id
@@ -1266,6 +1273,64 @@ class ProcessSaveElementCommand(_serialization.Model):
         super().__init__(**kwargs)
         self.element_definition_code = element_definition_code
         self.element_values = element_values
+
+
+class ProcessSaveEntityDataCommand(_serialization.Model):
+    """ProcessSaveEntityDataCommand.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar data: json value filled that complain with the related json schema. Required.
+    :vartype data: dict[str, any]
+    """
+
+    _validation = {
+        "data": {"required": True},
+    }
+
+    _attribute_map = {
+        "data": {"key": "data", "type": "{object}"},
+    }
+
+    def __init__(self, *, data: Dict[str, Any], **kwargs: Any) -> None:
+        """
+        :keyword data: json value filled that complain with the related json schema. Required.
+        :paramtype data: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.data = data
+
+
+class ProcessSaveEntityDocumentResponseCommand(_serialization.Model):
+    """ProcessSaveEntityDocumentResponseCommand.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar value: JSON value representing the uploaded file.
+
+     Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
+     Required.
+    :vartype value: str
+    """
+
+    _validation = {
+        "value": {"required": True},
+    }
+
+    _attribute_map = {
+        "value": {"key": "value", "type": "str"},
+    }
+
+    def __init__(self, *, value: str, **kwargs: Any) -> None:
+        """
+        :keyword value: JSON value representing the uploaded file.
+
+         Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
+         Required.
+        :paramtype value: str
+        """
+        super().__init__(**kwargs)
+        self.value = value
 
 
 class RelatedProcess(_serialization.Model):

@@ -30,7 +30,8 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 #
 # --------------------------------------------------------------------------
-from typing import Any, AsyncIterator, Callable, Dict, List, Optional, TypeVar, Union
+import sys
+from typing import Any, AsyncIterator, Callable, Dict, List, Optional, Type, TypeVar, Union
 
 from azure.core.exceptions import (
     ClientAuthenticationError,
@@ -52,6 +53,10 @@ from ...operations._robot_operations import (
     build_retrieve_robot_request,
 )
 
+if sys.version_info >= (3, 9):
+    from collections.abc import MutableMapping
+else:
+    from typing import MutableMapping  # type: ignore  # pylint: disable=ungrouped-imports
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
@@ -112,7 +117,7 @@ class RobotOperations:
         :rtype: ~kuflow.rest.models.RobotPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -169,7 +174,7 @@ class RobotOperations:
         :rtype: ~kuflow.rest.models.Robot
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -222,7 +227,7 @@ class RobotOperations:
         :rtype: AsyncIterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -295,7 +300,7 @@ class RobotOperations:
         :rtype: AsyncIterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,

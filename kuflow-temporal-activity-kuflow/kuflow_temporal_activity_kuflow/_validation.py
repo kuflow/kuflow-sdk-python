@@ -72,6 +72,22 @@ def validate_save_process_element_request(
         )
 
 
+def validate_save_process_entity_request(
+    request: models_temporal.SaveProcessEntityDataRequest,
+) -> None:
+    if not request.process_id:
+        raise ApplicationError(
+            "'process_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+        )
+
+    if not request.data:
+        raise ApplicationError(
+            "'data' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
 def validate_delete_process_element_request(
     request: models_temporal.DeleteProcessElementRequest,
 ) -> None:

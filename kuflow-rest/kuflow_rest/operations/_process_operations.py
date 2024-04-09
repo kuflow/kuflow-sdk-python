@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-from typing import Any, List, Optional, Union
+from typing import IO, Any, Iterator, List, Optional, Union
 
 from .. import models as _models
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
@@ -244,3 +244,71 @@ class ProcessOperations:
             user_action_value_id=command.user_action_value_id,
             **kwargs,
         )
+
+    def actions_process_save_entity_data(
+        self,
+        id: str,
+        command: _models.ProcessSaveEntityDataCommand,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.Process:
+        """Save JSON data.
+
+        Allow to save a JSON validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param command: Command to save the JSON value. Required.
+        :type command: ~kuflow.rest.models.ProcessSaveEntityDataCommand
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :type content_type: str
+        :return: Process
+        :rtype: ~kuflow.rest.models.Process
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process.actions_process_save_entity_data(id, command, content_type, kwargs)
+
+    def actions_process_save_entity_document(
+        self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
+    ) -> _models.ProcessSaveEntityDocumentResponseCommand:
+        """Save an entity value document.
+
+        Save a document in the process to later be linked into the JSON data.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param file: Document to save. Required.
+        :type file: IO[bytes]
+        :keyword file_content_type: Document content type. Required.
+        :type file_content_type: str
+        :keyword file_name: Document name. Required.
+        :type file_name: str
+        :keyword schema_path: JSON Schema path related to the document. The uploaded document will be
+         validated by the passed schema path. Required.
+        :type schema_path: str
+        :return: ProcessSaveEntityDocumentResponseCommand
+        :rtype: ~kuflow.rest.models.ProcessSaveEntityDocumentResponseCommand
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process.actions_process_save_entity_document(
+            id, file, file_content_type, file_name, schema_path, kwargs
+        )
+
+    def actions_process_download_entity_document(self, id: str, *, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
+        """Download document.
+
+        Given a process and a documentUri, download a document.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :keyword document_uri: Document URI to download. Required.
+        :type document_uri: str
+        :return: Iterator[bytes]
+        :rtype: Iterator[bytes]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process.actions_process_download_entity_document(id, document_uri, kwargs)

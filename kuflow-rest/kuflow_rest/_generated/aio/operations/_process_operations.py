@@ -31,7 +31,8 @@
 #
 # --------------------------------------------------------------------------
 from io import IOBase
-from typing import Any, Callable, Dict, IO, List, Optional, TypeVar, Union, overload
+import sys
+from typing import Any, AsyncIterator, Callable, Dict, IO, List, Optional, Type, TypeVar, Union, overload
 
 from azure.core.exceptions import (
     ClientAuthenticationError,
@@ -52,13 +53,20 @@ from ...operations._process_operations import (
     build_actions_process_change_initiator_request,
     build_actions_process_complete_request,
     build_actions_process_delete_element_request,
+    build_actions_process_download_entity_document_request,
     build_actions_process_save_element_request,
+    build_actions_process_save_entity_data_request,
+    build_actions_process_save_entity_document_request,
     build_actions_process_save_user_action_value_document_request,
     build_create_process_request,
     build_find_processes_request,
     build_retrieve_process_request,
 )
 
+if sys.version_info >= (3, 9):
+    from collections.abc import MutableMapping
+else:
+    from typing import MutableMapping  # type: ignore  # pylint: disable=ungrouped-imports
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
@@ -115,7 +123,7 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -243,7 +251,7 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -311,7 +319,7 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -426,7 +434,7 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -559,7 +567,7 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -680,7 +688,7 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -747,7 +755,7 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -804,7 +812,7 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -874,7 +882,7 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process or None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        error_map = {
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
             401: ClientAuthenticationError,
             404: ResourceNotFoundError,
             409: ResourceExistsError,
@@ -919,6 +927,257 @@ class ProcessOperations:
         deserialized = None
         if response.status_code == 200:
             deserialized = self._deserialize("Process", pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @overload
+    async def actions_process_save_entity_data(
+        self,
+        id: str,
+        command: _models.ProcessSaveEntityDataCommand,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.Process:
+        """Save JSON data.
+
+        Allow to save a JSON validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param command: Command to save the JSON value. Required.
+        :type command: ~kuflow.rest.models.ProcessSaveEntityDataCommand
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: Process
+        :rtype: ~kuflow.rest.models.Process
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @overload
+    async def actions_process_save_entity_data(
+        self, id: str, command: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
+    ) -> _models.Process:
+        """Save JSON data.
+
+        Allow to save a JSON validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param command: Command to save the JSON value. Required.
+        :type command: IO[bytes]
+        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: Process
+        :rtype: ~kuflow.rest.models.Process
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @distributed_trace_async
+    async def actions_process_save_entity_data(
+        self, id: str, command: Union[_models.ProcessSaveEntityDataCommand, IO[bytes]], **kwargs: Any
+    ) -> _models.Process:
+        """Save JSON data.
+
+        Allow to save a JSON validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param command: Command to save the JSON value. Is either a ProcessSaveEntityDataCommand type
+         or a IO[bytes] type. Required.
+        :type command: ~kuflow.rest.models.ProcessSaveEntityDataCommand or IO[bytes]
+        :return: Process
+        :rtype: ~kuflow.rest.models.Process
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+
+        content_type = content_type or "application/json"
+        _json = None
+        _content = None
+        if isinstance(command, (IOBase, bytes)):
+            _content = command
+        else:
+            _json = self._serialize.body(command, "ProcessSaveEntityDataCommand")
+
+        _request = build_actions_process_save_entity_data_request(
+            id=id,
+            content_type=content_type,
+            json=_json,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("Process", pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace_async
+    async def actions_process_save_entity_document(
+        self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
+    ) -> _models.ProcessSaveEntityDocumentResponseCommand:
+        """Save an entity value document.
+
+        Save a document in the process to later be linked into the JSON data.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param file: Document to save. Required.
+        :type file: IO[bytes]
+        :keyword file_content_type: Document content type. Required.
+        :paramtype file_content_type: str
+        :keyword file_name: Document name. Required.
+        :paramtype file_name: str
+        :keyword schema_path: JSON Schema path related to the document. The uploaded document will be
+         validated by the passed schema path. Required.
+        :paramtype schema_path: str
+        :return: ProcessSaveEntityDocumentResponseCommand
+        :rtype: ~kuflow.rest.models.ProcessSaveEntityDocumentResponseCommand
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/octet-stream"))
+        cls: ClsType[_models.ProcessSaveEntityDocumentResponseCommand] = kwargs.pop("cls", None)
+
+        _content = file
+
+        _request = build_actions_process_save_entity_document_request(
+            id=id,
+            file_content_type=file_content_type,
+            file_name=file_name,
+            schema_path=schema_path,
+            content_type=content_type,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("ProcessSaveEntityDocumentResponseCommand", pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace_async
+    async def actions_process_download_entity_document(
+        self, id: str, *, document_uri: str, **kwargs: Any
+    ) -> AsyncIterator[bytes]:
+        """Download document.
+
+        Given a process and a documentUri, download a document.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :keyword document_uri: Document URI to download. Required.
+        :paramtype document_uri: str
+        :return: AsyncIterator[bytes]
+        :rtype: AsyncIterator[bytes]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[AsyncIterator[bytes]] = kwargs.pop("cls", None)
+
+        _request = build_actions_process_download_entity_document_request(
+            id=id,
+            document_uri=document_uri,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = True
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            if _stream:
+                await response.read()  # Load the body in memory and close the socket
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = response.iter_bytes()
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore

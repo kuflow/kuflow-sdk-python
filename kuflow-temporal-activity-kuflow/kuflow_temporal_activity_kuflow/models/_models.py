@@ -300,6 +300,42 @@ class SaveProcessElementResponse(_serialization.Model):
         self.process = process
 
 
+class SaveProcessEntityDataRequest(_serialization.Model):
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "data": {"key": "data", "type": "{object}"},
+    }
+
+    def __init__(
+        self,
+        process_id: str,
+        data: Optional[Dict[str, Any]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            process_id: Process identifier to update
+            data: Data values
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.data = data or {}
+
+
+class SaveProcessEntityDataResponse(_serialization.Model):
+    _attribute_map = {
+        "process": {"key": "process", "type": "Process"},
+    }
+
+    def __init__(self, process: models_rest.Process, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process: Process updated
+        """
+        super().__init__(**kwargs)
+        self.process = process
+
+
 class DeleteProcessElementRequest(_serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},

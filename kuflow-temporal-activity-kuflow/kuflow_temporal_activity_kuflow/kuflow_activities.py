@@ -133,6 +133,24 @@ class KuFlowActivities:
         except Exception as err:
             raise exceptions.create_application_error(err) from err
 
+    @activity.defn(name="KuFlow_Engine_saveProcessEntityData")
+    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
+    async def save_process_entity_data(
+        self,
+        request: models_temporal.SaveProcessEntityDataRequest,
+    ) -> models_temporal.SaveProcessEntityDataResponse:
+        try:
+            validation.validate_save_process_entity_request(request)
+
+            command = models.ProcessSaveEntityDataCommand(data=request.data)
+            process = self._kuflow_client.process.actions_process_save_entity_data(
+                id=request.process_id, command=command
+            )
+
+            return models_temporal.SaveProcessEntityDataResponse(process=process)
+        except Exception as err:
+            raise exceptions.create_application_error(err) from err
+
     @activity.defn(name="KuFlow_Engine_deleteProcessElement")
     @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def delete_process_element(

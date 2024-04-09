@@ -23,9 +23,13 @@
 #
 
 import unittest
-from datetime import date
+from datetime import date, datetime
 
 from kuflow_rest.models import (
+    JsonFormsFile,
+    JsonFormsPrincipal,
+    JsonFormsValue,
+    PrincipalType,
     Process,
     ProcessDefinitionSummary,
     ProcessElementValueNumber,
@@ -380,13 +384,395 @@ class ProcessUtilsTest(unittest.TestCase):
         ProcessUtils.add_element_value_list(process, "EV_DATE", [])
         self.assertEqual(process.element_values.get("EV_DATE"), expected_element_values)
 
+    def test_get_entity_property_as_str(self):
+        process = prepare_process_entity()
+        value = ProcessUtils.get_entity_property_as_str(process, "key1")
+        self.assertEqual(value, "value_key1")
+
+        value = ProcessUtils.get_entity_property_as_str(process, "key2.0.key2_key1.0.key2_key1_key2")
+        self.assertEqual(value, "value_key2_key1_key2")
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.get_entity_property_as_str(process, "key2.0.key2_key1.0.unknown")
+        self.assertEqual(str(context.exception), "Property value doesn't exist")
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.get_entity_property_as_str(process, "key2.0.key2_key1.10")
+        self.assertEqual(str(context.exception), "Property value doesn't exist")
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.get_entity_property_as_str(process, "key2.0.key2_key1.100.key2_key1_key2")
+        self.assertEqual(str(context.exception), "Property value doesn't exist")
+
+    def test_find_entity_property_as_str(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.find_entity_property_as_str(process, "key1")
+        self.assertEqual(value, "value_key1")
+
+        value = ProcessUtils.find_entity_property_as_str(process, "key2.0.key2_key1.0.key2_key1_key2")
+        self.assertEqual(value, "value_key2_key1_key2")
+
+        value = ProcessUtils.find_entity_property_as_str(process, "key2.0.key2_key1.0.unknown")
+        self.assertIsNone(value)
+
+        value = ProcessUtils.find_entity_property_as_str(process, "key2.0.key2_key1.10")
+        self.assertIsNone(value)
+
+        value = ProcessUtils.find_entity_property_as_str(process, "key2.0.key2_key1.100.key2_key1_key2")
+        self.assertIsNone(value)
+
+    def test_get_entity_property_as_int(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.get_entity_property_as_int(process, "key3.0")
+        self.assertEqual(value, 500)
+
+        value = ProcessUtils.get_entity_property_as_int(process, "key3.1")
+        self.assertEqual(value, 1000)
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.get_entity_property_as_int(process, "key_xxxxxxx")
+        self.assertEqual(str(context.exception), "Property value doesn't exist")
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.get_entity_property_as_int(process, "key1")
+        self.assertEqual(str(context.exception), "Property key1 is not a int")
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.get_entity_property_as_int(process, "key3.2")
+        self.assertEqual(str(context.exception), "Property key3.2 is not a int")
+
+    def test_find_entity_property_as_int(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.find_entity_property_as_int(process, "key3.0")
+        self.assertEqual(value, 500)
+
+        value = ProcessUtils.find_entity_property_as_int(process, "key3.1")
+        self.assertEqual(value, 1000)
+
+        value = ProcessUtils.find_entity_property_as_int(process, "key_xxxxxxx")
+        self.assertIsNone(value)
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.find_entity_property_as_int(process, "key1")
+        self.assertEqual(str(context.exception), "Property key1 is not a int")
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.find_entity_property_as_int(process, "key3.2")
+        self.assertEqual(str(context.exception), "Property key3.2 is not a int")
+
+    def test_get_entity_property_as_float(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.get_entity_property_as_float(process, "key3.0")
+        self.assertEqual(value, 500)
+
+        value = ProcessUtils.get_entity_property_as_float(process, "key3.1")
+        self.assertEqual(value, 1000)
+
+        value = ProcessUtils.get_entity_property_as_float(process, "key3.2")
+        self.assertEqual(value, 2000.1)
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.get_entity_property_as_float(process, "key_xxxxxxx")
+        self.assertEqual(str(context.exception), "Property value doesn't exist")
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.get_entity_property_as_float(process, "key1")
+        self.assertEqual(str(context.exception), "Property key1 is not a float")
+
+    def test_find_entity_property_as_float(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.find_entity_property_as_float(process, "key3.0")
+        self.assertEqual(value, 500)
+
+        value = ProcessUtils.find_entity_property_as_float(process, "key3.1")
+        self.assertEqual(value, 1000)
+
+        value = ProcessUtils.find_entity_property_as_float(process, "key3.2")
+        self.assertEqual(value, 2000.1)
+
+        value = ProcessUtils.find_entity_property_as_float(process, "key_xxxxxxx")
+        self.assertIsNone(value)
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.find_entity_property_as_float(process, "key1")
+        self.assertEqual(str(context.exception), "Property key1 is not a float")
+
+    def test_get_entity_property_as_date(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.get_entity_property_as_date(process, "key5.0")
+        self.assertEqual(value, date.fromisoformat("2000-01-01"))
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.get_entity_property_as_date(process, "key_xxxxxxx")
+        self.assertEqual(str(cm.exception), "Property value doesn't exist")
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.get_entity_property_as_date(process, "key1")
+        self.assertEqual(str(cm.exception), "Property key1 is not a date following ISO 8601 format")
+
+    def test_find_entity_property_as_date(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.find_entity_property_as_date(process, "key5.0")
+        self.assertEqual(value, date.fromisoformat("2000-01-01"))
+
+        value = ProcessUtils.find_entity_property_as_date(process, "key_xxxxxxx")
+        self.assertIsNone(value)
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.find_entity_property_as_date(process, "key1")
+        self.assertEqual(str(cm.exception), "Property key1 is not a date following ISO 8601 format")
+
+    def test_get_entity_property_as_datetime(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.get_entity_property_as_datetime(process, "key5.1")
+        self.assertEqual(value, datetime.fromisoformat("2000-01-01T10:10:05+01:00"))
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.get_entity_property_as_datetime(process, "key_xxxxxxx")
+        self.assertEqual(str(cm.exception), "Property value doesn't exist")
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.get_entity_property_as_datetime(process, "key1")
+        self.assertEqual(
+            str(cm.exception),
+            "Property key1 is not a date-time following ISO 8601 format",
+        )
+
+    def test_find_entity_property_as_datetime(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.find_entity_property_as_datetime(process, "key5.1")
+        self.assertEqual(value, datetime.fromisoformat("2000-01-01T10:10:05+01:00"))
+
+        value = ProcessUtils.find_entity_property_as_datetime(process, "key_xxxxxxx")
+        self.assertIsNone(value)
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.find_entity_property_as_datetime(process, "key1")
+        self.assertEqual(
+            str(cm.exception),
+            "Property key1 is not a date-time following ISO 8601 format",
+        )
+
+    def test_get_entity_property_as_file(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.get_entity_property_as_file(process, "key6")
+        self.assertEqual(value.uri, "xxx-yyy-zzz")
+        self.assertEqual(value.type, "application/pdf")
+        self.assertEqual(value.name, "dummy.pdf")
+        self.assertEqual(value.size, 500)
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.get_entity_property_as_file(process, "key_xxxxxxx")
+        self.assertEqual(str(cm.exception), "Property value doesn't exist")
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.get_entity_property_as_file(process, "key1")
+        self.assertEqual(str(cm.exception), "Property key1 is not a file")
+
+    def test_find_entity_property_as_file(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.find_entity_property_as_file(process, "key6")
+        self.assertEqual(value.uri, "xxx-yyy-zzz")
+        self.assertEqual(value.type, "application/pdf")
+        self.assertEqual(value.name, "dummy.pdf")
+        self.assertEqual(value.size, 500)
+
+        value = ProcessUtils.find_entity_property_as_file(process, "key_xxxxxxx")
+        self.assertIsNone(value)
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.find_entity_property_as_file(process, "key1")
+        self.assertEqual(str(cm.exception), "Property key1 is not a file")
+
+    def test_get_entity_property_as_principal(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.get_entity_property_as_principal(process, "key7")
+        self.assertEqual(value.id, "xxx-yyy-zzz")
+        self.assertEqual(value.type, "USER")
+        self.assertEqual(value.name, "Homer Simpson")
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.get_entity_property_as_principal(process, "key_xxxxxxx")
+        self.assertEqual(str(cm.exception), "Property value doesn't exist")
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.get_entity_property_as_principal(process, "key1")
+        self.assertEqual(str(cm.exception), "Property key1 is not a principal")
+
+    def test_find_entity_property_as_principal(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.find_entity_property_as_principal(process, "key7")
+        self.assertEqual(value.id, "xxx-yyy-zzz")
+        self.assertEqual(value.type, "USER")
+        self.assertEqual(value.name, "Homer Simpson")
+
+        value = ProcessUtils.find_entity_property_as_principal(process, "key_xxxxxxx")
+        self.assertIsNone(value)
+
+        with self.assertRaises(ValueError) as cm:
+            ProcessUtils.find_entity_property_as_principal(process, "key1")
+        self.assertEqual(str(cm.exception), "Property key1 is not a principal")
+
+    def test_get_entity_property_as_list(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.get_entity_property_as_list(process, "key3")
+        self.assertEqual(value, [500, "1000", 2000.1])
+
+        with self.assertRaises(Exception) as context:
+            ProcessUtils.get_entity_property_as_list(process, "key_xxxxxxx")
+        self.assertEqual(str(context.exception), "Property value doesn't exist")
+
+        with self.assertRaises(Exception) as context:
+            ProcessUtils.get_entity_property_as_list(process, "key1")
+        self.assertEqual(str(context.exception), "Property key1 is not a list")
+
+    def test_find_entity_property_as_list(self):
+        process = prepare_process_entity()
+
+        value1 = ProcessUtils.find_entity_property_as_list(process, "key3")
+        self.assertEqual(value1, [500, "1000", 2000.1])
+
+        value = ProcessUtils.find_entity_property_as_list(process, "key_xxxxxxx")
+        self.assertIsNone(value)
+
+    def test_get_entity_property_as_dict(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.get_entity_property_as_dict(process, "key2.0.key2_key1.0")
+        self.assertEqual(
+            value,
+            {
+                "key2_key1_key1": 0,
+                "key2_key1_key2": "value_key2_key1_key2",
+            },
+        )
+
+        with self.assertRaises(Exception) as context:
+            ProcessUtils.get_entity_property_as_dict(process, "key_xxxxxxx")
+        self.assertEqual(str(context.exception), "Property value doesn't exist")
+
+        with self.assertRaises(Exception) as context:
+            ProcessUtils.get_entity_property_as_dict(process, "key1")
+        self.assertEqual(str(context.exception), "Property key1 is not a dict")
+
+    def test_find_entity_property_as_dict(self):
+        process = prepare_process_entity()
+
+        value = ProcessUtils.find_entity_property_as_dict(process, "key2.0.key2_key1.0")
+        self.assertEqual(
+            value,
+            {
+                "key2_key1_key1": 0,
+                "key2_key1_key2": "value_key2_key1_key2",
+            },
+        )
+
+        value = ProcessUtils.find_entity_property_as_dict(process, "key_xxxxxxx")
+        self.assertIsNone(value)
+
+        with self.assertRaises(Exception) as context:
+            ProcessUtils.find_entity_property_as_dict(process, "key1")
+        self.assertEqual(str(context.exception), "Property key1 is not a dict")
+
+    def test_update_entity_property(self):
+        task = prepare_process_entity()
+        task.entity = JsonFormsValue()
+
+        file = JsonFormsFile(
+            uri="xxx-yyy-zzz",
+            type="application/pdf",
+            name="dummy.pdf",
+            size=500,
+        )
+
+        principal = JsonFormsPrincipal(
+            id="xxx-yyy-zzz",
+            type=PrincipalType.USER,
+            name="Homer Simpson",
+        )
+
+        ProcessUtils.update_entity_property(task, "key1", "text")
+        ProcessUtils.update_entity_property(task, "key2.0.key1", True)
+        ProcessUtils.update_entity_property(task, "key2.0.key2", date.fromisoformat("2020-01-01"))
+        ProcessUtils.update_entity_property(task, "key2.1.key1", False)
+        ProcessUtils.update_entity_property(task, "key2.1.key2", date.fromisoformat("3030-01-01"))
+        ProcessUtils.update_entity_property(task, "key2.2.key1", False)
+        ProcessUtils.update_entity_property(task, "key2.2.key2", datetime.fromisoformat("3030-01-01T10:10:00+01:00"))
+        ProcessUtils.update_entity_property(task, "key3", 100)
+        ProcessUtils.update_entity_property(task, "key4", file)
+        ProcessUtils.update_entity_property(task, "key5", principal)
+
+        self.assertEqual(
+            task.entity.data,
+            {
+                "key1": "text",
+                "key2": [
+                    {
+                        "key1": True,
+                        "key2": "2020-01-01",
+                    },
+                    {
+                        "key1": False,
+                        "key2": "3030-01-01",
+                    },
+                    {
+                        "key1": False,
+                        "key2": "3030-01-01T10:10:00+01:00",
+                    },
+                ],
+                "key3": 100,
+                "key4": "kuflow-file:uri=xxx-yyy-zzz;type=application/pdf;size=500;name=dummy.pdf;",
+                "key5": "kuflow-principal:id=xxx-yyy-zzz;type=USER;name=Homer Simpson;",
+            },
+        )
+
+        ProcessUtils.update_entity_property(task, "key1", None)
+        ProcessUtils.update_entity_property(task, "key2.0", None)
+        ProcessUtils.update_entity_property(task, "key2.0.key1", None)
+
+        self.assertEqual(
+            task.entity.data,
+            {
+                "key2": [
+                    {
+                        "key2": "3030-01-01",
+                    },
+                    {
+                        "key1": False,
+                        "key2": "3030-01-01T10:10:00+01:00",
+                    },
+                ],
+                "key3": 100,
+                "key4": "kuflow-file:uri=xxx-yyy-zzz;type=application/pdf;size=500;name=dummy.pdf;",
+                "key5": "kuflow-principal:id=xxx-yyy-zzz;type=USER;name=Homer Simpson;",
+            },
+        )
+
+        with self.assertRaises(ValueError) as context:
+            ProcessUtils.update_entity_property(task, "key2.100.key1", None)
+        self.assertEqual(str(context.exception), "Property key2.100.key1 doesn't exist")
+
 
 def prepare_process() -> Process:
     return Process(
+        id="3b755d5e-b64f-4ec2-a830-173f006bdf8e",
         process_definition=ProcessDefinitionSummary(
             id="e68d8136-1166-455c-93d6-d106201c1856",
         ),
-        process_id="3b755d5e-b64f-4ec2-a830-173f006bdf8e",
         element_values={
             "EV_STRING": [
                 ProcessElementValueString(value="MY TEXT 1", valid=True),
@@ -401,6 +787,36 @@ def prepare_process() -> Process:
                 ProcessElementValueString(value="1980-01-01", valid=False),
             ],
         },
+    )
+
+
+def prepare_process_entity() -> Process:
+    return Process(
+        id="3b755d5e-b64f-4ec2-a830-173f006bdf8e",
+        process_definition=ProcessDefinitionSummary(
+            id="e68d8136-1166-455c-93d6-d106201c1856",
+        ),
+        entity=JsonFormsValue(
+            valid=True,
+            data={
+                "key1": "value_key1",
+                "key2": [
+                    {
+                        "key2_key1": [
+                            {
+                                "key2_key1_key1": 0,
+                                "key2_key1_key2": "value_key2_key1_key2",
+                            },
+                        ],
+                    }
+                ],
+                "key3": [500, "1000", 2000.1],
+                "key4": [True, False, "true", "false"],
+                "key5": ["2000-01-01", "2000-01-01T10:10:05+01:00"],
+                "key6": "kuflow-file:uri=xxx-yyy-zzz;type=application/pdf;size=500;name=dummy.pdf;",
+                "key7": "kuflow-principal:id=xxx-yyy-zzz;type=USER;name=Homer Simpson;",
+            },
+        ),
     )
 
 
