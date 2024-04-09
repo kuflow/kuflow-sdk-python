@@ -22,11 +22,11 @@
 # SOFTWARE.
 #
 
-from datetime import date
-from typing import List, Optional
+from datetime import date, datetime
+from typing import Any, Dict, List, Optional
 
 from .._generated.models import ProcessElementValue
-from ..models import Process
+from ..models import JsonFormsFile, JsonFormsPrincipal, JsonFormsValue, Process
 from .element_values import (
     ElementValueSimpleType,
     ElementValueUnion,
@@ -49,31 +49,29 @@ from .element_values import (
     set_element_value_valid,
     set_element_value_valid_at,
 )
-
-
-class CurrentElementValueAccessor(ProcessElementValueAccessor):
-    def __init__(self, process: Process, element_definition_code: str):
-        self.process = process
-        self.element_definition_code = element_definition_code
-
-    def set_element_values(self, element_values: List[ElementValueUnion]):
-        if self.process.element_values is None:
-            self.process.element_values = {}
-
-        if len(element_values) == 0:
-            self.process.element_values.pop(self.element_definition_code, None)
-        else:
-            self.process.element_values[self.element_definition_code] = element_values
-
-    def get_element_values(self) -> List[ProcessElementValue]:
-        if self.process.element_values is None:
-            return []
-
-        element_values_by_code = self.process.element_values.get(self.element_definition_code)
-        if element_values_by_code is None or len(element_values_by_code) == 0:
-            return []
-
-        return element_values_by_code
+from .json_forms import (
+    JsonFormDataAccessor,
+    JsonFormsSimpleType,
+    find_json_forms_property_as_date,
+    find_json_forms_property_as_datetime,
+    find_json_forms_property_as_dict,
+    find_json_forms_property_as_float,
+    find_json_forms_property_as_int,
+    find_json_forms_property_as_json_forms_file,
+    find_json_forms_property_as_json_forms_principal,
+    find_json_forms_property_as_list,
+    find_json_forms_property_as_str,
+    get_json_forms_property_as_date,
+    get_json_forms_property_as_datetime,
+    get_json_forms_property_as_dict,
+    get_json_forms_property_as_float,
+    get_json_forms_property_as_int,
+    get_json_forms_property_as_json_forms_file,
+    get_json_forms_property_as_json_forms_principal,
+    get_json_forms_property_as_list,
+    get_json_forms_property_as_str,
+    update_json_forms_property,
+)
 
 
 class ProcessUtils:
@@ -365,3 +363,366 @@ class ProcessUtils:
             The element value as a date.
         """
         return get_element_value_as_date_list(CurrentElementValueAccessor(process, element_definition_code))
+
+    @staticmethod
+    def get_entity_property_as_str(process: Process, property_path: str) -> str:
+        """
+        Get a json property as "str" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            the property value if exists.
+
+        Raises:
+            ValueError: If property value doesn't exist or has incorrect format
+        """
+        return get_json_forms_property_as_str(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def find_entity_property_as_str(process: Process, property_path: str) -> Optional[str]:
+        """
+        Try to find a json property as "str" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            The property value if exists.
+
+        Raises:
+            ValueError: If property value has incorrect format
+        """
+        return find_json_forms_property_as_str(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def get_entity_property_as_int(process: Process, property_path: str) -> int:
+        """
+        Get a json property as "int" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            the property value if exists.
+
+        Raises:
+            ValueError: If property value doesn't exist or has incorrect format
+        """
+        return get_json_forms_property_as_int(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def find_entity_property_as_int(process: Process, property_path: str) -> Optional[int]:
+        """
+        Try to find a json property as "int" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            The property value if exists.
+
+        Raises:
+            ValueError: If property value has incorrect format
+        """
+        return find_json_forms_property_as_int(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def get_entity_property_as_float(process: Process, property_path: str) -> float:
+        """
+        Get a json property as "float" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            the property value if exists.
+
+        Raises:
+            ValueError: If property value doesn't exist or has incorrect format
+        """
+        return get_json_forms_property_as_float(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def find_entity_property_as_float(process: Process, property_path: str) -> Optional[float]:
+        """
+        Try to find a json property as "float" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            The property value if exists.
+
+        Raises:
+            ValueError: If property value has incorrect format
+        """
+        return find_json_forms_property_as_float(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def get_entity_property_as_date(process: Process, property_path: str) -> date:
+        """
+        Get a json property as "date" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            the property value if exists.
+
+        Raises:
+            ValueError: If property value doesn't exist or has incorrect format
+        """
+        return get_json_forms_property_as_date(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def find_entity_property_as_date(process: Process, property_path: str) -> Optional[date]:
+        """
+        Try to find a json property as "date" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            The property value if exists.
+
+        Raises:
+            ValueError: If property value has incorrect format
+        """
+        return find_json_forms_property_as_date(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def get_entity_property_as_datetime(process: Process, property_path: str) -> datetime:
+        """
+        Get a json property as "datetime" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            the property value if exists.
+
+        Raises:
+            ValueError: If property value doesn't exist or has incorrect format
+        """
+        return get_json_forms_property_as_datetime(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def find_entity_property_as_datetime(process: Process, property_path: str) -> Optional[datetime]:
+        """
+        Try to find a json property as "datetime" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            The property value if exists.
+
+        Raises:
+            ValueError: If property value has incorrect format
+        """
+        return find_json_forms_property_as_datetime(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def get_entity_property_as_file(process: Process, property_path: str) -> JsonFormsFile:
+        """
+        Get a json property as "JsonFormsFile" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            the property value if exists.
+
+        Raises:
+            ValueError: If property value doesn't exist or has incorrect format
+        """
+        return get_json_forms_property_as_json_forms_file(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def find_entity_property_as_file(process: Process, property_path: str) -> Optional[JsonFormsFile]:
+        """
+        Try to find a json property as "JsonFormsFile" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            The property value if exists.
+
+        Raises:
+            ValueError: If property value has incorrect format
+        """
+        return find_json_forms_property_as_json_forms_file(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def get_entity_property_as_principal(process: Process, property_path: str) -> JsonFormsPrincipal:
+        """
+        Get a json property as "JsonFormsPrincipal" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            the property value if exists.
+
+        Raises:
+            ValueError: If property value doesn't exist or has incorrect format
+        """
+        return get_json_forms_property_as_json_forms_principal(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def find_entity_property_as_principal(process: Process, property_path: str) -> Optional[JsonFormsPrincipal]:
+        """
+        Try to find a json property as "JsonFormsPrincipal" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            The property value if exists.
+
+        Raises:
+            ValueError: If property value has incorrect format
+        """
+        return find_json_forms_property_as_json_forms_principal(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def get_entity_property_as_list(process: Process, property_path: str) -> list:
+        """
+        Get a json property as "list" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            the property value if exists.
+
+        Raises:
+            ValueError: If property value doesn't exist or has incorrect format
+        """
+        return get_json_forms_property_as_list(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def find_entity_property_as_list(process: Process, property_path: str) -> Optional[list]:
+        """
+        Try to find a json property as "list" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            The property value if exists.
+
+        Raises:
+            ValueError: If property value has incorrect format
+        """
+        return find_json_forms_property_as_list(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def get_entity_property_as_dict(process: Process, property_path: str) -> dict:
+        """
+        Get a json property as "dict" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            the property value if exists.
+
+        Raises:
+            ValueError: If property value doesn't exist or has incorrect format
+        """
+        return get_json_forms_property_as_dict(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def find_entity_property_as_dict(process: Process, property_path: str) -> Optional[dict]:
+        """
+        Try to find a json property as "dict" following the "propertyPath" passed.
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+
+        Return:
+            The property value if exists.
+
+        Raises:
+            ValueError: If property value has incorrect format
+        """
+        return find_json_forms_property_as_dict(CurrentJsonFormDataAccessor(process), property_path)
+
+    @staticmethod
+    def update_entity_property(process: Process, property_path: str, value: Optional[JsonFormsSimpleType]) -> None:
+        """
+        Update a json forms data property in the task passed following the "property_path".
+
+        Arguments:
+            process: The process.
+            property_path: Property path to find. ie: "user.name" or "users.0.name"
+            value: Value to update
+
+        Raises:
+            ValueError: If property value has incorrect format
+        """
+        update_json_forms_property(CurrentJsonFormDataAccessor(process), property_path, value)
+
+
+class CurrentElementValueAccessor(ProcessElementValueAccessor):
+    def __init__(self, process: Process, element_definition_code: str):
+        self.process = process
+        self.element_definition_code = element_definition_code
+
+    def set_element_values(self, element_values: List[ElementValueUnion]):
+        if self.process.element_values is None:
+            self.process.element_values = {}
+
+        if len(element_values) == 0:
+            self.process.element_values.pop(self.element_definition_code, None)
+        else:
+            self.process.element_values[self.element_definition_code] = element_values
+
+    def get_element_values(self) -> List[ProcessElementValue]:
+        if self.process.element_values is None:
+            return []
+
+        element_values_by_code = self.process.element_values.get(self.element_definition_code)
+        if element_values_by_code is None or len(element_values_by_code) == 0:
+            return []
+
+        return element_values_by_code
+
+
+class CurrentJsonFormDataAccessor(JsonFormDataAccessor):
+    def __init__(self, process: Process):
+        self.process = process
+
+    def get_data(self) -> Optional[Dict[str, Any]]:
+        if self.process.entity is None:
+            return None
+
+        return self.process.entity.data
+
+    def set_data(self, data: Optional[Dict[str, Any]]):
+        if self.process.entity is None:
+            self.process.entity = JsonFormsValue()
+
+        self.process.entity.data = data
