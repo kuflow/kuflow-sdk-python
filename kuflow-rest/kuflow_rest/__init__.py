@@ -27,4 +27,4 @@ from ._kuflow_rest_client import KuBotTokenCredential, KuFlowRestClient
 
 
 __all__ = ["Deserializer", "KuBotTokenCredential", "KuFlowRestClient", "Model", "Serializer"]
-__version__ = "1.5.0"
+__version__ = "1.5.1.dev0"
