@@ -26,10 +26,7 @@ import unittest
 from datetime import date, datetime
 
 from kuflow_rest.models import (
-    JsonFormsFile,
-    JsonFormsPrincipal,
     JsonFormsValue,
-    PrincipalType,
     Process,
     ProcessDefinitionSummary,
     ProcessElementValueNumber,

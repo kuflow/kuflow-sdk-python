@@ -51,7 +51,6 @@ from .element_values import (
 )
 from .json_forms import (
     JsonFormDataAccessor,
-    JsonFormsSimpleType,
     find_json_forms_property_as_date,
     find_json_forms_property_as_datetime,
     find_json_forms_property_as_dict,
@@ -70,7 +69,6 @@ from .json_forms import (
     get_json_forms_property_as_json_forms_principal,
     get_json_forms_property_as_list,
     get_json_forms_property_as_str,
-    update_json_forms_property,
 )
 
 
