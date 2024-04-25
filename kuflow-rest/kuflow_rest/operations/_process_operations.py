@@ -270,7 +270,9 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_save_entity_data(id=id, command=command, content_type=content_type, **kwargs)
+        return self._kuflow_client.process.actions_process_save_entity_data(
+            id=id, command=command, content_type=content_type, **kwargs
+        )
 
     def actions_process_save_entity_document(
         self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
@@ -295,7 +297,12 @@ class ProcessOperations:
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self._kuflow_client.process.actions_process_save_entity_document(
-            id=id, file=file, file_content_type=file_content_type, file_name=file_name, schema_path=schema_path, **kwargs
+            id=id,
+            file=file,
+            file_content_type=file_content_type,
+            file_name=file_name,
+            schema_path=schema_path,
+            **kwargs,
         )
 
     def actions_process_download_entity_document(self, id: str, *, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
@@ -311,4 +318,6 @@ class ProcessOperations:
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_download_entity_document(id=id, document_uri=document_uri, **kwargs)
+        return self._kuflow_client.process.actions_process_download_entity_document(
+            id=id, document_uri=document_uri, **kwargs
+        )
