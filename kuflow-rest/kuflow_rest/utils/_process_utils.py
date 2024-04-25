@@ -670,21 +670,6 @@ class ProcessUtils:
         """
         return find_json_forms_property_as_dict(CurrentJsonFormDataAccessor(process), property_path)
 
-    @staticmethod
-    def update_entity_property(process: Process, property_path: str, value: Optional[JsonFormsSimpleType]) -> None:
-        """
-        Update a json forms data property in the task passed following the "property_path".
-
-        Arguments:
-            process: The process.
-            property_path: Property path to find. ie: "user.name" or "users.0.name"
-            value: Value to update
-
-        Raises:
-            ValueError: If property value has incorrect format
-        """
-        update_json_forms_property(CurrentJsonFormDataAccessor(process), property_path, value)
-
 
 class CurrentElementValueAccessor(ProcessElementValueAccessor):
     def __init__(self, process: Process, element_definition_code: str):
