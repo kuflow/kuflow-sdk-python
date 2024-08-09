@@ -30,7 +30,7 @@ from temporalio.common import RetryPolicy
 
 
 with workflow.unsafe.imports_passed_through():
-    from kuflow_rest import models
+    from kuflow_rest import models as models_rest
     from kuflow_temporal_activity_kuflow import KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK, KuFlowActivities
     from kuflow_temporal_activity_kuflow import models as models_temporal
 
@@ -38,34 +38,38 @@ with workflow.unsafe.imports_passed_through():
 @workflow.defn
 class GreetingWorkflow:
     def __init__(self) -> None:
-        self._kuflow_completed_task_ids: List[str] = []
+        self._kuflow_completed_process_item_ids: List[str] = []
 
     @workflow.signal(name=KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK)
     async def kuflow_engine_completed_task(self, task_id: str) -> None:
-        self._kuflow_completed_task_ids.append(task_id)
+        self._kuflow_completed_process_item_ids.append(task_id)
 
     @workflow.run
     async def run(self, request: models_temporal.WorkflowRequest) -> models_temporal.WorkflowResponse:
         id = str(workflow.uuid4())
 
-        task_definition = models.TaskDefinitionSummary(code="T_ONE")
-        task = models.Task(id=id, process_id=request.process_id, task_definition=task_definition)
+        process_item_create_request = models_temporal.ProcessItemCreateRequest(
+            id=id,
+            type=models_rest.ProcessItemType.TASK,
+            process_id=request.process_id,
+            task=models_rest.ProcessItemTaskCreateParams(task_definition_code="T_ONE"),
+        )
 
-        # Create Task
-        await self._create_task_and_wait_completion(task)
+        # Create Process Item Task
+        await self._create_process_item_and_wait_completion(process_item_create_request)
 
         workflow.logger.info(f"Finished {request.process_id}")
 
         return models_temporal.WorkflowResponse(f"Workflow {request.process_id} finished")
 
-    async def _create_task_and_wait_completion(self, task: models.Task) -> None:
-        create_task_request = models_temporal.CreateTaskRequest(task=task)
-
+    async def _create_process_item_and_wait_completion(
+        self, create_process_item_request: models_temporal.ProcessItemCreateRequest
+    ) -> None:
         await workflow.execute_activity(
-            KuFlowActivities.create_task,
-            create_task_request,
+            KuFlowActivities.create_process_item,
+            create_process_item_request,
             start_to_close_timeout=timedelta(days=1),
             schedule_to_close_timeout=timedelta(days=365),
             retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=30)),
         )
-        await workflow.wait_condition(lambda: task.id in self._kuflow_completed_task_ids)
+        await workflow.wait_condition(lambda: create_process_item_request.id in self._kuflow_completed_process_item_ids)

@@ -41,7 +41,7 @@ class WorkerOperations:
     def __init__(self, kuflow_client: KuFlowRestClientGenerated):
         self._kuflow_client = kuflow_client
 
-    def create_worker(self, worker: _models.Worker, **kwargs: Any) -> _models.Worker:
+    def create_worker(self, worker_create_params: _models.WorkerCreateParams, **kwargs: Any) -> _models.Worker:
         """Create or update a worker.
 
         Register a worker in KuFlow, this allows the platform to have a catalogue of all registered
@@ -49,13 +49,10 @@ class WorkerOperations:
 
         If already exist a worker for the same identity, the worker will be updated.
 
-        :param worker: Worker to create or update. Required.
-        :type worker: ~kuflow.rest.models.Worker
-        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
-         Default value is "application/json".
-        :paramtype content_type: str
+        :param worker_create_params: Worker to create or update. Required.
+        :type worker_create_params: ~kuflow.rest.models.WorkerCreateParams
         :return: Worker
         :rtype: ~kuflow.rest.models.Worker
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.worker.create_worker(worker=worker, **kwargs)
+        return self._kuflow_client.worker.create_worker(worker_create_params=worker_create_params, **kwargs)

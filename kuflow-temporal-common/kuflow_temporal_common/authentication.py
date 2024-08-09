@@ -62,8 +62,9 @@ class KuFlowAuthorizationTokenProvider:
 
         authentication = self._create_authentication()
         metadata = {}
-        if authentication.token:
-            metadata = self._set_auth_rpc_metadata(token=authentication.token, metadata=init_metadata)
+        if authentication.engine_token.token:
+            metadata = self._set_auth_rpc_metadata(token=authentication.engine_token.token, metadata=init_metadata)
+
         return metadata
 
     def start_auto_refresh(self, temporal_client: Client):
@@ -84,15 +85,18 @@ class KuFlowAuthorizationTokenProvider:
             authentication = self._create_authentication()
             self._consecutive_failures = 0
 
-            if authentication.token:
+            if authentication.engine_token.token:
                 new_metadata = self._set_auth_rpc_metadata(
-                    token=authentication.token, metadata=self._temporal_client.rpc_metadata
+                    token=authentication.engine_token.token, metadata=self._temporal_client.rpc_metadata
                 )
                 self._temporal_client.rpc_metadata = new_metadata
 
             refresh_in_seconds = (
-                (authentication.expired_at - datetime.datetime.now(authentication.expired_at.tzinfo)).total_seconds()
-                if authentication.expired_at
+                (
+                    authentication.engine_token.expired_at
+                    - datetime.datetime.now(authentication.engine_token.expired_at.tzinfo)
+                ).total_seconds()
+                if authentication.engine_token.expired_at
                 else 0
             )
 
@@ -118,9 +122,9 @@ class KuFlowAuthorizationTokenProvider:
         return new_metadata
 
     def _create_authentication(self) -> models.Authentication:
-        authentication = models.Authentication(
+        authentication_create_params = models.AuthenticationCreateParams(
             type=models.AuthenticationType.ENGINE_TOKEN,
             tenant_id=self._kuflow_config.tenant_id,
         )
 
-        return self._kuflow_config.rest_client.authentication.create_authentication(authentication)
+        return self._kuflow_config.rest_client.authentication.create_authentication(authentication_create_params)

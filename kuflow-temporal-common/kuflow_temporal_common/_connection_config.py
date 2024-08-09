@@ -24,7 +24,7 @@
 
 
 import concurrent.futures
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import timedelta
 from typing import Awaitable, Callable, List, Mapping, Optional, Sequence, Type, Union
 
@@ -32,7 +32,7 @@ import temporalio.common
 import temporalio.converter
 import temporalio.runtime
 import temporalio.workflow
-from temporalio.client import Interceptor, RetryConfig, TLSConfig
+from temporalio.client import Interceptor, KeepAliveConfig, RetryConfig, TLSConfig
 from temporalio.worker import SharedStateManager, UnsandboxedWorkflowRunner, WorkflowRunner
 from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner
 
@@ -100,13 +100,13 @@ class TemporalClientConfig:
     target_host: Optional[str] = None
     """``host:port`` for the Temporal server. For local development, this is often "localhost:7233"."""
 
-    namespace: Optional[str] = None
-    """Namespace to use for client calls, this is often "default"."""
+    namespace: str = "default"
+    """Namespace to use for client calls."""
 
     data_converter: temporalio.converter.DataConverter = temporalio.converter.DataConverter.default
     """Data converter to use for all data conversions to/from payloads."""
 
-    interceptors: Optional[Sequence[Interceptor]] = None
+    interceptors: Sequence[Interceptor] = field(default_factory=list)
     """Set of interceptors that are chained together to allow intercepting of client calls. The earlier interceptors
     wrap the later ones.
 
@@ -125,8 +125,12 @@ class TemporalClientConfig:
     """Retry configuration for direct service calls (when opted in) or all high-level calls made by this client (which
     all opt-in to retries by default). If unset, a default retry configuration is used."""
 
-    rpc_metadata: Optional[Mapping[str, str]] = None
-    """Headers to use for all calls to the server. Keys here can be overriden by per-call RPC metadata keys."""
+    keep_alive_config: Optional[KeepAliveConfig] = KeepAliveConfig.default
+    """Keep-alive configuration for the client connection. Default is to check every 30s and kill the connection if a
+    response doesn't come back in 15s. Can be set to ``None`` to disable."""
+
+    rpc_metadata: Mapping[str, str] = field(default_factory=object)
+    """Headers to use for all calls to the server. Keys here can be override by per-call RPC metadata keys."""
 
     identity: Optional[str] = None
     """Identity for this client. If unset, a default is created based on the version of the SDK."""
@@ -146,11 +150,11 @@ class TemporalWorkerConfig:
     task_queue: str
     """Required task queue for this worker."""
 
-    activities: Optional[Sequence[Callable]] = None
+    activities: Sequence[Callable] = field(default_factory=list)
     """Set of activity callables decorated with :py:func:`@activity.defn<temporalio.activity.defn>`. Activities may be
     async functions or non-async functions. """
 
-    workflows: Optional[Sequence[Type]] = None
+    workflows: Sequence[Type] = field(default_factory=list)
     """Set of workflow classes decorated with :py:func:`@workflow.defn<temporalio.workflow.defn>`."""
 
     activity_executor: Optional[concurrent.futures.Executor] = None
@@ -170,7 +174,7 @@ class TemporalWorkerConfig:
     unsandboxed_workflow_runner: WorkflowRunner = UnsandboxedWorkflowRunner()
     """Runner for workflows that opt-out of sandboxing."""
 
-    interceptors: Optional[Sequence[Interceptor]] = None
+    interceptors: Sequence[Interceptor] = field(default_factory=list)
     """Collection of interceptors for this worker. Any interceptors already on the client that also implement
     :py:class:`Interceptor` are prepended to this list and should not be explicitly given here."""
 
@@ -181,44 +185,44 @@ class TemporalWorkerConfig:
     identity: Optional[str] = None
     """Identity for this worker client. If unset, the client identity is used."""
 
-    max_cached_workflows: Optional[int] = None
+    max_cached_workflows: int = 1000
     """If nonzero, workflows will be cached and sticky task queues will be used."""
 
-    max_concurrent_workflow_tasks: Optional[int] = None
+    max_concurrent_workflow_tasks: int = 100
     """Maximum allowed number of workflow tasks that will ever be given to this worker at one time."""
 
-    max_concurrent_activities: Optional[int] = None
+    max_concurrent_activities: int = 100
     """ Maximum number of activity tasks that will ever be given to this worker concurrently."""
 
-    max_concurrent_local_activities: Optional[int] = None
+    max_concurrent_local_activities: int = 100
     """Maximum number of local activity tasks that will ever be given to this worker concurrently."""
 
-    max_concurrent_workflow_task_polls: Optional[int] = None
+    max_concurrent_workflow_task_polls: int = 5
     """Maximum number of concurrent poll workflow task requests we will perform at a time on this worker's task
     queue."""
 
-    nonsticky_to_sticky_poll_ratio: Optional[float] = None
+    nonsticky_to_sticky_poll_ratio: float = 0.2
     """max_concurrent_workflow_task_polls * this number = the number of max pollers that will be allowed for the
     nonsticky queue when sticky tasks are enabled. If both defaults are used, the sticky queue will allow 4 max pollers
     while the nonsticky queue will allow one. The minimum for either poller is 1, so if
     ``max_concurrent_workflow_task_polls`` is 1 and sticky queues are enabled, there will be 2 concurrent polls."""
 
-    max_concurrent_activity_task_polls: Optional[int] = None
+    max_concurrent_activity_task_polls: int = 5
     """Maximum number of concurrent poll activity task requests we will perform at a time on this worker's task queue.
     """
 
-    no_remote_activities: Optional[bool] = None
+    no_remote_activities: bool = False
     """If true, this worker will only handle workflow tasks and local activities, it will not poll for activity tasks.
     """
 
-    sticky_queue_schedule_to_start_timeout: Optional[timedelta] = None
+    sticky_queue_schedule_to_start_timeout: timedelta = timedelta(seconds=10)
     """How long a workflow task is allowed to sit on the sticky queue before it is timed out and moved to the non-sticky
      queue where it may be picked up by any worker."""
 
-    max_heartbeat_throttle_interval: Optional[timedelta] = None
+    max_heartbeat_throttle_interval: timedelta = timedelta(seconds=60)
     """Longest interval for throttling activity heartbeats."""
 
-    default_heartbeat_throttle_interval: Optional[timedelta] = None
+    default_heartbeat_throttle_interval: timedelta = timedelta(seconds=30)
     """Default interval for throttling activity heartbeats in case per-activity heartbeat timeout is unset. Otherwise,
     it's the per-activity heartbeat timeout * 0.8."""
 
@@ -231,7 +235,7 @@ class TemporalWorkerConfig:
     this only takes effect upon an activity poll request. If multiple workers on the same queue have different values
     set, they will thrash with the last poller winning."""
 
-    graceful_shutdown_timeout: Optional[timedelta] = None
+    graceful_shutdown_timeout: timedelta = timedelta()
     """Amount of time after shutdown is called that activities are given to complete before their tasks are cancelled.
     """
 
@@ -240,11 +244,11 @@ class TemporalWorkerConfig:
     where the activity_executor is not a :py:class:`concurrent.futures.ThreadPoolExecutor`. Reuse of these across
     workers is encouraged."""
 
-    debug_mode: Optional[bool] = None
+    debug_mode: bool = False
     """If true, will disable deadlock detection and may disable sandboxing in order to make using a debugger easier. If
     false but the environment variable ``TEMPORAL_DEBUG`` is truthy, this will be set to true."""
 
-    disable_eager_activity_execution: Optional[bool] = None
+    disable_eager_activity_execution: bool = False
     """If true, will disable eager activity execution. Eager activity execution is an optimization on some servers that
     sends activities back to the same worker as the calling workflow if they can run there. This setting is experimental
      and may be removed in a future release."""
@@ -252,6 +256,12 @@ class TemporalWorkerConfig:
     on_fatal_error: Optional[Callable[[BaseException], Awaitable[None]]] = None
     """An async function that can handle a failure before the worker shutdown commences. This cannot stop the shutdown
     and any exception raised is logged and ignored."""
+
+    use_worker_versioning: bool = False
+    """If true, the `build_id` argument must be specified, and this worker opts into the worker versioning feature. This
+    ensures it only receives workflow tasks for workflows which it claims to be compatible with.
+
+    For more information, see https://docs.temporal.io/workers#worker-versioning"""
 
 
 @dataclass

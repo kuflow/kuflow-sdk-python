@@ -84,7 +84,7 @@ class KuFlowWorkerInformationNotifier:
         self._schedule_create_or_update_worker()
 
     async def _create_or_update_worker(self):
-        worker_request = models.Worker(
+        worker_create_params = models.WorkerCreateParams(
             identity=self._get_worker_identity(),
             hostname=socket.gethostname(),
             ip=self._get_local_ip(),
@@ -106,7 +106,7 @@ class KuFlowWorkerInformationNotifier:
 
                 return worker
 
-            worker_response = self._kuflow_client.worker.create_worker(worker_request, cls=cls)
+            worker_response = self._kuflow_client.worker.create_worker(worker_create_params, cls=cls)
             logger.info(
                 f"""
                 Registered worker {worker_response.task_queue}/{worker_response.identity} with id {worker_response.id}
@@ -122,7 +122,10 @@ class KuFlowWorkerInformationNotifier:
             self._consecutive_failures = self._consecutive_failures + 1
 
             logger.error(
-                f"There are some problems registering worker {worker_request.task_queue}/{worker_request.identity}", err
+                f"""
+                There are problems registering worker {worker_create_params.task_queue}/{worker_create_params.identity}"
+                """.strip(),
+                err,
             )
 
     def _schedule_create_or_update_worker(self) -> None:

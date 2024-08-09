@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-from typing import Any, List, Optional, Union
+from typing import Any, Iterator, List, Optional, Union
 
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
 from .._generated import models as _models
@@ -98,3 +98,50 @@ class RobotOperations:
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self._kuflow_client.robot.retrieve_robot(id=id, **kwargs)
+
+    def download_robot_source_code(self, id: str, **kwargs: Any) -> Iterator[bytes]:
+        """Download robot code.
+
+        Given a robot, download the source code.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: Iterator[bytes]
+        :rtype: Iterator[bytes]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.robot.download_robot_source_code(id=id, **kwargs)
+
+    def download_robot_asset(
+        self,
+        id: str,
+        *,
+        type: _models.RobotAssetType,
+        version: str,
+        platform: _models.RobotAssetPlatform,
+        architecture: _models.RobotAssetArchitecture,
+        **kwargs: Any,
+    ) -> Iterator[bytes]:
+        """Download robot asset.
+
+        Given a robot, download the requested asset.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :keyword type: The asset type. Known values are: "PYTHON", "PYTHON_PIP", and "NODEJS".
+         Required.
+        :type type: str or ~kuflow.rest.models.RobotAssetType
+        :keyword version: The asset version. Required.
+        :type version: str
+        :keyword platform: The asset platform. Known values are: "WINDOWS", "MAC_OS", and "LINUX".
+         Required.
+        :type platform: str or ~kuflow.rest.models.RobotAssetPlatform
+        :keyword architecture: The asset platform architecture. Known values are: "X86_32" and "X86_64". Required.
+        :type architecture: str or ~kuflow.rest.models.RobotAssetArchitecture
+        :return: Iterator[bytes]
+        :rtype: Iterator[bytes]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.robot.download_robot_asset(
+            id=id, type=type, version=version, platform=platform, architecture=architecture, **kwargs
+        )

@@ -79,14 +79,18 @@ class AuthenticationOperations:
 
     @overload
     async def create_authentication(
-        self, authentication: _models.Authentication, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        authentication_create_params: _models.AuthenticationCreateParams,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
     ) -> _models.Authentication:
         """Create an authentication for the current principal.
 
         Create an authentication for the current principal.
 
-        :param authentication: Authentication to be created. Required.
-        :type authentication: ~kuflow.rest.models.Authentication
+        :param authentication_create_params: Authentication to be created. Required.
+        :type authentication_create_params: ~kuflow.rest.models.AuthenticationCreateParams
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -97,14 +101,14 @@ class AuthenticationOperations:
 
     @overload
     async def create_authentication(
-        self, authentication: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
+        self, authentication_create_params: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Authentication:
         """Create an authentication for the current principal.
 
         Create an authentication for the current principal.
 
-        :param authentication: Authentication to be created. Required.
-        :type authentication: IO[bytes]
+        :param authentication_create_params: Authentication to be created. Required.
+        :type authentication_create_params: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -115,15 +119,15 @@ class AuthenticationOperations:
 
     @distributed_trace_async
     async def create_authentication(
-        self, authentication: Union[_models.Authentication, IO[bytes]], **kwargs: Any
+        self, authentication_create_params: Union[_models.AuthenticationCreateParams, IO[bytes]], **kwargs: Any
     ) -> _models.Authentication:
         """Create an authentication for the current principal.
 
         Create an authentication for the current principal.
 
-        :param authentication: Authentication to be created. Is either a Authentication type or a
-         IO[bytes] type. Required.
-        :type authentication: ~kuflow.rest.models.Authentication or IO[bytes]
+        :param authentication_create_params: Authentication to be created. Is either a
+         AuthenticationCreateParams type or a IO[bytes] type. Required.
+        :type authentication_create_params: ~kuflow.rest.models.AuthenticationCreateParams or IO[bytes]
         :return: Authentication
         :rtype: ~kuflow.rest.models.Authentication
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -145,10 +149,10 @@ class AuthenticationOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(authentication, (IOBase, bytes)):
-            _content = authentication
+        if isinstance(authentication_create_params, (IOBase, bytes)):
+            _content = authentication_create_params
         else:
-            _json = self._serialize.body(authentication, "Authentication")
+            _json = self._serialize.body(authentication_create_params, "AuthenticationCreateParams")
 
         _request = build_create_authentication_request(
             content_type=content_type,
@@ -167,13 +171,11 @@ class AuthenticationOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
-            if _stream:
-                await response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Authentication", pipeline_response)
+        deserialized = self._deserialize("Authentication", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore

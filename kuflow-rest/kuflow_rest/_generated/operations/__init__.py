@@ -34,7 +34,7 @@ from ._authentication_operations import AuthenticationOperations
 from ._principal_operations import PrincipalOperations
 from ._tenant_user_operations import TenantUserOperations
 from ._process_operations import ProcessOperations
-from ._task_operations import TaskOperations
+from ._process_item_operations import ProcessItemOperations
 from ._worker_operations import WorkerOperations
 from ._robot_operations import RobotOperations
 
@@ -47,7 +47,7 @@ __all__ = [
     "PrincipalOperations",
     "TenantUserOperations",
     "ProcessOperations",
-    "TaskOperations",
+    "ProcessItemOperations",
     "WorkerOperations",
     "RobotOperations",
 ]

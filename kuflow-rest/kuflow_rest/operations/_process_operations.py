@@ -82,7 +82,7 @@ class ProcessOperations:
             size=size, page=page, sort=sort, tenant_id=tenant_id, **kwargs
         )
 
-    def create_process(self, process: _models.Process, **kwargs: Any) -> _models.Process:
+    def create_process(self, process_create_params: _models.ProcessCreateParams, **kwargs: Any) -> _models.Process:
         """Create a new process.
 
         Creates a process. This option has direct correspondence to the action of starting a process in
@@ -99,13 +99,13 @@ class ProcessOperations:
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process: Process to create. Required.
-        :type process: ~kuflow.rest.models.Process
+        :param process_create_params: Process to create. Required.
+        :type process_create_params: ~kuflow.rest.models.ProcessCreateParams
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.create_process(process=process, **kwargs)
+        return self._kuflow_client.process.create_process(process_create_params=process_create_params, **kwargs)
 
     def retrieve_process(self, id: str, **kwargs: Any) -> _models.Process:
         """Get a Process by ID.
@@ -120,70 +120,7 @@ class ProcessOperations:
         """
         return self._kuflow_client.process.retrieve_process(id=id, **kwargs)
 
-    def actions_process_change_initiator(
-        self, id: str, command: _models.ProcessChangeInitiatorCommand, **kwargs: Any
-    ) -> _models.Process:
-        """Change process initiator.
-
-        Change the current initiator of a process.
-
-        Allows you to choose a user (by email or principal identifier) or an application (principal
-        identifier).
-        Only one option will be necessary.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param command: Command to change the process initiator. Required.
-        :type command: ~kuflow.rest.models.ProcessChangeInitiatorCommand
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        return self._kuflow_client.process.actions_process_change_initiator(id=id, command=command, **kwargs)
-
-    def actions_process_save_element(
-        self, id: str, command: _models.ProcessSaveElementCommand, **kwargs: Any
-    ) -> _models.Process:
-        """Save a process element, aka: metadata.
-
-        Allow to save an element.
-
-        If values already exist for the provided element code, it replaces them with the new ones,
-        otherwise it creates them. The values of the previous elements that no longer exist will be
-        deleted.
-
-        If the process is already finished the invocations fails with an error.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param command: Command to save an element. Required.
-        :type command: ~kuflow.rest.models.ProcessSaveElementCommand
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        return self._kuflow_client.process.actions_process_save_element(id=id, command=command, **kwargs)
-
-    def actions_process_delete_element(
-        self, id: str, command: _models.ProcessDeleteElementCommand, **kwargs: Any
-    ) -> _models.Process:
-        """Delete an element by code.
-
-        Allow to delete a process element by specifying the item definition code.
-
-        Remove all the element values.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param command: Command to delete an element. Required.
-        :type command: ~kuflow.rest.models.ProcessDeleteElementCommand
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        return self._kuflow_client.process.actions_process_delete_element(id=id, command=command, **kwargs)
-
-    def actions_process_complete(self, id: str, **kwargs: Any) -> _models.Process:
+    def complete_process(self, id: str, **kwargs: Any) -> _models.Process:
         """Complete a Process.
 
         Complete a Process. The state of Process is set to 'completed'.
@@ -196,9 +133,9 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_complete(id=id, **kwargs)
+        return self._kuflow_client.process.complete_process(id=id, **kwargs)
 
-    def actions_process_cancel(self, id: str, **kwargs: Any) -> _models.Process:
+    def cancel_process(self, id: str, **kwargs: Any) -> _models.Process:
         """Cancel a Process.
 
         Cancel a Process. The Process state is set to 'cancelled'.
@@ -213,44 +150,105 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_cancel(id=id, **kwargs)
+        return self._kuflow_client.process.cancel_process(id=id, **kwargs)
 
-    def actions_process_save_user_action_value_document(
+    def change_process_initiator(
+        self, id: str, process_change_initiator_params: _models.ProcessChangeInitiatorParams, **kwargs: Any
+    ) -> _models.Process:
+        """Change process initiator.
+
+        Change the current initiator of a process.
+
+        Allows you to choose a user (by email or principal identifier) or an application (principal
+        identifier).
+        Only one option will be necessary.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_change_initiator_params: Command to change the process initiator. Required.
+        :type process_change_initiator_params: ~kuflow.rest.models.ProcessChangeInitiatorParams
+        :return: Process
+        :rtype: ~kuflow.rest.models.Process
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process.change_process_initiator(
+            id=id, process_change_initiator_params=process_change_initiator_params, **kwargs
+        )
+
+    def upload_process_user_action_document(
         self,
         id: str,
         file: _models.Document,
-        command: _models.ProcessSaveUserActionValueDocumentCommand,
+        user_action_value_id: str,
         **kwargs: Any,
     ) -> Optional[_models.Process]:
         """Upload and save a document in a user action.
 
         Allow saving a user action document uploading the content.
 
+        user_action_value_id:
+
         :param id: The resource ID. Required.
         :type id: str
         :param file: Document to save. Required.
         :type file: _models.Document
-        :keyword command: User action info. Required.
-        :type command: _models.ProcessSaveUserActionValueDocumentCommand
+        :keyword user_action_value_id: User action value id. Required.
+        :type user_action_value_id: _models.ProcessUserActionUploadParams
         :return: Process or None
         :rtype: ~kuflow.rest.models.Process or None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_save_user_action_value_document(
+        return self._kuflow_client.process.upload_process_user_action_document(
             id=id,
             file=file.file_content,
             file_content_type=file.content_type,
             file_name=file.file_mame,
-            user_action_value_id=command.user_action_value_id,
+            user_action_value_id=user_action_value_id,
             **kwargs,
         )
 
-    def actions_process_save_entity_data(
+    def update_process_metadata(
+        self, id: str, process_metadata_update_params: _models.ProcessMetadataUpdateParams, **kwargs: Any
+    ) -> _models.Process:
+        """Save process metadata.
+
+        Save process metadata.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_metadata_update_params: Params to save the metadata data. Required.
+        :type process_metadata_update_params: ~kuflow.rest.models.ProcessSaveElementCommand
+        :return: Process
+        :rtype: ~kuflow.rest.models.Process
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process.update_process_metadata(
+            id=id, process_metadata_update_params=process_metadata_update_params, **kwargs
+        )
+
+    def patch_process_metadata(
+        self, id: str, json_patch: List[_models.JsonPatchOperation], **kwargs: Any
+    ) -> _models.Process:
+        """Patch JSON data.
+
+        Allow to patch a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param json_patch: Params to save the metadata data. Required.
+        :type json_patch: List[~kuflow.rest.models.JsonPatchOperation]
+        :return: Process
+        :rtype: ~kuflow.rest.models.Process
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process.patch_process_metadata(id=id, json_patch=json_patch, **kwargs)
+
+    def update_process_entity(
         self,
         id: str,
-        command: _models.ProcessSaveEntityDataCommand,
-        *,
-        content_type: str = "application/json",
+        process_entity_update_params: _models.ProcessEntityUpdateParams,
         **kwargs: Any,
     ) -> _models.Process:
         """Save JSON data.
@@ -261,22 +259,41 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param command: Command to save the JSON value. Required.
-        :type command: ~kuflow.rest.models.ProcessSaveEntityDataCommand
-        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
-         Default value is "application/json".
-        :type content_type: str
+        :param process_entity_update_params: Params to save the JSON value. Required.
+        :type process_entity_update_params: ~kuflow.rest.models.ProcessEntityUpdateParams
         :return: Process
         :rtype: ~kuflow.rest.models.Process
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_save_entity_data(
-            id=id, command=command, content_type=content_type, **kwargs
+        return self._kuflow_client.process.update_process_entity(
+            id=id, process_entity_update_params=process_entity_update_params, **kwargs
         )
 
-    def actions_process_save_entity_document(
+    def patch_process_entity(
+        self,
+        id: str,
+        json_patch: List[_models.JsonPatchOperation],
+        **kwargs: Any,
+    ) -> _models.Process:
+        """Save JSON data.
+
+        Allow to save a JSON validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param json_patch: Params to save the JSON value. Required.
+        :type json_patch: List[~kuflow.rest.models.JsonPatchOperation]
+        :return: Process
+        :rtype: ~kuflow.rest.models.Process
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process.patch_process_entity(id=id, json_patch=json_patch, **kwargs)
+
+    def upload_process_entity_document(
         self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
-    ) -> _models.ProcessSaveEntityDocumentResponseCommand:
+    ) -> _models.DocumentReference:
         """Save an entity value document.
 
         Save a document in the process to later be linked into the JSON data.
@@ -296,7 +313,7 @@ class ProcessOperations:
         :rtype: ~kuflow.rest.models.ProcessSaveEntityDocumentResponseCommand
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_save_entity_document(
+        return self._kuflow_client.process.upload_process_entity_document(
             id=id,
             file=file,
             file_content_type=file_content_type,
@@ -305,7 +322,7 @@ class ProcessOperations:
             **kwargs,
         )
 
-    def actions_process_download_entity_document(self, id: str, *, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
+    def download_process_entity_document(self, id: str, *, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
         """Download document.
 
         Given a process and a documentUri, download a document.
@@ -318,6 +335,4 @@ class ProcessOperations:
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.actions_process_download_entity_document(
-            id=id, document_uri=document_uri, **kwargs
-        )
+        return self._kuflow_client.process.download_process_entity_document(id=id, document_uri=document_uri, **kwargs)

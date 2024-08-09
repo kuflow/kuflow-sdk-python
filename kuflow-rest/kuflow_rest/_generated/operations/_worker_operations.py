@@ -99,7 +99,7 @@ class WorkerOperations:
 
     @overload
     def create_worker(
-        self, worker: _models.Worker, *, content_type: str = "application/json", **kwargs: Any
+        self, worker_create_params: _models.WorkerCreateParams, *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Worker:
         """Create or update a worker.
 
@@ -108,8 +108,8 @@ class WorkerOperations:
 
         If already exist a worker for the same identity, the worker will be updated.
 
-        :param worker: Worker to create or update. Required.
-        :type worker: ~kuflow.rest.models.Worker
+        :param worker_create_params: Worker to create or update. Required.
+        :type worker_create_params: ~kuflow.rest.models.WorkerCreateParams
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -120,7 +120,7 @@ class WorkerOperations:
 
     @overload
     def create_worker(
-        self, worker: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
+        self, worker_create_params: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
     ) -> _models.Worker:
         """Create or update a worker.
 
@@ -129,8 +129,8 @@ class WorkerOperations:
 
         If already exist a worker for the same identity, the worker will be updated.
 
-        :param worker: Worker to create or update. Required.
-        :type worker: IO[bytes]
+        :param worker_create_params: Worker to create or update. Required.
+        :type worker_create_params: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -140,7 +140,9 @@ class WorkerOperations:
         """
 
     @distributed_trace
-    def create_worker(self, worker: Union[_models.Worker, IO[bytes]], **kwargs: Any) -> _models.Worker:
+    def create_worker(
+        self, worker_create_params: Union[_models.WorkerCreateParams, IO[bytes]], **kwargs: Any
+    ) -> _models.Worker:
         """Create or update a worker.
 
         Register a worker in KuFlow, this allows the platform to have a catalogue of all registered
@@ -148,9 +150,9 @@ class WorkerOperations:
 
         If already exist a worker for the same identity, the worker will be updated.
 
-        :param worker: Worker to create or update. Is either a Worker type or a IO[bytes] type.
-         Required.
-        :type worker: ~kuflow.rest.models.Worker or IO[bytes]
+        :param worker_create_params: Worker to create or update. Is either a WorkerCreateParams type or
+         a IO[bytes] type. Required.
+        :type worker_create_params: ~kuflow.rest.models.WorkerCreateParams or IO[bytes]
         :return: Worker
         :rtype: ~kuflow.rest.models.Worker
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -172,10 +174,10 @@ class WorkerOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(worker, (IOBase, bytes)):
-            _content = worker
+        if isinstance(worker_create_params, (IOBase, bytes)):
+            _content = worker_create_params
         else:
-            _json = self._serialize.body(worker, "Worker")
+            _json = self._serialize.body(worker_create_params, "WorkerCreateParams")
 
         _request = build_create_worker_request(
             content_type=content_type,
@@ -194,17 +196,11 @@ class WorkerOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200, 201]:
-            if _stream:
-                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        if response.status_code == 200:
-            deserialized = self._deserialize("Worker", pipeline_response)
-
-        if response.status_code == 201:
-            deserialized = self._deserialize("Worker", pipeline_response)
+        deserialized = self._deserialize("Worker", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore

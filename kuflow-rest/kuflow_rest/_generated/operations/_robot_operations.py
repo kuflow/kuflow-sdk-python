@@ -39,6 +39,8 @@ from azure.core.exceptions import (
     ResourceExistsError,
     ResourceNotFoundError,
     ResourceNotModifiedError,
+    StreamClosedError,
+    StreamConsumedError,
     map_error,
 )
 from azure.core.pipeline import PipelineResponse
@@ -114,9 +116,7 @@ def build_retrieve_robot_request(id: str, **kwargs: Any) -> HttpRequest:
     return HttpRequest(method="GET", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_robot_download_source_code_request(  # pylint: disable=name-too-long
-    id: str, **kwargs: Any
-) -> HttpRequest:
+def build_download_robot_source_code_request(id: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     accept = _headers.pop("Accept", "application/octet-stream, application/json")
@@ -135,7 +135,7 @@ def build_actions_robot_download_source_code_request(  # pylint: disable=name-to
     return HttpRequest(method="GET", url=_url, headers=_headers, **kwargs)
 
 
-def build_actions_robot_download_asset_request(  # pylint: disable=name-too-long
+def build_download_robot_asset_request(
     id: str,
     *,
     type: Union[str, _models.RobotAssetType],
@@ -257,13 +257,11 @@ class RobotOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
-            if _stream:
-                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("RobotPage", pipeline_response)
+        deserialized = self._deserialize("RobotPage", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -310,13 +308,11 @@ class RobotOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
-            if _stream:
-                response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Robot", pipeline_response)
+        deserialized = self._deserialize("Robot", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -324,7 +320,7 @@ class RobotOperations:
         return deserialized  # type: ignore
 
     @distributed_trace
-    def actions_robot_download_source_code(self, id: str, **kwargs: Any) -> Iterator[bytes]:
+    def download_robot_source_code(self, id: str, **kwargs: Any) -> Iterator[bytes]:
         """Download robot code.
 
         Given a robot, download the source code.
@@ -348,7 +344,7 @@ class RobotOperations:
 
         cls: ClsType[Iterator[bytes]] = kwargs.pop("cls", None)
 
-        _request = build_actions_robot_download_source_code_request(
+        _request = build_download_robot_source_code_request(
             id=id,
             headers=_headers,
             params=_params,
@@ -363,8 +359,10 @@ class RobotOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
-            if _stream:
+            try:
                 response.read()  # Load the body in memory and close the socket
+            except (StreamConsumedError, StreamClosedError):
+                pass
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
@@ -377,7 +375,7 @@ class RobotOperations:
         return deserialized  # type: ignore
 
     @distributed_trace
-    def actions_robot_download_asset(
+    def download_robot_asset(
         self,
         id: str,
         *,
@@ -421,7 +419,7 @@ class RobotOperations:
 
         cls: ClsType[Iterator[bytes]] = kwargs.pop("cls", None)
 
-        _request = build_actions_robot_download_asset_request(
+        _request = build_download_robot_asset_request(
             id=id,
             type=type,
             version=version,
@@ -440,8 +438,10 @@ class RobotOperations:
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
-            if _stream:
+            try:
                 response.read()  # Load the body in memory and close the socket
+            except (StreamConsumedError, StreamClosedError):
+                pass
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)

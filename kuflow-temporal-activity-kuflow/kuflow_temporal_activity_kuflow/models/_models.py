@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-from typing import Any, Dict, List, Optional
+from typing import Any, List, Optional
 
 from kuflow_rest import models as models_rest
 from kuflow_rest._generated import _serialization
@@ -140,7 +140,7 @@ class RobotWorkflowResponse(_serialization.Model):
 ########################
 
 
-class RetrievePrincipalRequest(_serialization.Model):
+class PrincipalRetrieveRequest(_serialization.Model):
     _attribute_map = {
         "principal_id": {"key": "principalId", "type": "str"},
     }
@@ -154,7 +154,7 @@ class RetrievePrincipalRequest(_serialization.Model):
         self.principal_id = principal_id
 
 
-class RetrievePrincipalResponse(_serialization.Model):
+class PrincipalRetrieveResponse(_serialization.Model):
     _attribute_map = {
         "principal": {"key": "principal", "type": "Principal"},
     }
@@ -168,7 +168,7 @@ class RetrievePrincipalResponse(_serialization.Model):
         self.principal = principal
 
 
-class RetrieveTenantUserRequest(_serialization.Model):
+class TenantUserRetrieveRequest(_serialization.Model):
     _attribute_map = {
         "tenant_user_id": {"key": "tenantUserId", "type": "str"},
     }
@@ -182,7 +182,7 @@ class RetrieveTenantUserRequest(_serialization.Model):
         self.tenant_user_id = tenant_user_id
 
 
-class RetrieveTenantUserResponse(_serialization.Model):
+class TenantUserRetrieveResponse(_serialization.Model):
     _attribute_map = {
         "tenant_user": {"key": "tenantUser", "type": "Principal"},
     }
@@ -196,7 +196,7 @@ class RetrieveTenantUserResponse(_serialization.Model):
         self.tenant_user = tenant_user
 
 
-class FindProcessesRequest(_serialization.Model):
+class ProcesFindRequest(_serialization.Model):
     _attribute_map = {
         "page": {"key": "page", "type": "int"},
         "size": {"key": "size", "type": "int"},
@@ -218,7 +218,7 @@ class FindProcessesRequest(_serialization.Model):
         self.sorts = sorts
 
 
-class FindProcessesResponse(_serialization.Model):
+class ProcesFindResponse(_serialization.Model):
     _attribute_map = {
         "processes": {"key": "processes", "type": "ProcessPage"},
     }
@@ -232,7 +232,7 @@ class FindProcessesResponse(_serialization.Model):
         self.processes = processes
 
 
-class RetrieveProcessRequest(_serialization.Model):
+class ProcessRetrieveRequest(_serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
     }
@@ -246,7 +246,7 @@ class RetrieveProcessRequest(_serialization.Model):
         self.process_id = process_id
 
 
-class RetrieveProcessResponse(_serialization.Model):
+class ProcessRetrieveResponse(_serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -260,33 +260,29 @@ class RetrieveProcessResponse(_serialization.Model):
         self.process = process
 
 
-class SaveProcessElementRequest(_serialization.Model):
+class ProcessEntityUpdateRequest(_serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
-        "element_definition_code": {"key": "elementDefinitionCode", "type": "str"},
-        "element_values": {"key": "elementValues", "type": "[ProcessElementValue]"},
+        "entity": {"key": "entity", "type": "JsonValue"},
     }
 
     def __init__(
         self,
         process_id: str,
-        element_definition_code: str,
-        element_values: Optional[List[models_rest.ProcessElementValue]] = None,
+        entity: models_rest.JsonValue,
         **kwargs: Any,
     ) -> None:
         """
         Parameters:
             process_id: Process identifier to update
-            element_definition_code: Element definition code
-            element_values: Element values
+            entity: Json value. Required.
         """
         super().__init__(**kwargs)
         self.process_id = process_id
-        self.element_definition_code = element_definition_code
-        self.element_values = element_values or []
+        self.entity = entity
 
 
-class SaveProcessElementResponse(_serialization.Model):
+class ProcessEntityUpdateResponse(_serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -300,29 +296,29 @@ class SaveProcessElementResponse(_serialization.Model):
         self.process = process
 
 
-class SaveProcessEntityDataRequest(_serialization.Model):
+class ProcessEntityPatchRequest(_serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
-        "data": {"key": "data", "type": "{object}"},
+        "json_patch": {"key": "jsonPatch", "type": "[JsonPatchOperation]"},
     }
 
     def __init__(
         self,
         process_id: str,
-        data: Optional[Dict[str, Any]] = None,
+        json_patch: List[models_rest.JsonPatchOperation],
         **kwargs: Any,
     ) -> None:
         """
         Parameters:
             process_id: Process identifier to update
-            data: Data values
+            json_patch: Params to patch process entity
         """
         super().__init__(**kwargs)
         self.process_id = process_id
-        self.data = data or {}
+        self.json_patch = json_patch
 
 
-class SaveProcessEntityDataResponse(_serialization.Model):
+class ProcessEntityPatchResponse(_serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -336,61 +332,103 @@ class SaveProcessEntityDataResponse(_serialization.Model):
         self.process = process
 
 
-class DeleteProcessElementRequest(_serialization.Model):
+class ProcessMetadataUpdateRequest(_serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
-        "element_definition_code": {"key": "elementDefinitionCode", "type": "str"},
-    }
-
-    def __init__(self, process_id: str, element_definition_code: str, **kwargs: Any) -> None:
-        """
-        Parameters:
-            process_id: Process related
-            element_definition_code: Code of the element to delete
-        """
-        super().__init__(**kwargs)
-        self.process_id = process_id
-        self.element_definition_code = element_definition_code
-
-
-class DeleteProcessElementResponse(_serialization.Model):
-    _attribute_map = {
-        "process": {"key": "process", "type": "Process"},
-    }
-
-    def __init__(self, process: models_rest.Process, **kwargs: Any) -> None:
-        """
-        Parameters:
-            process: Process updated
-        """
-        super().__init__(**kwargs)
-        self.process = process
-
-
-class ChangeProcessInitiatorRequest(_serialization.Model):
-    _attribute_map = {
-        "process_id": {"key": "processId", "type": "str"},
-        "email": {"key": "email", "type": "str"},
-        "principal_id": {"key": "principalId", "type": "str"},
+        "metadata": {"key": "metadata", "type": "JsonValue"},
     }
 
     def __init__(
-        self, process_id: str, email: Optional[str] = None, principal_id: Optional[str] = None, **kwargs: Any
+        self,
+        process_id: str,
+        metadata: models_rest.JsonValue,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            process_id: Process identifier to update
+            metadata: Json value. Required.
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.metadata = metadata
+
+
+class ProcessMetadataUpdateResponse(_serialization.Model):
+    _attribute_map = {
+        "process": {"key": "process", "type": "Process"},
+    }
+
+    def __init__(self, process: models_rest.Process, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process: Process updated
+        """
+        super().__init__(**kwargs)
+        self.process = process
+
+
+class ProcessMetadataPatchRequest(_serialization.Model):
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "json_patch": {"key": "params", "type": "[JsonPatchOperation]"},
+    }
+
+    def __init__(
+        self,
+        process_id: str,
+        json_patch: List[models_rest.JsonPatchOperation],
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            process_id: Process identifier to update
+            json_patch: Params to patch process entity
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.json_patch = json_patch
+
+
+class ProcessMetadataPatchResponse(_serialization.Model):
+    _attribute_map = {
+        "process": {"key": "process", "type": "Process"},
+    }
+
+    def __init__(self, process: models_rest.Process, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process: Process updated
+        """
+        super().__init__(**kwargs)
+        self.process = process
+
+
+class ProcessInitiatorChangeRequest(_serialization.Model):
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "initiator_id": {"key": "initiatorId", "type": "str"},
+        "initiator_email": {"key": "initiatorEmail", "type": "str"},
+    }
+
+    def __init__(
+        self, process_id: str, initiator_id: Optional[str] = None, initiator_email: Optional[str] = None, **kwargs: Any
     ) -> None:
         """
         Parameters:
             process_id: Process identifier to which want to change the initiator
-            email: User email that want to use to assign the process. Attribute :email or :principal_id must be set.
-            principal_id: Principal id that want to use to assign the process.
-                          Attribute :email or :principal_id must be set.
+            initiator_id: Initiator id that wants to use to assign the process.
+                          Attribute :initiator_id or :initiator_email must be set.
+            initiator_email: User email that wants to use to assign the process. Attribute :initiator_id or
+                             :initiator_email must be set.
         """
         super().__init__(**kwargs)
         self.process_id = process_id
-        self.email = email
-        self.principal_id = principal_id
+        self.initiator_id = initiator_id
+        self.initiator_email = initiator_email
 
 
-class ChangeProcessInitiatorResponse(_serialization.Model):
+class ProcessInitiatorChangeResponse(_serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -404,13 +442,15 @@ class ChangeProcessInitiatorResponse(_serialization.Model):
         self.process = process
 
 
-class FindTaskRequest(_serialization.Model):
+class ProcessItemFindRequest(_serialization.Model):
     _attribute_map = {
         "page": {"key": "page", "type": "int"},
         "size": {"key": "size", "type": "int"},
         "sorts": {"key": "sorts", "type": "[str]"},
+        "tenant_ids": {"key": "tenantIds", "type": "[str]"},
         "process_ids": {"key": "processIds", "type": "[str]"},
-        "states": {"key": "states", "type": "[TaskState]"},
+        "types": {"key": "processIds", "type": "[ProcessItemType]"},
+        "task_states": {"key": "taskStates", "type": "[ProcessItemTaskState]"},
         "task_definition_codes": {"key": "taskDefinitionCodes", "type": "[str]"},
     }
 
@@ -419,8 +459,10 @@ class FindTaskRequest(_serialization.Model):
         page: Optional[int] = None,
         size: Optional[int] = None,
         sorts: Optional[List[str]] = None,
+        tenant_ids: Optional[List[str]] = None,
         process_ids: Optional[List[str]] = None,
-        states: Optional[List[models_rest.TaskState]] = None,
+        types: Optional[List[models_rest.ProcessItemType]] = None,
+        task_states: Optional[List[models_rest.ProcessItemTaskState]] = None,
         task_definition_codes: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> None:
@@ -429,340 +471,312 @@ class FindTaskRequest(_serialization.Model):
             page: Page requested, 0-index
             size: Page size
             sorts: Sorting criteria in the format: property{,asc|desc}. Example: name,desc
-            process_ids: Filter tasks by the process identifiers
-            states: Filter tasks by the states
-            task_definition_codes: Filter tasks by the task_definition_codes
+            tenant_ids: Filter process items by tenant identifiers
+            process_ids: Filter process items  by the process identifiers
+            types: Filter process items by the types
+            task_states: Filter process items by the task states
+            task_definition_codes: Filter process items by the task_definition_codes
         """
         super().__init__(**kwargs)
         self.page = page
         self.size = size
         self.sorts = sorts
+        self.tenant_ids = tenant_ids
         self.process_ids = process_ids
-        self.states = states
+        self.types = types
+        self.task_states = task_states
         self.task_definition_codes = task_definition_codes
 
 
-class FindTaskResponse(_serialization.Model):
+class ProcessItemFindResponse(_serialization.Model):
     _attribute_map = {
-        "tasks": {"key": "tasks", "type": "TaskPage"},
+        "process_items": {"key": "processItems", "type": "ProcessItemPage"},
     }
 
-    def __init__(self, tasks: models_rest.TaskPage, **kwargs: Any) -> None:
+    def __init__(self, process_items: models_rest.ProcessItemPage, **kwargs: Any) -> None:
         """
         Parameters:
-            tasks: Task page that math the requested criteria
+            process_items: Process Item page that math the requested criteria
         """
         super().__init__(**kwargs)
-        self.tasks = tasks
+        self.process_items = process_items
 
 
-class RetrieveTaskRequest(_serialization.Model):
+class ProcessItemRetrieveRequest(_serialization.Model):
     _attribute_map = {
-        "task_id": {"key": "taskId", "type": "str"},
+        "process_item_id": {"key": "processItemId", "type": "str"},
     }
 
-    def __init__(self, task_id: str, **kwargs: Any) -> None:
+    def __init__(self, process_item_id: str, **kwargs: Any) -> None:
         """
         Parameters:
-            task_id: Task identifier to retrieve
+            process_item_id: Process Item identifier to retrieve
         """
         super().__init__(**kwargs)
-        self.task_id = task_id
+        self.process_item_id = process_item_id
 
 
-class RetrieveTaskResponse(_serialization.Model):
+class ProcessItemRetrieveResponse(_serialization.Model):
     _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
+        "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
 
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
+    def __init__(self, process_item: models_rest.ProcessItem, **kwargs: Any) -> None:
         """
         Parameters:
-            task: Task data
+            process_item: Process Item data
         """
         super().__init__(**kwargs)
-        self.task = task
+        self.process_item = process_item
 
 
-class CreateTaskRequest(_serialization.Model):
+class ProcessItemCreateRequest(_serialization.Model):
     _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
-    }
-
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
-        """
-        Parameters:
-            task: Task to create
-        """
-        super().__init__(**kwargs)
-        self.task = task
-
-
-class CreateTaskResponse(_serialization.Model):
-    _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
-    }
-
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
-        """
-        Parameters:
-            task: Task created
-        """
-        super().__init__(**kwargs)
-        self.task = task
-
-
-class CompleteTaskRequest(_serialization.Model):
-    _attribute_map = {
-        "task_id": {"key": "taskId", "type": "str"},
-    }
-
-    def __init__(self, task_id: str, **kwargs: Any) -> None:
-        """
-        Parameters:
-            task_id: Task identifier to mark as completed
-        """
-        super().__init__(**kwargs)
-        self.task_id = task_id
-
-
-class CompleteTaskResponse(_serialization.Model):
-    _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
-    }
-
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
-        """
-        Parameters:
-            task: Task updated
-        """
-        super().__init__(**kwargs)
-        self.task = task
-
-
-class ClaimTaskRequest(_serialization.Model):
-    _attribute_map = {
-        "task_id": {"key": "taskId", "type": "str"},
-    }
-
-    def __init__(self, task_id: str, **kwargs: Any) -> None:
-        """
-        Parameters:
-            task_id: Task identifier to claim by the requestor
-        """
-        super().__init__(**kwargs)
-        self.task_id = task_id
-
-
-class ClaimTaskResponse(_serialization.Model):
-    _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
-    }
-
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
-        """
-        Parameters:
-            task: Task claimed
-        """
-        super().__init__(**kwargs)
-        self.task = task
-
-
-class AssignTaskRequest(_serialization.Model):
-    _attribute_map = {
-        "task_id": {"key": "taskId", "type": "str"},
-        "email": {"key": "email", "type": "str"},
-        "principal_id": {"key": "principalId", "type": "str"},
-    }
-
-    def __init__(
-        self, task_id: str, email: Optional[str] = None, principal_id: Optional[str] = None, **kwargs: Any
-    ) -> None:
-        """
-        Parameters:
-            task_id: Task to assign to the email or principal_id selected
-            email: User email that want to use to assign the task. Attribute :email or principal_id must be set
-            principal_id: Principal id that want to use to assign the task. Attribute _email or principal_id must be set
-        """
-        super().__init__(**kwargs)
-        self.task_id = task_id
-        self.email = email
-        self.principal_id = principal_id
-
-
-class AssignTaskResponse(_serialization.Model):
-    _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
-    }
-
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
-        """
-        Parameters:
-            task: Task updated
-        """
-        super().__init__(**kwargs)
-        self.task = task
-
-
-class SaveTaskElementRequest(_serialization.Model):
-    _attribute_map = {
-        "task_id": {"key": "taskId", "type": "str"},
-        "element_definition_code": {"key": "elementDefinitionCode", "type": "str"},
-        "element_values": {"key": "elementValues", "type": "[TaskElementValue]"},
+        "id": {"key": "id", "type": "str"},
+        "type": {"key": "type", "type": "ProcessItemType"},
+        "process_id": {"key": "processId", "type": "str"},
+        "owner_id": {"key": "ownerId", "type": "str"},
+        "owner_email": {"key": "ownerEmail", "type": "str"},
+        "task": {"key": "task", "type": "ProcessItemTaskCreateParams"},
     }
 
     def __init__(
         self,
-        task_id: str,
-        element_definition_code: str,
-        element_values: Optional[List[models_rest.TaskElementValue]] = None,
+        id: str,
+        type: models_rest.ProcessItemType,
+        process_id: str,
+        owner_id: Optional[str] = None,
+        owner_email: Optional[str] = None,
+        task: Optional[models_rest.ProcessItemTaskCreateParams] = None,
         **kwargs: Any,
     ) -> None:
         """
         Parameters:
-            task_id: Task to update
-            element_definition_code: Element definition code
-            element_values: Element values
+            id: Process item task id
+            type: Process item task type
+            process_id: Process id in which create the process item
+            owner_id: Owner id, only owner_id or owner_email is allowed
+            owner_email: Owner email, only owner_id or owner_email is allowed
+            task: Process Item Task details
         """
         super().__init__(**kwargs)
-        self.task_id = task_id
-        self.element_definition_code = element_definition_code
-        self.element_values = element_values or []
-
-
-class SaveTaskElementResponse(_serialization.Model):
-    _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
-    }
-
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
-        """
-        Parameters:
-            task: Task updated
-        """
-        super().__init__(**kwargs)
+        self.id = id
+        self.type = type
+        self.process_id = process_id
+        self.owner_id = owner_id
+        self.owner_email = owner_email
         self.task = task
 
 
-class DeleteTaskElementRequest(_serialization.Model):
+class ProcessItemCreateResponse(_serialization.Model):
     _attribute_map = {
-        "task_id": {"key": "taskId", "type": "str"},
-        "element_definition_code": {"key": "elementDefinitionCode", "type": "str"},
+        "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
 
-    def __init__(self, task_id: str, element_definition_code: str, **kwargs: Any) -> None:
+    def __init__(self, process_item: models_rest.ProcessItem, **kwargs: Any) -> None:
         """
         Parameters:
-            task_id: Task to update
-            element_definition_code: Element definition code to delete all values
+            process_item: Process Item created
         """
         super().__init__(**kwargs)
-        self.task_id = task_id
-        self.element_definition_code = element_definition_code
+        self.process_item = process_item
 
 
-class DeleteTaskElementResponse(_serialization.Model):
+class ProcessItemTaskCompleteRequest(_serialization.Model):
     _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
+        "process_item_id": {"key": "processItemId", "type": "str"},
     }
 
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
+    def __init__(self, process_item_id: str, **kwargs: Any) -> None:
         """
         Parameters:
-            task: Task updated
+            process_item_id: Process Item identifier to mark as completed
         """
         super().__init__(**kwargs)
-        self.task = task
+        self.process_item_id = process_item_id
 
 
-class DeleteTaskElementValueDocumentRequest(_serialization.Model):
+class ProcessItemTaskCompleteResponse(_serialization.Model):
     _attribute_map = {
-        "task_id": {"key": "taskId", "type": "str"},
-        "document_id": {"key": "documentId", "type": "str"},
+        "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
 
-    def __init__(self, task_id: str, document_id: str, **kwargs: Any) -> None:
+    def __init__(self, process_item: models_rest.ProcessItem, **kwargs: Any) -> None:
         """
         Parameters:
-            task_id: Task to update
-            document_id: Document id to delete updated
+            process_item: Process Item updated
         """
         super().__init__(**kwargs)
-        self.task_id = task_id
-        self.document_id = document_id
+        self.process_item = process_item
 
 
-class DeleteTaskElementValueDocumentResponse(_serialization.Model):
+class ProcessItemTaskClaimRequest(_serialization.Model):
     _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
+        "process_item_id": {"key": "processItemId", "type": "str"},
     }
 
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
+    def __init__(self, process_item_id: str, **kwargs: Any) -> None:
         """
         Parameters:
-            task: Task updated
+            process_item_id: Task identifier to claim by the requestor
         """
         super().__init__(**kwargs)
-        self.task = task
+        self.process_item_id = process_item_id
 
 
-class SaveTaskJsonFormsValueDataRequest(_serialization.Model):
+class ProcessItemTaskClaimResponse(_serialization.Model):
     _attribute_map = {
-        "task_id": {"key": "taskId", "type": "str"},
-        "data": {"key": "data", "type": "{object}"},
+        "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
 
-    def __init__(self, task_id: str, data: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+    def __init__(self, process_item: models_rest.ProcessItem, **kwargs: Any) -> None:
         """
         Parameters:
-            task_id: Task to update
-            data: json data to save
+            process_item: Process Item claimed
         """
         super().__init__(**kwargs)
-        self.task_id = task_id
-        self.data = data or {}
+        self.process_item = process_item
 
 
-class SaveTaskJsonFormsValueDataResponse(_serialization.Model):
+class ProcessItemTaskAssignRequest(_serialization.Model):
     _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
+        "process_item_id": {"key": "processItemId", "type": "str"},
+        "owner_email": {"key": "ownerEmail", "type": "str"},
+        "owner_id": {"key": "ownerId", "type": "str"},
     }
 
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
+    def __init__(
+        self, process_item_id: str, owner_email: Optional[str] = None, owner_id: Optional[str] = None, **kwargs: Any
+    ) -> None:
         """
         Parameters:
-            task: Task updated
+            process_item_id: Task to assign to the email or principal_id selected
+            owner_email: User email that want to use to assign the task. Attribute owner_email or owner_id must be set
+            owner_id: Principal id that want to use to assign the task. Attribute owner_email or owner_id must be set
         """
         super().__init__(**kwargs)
-        self.task = task
+        self.process_item_id = process_item_id
+        self.owner_email = owner_email
+        self.owner_id = owner_id
 
 
-class AppendTaskLogRequest(_serialization.Model):
+class ProcessItemTaskAssignResponse(_serialization.Model):
     _attribute_map = {
-        "task_id": {"key": "taskId", "type": "str"},
-        "log": {"key": "log", "type": "Log"},
+        "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
 
-    def __init__(self, task_id: str, log: models_rest.Log, **kwargs: Any) -> None:
+    def __init__(self, process_item: models_rest.ProcessItem, **kwargs: Any) -> None:
         """
         Parameters:
-            task_id: Task to update
-            log: Log data to add to the task
+            process_item: Process Item updated
         """
         super().__init__(**kwargs)
-        self.task_id = task_id
-        self.log = log
+        self.process_item = process_item
 
 
-class AppendTaskLogResponse(_serialization.Model):
+class ProcessItemTaskDataUpdateRequest(_serialization.Model):
     _attribute_map = {
-        "task": {"key": "task", "type": "Task"},
+        "process_item_id": {"key": "processItemId", "type": "str"},
+        "data": {"key": "data", "type": "JsonValue"},
     }
 
-    def __init__(self, task: models_rest.Task, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        process_item_id: str,
+        data: models_rest.JsonValue,
+        **kwargs: Any,
+    ) -> None:
         """
         Parameters:
-            task: Task updated
+            process_item_id: Task to update
+            data: Json value. Required.
         """
         super().__init__(**kwargs)
-        self.task = task
+        self.process_item_id = process_item_id
+        self.data = data
+
+
+class ProcessItemTaskDataUpdateResponse(_serialization.Model):
+    _attribute_map = {
+        "process_item": {"key": "processItem", "type": "ProcessItem"},
+    }
+
+    def __init__(self, process_item: models_rest.ProcessItem, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_item: Process Item updated
+        """
+        super().__init__(**kwargs)
+        self.process_item = process_item
+
+
+class ProcessItemTaskDataPatchRequest(_serialization.Model):
+    _attribute_map = {
+        "process_item_id": {"key": "processItemId", "type": "str"},
+        "json_patch": {"key": "jsonPatch", "type": "[JsonPatchOperation]"},
+    }
+
+    def __init__(
+        self,
+        process_item_id: str,
+        json_patch: List[models_rest.JsonPatchOperation],
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            process_item_id: Task to update
+            json_patch: Params to patch process item task data
+        """
+        super().__init__(**kwargs)
+        self.process_item_id = process_item_id
+        self.json_patch = json_patch
+
+
+class ProcessItemTaskDataPatchResponse(_serialization.Model):
+    _attribute_map = {
+        "process_item": {"key": "processItem", "type": "ProcessItem"},
+    }
+
+    def __init__(self, process_item: models_rest.ProcessItem, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_item: Process Item updated
+        """
+        super().__init__(**kwargs)
+        self.process_item = process_item
+
+
+class ProcessItemTaskLogAppendRequest(_serialization.Model):
+    _attribute_map = {
+        "process_item_id": {"key": "processItemId", "type": "str"},
+        "message": {"key": "message", "type": "str"},
+        "level": {"key": "level", "type": "ProcessItemTaskLogLevel"},
+    }
+
+    def __init__(
+        self, process_item_id: str, message: str, level: models_rest.ProcessItemTaskLogLevel, **kwargs: Any
+    ) -> None:
+        """
+        Parameters:
+            process_item_id: Task to update
+            message: Log message
+            level: Log level
+        """
+        super().__init__(**kwargs)
+        self.process_item_id = process_item_id
+        self.message = message
+        self.level = level
+
+
+class ProcessItemTaskLogAppendResponse(_serialization.Model):
+    _attribute_map = {
+        "process_item": {"key": "processItem", "type": "ProcessItem"},
+    }
+
+    def __init__(self, process_item: models_rest.ProcessItem, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_item: Process Item updated
+        """
+        super().__init__(**kwargs)
+        self.process_item = process_item

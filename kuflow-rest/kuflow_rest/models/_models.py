@@ -42,93 +42,52 @@ class Document:
         self.file_content = file_content
 
 
-class TaskSaveElementValueDocumentCommand:
-    """TaskSaveElementValueDocumentCommand.
-
-    All required parameters must be populated in order to send to KuFlow.
-    """
-
-    def __init__(
-        self,
-        element_definition_code: str,
-        element_value_id: Optional[str] = None,
-        element_value_valid: bool = True,
-    ) -> None:
-        """
-        Parameters:
-            element_definition_code: Element definition code. Required.
-            element_value_id: Element value id
-            element_value_valid: Valid
-        """
-        self.element_definition_code = element_definition_code
-        self.element_value_id = element_value_id
-        self.element_value_valid = element_value_valid
-
-
-class TaskSaveJsonFormsValueDocumentRequestCommand:
-    """TaskSaveJsonFormsValueDocumentCommand.
-
-    All required parameters must be populated in order to send to KuFlow.
-    """
-
-    def __init__(self, schema_path: str) -> None:
-        """
-        Parameters:
-            schema_path: Document schema path. Required.
-        """
-        self.schema_path = schema_path
-
-
-class ProcessSaveUserActionValueDocumentCommand:
-    """ProcessSaveUserActionValueDocumentCommand.
-
-    All required parameters must be populated in order to send to KuFlow.
-
-    Attributes:
-        user_action_value_id: User action value id
-    """
-
-    def __init__(self, user_action_value_id: str) -> None:
-        """
-        Parameters:
-            user_action_value_id: User action value id
-        """
-        self.user_action_value_id = user_action_value_id
-
-
-class JsonFormsPrincipal:
+class KuFlowPrincipal:
     """JsonFormsPrincipal.
 
     Principal class
     """
 
-    def __init__(self, id: str, type: PrincipalType, name: str):
+    def __init__(self, original: str, id: str, type: PrincipalType, name: str):
         """
         Parameters:
+            id: Principal original value, ie: kuflow-principal:id=xxx-yyy-zzz;type=USER;name=John;
             id: Principal id
             type: Principal type
             name: Principal name
         """
+        self.original = original
         self.id = id
         self.type = type
         self.name = name
 
+    def __str__(self):
+        return self.original
 
-class JsonFormsFile:
-    """JsonFormsFile.
+
+class KuFlowFile:
+    """KuFlowFile.
 
     File class
     """
 
-    def __init__(self, uri: str, type: str, name: str, size: int):
+    def __init__(self, original: str, uri: str, type: str, name: str, size: int, original_name: Optional[str]):
         """
         Parameters:
+            original: Original value,
+              ie: kuflow-file:uri=kf:xxx/aaa;type=application/pdf;size=500;name=name-xxxx.pdf;originalName=dummy.pdf;
             uri: File uri, ie: kf:xxx-yyy-zzz/aaa-bbb-ccc
             type: File type, ie: application/pdf
-            name: File name, ie: dummy.pdf
+            name: File name, ie: name-xxxx.pdf
             size: File size in bytes, ie: 500
+            original_name: Original name, ie: dummy.pdf
         """
+        self.original = original
         self.uri = uri
         self.type = type
         self.name = name
         self.size = size
+        self.original_name = original_name
+
+    def __str__(self):
+        return self.original
