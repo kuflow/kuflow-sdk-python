@@ -200,7 +200,7 @@ six = "*"
 
 [[package]]
 name = "kuflow-rest"
-version = "1.5.1"
+version = "2.0.0.dev0"
 description = "Client for KuFlow Rest Api"
 category = "main"
 optional = false
@@ -508,4 +508,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "632d3f191c438d32dbaaeba5371f2e26d49fc27b913062b31bd07fff3b68f308"
+content-hash = "9e3c32a0cf91e4d43cacd737ef2595c0926bf1c4b6633099ecc20708d97f4d67"
