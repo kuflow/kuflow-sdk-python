@@ -44,9 +44,6 @@ if TYPE_CHECKING:
 class AbstractAudited(_serialization.Model):
     """AbstractAudited.
 
-    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -58,7 +55,6 @@ class AbstractAudited(_serialization.Model):
     """
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "created_by": {"key": "createdBy", "type": "str"},
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
@@ -68,7 +64,6 @@ class AbstractAudited(_serialization.Model):
     def __init__(
         self,
         *,
-        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -76,9 +71,6 @@ class AbstractAudited(_serialization.Model):
         **kwargs: Any,
     ) -> None:
         """
-        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -89,19 +81,15 @@ class AbstractAudited(_serialization.Model):
         :paramtype last_modified_at: ~datetime.datetime
         """
         super().__init__(**kwargs)
-        self.object_type = object_type
         self.created_by = created_by
         self.created_at = created_at
         self.last_modified_by = last_modified_by
         self.last_modified_at = last_modified_at
 
 
-class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attributes
+class Authentication(AbstractAudited):
     """Authentication.
 
-    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -112,18 +100,10 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
     :vartype last_modified_at: ~datetime.datetime
     :ivar id:
     :vartype id: str
-    :ivar type: Known values are: "ENGINE", "ENGINE_TOKEN", and "ENGINE_CERTIFICATE".
+    :ivar type: Known values are: "ENGINE_TOKEN" and "ENGINE_CERTIFICATE".
     :vartype type: str or ~kuflow.rest.models.AuthenticationType
     :ivar tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is used.
     :vartype tenant_id: str
-    :ivar token: Engine authentication token.
-
-     @deprecated use engineToken.token.
-    :vartype token: str
-    :ivar expired_at: Engine authentication token expiration.
-
-     @deprecated use engineToken.expiredAt.
-    :vartype expired_at: ~datetime.datetime
     :ivar engine_token:
     :vartype engine_token: ~kuflow.rest.models.AuthenticationEngineToken
     :ivar engine_certificate:
@@ -131,7 +111,6 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
     """
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "created_by": {"key": "createdBy", "type": "str"},
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
@@ -139,8 +118,6 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         "id": {"key": "id", "type": "str"},
         "type": {"key": "type", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
-        "token": {"key": "token", "type": "str"},
-        "expired_at": {"key": "expiredAt", "type": "iso-8601"},
         "engine_token": {"key": "engineToken", "type": "AuthenticationEngineToken"},
         "engine_certificate": {"key": "engineCertificate", "type": "AuthenticationEngineCertificate"},
     }
@@ -148,7 +125,6 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
     def __init__(
         self,
         *,
-        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -156,16 +132,11 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         type: Optional[Union[str, "_models.AuthenticationType"]] = None,
         tenant_id: Optional[str] = None,
-        token: Optional[str] = None,
-        expired_at: Optional[datetime.datetime] = None,
         engine_token: Optional["_models.AuthenticationEngineToken"] = None,
         engine_certificate: Optional["_models.AuthenticationEngineCertificate"] = None,
         **kwargs: Any,
     ) -> None:
         """
-        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -176,26 +147,17 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         :paramtype last_modified_at: ~datetime.datetime
         :keyword id:
         :paramtype id: str
-        :keyword type: Known values are: "ENGINE", "ENGINE_TOKEN", and "ENGINE_CERTIFICATE".
+        :keyword type: Known values are: "ENGINE_TOKEN" and "ENGINE_CERTIFICATE".
         :paramtype type: str or ~kuflow.rest.models.AuthenticationType
         :keyword tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is
          used.
         :paramtype tenant_id: str
-        :keyword token: Engine authentication token.
-
-         @deprecated use engineToken.token.
-        :paramtype token: str
-        :keyword expired_at: Engine authentication token expiration.
-
-         @deprecated use engineToken.expiredAt.
-        :paramtype expired_at: ~datetime.datetime
         :keyword engine_token:
         :paramtype engine_token: ~kuflow.rest.models.AuthenticationEngineToken
         :keyword engine_certificate:
         :paramtype engine_certificate: ~kuflow.rest.models.AuthenticationEngineCertificate
         """
         super().__init__(
-            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
@@ -205,10 +167,43 @@ class Authentication(AbstractAudited):  # pylint: disable=too-many-instance-attr
         self.id = id
         self.type = type
         self.tenant_id = tenant_id
-        self.token = token
-        self.expired_at = expired_at
         self.engine_token = engine_token
         self.engine_certificate = engine_certificate
+
+
+class AuthenticationCreateParams(_serialization.Model):
+    """AuthenticationCreateParams.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar type: Required. Known values are: "ENGINE_TOKEN" and "ENGINE_CERTIFICATE".
+    :vartype type: str or ~kuflow.rest.models.AuthenticationType
+    :ivar tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is used.
+    :vartype tenant_id: str
+    """
+
+    _validation = {
+        "type": {"required": True},
+    }
+
+    _attribute_map = {
+        "type": {"key": "type", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+    }
+
+    def __init__(
+        self, *, type: Union[str, "_models.AuthenticationType"], tenant_id: Optional[str] = None, **kwargs: Any
+    ) -> None:
+        """
+        :keyword type: Required. Known values are: "ENGINE_TOKEN" and "ENGINE_CERTIFICATE".
+        :paramtype type: str or ~kuflow.rest.models.AuthenticationType
+        :keyword tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is
+         used.
+        :paramtype tenant_id: str
+        """
+        super().__init__(**kwargs)
+        self.type = type
+        self.tenant_id = tenant_id
 
 
 class AuthenticationEngineCertificate(_serialization.Model):
@@ -426,83 +421,174 @@ class DefaultErrorInfo(_serialization.Model):
         self.location_type = location_type
 
 
-class JsonFormsValue(_serialization.Model):
-    """Json form values, used when the render type selected is JSON Forms.
-
-    :ivar valid: true if the data complain the related json schema.
-    :vartype valid: bool
-    :ivar data: json value filled that complain with the related json schema.
-    :vartype data: dict[str, any]
-    """
-
-    _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
-        "data": {"key": "data", "type": "{object}"},
-    }
-
-    def __init__(self, *, valid: Optional[bool] = None, data: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
-        """
-        :keyword valid: true if the data complain the related json schema.
-        :paramtype valid: bool
-        :keyword data: json value filled that complain with the related json schema.
-        :paramtype data: dict[str, any]
-        """
-        super().__init__(**kwargs)
-        self.valid = valid
-        self.data = data
-
-
-class Log(_serialization.Model):
-    """Log.
+class DocumentReference(_serialization.Model):
+    """DocumentReference.
 
     All required parameters must be populated in order to send to server.
 
-    :ivar id:
-    :vartype id: str
-    :ivar created_at: When this model was created.
-    :vartype created_at: ~datetime.datetime
-    :ivar message: Required.
-    :vartype message: str
-    :ivar level: Required. Known values are: "INFO", "WARN", and "ERROR".
-    :vartype level: str or ~kuflow.rest.models.LogLevel
+    :ivar schema_path: JSON Schema path related to the document. The uploaded document will be
+     validated by the passed schema path.
+
+     ie: "#/properties/file", "#/definitions/UserType/name". Required.
+    :vartype schema_path: str
+    :ivar document_uri: JSON value representing the uploaded file.
+
+     Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
+     Required.
+    :vartype document_uri: str
     """
 
     _validation = {
-        "message": {"required": True},
-        "level": {"required": True},
+        "schema_path": {"required": True},
+        "document_uri": {"required": True},
     }
 
     _attribute_map = {
-        "id": {"key": "id", "type": "str"},
-        "created_at": {"key": "createdAt", "type": "iso-8601"},
-        "message": {"key": "message", "type": "str"},
-        "level": {"key": "level", "type": "str"},
+        "schema_path": {"key": "schemaPath", "type": "str"},
+        "document_uri": {"key": "documentUri", "type": "str"},
+    }
+
+    def __init__(self, *, schema_path: str, document_uri: str, **kwargs: Any) -> None:
+        """
+        :keyword schema_path: JSON Schema path related to the document. The uploaded document will be
+         validated by the passed schema path.
+
+         ie: "#/properties/file", "#/definitions/UserType/name". Required.
+        :paramtype schema_path: str
+        :keyword document_uri: JSON value representing the uploaded file.
+
+         Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
+         Required.
+        :paramtype document_uri: str
+        """
+        super().__init__(**kwargs)
+        self.schema_path = schema_path
+        self.document_uri = document_uri
+
+
+class JsonPatchOperation(_serialization.Model):
+    """JsonPatchOperation.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar op: The operation to perform. Required. Known values are: "add", "remove", "replace",
+     "move", "copy", and "test".
+    :vartype op: str or ~kuflow.rest.models.JsonPatchOperationType
+    :ivar from_property: A JSON Pointer path used when op is "copy" or "move".
+    :vartype from_property: str
+    :ivar path: A JSON Pointer path. Required.
+    :vartype path: str
+    :ivar value: The value to "add", "replace" or "test".
+    :vartype value: any
+    """
+
+    _validation = {
+        "op": {"required": True},
+        "path": {"required": True},
+    }
+
+    _attribute_map = {
+        "op": {"key": "op", "type": "str"},
+        "from_property": {"key": "from", "type": "str"},
+        "path": {"key": "path", "type": "str"},
+        "value": {"key": "value", "type": "object"},
     }
 
     def __init__(
         self,
         *,
-        message: str,
-        level: Union[str, "_models.LogLevel"],
-        id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        created_at: Optional[datetime.datetime] = None,
+        op: Union[str, "_models.JsonPatchOperationType"],
+        path: str,
+        from_property: Optional[str] = None,
+        value: Optional[Any] = None,
         **kwargs: Any,
     ) -> None:
         """
-        :keyword id:
-        :paramtype id: str
-        :keyword created_at: When this model was created.
-        :paramtype created_at: ~datetime.datetime
-        :keyword message: Required.
-        :paramtype message: str
-        :keyword level: Required. Known values are: "INFO", "WARN", and "ERROR".
-        :paramtype level: str or ~kuflow.rest.models.LogLevel
+        :keyword op: The operation to perform. Required. Known values are: "add", "remove", "replace",
+         "move", "copy", and "test".
+        :paramtype op: str or ~kuflow.rest.models.JsonPatchOperationType
+        :keyword from_property: A JSON Pointer path used when op is "copy" or "move".
+        :paramtype from_property: str
+        :keyword path: A JSON Pointer path. Required.
+        :paramtype path: str
+        :keyword value: The value to "add", "replace" or "test".
+        :paramtype value: any
         """
         super().__init__(**kwargs)
-        self.id = id
-        self.created_at = created_at
-        self.message = message
-        self.level = level
+        self.op = op
+        self.from_property = from_property
+        self.path = path
+        self.value = value
+
+
+class JsonValue(_serialization.Model):
+    """Json value.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar valid: true if the data complain the related json schema.
+    :vartype valid: bool
+    :ivar value: json value filled that complain with the related json schema. Required.
+    :vartype value: dict[str, any]
+    :ivar errors:
+    :vartype errors: list[~kuflow.rest.models.JsonValueError]
+    """
+
+    _validation = {
+        "valid": {"readonly": True},
+        "value": {"required": True},
+        "errors": {"readonly": True},
+    }
+
+    _attribute_map = {
+        "valid": {"key": "valid", "type": "bool"},
+        "value": {"key": "value", "type": "{object}"},
+        "errors": {"key": "errors", "type": "[JsonValueError]"},
+    }
+
+    def __init__(self, *, value: Dict[str, Any], **kwargs: Any) -> None:
+        """
+        :keyword value: json value filled that complain with the related json schema. Required.
+        :paramtype value: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.valid = None
+        self.value = value
+        self.errors = None
+
+
+class JsonValueError(_serialization.Model):
+    """Json value.
+
+    :ivar property_path: JSON pointer to the property with the error. See:
+     https://datatracker.ietf.org/doc/html/rfc6901
+
+     ie: /user/name or /users/1/name.
+    :vartype property_path: str
+    :ivar type: Error type.
+    :vartype type: str
+    """
+
+    _attribute_map = {
+        "property_path": {"key": "propertyPath", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+    }
+
+    def __init__(self, *, property_path: Optional[str] = None, type: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        :keyword property_path: JSON pointer to the property with the error. See:
+         https://datatracker.ietf.org/doc/html/rfc6901
+
+         ie: /user/name or /users/1/name.
+        :paramtype property_path: str
+        :keyword type: Error type.
+        :paramtype type: str
+        """
+        super().__init__(**kwargs)
+        self.property_path = property_path
+        self.type = type
 
 
 class Page(_serialization.Model):
@@ -510,9 +596,6 @@ class Page(_serialization.Model):
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.models.PageMetadata
     """
@@ -522,26 +605,15 @@ class Page(_serialization.Model):
     }
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "metadata": {"key": "metadata", "type": "PageMetadata"},
     }
 
-    def __init__(
-        self,
-        *,
-        metadata: "_models.PageMetadata",
-        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
-        **kwargs: Any,
-    ) -> None:
+    def __init__(self, *, metadata: "_models.PageMetadata", **kwargs: Any) -> None:
         """
-        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
         """
         super().__init__(**kwargs)
-        self.object_type = object_type
         self.metadata = metadata
 
 
@@ -675,13 +747,10 @@ class PrincipalPage(Page):
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.models.PageMetadata
     :ivar content: Required.
-    :vartype content: list[~kuflow.rest.models.Principal]
+    :vartype content: list[~kuflow.rest.models.PrincipalPageItem]
     """
 
     _validation = {
@@ -690,30 +759,60 @@ class PrincipalPage(Page):
     }
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "metadata": {"key": "metadata", "type": "PageMetadata"},
-        "content": {"key": "content", "type": "[Principal]"},
+        "content": {"key": "content", "type": "[PrincipalPageItem]"},
+    }
+
+    def __init__(
+        self, *, metadata: "_models.PageMetadata", content: List["_models.PrincipalPageItem"], **kwargs: Any
+    ) -> None:
+        """
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        :keyword content: Required.
+        :paramtype content: list[~kuflow.rest.models.PrincipalPageItem]
+        """
+        super().__init__(metadata=metadata, **kwargs)
+        self.content = content
+
+
+class PrincipalPageItem(_serialization.Model):
+    """PrincipalPageItem.
+
+    :ivar id:
+    :vartype id: str
+    :ivar type: Known values are: "USER", "APPLICATION", and "SYSTEM".
+    :vartype type: str or ~kuflow.rest.models.PrincipalType
+    :ivar name:
+    :vartype name: str
+    """
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "name": {"key": "name", "type": "str"},
     }
 
     def __init__(
         self,
         *,
-        metadata: "_models.PageMetadata",
-        content: List["_models.Principal"],
-        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        type: Optional[Union[str, "_models.PrincipalType"]] = None,
+        name: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
-        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
-        :keyword metadata: Required.
-        :paramtype metadata: ~kuflow.rest.models.PageMetadata
-        :keyword content: Required.
-        :paramtype content: list[~kuflow.rest.models.Principal]
+        :keyword id:
+        :paramtype id: str
+        :keyword type: Known values are: "USER", "APPLICATION", and "SYSTEM".
+        :paramtype type: str or ~kuflow.rest.models.PrincipalType
+        :keyword name:
+        :paramtype name: str
         """
-        super().__init__(object_type=object_type, metadata=metadata, **kwargs)
-        self.content = content
+        super().__init__(**kwargs)
+        self.id = id
+        self.type = type
+        self.name = name
 
 
 class PrincipalUser(_serialization.Model):
@@ -753,9 +852,6 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -764,71 +860,65 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :vartype last_modified_by: str
     :ivar last_modified_at: When this model type was last updated.
     :vartype last_modified_at: ~datetime.datetime
-    :ivar id: Process ID.
+    :ivar id: Process ID. Required.
     :vartype id: str
-    :ivar subject: Process subject.
-    :vartype subject: str
-    :ivar state: Process state. Known values are: "RUNNING", "COMPLETED", and "CANCELLED".
+    :ivar state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
+     "CANCELLED".
     :vartype state: str or ~kuflow.rest.models.ProcessState
     :ivar process_definition: Required.
     :vartype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
-    :ivar element_values: Process element values, an ElementValueDocument is not allowed.
-    :vartype element_values: dict[str, list[~kuflow.rest.models.ProcessElementValue]]
-    :ivar entity: Json form values, used when the render type selected is JSON Forms.
-    :vartype entity: ~kuflow.rest.models.JsonFormsValue
-    :ivar initiator:
-    :vartype initiator: ~kuflow.rest.models.Principal
-    :ivar related_process:
-    :vartype related_process: ~kuflow.rest.models.RelatedProcess
-    :ivar tenant_id: Tenant ID.
+    :ivar metadata: Json value.
+    :vartype metadata: ~kuflow.rest.models.JsonValue
+    :ivar entity: Json value.
+    :vartype entity: ~kuflow.rest.models.JsonValue
+    :ivar process_related:
+    :vartype process_related: ~kuflow.rest.models.ProcessRelated
+    :ivar initiator_id: Process initiator id, Principal ID.
+    :vartype initiator_id: str
+    :ivar tenant_id: Tenant ID. Required.
     :vartype tenant_id: str
     """
 
     _validation = {
-        "subject": {"max_length": 255, "min_length": 1},
+        "id": {"required": True},
+        "state": {"required": True},
         "process_definition": {"required": True},
+        "tenant_id": {"required": True},
     }
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "created_by": {"key": "createdBy", "type": "str"},
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
-        "subject": {"key": "subject", "type": "str"},
         "state": {"key": "state", "type": "str"},
         "process_definition": {"key": "processDefinition", "type": "ProcessDefinitionSummary"},
-        "element_values": {"key": "elementValues", "type": "{[ProcessElementValue]}"},
-        "entity": {"key": "entity", "type": "JsonFormsValue"},
-        "initiator": {"key": "initiator", "type": "Principal"},
-        "related_process": {"key": "relatedProcess", "type": "RelatedProcess"},
+        "metadata": {"key": "metadata", "type": "JsonValue"},
+        "entity": {"key": "entity", "type": "JsonValue"},
+        "process_related": {"key": "processRelated", "type": "ProcessRelated"},
+        "initiator_id": {"key": "initiatorId", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
     def __init__(
         self,
         *,
+        id: str,  # pylint: disable=redefined-builtin
+        state: Union[str, "_models.ProcessState"],
         process_definition: "_models.ProcessDefinitionSummary",
-        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
+        tenant_id: str,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
-        id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        subject: Optional[str] = None,
-        state: Optional[Union[str, "_models.ProcessState"]] = None,
-        element_values: Optional[Dict[str, List["_models.ProcessElementValue"]]] = None,
-        entity: Optional["_models.JsonFormsValue"] = None,
-        initiator: Optional["_models.Principal"] = None,
-        related_process: Optional["_models.RelatedProcess"] = None,
-        tenant_id: Optional[str] = None,
+        metadata: Optional["_models.JsonValue"] = None,
+        entity: Optional["_models.JsonValue"] = None,
+        process_related: Optional["_models.ProcessRelated"] = None,
+        initiator_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
-        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -837,27 +927,25 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype last_modified_by: str
         :keyword last_modified_at: When this model type was last updated.
         :paramtype last_modified_at: ~datetime.datetime
-        :keyword id: Process ID.
+        :keyword id: Process ID. Required.
         :paramtype id: str
-        :keyword subject: Process subject.
-        :paramtype subject: str
-        :keyword state: Process state. Known values are: "RUNNING", "COMPLETED", and "CANCELLED".
+        :keyword state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
+         "CANCELLED".
         :paramtype state: str or ~kuflow.rest.models.ProcessState
         :keyword process_definition: Required.
         :paramtype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
-        :keyword element_values: Process element values, an ElementValueDocument is not allowed.
-        :paramtype element_values: dict[str, list[~kuflow.rest.models.ProcessElementValue]]
-        :keyword entity: Json form values, used when the render type selected is JSON Forms.
-        :paramtype entity: ~kuflow.rest.models.JsonFormsValue
-        :keyword initiator:
-        :paramtype initiator: ~kuflow.rest.models.Principal
-        :keyword related_process:
-        :paramtype related_process: ~kuflow.rest.models.RelatedProcess
-        :keyword tenant_id: Tenant ID.
+        :keyword metadata: Json value.
+        :paramtype metadata: ~kuflow.rest.models.JsonValue
+        :keyword entity: Json value.
+        :paramtype entity: ~kuflow.rest.models.JsonValue
+        :keyword process_related:
+        :paramtype process_related: ~kuflow.rest.models.ProcessRelated
+        :keyword initiator_id: Process initiator id, Principal ID.
+        :paramtype initiator_id: str
+        :keyword tenant_id: Tenant ID. Required.
         :paramtype tenant_id: str
         """
         super().__init__(
-            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
@@ -865,40 +953,100 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
             **kwargs,
         )
         self.id = id
-        self.subject = subject
         self.state = state
         self.process_definition = process_definition
-        self.element_values = element_values
+        self.metadata = metadata
         self.entity = entity
-        self.initiator = initiator
-        self.related_process = related_process
+        self.process_related = process_related
+        self.initiator_id = initiator_id
         self.tenant_id = tenant_id
 
 
-class ProcessChangeInitiatorCommand(_serialization.Model):
-    """Command to change the process initiator, only one option is required.
+class ProcessChangeInitiatorParams(_serialization.Model):
+    """Params to change the process initiator, only one option is required.
 
-    :ivar principal_id:
-    :vartype principal_id: str
-    :ivar email:
-    :vartype email: str
+    :ivar initiator_id:
+    :vartype initiator_id: str
+    :ivar initiator_email:
+    :vartype initiator_email: str
     """
 
     _attribute_map = {
-        "principal_id": {"key": "principalId", "type": "str"},
-        "email": {"key": "email", "type": "str"},
+        "initiator_id": {"key": "initiatorId", "type": "str"},
+        "initiator_email": {"key": "initiatorEmail", "type": "str"},
     }
 
-    def __init__(self, *, principal_id: Optional[str] = None, email: Optional[str] = None, **kwargs: Any) -> None:
+    def __init__(
+        self, *, initiator_id: Optional[str] = None, initiator_email: Optional[str] = None, **kwargs: Any
+    ) -> None:
         """
-        :keyword principal_id:
-        :paramtype principal_id: str
-        :keyword email:
-        :paramtype email: str
+        :keyword initiator_id:
+        :paramtype initiator_id: str
+        :keyword initiator_email:
+        :paramtype initiator_email: str
         """
         super().__init__(**kwargs)
-        self.principal_id = principal_id
-        self.email = email
+        self.initiator_id = initiator_id
+        self.initiator_email = initiator_email
+
+
+class ProcessCreateParams(_serialization.Model):
+    """ProcessCreateParams.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id:
+    :vartype id: str
+    :ivar process_definition_id: Required.
+    :vartype process_definition_id: str
+    :ivar metadata: Json value.
+    :vartype metadata: ~kuflow.rest.models.JsonValue
+    :ivar initiator_id:
+    :vartype initiator_id: str
+    :ivar initiator_email:
+    :vartype initiator_email: str
+    """
+
+    _validation = {
+        "process_definition_id": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "process_definition_id": {"key": "processDefinitionId", "type": "str"},
+        "metadata": {"key": "metadata", "type": "JsonValue"},
+        "initiator_id": {"key": "initiatorId", "type": "str"},
+        "initiator_email": {"key": "initiatorEmail", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        process_definition_id: str,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        metadata: Optional["_models.JsonValue"] = None,
+        initiator_id: Optional[str] = None,
+        initiator_email: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id:
+        :paramtype id: str
+        :keyword process_definition_id: Required.
+        :paramtype process_definition_id: str
+        :keyword metadata: Json value.
+        :paramtype metadata: ~kuflow.rest.models.JsonValue
+        :keyword initiator_id:
+        :paramtype initiator_id: str
+        :keyword initiator_email:
+        :paramtype initiator_email: str
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.process_definition_id = process_definition_id
+        self.metadata = metadata
+        self.initiator_id = initiator_id
+        self.initiator_email = initiator_email
 
 
 class ProcessDefinitionSummary(_serialization.Model):
@@ -908,15 +1056,16 @@ class ProcessDefinitionSummary(_serialization.Model):
 
     :ivar id: Required.
     :vartype id: str
-    :ivar version:
+    :ivar version: Required.
     :vartype version: str
-    :ivar name:
+    :ivar name: Required.
     :vartype name: str
     """
 
     _validation = {
         "id": {"required": True},
-        "name": {"max_length": 50, "min_length": 1},
+        "version": {"required": True},
+        "name": {"required": True, "max_length": 50, "min_length": 1},
     }
 
     _attribute_map = {
@@ -929,16 +1078,16 @@ class ProcessDefinitionSummary(_serialization.Model):
         self,
         *,
         id: str,  # pylint: disable=redefined-builtin
-        version: Optional[str] = None,
-        name: Optional[str] = None,
+        version: str,
+        name: str,
         **kwargs: Any,
     ) -> None:
         """
         :keyword id: Required.
         :paramtype id: str
-        :keyword version:
+        :keyword version: Required.
         :paramtype version: str
-        :keyword name:
+        :keyword name: Required.
         :paramtype name: str
         """
         super().__init__(**kwargs)
@@ -947,135 +1096,622 @@ class ProcessDefinitionSummary(_serialization.Model):
         self.name = name
 
 
-class ProcessDeleteElementCommand(_serialization.Model):
-    """ProcessDeleteElementCommand.
+class ProcessEntityUpdateParams(_serialization.Model):
+    """ProcessEntityUpdateParams.
 
     All required parameters must be populated in order to send to server.
 
-    :ivar element_definition_code: Code of task element to delete. Required.
-    :vartype element_definition_code: str
+    :ivar entity: Json value. Required.
+    :vartype entity: ~kuflow.rest.models.JsonValue
     """
 
     _validation = {
-        "element_definition_code": {"required": True},
+        "entity": {"required": True},
     }
 
     _attribute_map = {
-        "element_definition_code": {"key": "elementDefinitionCode", "type": "str"},
+        "entity": {"key": "entity", "type": "JsonValue"},
     }
 
-    def __init__(self, *, element_definition_code: str, **kwargs: Any) -> None:
+    def __init__(self, *, entity: "_models.JsonValue", **kwargs: Any) -> None:
         """
-        :keyword element_definition_code: Code of task element to delete. Required.
-        :paramtype element_definition_code: str
+        :keyword entity: Json value. Required.
+        :paramtype entity: ~kuflow.rest.models.JsonValue
         """
         super().__init__(**kwargs)
-        self.element_definition_code = element_definition_code
+        self.entity = entity
 
 
-class ProcessElementValue(_serialization.Model):
-    """ProcessElementValue.
-
-    You probably want to use the sub-classes and not this class directly. Known sub-classes are:
-    ProcessElementValueNumber, ProcessElementValueString
+class ProcessItem(AbstractAudited):
+    """ProcessItem.
 
     All required parameters must be populated in order to send to server.
 
-    :ivar valid:
-    :vartype valid: bool
-    :ivar type: Process element value types. Required. Known values are: "STRING" and "NUMBER".
-    :vartype type: str or ~kuflow.rest.models.ProcessElementValueType
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Required.
+    :vartype id: str
+    :ivar type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+    :vartype type: str or ~kuflow.rest.models.ProcessItemType
+    :ivar process_id: Required.
+    :vartype process_id: str
+    :ivar owner_id: Owner Principal ID.
+    :vartype owner_id: str
+    :ivar tenant_id: Tenant ID.
+    :vartype tenant_id: str
+    :ivar task:
+    :vartype task: ~kuflow.rest.models.ProcessItemTask
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "type": {"required": True},
+        "process_id": {"required": True},
+    }
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "process_id": {"key": "processId", "type": "str"},
+        "owner_id": {"key": "ownerId", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "task": {"key": "task", "type": "ProcessItemTask"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        type: Union[str, "_models.ProcessItemType"],
+        process_id: str,
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        owner_id: Optional[str] = None,
+        tenant_id: Optional[str] = None,
+        task: Optional["_models.ProcessItemTask"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+        :paramtype type: str or ~kuflow.rest.models.ProcessItemType
+        :keyword process_id: Required.
+        :paramtype process_id: str
+        :keyword owner_id: Owner Principal ID.
+        :paramtype owner_id: str
+        :keyword tenant_id: Tenant ID.
+        :paramtype tenant_id: str
+        :keyword task:
+        :paramtype task: ~kuflow.rest.models.ProcessItemTask
+        """
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.type = type
+        self.process_id = process_id
+        self.owner_id = owner_id
+        self.tenant_id = tenant_id
+        self.task = task
+
+
+class ProcessItemCreateParams(_serialization.Model):
+    """ProcessItemCreateParams.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id:
+    :vartype id: str
+    :ivar type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+    :vartype type: str or ~kuflow.rest.models.ProcessItemType
+    :ivar process_id: Required.
+    :vartype process_id: str
+    :ivar owner_id:
+    :vartype owner_id: str
+    :ivar owner_email:
+    :vartype owner_email: str
+    :ivar task:
+    :vartype task: ~kuflow.rest.models.ProcessItemTaskCreateParams
     """
 
     _validation = {
         "type": {"required": True},
+        "process_id": {"required": True},
     }
 
     _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
+        "id": {"key": "id", "type": "str"},
         "type": {"key": "type", "type": "str"},
+        "process_id": {"key": "processId", "type": "str"},
+        "owner_id": {"key": "ownerId", "type": "str"},
+        "owner_email": {"key": "ownerEmail", "type": "str"},
+        "task": {"key": "task", "type": "ProcessItemTaskCreateParams"},
     }
 
-    _subtype_map = {"type": {"NUMBER": "ProcessElementValueNumber", "STRING": "ProcessElementValueString"}}
-
-    def __init__(self, *, valid: bool = True, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        *,
+        type: Union[str, "_models.ProcessItemType"],
+        process_id: str,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        owner_id: Optional[str] = None,
+        owner_email: Optional[str] = None,
+        task: Optional["_models.ProcessItemTaskCreateParams"] = None,
+        **kwargs: Any,
+    ) -> None:
         """
-        :keyword valid:
-        :paramtype valid: bool
+        :keyword id:
+        :paramtype id: str
+        :keyword type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+        :paramtype type: str or ~kuflow.rest.models.ProcessItemType
+        :keyword process_id: Required.
+        :paramtype process_id: str
+        :keyword owner_id:
+        :paramtype owner_id: str
+        :keyword owner_email:
+        :paramtype owner_email: str
+        :keyword task:
+        :paramtype task: ~kuflow.rest.models.ProcessItemTaskCreateParams
         """
         super().__init__(**kwargs)
-        self.valid = valid
-        self.type: Optional[str] = None
+        self.id = id
+        self.type = type
+        self.process_id = process_id
+        self.owner_id = owner_id
+        self.owner_email = owner_email
+        self.task = task
 
 
-class ProcessElementValueNumber(ProcessElementValue):
-    """ProcessElementValueNumber.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar valid:
-    :vartype valid: bool
-    :ivar type: Process element value types. Required. Known values are: "STRING" and "NUMBER".
-    :vartype type: str or ~kuflow.rest.models.ProcessElementValueType
-    :ivar value:
-    :vartype value: float
-    """
-
-    _validation = {
-        "type": {"required": True},
-    }
-
-    _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
-        "type": {"key": "type", "type": "str"},
-        "value": {"key": "value", "type": "float"},
-    }
-
-    def __init__(self, *, valid: bool = True, value: Optional[float] = None, **kwargs: Any) -> None:
-        """
-        :keyword valid:
-        :paramtype valid: bool
-        :keyword value:
-        :paramtype value: float
-        """
-        super().__init__(valid=valid, **kwargs)
-        self.type: str = "NUMBER"
-        self.value = value
-
-
-class ProcessElementValueString(ProcessElementValue):
-    """ProcessElementValueString.
+class ProcessItemPage(Page):
+    """ProcessItemPage.
 
     All required parameters must be populated in order to send to server.
 
-    :ivar valid:
-    :vartype valid: bool
-    :ivar type: Process element value types. Required. Known values are: "STRING" and "NUMBER".
-    :vartype type: str or ~kuflow.rest.models.ProcessElementValueType
-    :ivar value:
-    :vartype value: str
+    :ivar metadata: Required.
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
+    :ivar content: Required.
+    :vartype content: list[~kuflow.rest.models.ProcessItemPageItem]
     """
 
     _validation = {
-        "type": {"required": True},
+        "metadata": {"required": True},
+        "content": {"required": True},
     }
 
     _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
-        "type": {"key": "type", "type": "str"},
-        "value": {"key": "value", "type": "str"},
+        "metadata": {"key": "metadata", "type": "PageMetadata"},
+        "content": {"key": "content", "type": "[ProcessItemPageItem]"},
     }
 
-    def __init__(self, *, valid: bool = True, value: Optional[str] = None, **kwargs: Any) -> None:
+    def __init__(
+        self, *, metadata: "_models.PageMetadata", content: List["_models.ProcessItemPageItem"], **kwargs: Any
+    ) -> None:
         """
-        :keyword valid:
-        :paramtype valid: bool
-        :keyword value:
-        :paramtype value: str
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        :keyword content: Required.
+        :paramtype content: list[~kuflow.rest.models.ProcessItemPageItem]
         """
-        super().__init__(valid=valid, **kwargs)
-        self.type: str = "STRING"
-        self.value = value
+        super().__init__(metadata=metadata, **kwargs)
+        self.content = content
+
+
+class ProcessItemPageItem(AbstractAudited):
+    """ProcessItemPageItem.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Required.
+    :vartype id: str
+    :ivar type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+    :vartype type: str or ~kuflow.rest.models.ProcessItemType
+    :ivar process_id: Required.
+    :vartype process_id: str
+    :ivar owner_id: Principal ID.
+    :vartype owner_id: str
+    :ivar tenant_id: Tenant ID. Required.
+    :vartype tenant_id: str
+    :ivar task:
+    :vartype task: ~kuflow.rest.models.ProcessItemTaskPageItem
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "type": {"required": True},
+        "process_id": {"required": True},
+        "tenant_id": {"required": True},
+    }
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "process_id": {"key": "processId", "type": "str"},
+        "owner_id": {"key": "ownerId", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "task": {"key": "task", "type": "ProcessItemTaskPageItem"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        type: Union[str, "_models.ProcessItemType"],
+        process_id: str,
+        tenant_id: str,
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        owner_id: Optional[str] = None,
+        task: Optional["_models.ProcessItemTaskPageItem"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+        :paramtype type: str or ~kuflow.rest.models.ProcessItemType
+        :keyword process_id: Required.
+        :paramtype process_id: str
+        :keyword owner_id: Principal ID.
+        :paramtype owner_id: str
+        :keyword tenant_id: Tenant ID. Required.
+        :paramtype tenant_id: str
+        :keyword task:
+        :paramtype task: ~kuflow.rest.models.ProcessItemTaskPageItem
+        """
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.type = type
+        self.process_id = process_id
+        self.owner_id = owner_id
+        self.tenant_id = tenant_id
+        self.task = task
+
+
+class ProcessItemTask(_serialization.Model):
+    """ProcessItemTask.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar state: Process Item Task state. Required. Known values are: "READY", "CLAIMED",
+     "COMPLETED", and "CANCELLED".
+    :vartype state: str or ~kuflow.rest.models.ProcessItemTaskState
+    :ivar task_definition: Required.
+    :vartype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
+    :ivar data: Json value.
+    :vartype data: ~kuflow.rest.models.JsonValue
+    :ivar logs:
+    :vartype logs: list[~kuflow.rest.models.ProcessItemTaskLog]
+    """
+
+    _validation = {
+        "state": {"required": True},
+        "task_definition": {"required": True},
+    }
+
+    _attribute_map = {
+        "state": {"key": "state", "type": "str"},
+        "task_definition": {"key": "taskDefinition", "type": "TaskDefinitionSummary"},
+        "data": {"key": "data", "type": "JsonValue"},
+        "logs": {"key": "logs", "type": "[ProcessItemTaskLog]"},
+    }
+
+    def __init__(
+        self,
+        *,
+        state: Union[str, "_models.ProcessItemTaskState"],
+        task_definition: "_models.TaskDefinitionSummary",
+        data: Optional["_models.JsonValue"] = None,
+        logs: Optional[List["_models.ProcessItemTaskLog"]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword state: Process Item Task state. Required. Known values are: "READY", "CLAIMED",
+         "COMPLETED", and "CANCELLED".
+        :paramtype state: str or ~kuflow.rest.models.ProcessItemTaskState
+        :keyword task_definition: Required.
+        :paramtype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
+        :keyword data: Json value.
+        :paramtype data: ~kuflow.rest.models.JsonValue
+        :keyword logs:
+        :paramtype logs: list[~kuflow.rest.models.ProcessItemTaskLog]
+        """
+        super().__init__(**kwargs)
+        self.state = state
+        self.task_definition = task_definition
+        self.data = data
+        self.logs = logs
+
+
+class ProcessItemTaskAppendLogParams(_serialization.Model):
+    """ProcessItemTaskAppendLogParams.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar message: Required.
+    :vartype message: str
+    :ivar level: Required. Known values are: "INFO", "WARN", and "ERROR".
+    :vartype level: str or ~kuflow.rest.models.ProcessItemTaskLogLevel
+    """
+
+    _validation = {
+        "message": {"required": True},
+        "level": {"required": True},
+    }
+
+    _attribute_map = {
+        "message": {"key": "message", "type": "str"},
+        "level": {"key": "level", "type": "str"},
+    }
+
+    def __init__(self, *, message: str, level: Union[str, "_models.ProcessItemTaskLogLevel"], **kwargs: Any) -> None:
+        """
+        :keyword message: Required.
+        :paramtype message: str
+        :keyword level: Required. Known values are: "INFO", "WARN", and "ERROR".
+        :paramtype level: str or ~kuflow.rest.models.ProcessItemTaskLogLevel
+        """
+        super().__init__(**kwargs)
+        self.message = message
+        self.level = level
+
+
+class ProcessItemTaskAssignParams(_serialization.Model):
+    """Params to assign a process item task, only one option is required.
+
+    :ivar owner_id:
+    :vartype owner_id: str
+    :ivar owner_email:
+    :vartype owner_email: str
+    """
+
+    _attribute_map = {
+        "owner_id": {"key": "ownerId", "type": "str"},
+        "owner_email": {"key": "ownerEmail", "type": "str"},
+    }
+
+    def __init__(self, *, owner_id: Optional[str] = None, owner_email: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        :keyword owner_id:
+        :paramtype owner_id: str
+        :keyword owner_email:
+        :paramtype owner_email: str
+        """
+        super().__init__(**kwargs)
+        self.owner_id = owner_id
+        self.owner_email = owner_email
+
+
+class ProcessItemTaskCreateParams(_serialization.Model):
+    """ProcessItemTaskCreateParams.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar task_definition_code: Required.
+    :vartype task_definition_code: str
+    :ivar data: Json value.
+    :vartype data: ~kuflow.rest.models.JsonValue
+    """
+
+    _validation = {
+        "task_definition_code": {"required": True},
+    }
+
+    _attribute_map = {
+        "task_definition_code": {"key": "taskDefinitionCode", "type": "str"},
+        "data": {"key": "data", "type": "JsonValue"},
+    }
+
+    def __init__(self, *, task_definition_code: str, data: Optional["_models.JsonValue"] = None, **kwargs: Any) -> None:
+        """
+        :keyword task_definition_code: Required.
+        :paramtype task_definition_code: str
+        :keyword data: Json value.
+        :paramtype data: ~kuflow.rest.models.JsonValue
+        """
+        super().__init__(**kwargs)
+        self.task_definition_code = task_definition_code
+        self.data = data
+
+
+class ProcessItemTaskDataUpdateParams(_serialization.Model):
+    """ProcessItemTaskDataUpdateParams.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar data: Json value. Required.
+    :vartype data: ~kuflow.rest.models.JsonValue
+    """
+
+    _validation = {
+        "data": {"required": True},
+    }
+
+    _attribute_map = {
+        "data": {"key": "data", "type": "JsonValue"},
+    }
+
+    def __init__(self, *, data: "_models.JsonValue", **kwargs: Any) -> None:
+        """
+        :keyword data: Json value. Required.
+        :paramtype data: ~kuflow.rest.models.JsonValue
+        """
+        super().__init__(**kwargs)
+        self.data = data
+
+
+class ProcessItemTaskLog(_serialization.Model):
+    """ProcessItemTaskLog.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Required.
+    :vartype id: str
+    :ivar timestamp: When this model was created. Required.
+    :vartype timestamp: ~datetime.datetime
+    :ivar message: Required.
+    :vartype message: str
+    :ivar level: Required. Known values are: "INFO", "WARN", and "ERROR".
+    :vartype level: str or ~kuflow.rest.models.ProcessItemTaskLogLevel
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "timestamp": {"required": True},
+        "message": {"required": True},
+        "level": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "timestamp": {"key": "timestamp", "type": "iso-8601"},
+        "message": {"key": "message", "type": "str"},
+        "level": {"key": "level", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        timestamp: datetime.datetime,
+        message: str,
+        level: Union[str, "_models.ProcessItemTaskLogLevel"],
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword timestamp: When this model was created. Required.
+        :paramtype timestamp: ~datetime.datetime
+        :keyword message: Required.
+        :paramtype message: str
+        :keyword level: Required. Known values are: "INFO", "WARN", and "ERROR".
+        :paramtype level: str or ~kuflow.rest.models.ProcessItemTaskLogLevel
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.timestamp = timestamp
+        self.message = message
+        self.level = level
+
+
+class ProcessItemTaskPageItem(_serialization.Model):
+    """ProcessItemTaskPageItem.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar state: Process Item Task state. Required. Known values are: "READY", "CLAIMED",
+     "COMPLETED", and "CANCELLED".
+    :vartype state: str or ~kuflow.rest.models.ProcessItemTaskState
+    :ivar task_definition: Required.
+    :vartype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
+    """
+
+    _validation = {
+        "state": {"required": True},
+        "task_definition": {"required": True},
+    }
+
+    _attribute_map = {
+        "state": {"key": "state", "type": "str"},
+        "task_definition": {"key": "taskDefinition", "type": "TaskDefinitionSummary"},
+    }
+
+    def __init__(
+        self,
+        *,
+        state: Union[str, "_models.ProcessItemTaskState"],
+        task_definition: "_models.TaskDefinitionSummary",
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword state: Process Item Task state. Required. Known values are: "READY", "CLAIMED",
+         "COMPLETED", and "CANCELLED".
+        :paramtype state: str or ~kuflow.rest.models.ProcessItemTaskState
+        :keyword task_definition: Required.
+        :paramtype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
+        """
+        super().__init__(**kwargs)
+        self.state = state
+        self.task_definition = task_definition
+
+
+class ProcessMetadataUpdateParams(_serialization.Model):
+    """Params to save metadata data.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar metadata: Json value. Required.
+    :vartype metadata: ~kuflow.rest.models.JsonValue
+    """
+
+    _validation = {
+        "metadata": {"required": True},
+    }
+
+    _attribute_map = {
+        "metadata": {"key": "metadata", "type": "JsonValue"},
+    }
+
+    def __init__(self, *, metadata: "_models.JsonValue", **kwargs: Any) -> None:
+        """
+        :keyword metadata: Json value. Required.
+        :paramtype metadata: ~kuflow.rest.models.JsonValue
+        """
+        super().__init__(**kwargs)
+        self.metadata = metadata
 
 
 class ProcessPage(Page):
@@ -1083,9 +1719,6 @@ class ProcessPage(Page):
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.models.PageMetadata
     :ivar content: Required.
@@ -1098,40 +1731,28 @@ class ProcessPage(Page):
     }
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "metadata": {"key": "metadata", "type": "PageMetadata"},
         "content": {"key": "content", "type": "[ProcessPageItem]"},
     }
 
     def __init__(
-        self,
-        *,
-        metadata: "_models.PageMetadata",
-        content: List["_models.ProcessPageItem"],
-        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
-        **kwargs: Any,
+        self, *, metadata: "_models.PageMetadata", content: List["_models.ProcessPageItem"], **kwargs: Any
     ) -> None:
         """
-        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
         :keyword metadata: Required.
         :paramtype metadata: ~kuflow.rest.models.PageMetadata
         :keyword content: Required.
         :paramtype content: list[~kuflow.rest.models.ProcessPageItem]
         """
-        super().__init__(object_type=object_type, metadata=metadata, **kwargs)
+        super().__init__(metadata=metadata, **kwargs)
         self.content = content
 
 
-class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attributes
+class ProcessPageItem(AbstractAudited):
     """ProcessPageItem.
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -1140,63 +1761,53 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
     :vartype last_modified_by: str
     :ivar last_modified_at: When this model type was last updated.
     :vartype last_modified_at: ~datetime.datetime
-    :ivar id: Process ID.
+    :ivar id: Process ID. Required.
     :vartype id: str
-    :ivar subject: Process subject.
-    :vartype subject: str
-    :ivar state: Process state. Known values are: "RUNNING", "COMPLETED", and "CANCELLED".
+    :ivar state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
+     "CANCELLED".
     :vartype state: str or ~kuflow.rest.models.ProcessState
     :ivar process_definition: Required.
     :vartype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
-    :ivar element_values: Process element values, an ElementValueDocument is not allowed.
-    :vartype element_values: dict[str, list[~kuflow.rest.models.ProcessElementValue]]
-    :ivar initiator:
-    :vartype initiator: ~kuflow.rest.models.Principal
-    :ivar tenant_id: Tenant ID.
+    :ivar initiator_id: Principal ID.
+    :vartype initiator_id: str
+    :ivar tenant_id: Tenant ID. Required.
     :vartype tenant_id: str
     """
 
     _validation = {
-        "subject": {"max_length": 255, "min_length": 1},
+        "id": {"required": True},
+        "state": {"required": True},
         "process_definition": {"required": True},
+        "tenant_id": {"required": True},
     }
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "created_by": {"key": "createdBy", "type": "str"},
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
-        "subject": {"key": "subject", "type": "str"},
         "state": {"key": "state", "type": "str"},
         "process_definition": {"key": "processDefinition", "type": "ProcessDefinitionSummary"},
-        "element_values": {"key": "elementValues", "type": "{[ProcessElementValue]}"},
-        "initiator": {"key": "initiator", "type": "Principal"},
+        "initiator_id": {"key": "initiatorId", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
     def __init__(
         self,
         *,
+        id: str,  # pylint: disable=redefined-builtin
+        state: Union[str, "_models.ProcessState"],
         process_definition: "_models.ProcessDefinitionSummary",
-        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
+        tenant_id: str,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
-        id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        subject: Optional[str] = None,
-        state: Optional[Union[str, "_models.ProcessState"]] = None,
-        element_values: Optional[Dict[str, List["_models.ProcessElementValue"]]] = None,
-        initiator: Optional["_models.Principal"] = None,
-        tenant_id: Optional[str] = None,
+        initiator_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
-        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -1205,23 +1816,19 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
         :paramtype last_modified_by: str
         :keyword last_modified_at: When this model type was last updated.
         :paramtype last_modified_at: ~datetime.datetime
-        :keyword id: Process ID.
+        :keyword id: Process ID. Required.
         :paramtype id: str
-        :keyword subject: Process subject.
-        :paramtype subject: str
-        :keyword state: Process state. Known values are: "RUNNING", "COMPLETED", and "CANCELLED".
+        :keyword state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
+         "CANCELLED".
         :paramtype state: str or ~kuflow.rest.models.ProcessState
         :keyword process_definition: Required.
         :paramtype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
-        :keyword element_values: Process element values, an ElementValueDocument is not allowed.
-        :paramtype element_values: dict[str, list[~kuflow.rest.models.ProcessElementValue]]
-        :keyword initiator:
-        :paramtype initiator: ~kuflow.rest.models.Principal
-        :keyword tenant_id: Tenant ID.
+        :keyword initiator_id: Principal ID.
+        :paramtype initiator_id: str
+        :keyword tenant_id: Tenant ID. Required.
         :paramtype tenant_id: str
         """
         super().__init__(
-            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
@@ -1229,112 +1836,14 @@ class ProcessPageItem(AbstractAudited):  # pylint: disable=too-many-instance-att
             **kwargs,
         )
         self.id = id
-        self.subject = subject
         self.state = state
         self.process_definition = process_definition
-        self.element_values = element_values
-        self.initiator = initiator
+        self.initiator_id = initiator_id
         self.tenant_id = tenant_id
 
 
-class ProcessSaveElementCommand(_serialization.Model):
-    """Command to save process element.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar element_definition_code: Required.
-    :vartype element_definition_code: str
-    :ivar element_values:
-    :vartype element_values: list[~kuflow.rest.models.ProcessElementValue]
-    """
-
-    _validation = {
-        "element_definition_code": {"required": True},
-    }
-
-    _attribute_map = {
-        "element_definition_code": {"key": "elementDefinitionCode", "type": "str"},
-        "element_values": {"key": "elementValues", "type": "[ProcessElementValue]"},
-    }
-
-    def __init__(
-        self,
-        *,
-        element_definition_code: str,
-        element_values: Optional[List["_models.ProcessElementValue"]] = None,
-        **kwargs: Any,
-    ) -> None:
-        """
-        :keyword element_definition_code: Required.
-        :paramtype element_definition_code: str
-        :keyword element_values:
-        :paramtype element_values: list[~kuflow.rest.models.ProcessElementValue]
-        """
-        super().__init__(**kwargs)
-        self.element_definition_code = element_definition_code
-        self.element_values = element_values
-
-
-class ProcessSaveEntityDataCommand(_serialization.Model):
-    """ProcessSaveEntityDataCommand.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar data: json value filled that complain with the related json schema. Required.
-    :vartype data: dict[str, any]
-    """
-
-    _validation = {
-        "data": {"required": True},
-    }
-
-    _attribute_map = {
-        "data": {"key": "data", "type": "{object}"},
-    }
-
-    def __init__(self, *, data: Dict[str, Any], **kwargs: Any) -> None:
-        """
-        :keyword data: json value filled that complain with the related json schema. Required.
-        :paramtype data: dict[str, any]
-        """
-        super().__init__(**kwargs)
-        self.data = data
-
-
-class ProcessSaveEntityDocumentResponseCommand(_serialization.Model):
-    """ProcessSaveEntityDocumentResponseCommand.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar value: JSON value representing the uploaded file.
-
-     Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
-     Required.
-    :vartype value: str
-    """
-
-    _validation = {
-        "value": {"required": True},
-    }
-
-    _attribute_map = {
-        "value": {"key": "value", "type": "str"},
-    }
-
-    def __init__(self, *, value: str, **kwargs: Any) -> None:
-        """
-        :keyword value: JSON value representing the uploaded file.
-
-         Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
-         Required.
-        :paramtype value: str
-        """
-        super().__init__(**kwargs)
-        self.value = value
-
-
-class RelatedProcess(_serialization.Model):
-    """RelatedProcess.
+class ProcessRelated(_serialization.Model):
+    """ProcessRelated.
 
     :ivar incoming: Processes whose relationship target is the current process.
     :vartype incoming: list[str]
@@ -1366,9 +1875,6 @@ class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -1385,14 +1891,13 @@ class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :vartype name: str
     :ivar description: Robot description.
     :vartype description: str
-    :ivar source_type: Robot source type. Required. Known values are: "PACKAGE" and
-     "ROBOT_FRAMEWORK_PYTHON_WHEEL".
+    :ivar source_type: Robot source type. Required. Known values are: "PACKAGE" and "UNKNOWN".
     :vartype source_type: str or ~kuflow.rest.models.RobotSourceType
-    :ivar source_file: Robot source type.
+    :ivar source_file: Robot source type. Required.
     :vartype source_file: ~kuflow.rest.models.RobotSourceFile
     :ivar environment_variables: Environment variables to load when the robot is executed.
     :vartype environment_variables: dict[str, str]
-    :ivar tenant_id: Tenant ID.
+    :ivar tenant_id: Tenant ID. Required.
     :vartype tenant_id: str
     """
 
@@ -1402,10 +1907,11 @@ class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "name": {"required": True, "max_length": 50, "min_length": 1},
         "description": {"max_length": 4000, "min_length": 1},
         "source_type": {"required": True},
+        "source_file": {"required": True},
+        "tenant_id": {"required": True},
     }
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "created_by": {"key": "createdBy", "type": "str"},
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
@@ -1427,21 +1933,17 @@ class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         code: str,
         name: str,
         source_type: Union[str, "_models.RobotSourceType"],
-        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
+        source_file: "_models.RobotSourceFile",
+        tenant_id: str,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
         description: Optional[str] = None,
-        source_file: Optional["_models.RobotSourceFile"] = None,
         environment_variables: Optional[Dict[str, str]] = None,
-        tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
-        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -1458,18 +1960,16 @@ class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype name: str
         :keyword description: Robot description.
         :paramtype description: str
-        :keyword source_type: Robot source type. Required. Known values are: "PACKAGE" and
-         "ROBOT_FRAMEWORK_PYTHON_WHEEL".
+        :keyword source_type: Robot source type. Required. Known values are: "PACKAGE" and "UNKNOWN".
         :paramtype source_type: str or ~kuflow.rest.models.RobotSourceType
-        :keyword source_file: Robot source type.
+        :keyword source_file: Robot source type. Required.
         :paramtype source_file: ~kuflow.rest.models.RobotSourceFile
         :keyword environment_variables: Environment variables to load when the robot is executed.
         :paramtype environment_variables: dict[str, str]
-        :keyword tenant_id: Tenant ID.
+        :keyword tenant_id: Tenant ID. Required.
         :paramtype tenant_id: str
         """
         super().__init__(
-            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
@@ -1491,13 +1991,10 @@ class RobotPage(Page):
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.models.PageMetadata
     :ivar content: Required.
-    :vartype content: list[~kuflow.rest.models.Robot]
+    :vartype content: list[~kuflow.rest.models.RobotPageItem]
     """
 
     _validation = {
@@ -1506,30 +2003,114 @@ class RobotPage(Page):
     }
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "metadata": {"key": "metadata", "type": "PageMetadata"},
-        "content": {"key": "content", "type": "[Robot]"},
+        "content": {"key": "content", "type": "[RobotPageItem]"},
+    }
+
+    def __init__(
+        self, *, metadata: "_models.PageMetadata", content: List["_models.RobotPageItem"], **kwargs: Any
+    ) -> None:
+        """
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        :keyword content: Required.
+        :paramtype content: list[~kuflow.rest.models.RobotPageItem]
+        """
+        super().__init__(metadata=metadata, **kwargs)
+        self.content = content
+
+
+class RobotPageItem(AbstractAudited):
+    """RobotPageItem.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Robot ID. Required.
+    :vartype id: str
+    :ivar code: Robot Code. Required.
+    :vartype code: str
+    :ivar name: Robot name. Required.
+    :vartype name: str
+    :ivar description: Robot description.
+    :vartype description: str
+    :ivar tenant_id: Tenant ID. Required.
+    :vartype tenant_id: str
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "code": {"required": True, "max_length": 50, "min_length": 1},
+        "name": {"required": True, "max_length": 50, "min_length": 1},
+        "description": {"max_length": 4000, "min_length": 1},
+        "tenant_id": {"required": True},
+    }
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "code": {"key": "code", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+        "description": {"key": "description", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
     def __init__(
         self,
         *,
-        metadata: "_models.PageMetadata",
-        content: List["_models.Robot"],
-        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
+        id: str,  # pylint: disable=redefined-builtin
+        code: str,
+        name: str,
+        tenant_id: str,
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        description: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
-        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
-        :keyword metadata: Required.
-        :paramtype metadata: ~kuflow.rest.models.PageMetadata
-        :keyword content: Required.
-        :paramtype content: list[~kuflow.rest.models.Robot]
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Robot ID. Required.
+        :paramtype id: str
+        :keyword code: Robot Code. Required.
+        :paramtype code: str
+        :keyword name: Robot name. Required.
+        :paramtype name: str
+        :keyword description: Robot description.
+        :paramtype description: str
+        :keyword tenant_id: Tenant ID. Required.
+        :paramtype tenant_id: str
         """
-        super().__init__(object_type=object_type, metadata=metadata, **kwargs)
-        self.content = content
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.code = code
+        self.name = name
+        self.description = description
+        self.tenant_id = tenant_id
 
 
 class RobotSourceFile(_serialization.Model):
@@ -1595,179 +2176,26 @@ class RobotSourceFile(_serialization.Model):
         self.content_hash = content_hash
 
 
-class Task(AbstractAudited):  # pylint: disable=too-many-instance-attributes
-    """Task.
+class TaskDefinitionSummary(_serialization.Model):
+    """TaskDefinitionSummary.
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
-    :ivar created_by: Who create this model.
-    :vartype created_by: str
-    :ivar created_at: When this model was created.
-    :vartype created_at: ~datetime.datetime
-    :ivar last_modified_by: Who was last update this model.
-    :vartype last_modified_by: str
-    :ivar last_modified_at: When this model type was last updated.
-    :vartype last_modified_at: ~datetime.datetime
-    :ivar id:
+    :ivar id: Required.
     :vartype id: str
-    :ivar state: Task state. Known values are: "READY", "CLAIMED", "COMPLETED", and "CANCELLED".
-    :vartype state: str or ~kuflow.rest.models.TaskState
-    :ivar task_definition: In creation task, one of 'id, version or code' is mandatory. Required.
-    :vartype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
-    :ivar process_id: Required.
-    :vartype process_id: str
-    :ivar element_values: Task element values, en ElementValueDocument is not allowed, used when
-     the task render type selected is
-     JSON Forms.
-    :vartype element_values: dict[str, list[~kuflow.rest.models.TaskElementValue]]
-    :ivar json_forms_value: Json form values, used when the render type selected is JSON Forms.
-    :vartype json_forms_value: ~kuflow.rest.models.JsonFormsValue
-    :ivar logs:
-    :vartype logs: list[~kuflow.rest.models.Log]
-    :ivar owner:
-    :vartype owner: ~kuflow.rest.models.Principal
-    :ivar tenant_id: Tenant ID.
-    :vartype tenant_id: str
-    """
-
-    _validation = {
-        "task_definition": {"required": True},
-        "process_id": {"required": True},
-    }
-
-    _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
-        "created_by": {"key": "createdBy", "type": "str"},
-        "created_at": {"key": "createdAt", "type": "iso-8601"},
-        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
-        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
-        "id": {"key": "id", "type": "str"},
-        "state": {"key": "state", "type": "str"},
-        "task_definition": {"key": "taskDefinition", "type": "TaskDefinitionSummary"},
-        "process_id": {"key": "processId", "type": "str"},
-        "element_values": {"key": "elementValues", "type": "{[TaskElementValue]}"},
-        "json_forms_value": {"key": "jsonFormsValue", "type": "JsonFormsValue"},
-        "logs": {"key": "logs", "type": "[Log]"},
-        "owner": {"key": "owner", "type": "Principal"},
-        "tenant_id": {"key": "tenantId", "type": "str"},
-    }
-
-    def __init__(
-        self,
-        *,
-        task_definition: "_models.TaskDefinitionSummary",
-        process_id: str,
-        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
-        created_by: Optional[str] = None,
-        created_at: Optional[datetime.datetime] = None,
-        last_modified_by: Optional[str] = None,
-        last_modified_at: Optional[datetime.datetime] = None,
-        id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        state: Optional[Union[str, "_models.TaskState"]] = None,
-        element_values: Optional[Dict[str, List["_models.TaskElementValue"]]] = None,
-        json_forms_value: Optional["_models.JsonFormsValue"] = None,
-        logs: Optional[List["_models.Log"]] = None,
-        owner: Optional["_models.Principal"] = None,
-        tenant_id: Optional[str] = None,
-        **kwargs: Any,
-    ) -> None:
-        """
-        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
-        :keyword created_by: Who create this model.
-        :paramtype created_by: str
-        :keyword created_at: When this model was created.
-        :paramtype created_at: ~datetime.datetime
-        :keyword last_modified_by: Who was last update this model.
-        :paramtype last_modified_by: str
-        :keyword last_modified_at: When this model type was last updated.
-        :paramtype last_modified_at: ~datetime.datetime
-        :keyword id:
-        :paramtype id: str
-        :keyword state: Task state. Known values are: "READY", "CLAIMED", "COMPLETED", and "CANCELLED".
-        :paramtype state: str or ~kuflow.rest.models.TaskState
-        :keyword task_definition: In creation task, one of 'id, version or code' is mandatory.
-         Required.
-        :paramtype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
-        :keyword process_id: Required.
-        :paramtype process_id: str
-        :keyword element_values: Task element values, en ElementValueDocument is not allowed, used when
-         the task render type selected is
-         JSON Forms.
-        :paramtype element_values: dict[str, list[~kuflow.rest.models.TaskElementValue]]
-        :keyword json_forms_value: Json form values, used when the render type selected is JSON Forms.
-        :paramtype json_forms_value: ~kuflow.rest.models.JsonFormsValue
-        :keyword logs:
-        :paramtype logs: list[~kuflow.rest.models.Log]
-        :keyword owner:
-        :paramtype owner: ~kuflow.rest.models.Principal
-        :keyword tenant_id: Tenant ID.
-        :paramtype tenant_id: str
-        """
-        super().__init__(
-            object_type=object_type,
-            created_by=created_by,
-            created_at=created_at,
-            last_modified_by=last_modified_by,
-            last_modified_at=last_modified_at,
-            **kwargs,
-        )
-        self.id = id
-        self.state = state
-        self.task_definition = task_definition
-        self.process_id = process_id
-        self.element_values = element_values
-        self.json_forms_value = json_forms_value
-        self.logs = logs
-        self.owner = owner
-        self.tenant_id = tenant_id
-
-
-class TaskAssignCommand(_serialization.Model):
-    """Command to assign task, only one option is required.
-
-    :ivar principal_id:
-    :vartype principal_id: str
-    :ivar email:
-    :vartype email: str
-    """
-
-    _attribute_map = {
-        "principal_id": {"key": "principalId", "type": "str"},
-        "email": {"key": "email", "type": "str"},
-    }
-
-    def __init__(self, *, principal_id: Optional[str] = None, email: Optional[str] = None, **kwargs: Any) -> None:
-        """
-        :keyword principal_id:
-        :paramtype principal_id: str
-        :keyword email:
-        :paramtype email: str
-        """
-        super().__init__(**kwargs)
-        self.principal_id = principal_id
-        self.email = email
-
-
-class TaskDefinitionSummary(_serialization.Model):
-    """In creation task, one of 'id, version or code' is mandatory.
-
-    :ivar id:
-    :vartype id: str
-    :ivar version:
+    :ivar version: Required.
     :vartype version: str
-    :ivar code:
+    :ivar code: Required.
     :vartype code: str
-    :ivar name:
+    :ivar name: Required.
     :vartype name: str
     """
 
     _validation = {
-        "name": {"max_length": 50, "min_length": 1},
+        "id": {"required": True},
+        "version": {"required": True},
+        "code": {"required": True},
+        "name": {"required": True, "max_length": 50, "min_length": 1},
     }
 
     _attribute_map = {
@@ -1780,20 +2208,20 @@ class TaskDefinitionSummary(_serialization.Model):
     def __init__(
         self,
         *,
-        id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        version: Optional[str] = None,
-        code: Optional[str] = None,
-        name: Optional[str] = None,
+        id: str,  # pylint: disable=redefined-builtin
+        version: str,
+        code: str,
+        name: str,
         **kwargs: Any,
     ) -> None:
         """
-        :keyword id:
+        :keyword id: Required.
         :paramtype id: str
-        :keyword version:
+        :keyword version: Required.
         :paramtype version: str
-        :keyword code:
+        :keyword code: Required.
         :paramtype code: str
-        :keyword name:
+        :keyword name: Required.
         :paramtype name: str
         """
         super().__init__(**kwargs)
@@ -1803,650 +2231,6 @@ class TaskDefinitionSummary(_serialization.Model):
         self.name = name
 
 
-class TaskDeleteElementCommand(_serialization.Model):
-    """TaskDeleteElementCommand.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar element_definition_code: Code of task element to delete. Required.
-    :vartype element_definition_code: str
-    """
-
-    _validation = {
-        "element_definition_code": {"required": True},
-    }
-
-    _attribute_map = {
-        "element_definition_code": {"key": "elementDefinitionCode", "type": "str"},
-    }
-
-    def __init__(self, *, element_definition_code: str, **kwargs: Any) -> None:
-        """
-        :keyword element_definition_code: Code of task element to delete. Required.
-        :paramtype element_definition_code: str
-        """
-        super().__init__(**kwargs)
-        self.element_definition_code = element_definition_code
-
-
-class TaskDeleteElementValueDocumentCommand(_serialization.Model):
-    """TaskDeleteElementValueDocumentCommand.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar document_id: Document ID to delete. Required.
-    :vartype document_id: str
-    """
-
-    _validation = {
-        "document_id": {"required": True},
-    }
-
-    _attribute_map = {
-        "document_id": {"key": "documentId", "type": "str"},
-    }
-
-    def __init__(self, *, document_id: str, **kwargs: Any) -> None:
-        """
-        :keyword document_id: Document ID to delete. Required.
-        :paramtype document_id: str
-        """
-        super().__init__(**kwargs)
-        self.document_id = document_id
-
-
-class TaskElementValue(_serialization.Model):
-    """TaskElementValue.
-
-    You probably want to use the sub-classes and not this class directly. Known sub-classes are:
-    TaskElementValueDocument, TaskElementValueNumber, TaskElementValueObject,
-    TaskElementValuePrincipal, TaskElementValueString
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar valid:
-    :vartype valid: bool
-    :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
-     "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
-    """
-
-    _validation = {
-        "type": {"required": True},
-    }
-
-    _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
-        "type": {"key": "type", "type": "str"},
-    }
-
-    _subtype_map = {
-        "type": {
-            "DOCUMENT": "TaskElementValueDocument",
-            "NUMBER": "TaskElementValueNumber",
-            "OBJECT": "TaskElementValueObject",
-            "PRINCIPAL": "TaskElementValuePrincipal",
-            "STRING": "TaskElementValueString",
-        }
-    }
-
-    def __init__(self, *, valid: bool = True, **kwargs: Any) -> None:
-        """
-        :keyword valid:
-        :paramtype valid: bool
-        """
-        super().__init__(**kwargs)
-        self.valid = valid
-        self.type: Optional[str] = None
-
-
-class TaskElementValueDocument(TaskElementValue):
-    """TaskElementValueDocument.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar valid:
-    :vartype valid: bool
-    :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
-     "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
-    :ivar value:
-    :vartype value: ~kuflow.rest.models.TaskElementValueDocumentItem
-    """
-
-    _validation = {
-        "type": {"required": True},
-    }
-
-    _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
-        "type": {"key": "type", "type": "str"},
-        "value": {"key": "value", "type": "TaskElementValueDocumentItem"},
-    }
-
-    def __init__(
-        self, *, valid: bool = True, value: Optional["_models.TaskElementValueDocumentItem"] = None, **kwargs: Any
-    ) -> None:
-        """
-        :keyword valid:
-        :paramtype valid: bool
-        :keyword value:
-        :paramtype value: ~kuflow.rest.models.TaskElementValueDocumentItem
-        """
-        super().__init__(valid=valid, **kwargs)
-        self.type: str = "DOCUMENT"
-        self.value = value
-
-
-class TaskElementValueDocumentItem(_serialization.Model):
-    """TaskElementValueDocumentItem.
-
-    :ivar id:
-    :vartype id: str
-    :ivar uri:
-    :vartype uri: str
-    :ivar name:
-    :vartype name: str
-    :ivar content_path:
-    :vartype content_path: str
-    :ivar content_type:
-    :vartype content_type: str
-    :ivar content_length:
-    :vartype content_length: int
-    """
-
-    _attribute_map = {
-        "id": {"key": "id", "type": "str"},
-        "uri": {"key": "uri", "type": "str"},
-        "name": {"key": "name", "type": "str"},
-        "content_path": {"key": "contentPath", "type": "str"},
-        "content_type": {"key": "contentType", "type": "str"},
-        "content_length": {"key": "contentLength", "type": "int"},
-    }
-
-    def __init__(
-        self,
-        *,
-        id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        uri: Optional[str] = None,
-        name: Optional[str] = None,
-        content_path: Optional[str] = None,
-        content_type: Optional[str] = None,
-        content_length: Optional[int] = None,
-        **kwargs: Any,
-    ) -> None:
-        """
-        :keyword id:
-        :paramtype id: str
-        :keyword uri:
-        :paramtype uri: str
-        :keyword name:
-        :paramtype name: str
-        :keyword content_path:
-        :paramtype content_path: str
-        :keyword content_type:
-        :paramtype content_type: str
-        :keyword content_length:
-        :paramtype content_length: int
-        """
-        super().__init__(**kwargs)
-        self.id = id
-        self.uri = uri
-        self.name = name
-        self.content_path = content_path
-        self.content_type = content_type
-        self.content_length = content_length
-
-
-class TaskElementValueNumber(TaskElementValue):
-    """TaskElementValueNumber.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar valid:
-    :vartype valid: bool
-    :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
-     "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
-    :ivar value:
-    :vartype value: float
-    """
-
-    _validation = {
-        "type": {"required": True},
-    }
-
-    _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
-        "type": {"key": "type", "type": "str"},
-        "value": {"key": "value", "type": "float"},
-    }
-
-    def __init__(self, *, valid: bool = True, value: Optional[float] = None, **kwargs: Any) -> None:
-        """
-        :keyword valid:
-        :paramtype valid: bool
-        :keyword value:
-        :paramtype value: float
-        """
-        super().__init__(valid=valid, **kwargs)
-        self.type: str = "NUMBER"
-        self.value = value
-
-
-class TaskElementValueObject(TaskElementValue):
-    """TaskElementValueObject.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar valid:
-    :vartype valid: bool
-    :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
-     "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
-    :ivar value: Dictionary of :code:`<any>`.
-    :vartype value: dict[str, any]
-    """
-
-    _validation = {
-        "type": {"required": True},
-    }
-
-    _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
-        "type": {"key": "type", "type": "str"},
-        "value": {"key": "value", "type": "{object}"},
-    }
-
-    def __init__(self, *, valid: bool = True, value: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
-        """
-        :keyword valid:
-        :paramtype valid: bool
-        :keyword value: Dictionary of :code:`<any>`.
-        :paramtype value: dict[str, any]
-        """
-        super().__init__(valid=valid, **kwargs)
-        self.type: str = "OBJECT"
-        self.value = value
-
-
-class TaskElementValuePrincipal(TaskElementValue):
-    """TaskElementValuePrincipal.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar valid:
-    :vartype valid: bool
-    :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
-     "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
-    :ivar value:
-    :vartype value: ~kuflow.rest.models.TaskElementValuePrincipalItem
-    """
-
-    _validation = {
-        "type": {"required": True},
-    }
-
-    _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
-        "type": {"key": "type", "type": "str"},
-        "value": {"key": "value", "type": "TaskElementValuePrincipalItem"},
-    }
-
-    def __init__(
-        self, *, valid: bool = True, value: Optional["_models.TaskElementValuePrincipalItem"] = None, **kwargs: Any
-    ) -> None:
-        """
-        :keyword valid:
-        :paramtype valid: bool
-        :keyword value:
-        :paramtype value: ~kuflow.rest.models.TaskElementValuePrincipalItem
-        """
-        super().__init__(valid=valid, **kwargs)
-        self.type: str = "PRINCIPAL"
-        self.value = value
-
-
-class TaskElementValuePrincipalItem(_serialization.Model):
-    """TaskElementValuePrincipalItem.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar id: Required.
-    :vartype id: str
-    :ivar type: Required. Known values are: "USER", "APPLICATION", and "SYSTEM".
-    :vartype type: str or ~kuflow.rest.models.PrincipalType
-    :ivar name:
-    :vartype name: str
-    """
-
-    _validation = {
-        "id": {"required": True},
-        "type": {"required": True},
-    }
-
-    _attribute_map = {
-        "id": {"key": "id", "type": "str"},
-        "type": {"key": "type", "type": "str"},
-        "name": {"key": "name", "type": "str"},
-    }
-
-    def __init__(
-        self,
-        *,
-        id: str,  # pylint: disable=redefined-builtin
-        type: Union[str, "_models.PrincipalType"],
-        name: Optional[str] = None,
-        **kwargs: Any,
-    ) -> None:
-        """
-        :keyword id: Required.
-        :paramtype id: str
-        :keyword type: Required. Known values are: "USER", "APPLICATION", and "SYSTEM".
-        :paramtype type: str or ~kuflow.rest.models.PrincipalType
-        :keyword name:
-        :paramtype name: str
-        """
-        super().__init__(**kwargs)
-        self.id = id
-        self.type = type
-        self.name = name
-
-
-class TaskElementValueString(TaskElementValue):
-    """TaskElementValueString.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar valid:
-    :vartype valid: bool
-    :ivar type: Required. Known values are: "STRING", "NUMBER", "OBJECT", "DOCUMENT", and
-     "PRINCIPAL".
-    :vartype type: str or ~kuflow.rest.models.TaskElementValueType
-    :ivar value:
-    :vartype value: str
-    """
-
-    _validation = {
-        "type": {"required": True},
-    }
-
-    _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
-        "type": {"key": "type", "type": "str"},
-        "value": {"key": "value", "type": "str"},
-    }
-
-    def __init__(self, *, valid: bool = True, value: Optional[str] = None, **kwargs: Any) -> None:
-        """
-        :keyword valid:
-        :paramtype valid: bool
-        :keyword value:
-        :paramtype value: str
-        """
-        super().__init__(valid=valid, **kwargs)
-        self.type: str = "STRING"
-        self.value = value
-
-
-class TaskPage(Page):
-    """TaskPage.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
-    :ivar metadata: Required.
-    :vartype metadata: ~kuflow.rest.models.PageMetadata
-    :ivar content: Required.
-    :vartype content: list[~kuflow.rest.models.TaskPageItem]
-    """
-
-    _validation = {
-        "metadata": {"required": True},
-        "content": {"required": True},
-    }
-
-    _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
-        "metadata": {"key": "metadata", "type": "PageMetadata"},
-        "content": {"key": "content", "type": "[TaskPageItem]"},
-    }
-
-    def __init__(
-        self,
-        *,
-        metadata: "_models.PageMetadata",
-        content: List["_models.TaskPageItem"],
-        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
-        **kwargs: Any,
-    ) -> None:
-        """
-        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
-        :keyword metadata: Required.
-        :paramtype metadata: ~kuflow.rest.models.PageMetadata
-        :keyword content: Required.
-        :paramtype content: list[~kuflow.rest.models.TaskPageItem]
-        """
-        super().__init__(object_type=object_type, metadata=metadata, **kwargs)
-        self.content = content
-
-
-class TaskPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attributes
-    """TaskPageItem.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
-    :ivar created_by: Who create this model.
-    :vartype created_by: str
-    :ivar created_at: When this model was created.
-    :vartype created_at: ~datetime.datetime
-    :ivar last_modified_by: Who was last update this model.
-    :vartype last_modified_by: str
-    :ivar last_modified_at: When this model type was last updated.
-    :vartype last_modified_at: ~datetime.datetime
-    :ivar id:
-    :vartype id: str
-    :ivar state: Task state. Known values are: "READY", "CLAIMED", "COMPLETED", and "CANCELLED".
-    :vartype state: str or ~kuflow.rest.models.TaskState
-    :ivar task_definition: In creation task, one of 'id, version or code' is mandatory. Required.
-    :vartype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
-    :ivar process_id: Required.
-    :vartype process_id: str
-    :ivar element_values: Task element values, en ElementValueDocument is not allowed.
-    :vartype element_values: dict[str, list[~kuflow.rest.models.TaskElementValue]]
-    :ivar json_forms_value: Json form values, used when the render type selected is JSON Forms.
-    :vartype json_forms_value: ~kuflow.rest.models.JsonFormsValue
-    :ivar owner:
-    :vartype owner: ~kuflow.rest.models.Principal
-    :ivar tenant_id: Tenant ID.
-    :vartype tenant_id: str
-    """
-
-    _validation = {
-        "task_definition": {"required": True},
-        "process_id": {"required": True},
-    }
-
-    _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
-        "created_by": {"key": "createdBy", "type": "str"},
-        "created_at": {"key": "createdAt", "type": "iso-8601"},
-        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
-        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
-        "id": {"key": "id", "type": "str"},
-        "state": {"key": "state", "type": "str"},
-        "task_definition": {"key": "taskDefinition", "type": "TaskDefinitionSummary"},
-        "process_id": {"key": "processId", "type": "str"},
-        "element_values": {"key": "elementValues", "type": "{[TaskElementValue]}"},
-        "json_forms_value": {"key": "jsonFormsValue", "type": "JsonFormsValue"},
-        "owner": {"key": "owner", "type": "Principal"},
-        "tenant_id": {"key": "tenantId", "type": "str"},
-    }
-
-    def __init__(
-        self,
-        *,
-        task_definition: "_models.TaskDefinitionSummary",
-        process_id: str,
-        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
-        created_by: Optional[str] = None,
-        created_at: Optional[datetime.datetime] = None,
-        last_modified_by: Optional[str] = None,
-        last_modified_at: Optional[datetime.datetime] = None,
-        id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        state: Optional[Union[str, "_models.TaskState"]] = None,
-        element_values: Optional[Dict[str, List["_models.TaskElementValue"]]] = None,
-        json_forms_value: Optional["_models.JsonFormsValue"] = None,
-        owner: Optional["_models.Principal"] = None,
-        tenant_id: Optional[str] = None,
-        **kwargs: Any,
-    ) -> None:
-        """
-        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
-        :keyword created_by: Who create this model.
-        :paramtype created_by: str
-        :keyword created_at: When this model was created.
-        :paramtype created_at: ~datetime.datetime
-        :keyword last_modified_by: Who was last update this model.
-        :paramtype last_modified_by: str
-        :keyword last_modified_at: When this model type was last updated.
-        :paramtype last_modified_at: ~datetime.datetime
-        :keyword id:
-        :paramtype id: str
-        :keyword state: Task state. Known values are: "READY", "CLAIMED", "COMPLETED", and "CANCELLED".
-        :paramtype state: str or ~kuflow.rest.models.TaskState
-        :keyword task_definition: In creation task, one of 'id, version or code' is mandatory.
-         Required.
-        :paramtype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
-        :keyword process_id: Required.
-        :paramtype process_id: str
-        :keyword element_values: Task element values, en ElementValueDocument is not allowed.
-        :paramtype element_values: dict[str, list[~kuflow.rest.models.TaskElementValue]]
-        :keyword json_forms_value: Json form values, used when the render type selected is JSON Forms.
-        :paramtype json_forms_value: ~kuflow.rest.models.JsonFormsValue
-        :keyword owner:
-        :paramtype owner: ~kuflow.rest.models.Principal
-        :keyword tenant_id: Tenant ID.
-        :paramtype tenant_id: str
-        """
-        super().__init__(
-            object_type=object_type,
-            created_by=created_by,
-            created_at=created_at,
-            last_modified_by=last_modified_by,
-            last_modified_at=last_modified_at,
-            **kwargs,
-        )
-        self.id = id
-        self.state = state
-        self.task_definition = task_definition
-        self.process_id = process_id
-        self.element_values = element_values
-        self.json_forms_value = json_forms_value
-        self.owner = owner
-        self.tenant_id = tenant_id
-
-
-class TaskSaveElementCommand(_serialization.Model):
-    """TaskSaveElementCommand.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar element_definition_code: Required.
-    :vartype element_definition_code: str
-    :ivar element_values:
-    :vartype element_values: list[~kuflow.rest.models.TaskElementValue]
-    """
-
-    _validation = {
-        "element_definition_code": {"required": True},
-    }
-
-    _attribute_map = {
-        "element_definition_code": {"key": "elementDefinitionCode", "type": "str"},
-        "element_values": {"key": "elementValues", "type": "[TaskElementValue]"},
-    }
-
-    def __init__(
-        self,
-        *,
-        element_definition_code: str,
-        element_values: Optional[List["_models.TaskElementValue"]] = None,
-        **kwargs: Any,
-    ) -> None:
-        """
-        :keyword element_definition_code: Required.
-        :paramtype element_definition_code: str
-        :keyword element_values:
-        :paramtype element_values: list[~kuflow.rest.models.TaskElementValue]
-        """
-        super().__init__(**kwargs)
-        self.element_definition_code = element_definition_code
-        self.element_values = element_values
-
-
-class TaskSaveJsonFormsValueDataCommand(_serialization.Model):
-    """TaskSaveJsonFormsValueDataCommand.
-
-    :ivar data: json value filled that complain with the related json schema.
-    :vartype data: dict[str, any]
-    """
-
-    _attribute_map = {
-        "data": {"key": "data", "type": "{object}"},
-    }
-
-    def __init__(self, *, data: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
-        """
-        :keyword data: json value filled that complain with the related json schema.
-        :paramtype data: dict[str, any]
-        """
-        super().__init__(**kwargs)
-        self.data = data
-
-
-class TaskSaveJsonFormsValueDocumentResponseCommand(_serialization.Model):  # pylint: disable=name-too-long
-    """TaskSaveJsonFormsValueDocumentResponseCommand.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar value: JSON value representing the uploaded file.
-
-     Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
-     Required.
-    :vartype value: str
-    """
-
-    _validation = {
-        "value": {"required": True},
-    }
-
-    _attribute_map = {
-        "value": {"key": "value", "type": "str"},
-    }
-
-    def __init__(self, *, value: str, **kwargs: Any) -> None:
-        """
-        :keyword value: JSON value representing the uploaded file.
-
-         Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
-         Required.
-        :paramtype value: str
-        """
-        super().__init__(**kwargs)
-        self.value = value
-
-
 class TenantUser(AbstractAudited):
     """TenantUser.
 
@@ -2454,9 +2238,6 @@ class TenantUser(AbstractAudited):
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -2467,8 +2248,8 @@ class TenantUser(AbstractAudited):
     :vartype last_modified_at: ~datetime.datetime
     :ivar id: Required.
     :vartype id: str
-    :ivar metadata:
-    :vartype metadata: ~kuflow.rest.models.TenantUserMetadata
+    :ivar metadata: Json value.
+    :vartype metadata: ~kuflow.rest.models.JsonValue
     :ivar principal: Required.
     :vartype principal: ~kuflow.rest.models.Principal
     :ivar tenant_id: Required.
@@ -2482,13 +2263,12 @@ class TenantUser(AbstractAudited):
     }
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "created_by": {"key": "createdBy", "type": "str"},
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
-        "metadata": {"key": "metadata", "type": "TenantUserMetadata"},
+        "metadata": {"key": "metadata", "type": "JsonValue"},
         "principal": {"key": "principal", "type": "Principal"},
         "tenant_id": {"key": "tenantId", "type": "str"},
     }
@@ -2498,18 +2278,14 @@ class TenantUser(AbstractAudited):
         *,
         id: str,  # pylint: disable=redefined-builtin
         principal: "_models.Principal",
-        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
-        metadata: Optional["_models.TenantUserMetadata"] = None,
+        metadata: Optional["_models.JsonValue"] = None,
         **kwargs: Any,
     ) -> None:
         """
-        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -2520,13 +2296,12 @@ class TenantUser(AbstractAudited):
         :paramtype last_modified_at: ~datetime.datetime
         :keyword id: Required.
         :paramtype id: str
-        :keyword metadata:
-        :paramtype metadata: ~kuflow.rest.models.TenantUserMetadata
+        :keyword metadata: Json value.
+        :paramtype metadata: ~kuflow.rest.models.JsonValue
         :keyword principal: Required.
         :paramtype principal: ~kuflow.rest.models.Principal
         """
         super().__init__(
-            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
@@ -2539,51 +2314,15 @@ class TenantUser(AbstractAudited):
         self.tenant_id = None
 
 
-class TenantUserMetadata(_serialization.Model):
-    """TenantUserMetadata.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar valid: Required.
-    :vartype valid: bool
-    :ivar value: Dictionary of :code:`<any>`. Required.
-    :vartype value: dict[str, any]
-    """
-
-    _validation = {
-        "valid": {"required": True},
-        "value": {"required": True},
-    }
-
-    _attribute_map = {
-        "valid": {"key": "valid", "type": "bool"},
-        "value": {"key": "value", "type": "{object}"},
-    }
-
-    def __init__(self, *, valid: bool, value: Dict[str, Any], **kwargs: Any) -> None:
-        """
-        :keyword valid: Required.
-        :paramtype valid: bool
-        :keyword value: Dictionary of :code:`<any>`. Required.
-        :paramtype value: dict[str, any]
-        """
-        super().__init__(**kwargs)
-        self.valid = valid
-        self.value = value
-
-
 class TenantUserPage(Page):
     """TenantUserPage.
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE", "TENANT_USER_PAGE",
-     "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-    :vartype object_type: str or ~kuflow.rest.models.PagedObjectType
     :ivar metadata: Required.
     :vartype metadata: ~kuflow.rest.models.PageMetadata
     :ivar content: Required.
-    :vartype content: list[~kuflow.rest.models.TenantUser]
+    :vartype content: list[~kuflow.rest.models.TenantUserPageItem]
     """
 
     _validation = {
@@ -2592,44 +2331,108 @@ class TenantUserPage(Page):
     }
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "metadata": {"key": "metadata", "type": "PageMetadata"},
-        "content": {"key": "content", "type": "[TenantUser]"},
+        "content": {"key": "content", "type": "[TenantUserPageItem]"},
+    }
+
+    def __init__(
+        self, *, metadata: "_models.PageMetadata", content: List["_models.TenantUserPageItem"], **kwargs: Any
+    ) -> None:
+        """
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        :keyword content: Required.
+        :paramtype content: list[~kuflow.rest.models.TenantUserPageItem]
+        """
+        super().__init__(metadata=metadata, **kwargs)
+        self.content = content
+
+
+class TenantUserPageItem(AbstractAudited):
+    """TenantUserPageItem.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Required.
+    :vartype id: str
+    :ivar principal_id: Required.
+    :vartype principal_id: str
+    :ivar tenant_id: Required.
+    :vartype tenant_id: str
+    """
+
+    _validation = {
+        "id": {"required": True, "readonly": True},
+        "principal_id": {"required": True, "readonly": True},
+        "tenant_id": {"required": True, "readonly": True},
+    }
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "principal_id": {"key": "principalId", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
     def __init__(
         self,
         *,
-        metadata: "_models.PageMetadata",
-        content: List["_models.TenantUser"],
-        object_type: Optional[Union[str, "_models.PagedObjectType"]] = None,
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
         **kwargs: Any,
     ) -> None:
         """
-        :keyword object_type: Paged Model types. Known values are: "PRINCIPAL_PAGE",
-         "TENANT_USER_PAGE", "PROCESS_PAGE", "TASK_PAGE", and "ROBOT_PAGE".
-        :paramtype object_type: str or ~kuflow.rest.models.PagedObjectType
-        :keyword metadata: Required.
-        :paramtype metadata: ~kuflow.rest.models.PageMetadata
-        :keyword content: Required.
-        :paramtype content: list[~kuflow.rest.models.TenantUser]
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
         """
-        super().__init__(object_type=object_type, metadata=metadata, **kwargs)
-        self.content = content
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = None
+        self.principal_id = None
+        self.tenant_id = None
 
 
 class WebhookEvent(_serialization.Model):
     """WebhookEvent.
 
     You probably want to use the sub-classes and not this class directly. Known sub-classes are:
-    WebhookEventProcessStateChanged, WebhookEventTaskStateChanged
+    WebhookEventProcessCreated, WebhookEventProcessStateChanged, WebhookEventProcessItemCreated,
+    WebhookEventProcessItemTaskStateChanged
 
     All required parameters must be populated in order to send to server.
 
     :ivar id: Required.
     :vartype id: str
-    :ivar type: Type of the Event. Required. Known values are: "PROCESS.STATE_CHANGED" and
-     "TASK.STATE_CHANGED".
+    :ivar version: Required.
+    :vartype version: str
+    :ivar type: Type of the Event. Required. Known values are: "PROCESS.CREATED",
+     "PROCESS.STATE_CHANGED", "PROCESS_ITEM.CREATED", and "PROCESS_ITEM.TASK_STATE_CHANGED".
     :vartype type: str or ~kuflow.rest.models.WebhookType
     :ivar timestamp: Required.
     :vartype timestamp: ~datetime.datetime
@@ -2637,20 +2440,24 @@ class WebhookEvent(_serialization.Model):
 
     _validation = {
         "id": {"required": True},
+        "version": {"required": True},
         "type": {"required": True},
         "timestamp": {"required": True},
     }
 
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
+        "version": {"key": "version", "type": "str"},
         "type": {"key": "type", "type": "str"},
         "timestamp": {"key": "timestamp", "type": "iso-8601"},
     }
 
     _subtype_map = {
         "type": {
+            "PROCESS.CREATED": "WebhookEventProcessCreated",
             "PROCESS.STATE_CHANGED": "WebhookEventProcessStateChanged",
-            "TASK.STATE_CHANGED": "WebhookEventTaskStateChanged",
+            "PROCESS_ITEM.CREATED": "WebhookEventProcessItemCreated",
+            "PROCESS_ITEM.TASK_STATE_CHANGED": "WebhookEventProcessItemTaskStateChanged",
         }
     }
 
@@ -2658,19 +2465,362 @@ class WebhookEvent(_serialization.Model):
         self,
         *,
         id: str,  # pylint: disable=redefined-builtin
+        version: str,
         timestamp: datetime.datetime,
         **kwargs: Any,
     ) -> None:
         """
         :keyword id: Required.
         :paramtype id: str
+        :keyword version: Required.
+        :paramtype version: str
         :keyword timestamp: Required.
         :paramtype timestamp: ~datetime.datetime
         """
         super().__init__(**kwargs)
         self.id = id
+        self.version = version
         self.type: Optional[str] = None
         self.timestamp = timestamp
+
+
+class WebhookEventProcessCreated(WebhookEvent):
+    """Process Events.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Required.
+    :vartype id: str
+    :ivar version: Required.
+    :vartype version: str
+    :ivar type: Type of the Event. Required. Known values are: "PROCESS.CREATED",
+     "PROCESS.STATE_CHANGED", "PROCESS_ITEM.CREATED", and "PROCESS_ITEM.TASK_STATE_CHANGED".
+    :vartype type: str or ~kuflow.rest.models.WebhookType
+    :ivar timestamp: Required.
+    :vartype timestamp: ~datetime.datetime
+    :ivar data: Required.
+    :vartype data: ~kuflow.rest.models.WebhookEventProcessCreatedData
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "version": {"required": True},
+        "type": {"required": True},
+        "timestamp": {"required": True},
+        "data": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "version": {"key": "version", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "timestamp": {"key": "timestamp", "type": "iso-8601"},
+        "data": {"key": "data", "type": "WebhookEventProcessCreatedData"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        version: str,
+        timestamp: datetime.datetime,
+        data: "_models.WebhookEventProcessCreatedData",
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword version: Required.
+        :paramtype version: str
+        :keyword timestamp: Required.
+        :paramtype timestamp: ~datetime.datetime
+        :keyword data: Required.
+        :paramtype data: ~kuflow.rest.models.WebhookEventProcessCreatedData
+        """
+        super().__init__(id=id, version=version, timestamp=timestamp, **kwargs)
+        self.type: str = "PROCESS.CREATED"
+        self.data = data
+
+
+class WebhookEventProcessCreatedData(_serialization.Model):
+    """WebhookEventProcessCreatedData.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar process_id: Required.
+    :vartype process_id: str
+    :ivar process_state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
+     "CANCELLED".
+    :vartype process_state: str or ~kuflow.rest.models.ProcessState
+    """
+
+    _validation = {
+        "process_id": {"required": True},
+        "process_state": {"required": True},
+    }
+
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "process_state": {"key": "processState", "type": "str"},
+    }
+
+    def __init__(self, *, process_id: str, process_state: Union[str, "_models.ProcessState"], **kwargs: Any) -> None:
+        """
+        :keyword process_id: Required.
+        :paramtype process_id: str
+        :keyword process_state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
+         "CANCELLED".
+        :paramtype process_state: str or ~kuflow.rest.models.ProcessState
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.process_state = process_state
+
+
+class WebhookEventProcessItemCreated(WebhookEvent):
+    """Process Events.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Required.
+    :vartype id: str
+    :ivar version: Required.
+    :vartype version: str
+    :ivar type: Type of the Event. Required. Known values are: "PROCESS.CREATED",
+     "PROCESS.STATE_CHANGED", "PROCESS_ITEM.CREATED", and "PROCESS_ITEM.TASK_STATE_CHANGED".
+    :vartype type: str or ~kuflow.rest.models.WebhookType
+    :ivar timestamp: Required.
+    :vartype timestamp: ~datetime.datetime
+    :ivar data: Required.
+    :vartype data: ~kuflow.rest.models.WebhookEventProcessItemCreatedData
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "version": {"required": True},
+        "type": {"required": True},
+        "timestamp": {"required": True},
+        "data": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "version": {"key": "version", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "timestamp": {"key": "timestamp", "type": "iso-8601"},
+        "data": {"key": "data", "type": "WebhookEventProcessItemCreatedData"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        version: str,
+        timestamp: datetime.datetime,
+        data: "_models.WebhookEventProcessItemCreatedData",
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword version: Required.
+        :paramtype version: str
+        :keyword timestamp: Required.
+        :paramtype timestamp: ~datetime.datetime
+        :keyword data: Required.
+        :paramtype data: ~kuflow.rest.models.WebhookEventProcessItemCreatedData
+        """
+        super().__init__(id=id, version=version, timestamp=timestamp, **kwargs)
+        self.type: str = "PROCESS_ITEM.CREATED"
+        self.data = data
+
+
+class WebhookEventProcessItemCreatedData(_serialization.Model):
+    """WebhookEventProcessItemCreatedData.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar process_id: Required.
+    :vartype process_id: str
+    :ivar process_item_id: Required.
+    :vartype process_item_id: str
+    :ivar process_item_type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+    :vartype process_item_type: str or ~kuflow.rest.models.ProcessItemType
+    :ivar process_item_task_code:
+    :vartype process_item_task_code: str
+    :ivar process_item_state: Process Item Task state. Known values are: "READY", "CLAIMED",
+     "COMPLETED", and "CANCELLED".
+    :vartype process_item_state: str or ~kuflow.rest.models.ProcessItemTaskState
+    """
+
+    _validation = {
+        "process_id": {"required": True},
+        "process_item_id": {"required": True},
+        "process_item_type": {"required": True},
+    }
+
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "process_item_id": {"key": "processItemId", "type": "str"},
+        "process_item_type": {"key": "processItemType", "type": "str"},
+        "process_item_task_code": {"key": "processItemTaskCode", "type": "str"},
+        "process_item_state": {"key": "processItemState", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        process_id: str,
+        process_item_id: str,
+        process_item_type: Union[str, "_models.ProcessItemType"],
+        process_item_task_code: Optional[str] = None,
+        process_item_state: Optional[Union[str, "_models.ProcessItemTaskState"]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword process_id: Required.
+        :paramtype process_id: str
+        :keyword process_item_id: Required.
+        :paramtype process_item_id: str
+        :keyword process_item_type: Process Item Type. Required. Known values are: "TASK" and
+         "MESSAGE".
+        :paramtype process_item_type: str or ~kuflow.rest.models.ProcessItemType
+        :keyword process_item_task_code:
+        :paramtype process_item_task_code: str
+        :keyword process_item_state: Process Item Task state. Known values are: "READY", "CLAIMED",
+         "COMPLETED", and "CANCELLED".
+        :paramtype process_item_state: str or ~kuflow.rest.models.ProcessItemTaskState
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.process_item_id = process_item_id
+        self.process_item_type = process_item_type
+        self.process_item_task_code = process_item_task_code
+        self.process_item_state = process_item_state
+
+
+class WebhookEventProcessItemTaskStateChanged(WebhookEvent):
+    """Process Events.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Required.
+    :vartype id: str
+    :ivar version: Required.
+    :vartype version: str
+    :ivar type: Type of the Event. Required. Known values are: "PROCESS.CREATED",
+     "PROCESS.STATE_CHANGED", "PROCESS_ITEM.CREATED", and "PROCESS_ITEM.TASK_STATE_CHANGED".
+    :vartype type: str or ~kuflow.rest.models.WebhookType
+    :ivar timestamp: Required.
+    :vartype timestamp: ~datetime.datetime
+    :ivar data: Required.
+    :vartype data: ~kuflow.rest.models.WebhookEventProcessItemTaskStateChangedData
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "version": {"required": True},
+        "type": {"required": True},
+        "timestamp": {"required": True},
+        "data": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "version": {"key": "version", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "timestamp": {"key": "timestamp", "type": "iso-8601"},
+        "data": {"key": "data", "type": "WebhookEventProcessItemTaskStateChangedData"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        version: str,
+        timestamp: datetime.datetime,
+        data: "_models.WebhookEventProcessItemTaskStateChangedData",
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword version: Required.
+        :paramtype version: str
+        :keyword timestamp: Required.
+        :paramtype timestamp: ~datetime.datetime
+        :keyword data: Required.
+        :paramtype data: ~kuflow.rest.models.WebhookEventProcessItemTaskStateChangedData
+        """
+        super().__init__(id=id, version=version, timestamp=timestamp, **kwargs)
+        self.type: str = "PROCESS_ITEM.TASK_STATE_CHANGED"
+        self.data = data
+
+
+class WebhookEventProcessItemTaskStateChangedData(_serialization.Model):  # pylint: disable=name-too-long
+    """WebhookEventProcessItemTaskStateChangedData.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar process_id: Required.
+    :vartype process_id: str
+    :ivar process_item_id: Required.
+    :vartype process_item_id: str
+    :ivar process_item_type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+    :vartype process_item_type: str or ~kuflow.rest.models.ProcessItemType
+    :ivar process_item_task_code: Required.
+    :vartype process_item_task_code: str
+    :ivar process_item_state: Process Item Task state. Required. Known values are: "READY",
+     "CLAIMED", "COMPLETED", and "CANCELLED".
+    :vartype process_item_state: str or ~kuflow.rest.models.ProcessItemTaskState
+    """
+
+    _validation = {
+        "process_id": {"required": True},
+        "process_item_id": {"required": True},
+        "process_item_type": {"required": True},
+        "process_item_task_code": {"required": True},
+        "process_item_state": {"required": True},
+    }
+
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "process_item_id": {"key": "processItemId", "type": "str"},
+        "process_item_type": {"key": "processItemType", "type": "str"},
+        "process_item_task_code": {"key": "processItemTaskCode", "type": "str"},
+        "process_item_state": {"key": "processItemState", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        process_id: str,
+        process_item_id: str,
+        process_item_type: Union[str, "_models.ProcessItemType"],
+        process_item_task_code: str,
+        process_item_state: Union[str, "_models.ProcessItemTaskState"],
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword process_id: Required.
+        :paramtype process_id: str
+        :keyword process_item_id: Required.
+        :paramtype process_item_id: str
+        :keyword process_item_type: Process Item Type. Required. Known values are: "TASK" and
+         "MESSAGE".
+        :paramtype process_item_type: str or ~kuflow.rest.models.ProcessItemType
+        :keyword process_item_task_code: Required.
+        :paramtype process_item_task_code: str
+        :keyword process_item_state: Process Item Task state. Required. Known values are: "READY",
+         "CLAIMED", "COMPLETED", and "CANCELLED".
+        :paramtype process_item_state: str or ~kuflow.rest.models.ProcessItemTaskState
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.process_item_id = process_item_id
+        self.process_item_type = process_item_type
+        self.process_item_task_code = process_item_task_code
+        self.process_item_state = process_item_state
 
 
 class WebhookEventProcessStateChanged(WebhookEvent):
@@ -2680,8 +2830,10 @@ class WebhookEventProcessStateChanged(WebhookEvent):
 
     :ivar id: Required.
     :vartype id: str
-    :ivar type: Type of the Event. Required. Known values are: "PROCESS.STATE_CHANGED" and
-     "TASK.STATE_CHANGED".
+    :ivar version: Required.
+    :vartype version: str
+    :ivar type: Type of the Event. Required. Known values are: "PROCESS.CREATED",
+     "PROCESS.STATE_CHANGED", "PROCESS_ITEM.CREATED", and "PROCESS_ITEM.TASK_STATE_CHANGED".
     :vartype type: str or ~kuflow.rest.models.WebhookType
     :ivar timestamp: Required.
     :vartype timestamp: ~datetime.datetime
@@ -2691,6 +2843,7 @@ class WebhookEventProcessStateChanged(WebhookEvent):
 
     _validation = {
         "id": {"required": True},
+        "version": {"required": True},
         "type": {"required": True},
         "timestamp": {"required": True},
         "data": {"required": True},
@@ -2698,6 +2851,7 @@ class WebhookEventProcessStateChanged(WebhookEvent):
 
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
+        "version": {"key": "version", "type": "str"},
         "type": {"key": "type", "type": "str"},
         "timestamp": {"key": "timestamp", "type": "iso-8601"},
         "data": {"key": "data", "type": "WebhookEventProcessStateChangedData"},
@@ -2707,6 +2861,7 @@ class WebhookEventProcessStateChanged(WebhookEvent):
         self,
         *,
         id: str,  # pylint: disable=redefined-builtin
+        version: str,
         timestamp: datetime.datetime,
         data: "_models.WebhookEventProcessStateChangedData",
         **kwargs: Any,
@@ -2714,12 +2869,14 @@ class WebhookEventProcessStateChanged(WebhookEvent):
         """
         :keyword id: Required.
         :paramtype id: str
+        :keyword version: Required.
+        :paramtype version: str
         :keyword timestamp: Required.
         :paramtype timestamp: ~datetime.datetime
         :keyword data: Required.
         :paramtype data: ~kuflow.rest.models.WebhookEventProcessStateChangedData
         """
-        super().__init__(id=id, timestamp=timestamp, **kwargs)
+        super().__init__(id=id, version=version, timestamp=timestamp, **kwargs)
         self.type: str = "PROCESS.STATE_CHANGED"
         self.data = data
 
@@ -2759,122 +2916,11 @@ class WebhookEventProcessStateChangedData(_serialization.Model):
         self.process_state = process_state
 
 
-class WebhookEventTaskStateChanged(WebhookEvent):
-    """Process Events.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar id: Required.
-    :vartype id: str
-    :ivar type: Type of the Event. Required. Known values are: "PROCESS.STATE_CHANGED" and
-     "TASK.STATE_CHANGED".
-    :vartype type: str or ~kuflow.rest.models.WebhookType
-    :ivar timestamp: Required.
-    :vartype timestamp: ~datetime.datetime
-    :ivar data: Required.
-    :vartype data: ~kuflow.rest.models.WebhookEventTaskStateChangedData
-    """
-
-    _validation = {
-        "id": {"required": True},
-        "type": {"required": True},
-        "timestamp": {"required": True},
-        "data": {"required": True},
-    }
-
-    _attribute_map = {
-        "id": {"key": "id", "type": "str"},
-        "type": {"key": "type", "type": "str"},
-        "timestamp": {"key": "timestamp", "type": "iso-8601"},
-        "data": {"key": "data", "type": "WebhookEventTaskStateChangedData"},
-    }
-
-    def __init__(
-        self,
-        *,
-        id: str,  # pylint: disable=redefined-builtin
-        timestamp: datetime.datetime,
-        data: "_models.WebhookEventTaskStateChangedData",
-        **kwargs: Any,
-    ) -> None:
-        """
-        :keyword id: Required.
-        :paramtype id: str
-        :keyword timestamp: Required.
-        :paramtype timestamp: ~datetime.datetime
-        :keyword data: Required.
-        :paramtype data: ~kuflow.rest.models.WebhookEventTaskStateChangedData
-        """
-        super().__init__(id=id, timestamp=timestamp, **kwargs)
-        self.type: str = "TASK.STATE_CHANGED"
-        self.data = data
-
-
-class WebhookEventTaskStateChangedData(_serialization.Model):
-    """WebhookEventTaskStateChangedData.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar process_id: Required.
-    :vartype process_id: str
-    :ivar task_id: Required.
-    :vartype task_id: str
-    :ivar task_code: Required.
-    :vartype task_code: str
-    :ivar task_state: Task state. Required. Known values are: "READY", "CLAIMED", "COMPLETED", and
-     "CANCELLED".
-    :vartype task_state: str or ~kuflow.rest.models.TaskState
-    """
-
-    _validation = {
-        "process_id": {"required": True},
-        "task_id": {"required": True},
-        "task_code": {"required": True},
-        "task_state": {"required": True},
-    }
-
-    _attribute_map = {
-        "process_id": {"key": "processId", "type": "str"},
-        "task_id": {"key": "taskId", "type": "str"},
-        "task_code": {"key": "taskCode", "type": "str"},
-        "task_state": {"key": "taskState", "type": "str"},
-    }
-
-    def __init__(
-        self,
-        *,
-        process_id: str,
-        task_id: str,
-        task_code: str,
-        task_state: Union[str, "_models.TaskState"],
-        **kwargs: Any,
-    ) -> None:
-        """
-        :keyword process_id: Required.
-        :paramtype process_id: str
-        :keyword task_id: Required.
-        :paramtype task_id: str
-        :keyword task_code: Required.
-        :paramtype task_code: str
-        :keyword task_state: Task state. Required. Known values are: "READY", "CLAIMED", "COMPLETED",
-         and "CANCELLED".
-        :paramtype task_state: str or ~kuflow.rest.models.TaskState
-        """
-        super().__init__(**kwargs)
-        self.process_id = process_id
-        self.task_id = task_id
-        self.task_code = task_code
-        self.task_state = task_state
-
-
 class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """Worker.
 
     All required parameters must be populated in order to send to server.
 
-    :ivar object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-     "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-    :vartype object_type: str or ~kuflow.rest.models.AuditedObjectType
     :ivar created_by: Who create this model.
     :vartype created_by: str
     :ivar created_at: When this model was created.
@@ -2913,7 +2959,6 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     }
 
     _attribute_map = {
-        "object_type": {"key": "objectType", "type": "str"},
         "created_by": {"key": "createdBy", "type": "str"},
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
@@ -2937,7 +2982,6 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         task_queue: str,
         hostname: str,
         ip: str,
-        object_type: Optional[Union[str, "_models.AuditedObjectType"]] = None,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -2951,9 +2995,6 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         **kwargs: Any,
     ) -> None:
         """
-        :keyword object_type: Audited object Types. Known values are: "AUTHENTICATION", "TENANT_USER",
-         "PROCESS", "PROCESS_PAGE_ITEM", "TASK", "TASK_PAGE_ITEM", "WORKER", and "ROBOT".
-        :paramtype object_type: str or ~kuflow.rest.models.AuditedObjectType
         :keyword created_by: Who create this model.
         :paramtype created_by: str
         :keyword created_at: When this model was created.
@@ -2984,7 +3025,6 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :paramtype tenant_id: str
         """
         super().__init__(
-            object_type=object_type,
             created_by=created_by,
             created_at=created_at,
             last_modified_by=last_modified_by,
@@ -2992,6 +3032,96 @@ class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
             **kwargs,
         )
         self.id = id
+        self.identity = identity
+        self.task_queue = task_queue
+        self.workflow_types = workflow_types
+        self.activity_types = activity_types
+        self.hostname = hostname
+        self.ip = ip
+        self.installation_id = installation_id
+        self.robot_ids = robot_ids
+        self.tenant_id = tenant_id
+
+
+class WorkerCreateParams(_serialization.Model):
+    """WorkerCreateParams.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar identity: Required.
+    :vartype identity: str
+    :ivar task_queue: Required.
+    :vartype task_queue: str
+    :ivar workflow_types:
+    :vartype workflow_types: list[str]
+    :ivar activity_types:
+    :vartype activity_types: list[str]
+    :ivar hostname: Required.
+    :vartype hostname: str
+    :ivar ip: Required.
+    :vartype ip: str
+    :ivar installation_id: Installation Id.
+    :vartype installation_id: str
+    :ivar robot_ids: Robot Ids that this worker implements.
+    :vartype robot_ids: list[str]
+    :ivar tenant_id: Tenant ID.
+    :vartype tenant_id: str
+    """
+
+    _validation = {
+        "identity": {"required": True, "max_length": 255, "min_length": 1},
+        "task_queue": {"required": True, "max_length": 255, "min_length": 1},
+        "hostname": {"required": True, "max_length": 255, "min_length": 1},
+        "ip": {"required": True, "max_length": 40, "min_length": 7},
+    }
+
+    _attribute_map = {
+        "identity": {"key": "identity", "type": "str"},
+        "task_queue": {"key": "taskQueue", "type": "str"},
+        "workflow_types": {"key": "workflowTypes", "type": "[str]"},
+        "activity_types": {"key": "activityTypes", "type": "[str]"},
+        "hostname": {"key": "hostname", "type": "str"},
+        "ip": {"key": "ip", "type": "str"},
+        "installation_id": {"key": "installationId", "type": "str"},
+        "robot_ids": {"key": "robotIds", "type": "[str]"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        identity: str,
+        task_queue: str,
+        hostname: str,
+        ip: str,
+        workflow_types: Optional[List[str]] = None,
+        activity_types: Optional[List[str]] = None,
+        installation_id: Optional[str] = None,
+        robot_ids: Optional[List[str]] = None,
+        tenant_id: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword identity: Required.
+        :paramtype identity: str
+        :keyword task_queue: Required.
+        :paramtype task_queue: str
+        :keyword workflow_types:
+        :paramtype workflow_types: list[str]
+        :keyword activity_types:
+        :paramtype activity_types: list[str]
+        :keyword hostname: Required.
+        :paramtype hostname: str
+        :keyword ip: Required.
+        :paramtype ip: str
+        :keyword installation_id: Installation Id.
+        :paramtype installation_id: str
+        :keyword robot_ids: Robot Ids that this worker implements.
+        :paramtype robot_ids: list[str]
+        :keyword tenant_id: Tenant ID.
+        :paramtype tenant_id: str
+        """
+        super().__init__(**kwargs)
         self.identity = identity
         self.task_queue = task_queue
         self.workflow_types = workflow_types

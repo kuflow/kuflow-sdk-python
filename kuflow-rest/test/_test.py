@@ -65,46 +65,50 @@ def main() -> int:
     process_id = str(uuid.uuid4())
     process_definition_id = "2536b747-d436-48eb-af9a-21989a74f95f"
 
-    task_id = str(uuid.uuid4())
+    process_item_id = str(uuid.uuid4())
     task_definition_code = "TASK"
 
-    process = models.Process(
+    process_create = models.ProcessCreateParams(
         id=process_id,
-        process_definition=models.ProcessDefinitionSummary(id=process_definition_id),
+        process_definition_id=process_definition_id,
     )
-    process = client.process.create_process(process)
+    process = client.process.create_process(process_create)
     print(process)
 
-    # Test task operations
-    task = models.Task(
-        id=task_id,
+    # Test Process Item operations
+    process_item_create = models.ProcessItemCreateParams(
+        id=process_item_id,
+        type=models.ProcessItemType.TASK,
         process_id=process.id,
-        task_definition=models.TaskDefinitionSummary(code=task_definition_code),
-        element_values={
-            "FIELD_TEXT": [models.TaskElementValueString(value="texto")],
-            "FIELD__TEXT_MULTIPLE": [
-                models.TaskElementValueString(value="texto 2 1"),
-                models.TaskElementValueString(value="texto 2 2"),
-            ],
-        },
+        task=models.ProcessItemTaskCreateParams(
+            task_definition_code=task_definition_code,
+            data=models.JsonValue(
+                value={
+                    "FIELD_TEXT": "texto",
+                    "FIELD__TEXT_MULTIPLE": ["texto 2 1", "texto 2 2"],
+                }
+            ),
+        ),
     )
-    task = client.task.create_task(task)
-    print(task)
+    process_item = client.process_item.create_process_item(process_item_create)
+    print(process_item)
 
     # Claim task
-    client.task.actions_task_claim(task_id)
+    client.process_item.claim_process_item_task(process_item_id)
 
     file = models.Document(
         file_mame="bugs-bunny.png",
         content_type="image/png",
         file_content=open("etc/sample/data/samples_01.jpg", "rb"),
     )
-    command = models.TaskSaveElementValueDocumentCommand(element_definition_code="DOC")
-    task = client.task.actions_task_save_element_value_document(id=task.id, file=file, command=command)
-    print(task)
+    schema_path = "#/properties/DOC"
+    process_item = client.process_item.upload_process_item_task_data_document(
+        id=process_item.id, file=file, schema_path=schema_path
+    )
+    print(process_item)
 
     # Complete task
-    client.task.actions_task_complete(task_id)
+    client.process_item.complete_process_item_task(process_item_id)
 
     return 0
 

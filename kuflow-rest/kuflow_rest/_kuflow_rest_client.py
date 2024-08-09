@@ -35,9 +35,9 @@ from ._generated import KuFlowRestClient as KuFlowRestClientGenerated
 from .operations import (
     AuthenticationOperations,
     PrincipalOperations,
+    ProcessItemOperations,
     ProcessOperations,
     RobotOperations,
-    TaskOperations,
     TenantUserOperations,
     WorkerOperations,
 )
@@ -117,7 +117,7 @@ class AllowHttpPolicy(SansIOHTTPPolicy):
 
 
 class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
-    API_VERSION = "v2022-10-08"
+    API_VERSION = "v2024-06-14"
 
     """Introduction
     ============
@@ -171,25 +171,25 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
     choice automatically.
 
     :ivar authentication: AuthenticationOperations operations
-    :vartype authentication: kuflow.rest.client.operations.AuthenticationOperations
+    :type authentication: kuflow.rest.client.operations.AuthenticationOperations
     :ivar principal: PrincipalOperations operations
-    :vartype principal: kuflow.rest.client.operations.PrincipalOperations
+    :type principal: kuflow.rest.client.operations.PrincipalOperations
     :ivar process: ProcessOperations operations
-    :vartype process: kuflow.rest.client.operations.ProcessOperations
+    :type process: kuflow.rest.client.operations.ProcessOperations
     :ivar task: TaskOperations operations
-    :vartype task: kuflow.rest.client.operations.TaskOperations
+    :type task: kuflow.rest.client.operations.TaskOperations
     :ivar worker: WorkerOperations operations
-    :vartype worker: kuflow.rest.client.operations.WorkerOperations
+    :type worker: kuflow.rest.client.operations.WorkerOperations
     :param client_id: Client id used to connect to KuFlow. Required if credential is provided.
-    :paramtype client_id: str
+    :type client_id: str
     :param client_secret: Client secret used to connect to KuFlow. Required if credential is provided..
-    :paramtype client_secret: str
+    :type client_secret: str
     :param credential: Client id used to connect to KuFlow. Required if no client_id and client_secret are provided.
-    :paramtype credential: TokenCredential
-    :keyword endpoint: Service URL. Default value is "https://api.kuflow.com/v2022-10-08".
-    :paramtype endpoint: str
+    :type credential: TokenCredential
+    :keyword endpoint: Service URL. Default value is "https://api.kuflow.com/v2024-06-14".
+    :type endpoint: str
     :keyword allow_insecure_connection: Allow non HTTPS endpoints. Default False.
-    :paramtype allow_insecure_connection: bool
+    :type allow_insecure_connection: bool
     """
 
     def __init__(
@@ -202,7 +202,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         **kwargs: Any,
     ) -> None:
         if endpoint is None:
-            endpoint = "https://api.kuflow.com/v2022-10-08"
+            endpoint = "https://api.kuflow.com/v2024-06-14"
 
         per_call_policies = []
         if allow_insecure_connection:
@@ -224,7 +224,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
             credential=credential,
             endpoint=endpoint,
             api_version=kwargs.pop("api_version", VERSION),
-            credential_scopes="https://api.kuflow.com/v2022-10-08/.default",
+            credential_scopes="https://api.kuflow.com/v2024-06-14/.default",
             per_call_policies=per_call_policies,
             base_user_agent=f"sdk-python-kuflow-rest/{VERSION} Python/{python_version} ({platform_id})",
         )
@@ -233,7 +233,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         self.principal = PrincipalOperations(self._kuflow_client)
         self.tenant_user = TenantUserOperations(self._kuflow_client)
         self.process = ProcessOperations(self._kuflow_client)
-        self.task = TaskOperations(self._kuflow_client)
+        self.process_item = ProcessItemOperations(self._kuflow_client)
         self.worker = WorkerOperations(self._kuflow_client)
         self.robot = RobotOperations(self._kuflow_client)
 

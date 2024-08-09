@@ -63,11 +63,15 @@ _SERIALIZER = Serializer()
 _SERIALIZER.client_side_validation = False
 
 
-def build_find_processes_request(
+def build_find_process_items_request(
     *,
     size: int = 25,
     page: int = 0,
     sort: Optional[List[str]] = None,
+    process_id: Optional[List[str]] = None,
+    type: Optional[List[Union[str, _models.ProcessItemType]]] = None,
+    task_state: Optional[List[Union[str, _models.ProcessItemTaskState]]] = None,
+    task_definition_code: Optional[List[str]] = None,
     tenant_id: Optional[List[str]] = None,
     **kwargs: Any,
 ) -> HttpRequest:
@@ -77,7 +81,7 @@ def build_find_processes_request(
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/processes"
+    _url = "/process-items"
 
     # Construct parameters
     if size is not None:
@@ -86,6 +90,16 @@ def build_find_processes_request(
         _params["page"] = _SERIALIZER.query("page", page, "int", minimum=0)
     if sort is not None:
         _params["sort"] = [_SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort]
+    if process_id is not None:
+        _params["processId"] = [_SERIALIZER.query("process_id", q, "str") if q is not None else "" for q in process_id]
+    if type is not None:
+        _params["type"] = [_SERIALIZER.query("type", q, "str") if q is not None else "" for q in type]
+    if task_state is not None:
+        _params["taskState"] = [_SERIALIZER.query("task_state", q, "str") if q is not None else "" for q in task_state]
+    if task_definition_code is not None:
+        _params["taskDefinitionCode"] = [
+            _SERIALIZER.query("task_definition_code", q, "str") if q is not None else "" for q in task_definition_code
+        ]
     if tenant_id is not None:
         _params["tenantId"] = [_SERIALIZER.query("tenant_id", q, "str") if q is not None else "" for q in tenant_id]
 
@@ -95,14 +109,14 @@ def build_find_processes_request(
     return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
 
 
-def build_create_process_request(**kwargs: Any) -> HttpRequest:
+def build_create_process_item_request(**kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/processes"
+    _url = "/process-items"
 
     # Construct headers
     if content_type is not None:
@@ -112,13 +126,13 @@ def build_create_process_request(**kwargs: Any) -> HttpRequest:
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_retrieve_process_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_retrieve_process_item_request(id: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/processes/{id}"
+    _url = "/process-items/{id}"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
@@ -131,13 +145,13 @@ def build_retrieve_process_request(id: str, **kwargs: Any) -> HttpRequest:
     return HttpRequest(method="GET", url=_url, headers=_headers, **kwargs)
 
 
-def build_complete_process_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_claim_process_item_task_request(id: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/processes/{id}/~actions/complete"
+    _url = "/process-items/{id}/task/~actions/claim"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
@@ -150,33 +164,14 @@ def build_complete_process_request(id: str, **kwargs: Any) -> HttpRequest:
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_cancel_process_request(id: str, **kwargs: Any) -> HttpRequest:
-    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
-
-    accept = _headers.pop("Accept", "application/json")
-
-    # Construct URL
-    _url = "/processes/{id}/~actions/cancel"
-    path_format_arguments = {
-        "id": _SERIALIZER.url("id", id, "str"),
-    }
-
-    _url: str = _url.format(**path_format_arguments)  # type: ignore
-
-    # Construct headers
-    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
-
-    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
-
-
-def build_change_process_initiator_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_assign_process_item_task_request(id: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/processes/{id}/~actions/change-initiator"
+    _url = "/process-items/{id}/task/~actions/assign"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
@@ -191,44 +186,59 @@ def build_change_process_initiator_request(id: str, **kwargs: Any) -> HttpReques
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_upload_process_user_action_document_request(  # pylint: disable=name-too-long
-    id: str, *, file_content_type: str, file_name: str, user_action_value_id: str, content: IO[bytes], **kwargs: Any
+def build_complete_process_item_task_request(id: str, **kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/process-items/{id}/task/~actions/complete"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
+
+    # Construct headers
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+
+
+def build_append_process_item_task_log_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
-    _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/processes/{id}/~actions/upload-user-action-document"
+    _url = "/process-items/{id}/task/~actions/append-log"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
 
     _url: str = _url.format(**path_format_arguments)  # type: ignore
 
-    # Construct parameters
-    _params["fileContentType"] = _SERIALIZER.query("file_content_type", file_content_type, "str")
-    _params["fileName"] = _SERIALIZER.query("file_name", file_name, "str")
-    _params["userActionValueId"] = _SERIALIZER.query("user_action_value_id", user_action_value_id, "str")
-
     # Construct headers
     if content_type is not None:
         _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, content=content, **kwargs)
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_update_process_metadata_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_update_process_item_task_data_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/processes/{id}/metadata"
+    _url = "/process-items/{id}/task/data"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
@@ -243,14 +253,16 @@ def build_update_process_metadata_request(id: str, **kwargs: Any) -> HttpRequest
     return HttpRequest(method="PUT", url=_url, headers=_headers, **kwargs)
 
 
-def build_patch_process_metadata_request(id: str, **kwargs: Any) -> HttpRequest:
+def build_patch_process_item_task_data_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/processes/{id}/metadata"
+    _url = "/process-items/{id}/task/data"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
@@ -265,51 +277,7 @@ def build_patch_process_metadata_request(id: str, **kwargs: Any) -> HttpRequest:
     return HttpRequest(method="PATCH", url=_url, headers=_headers, **kwargs)
 
 
-def build_update_process_entity_request(id: str, **kwargs: Any) -> HttpRequest:
-    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
-
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-    accept = _headers.pop("Accept", "application/json")
-
-    # Construct URL
-    _url = "/processes/{id}/entity"
-    path_format_arguments = {
-        "id": _SERIALIZER.url("id", id, "str"),
-    }
-
-    _url: str = _url.format(**path_format_arguments)  # type: ignore
-
-    # Construct headers
-    if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
-    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
-
-    return HttpRequest(method="PUT", url=_url, headers=_headers, **kwargs)
-
-
-def build_patch_process_entity_request(id: str, **kwargs: Any) -> HttpRequest:
-    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
-
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-    accept = _headers.pop("Accept", "application/json")
-
-    # Construct URL
-    _url = "/processes/{id}/entity"
-    path_format_arguments = {
-        "id": _SERIALIZER.url("id", id, "str"),
-    }
-
-    _url: str = _url.format(**path_format_arguments)  # type: ignore
-
-    # Construct headers
-    if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
-    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
-
-    return HttpRequest(method="PATCH", url=_url, headers=_headers, **kwargs)
-
-
-def build_upload_process_entity_document_request(  # pylint: disable=name-too-long
+def build_upload_process_item_task_data_document_request(  # pylint: disable=name-too-long
     id: str, *, file_content_type: str, file_name: str, schema_path: str, content: IO[bytes], **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -319,7 +287,7 @@ def build_upload_process_entity_document_request(  # pylint: disable=name-too-lo
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/processes/{id}/entity/~actions/upload-document"
+    _url = "/process-items/{id}/task/data/~actions/upload-document"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
@@ -339,7 +307,7 @@ def build_upload_process_entity_document_request(  # pylint: disable=name-too-lo
     return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, content=content, **kwargs)
 
 
-def build_download_process_entity_document_request(  # pylint: disable=name-too-long
+def build_download_process_item_task_data_document_request(  # pylint: disable=name-too-long
     id: str, *, document_uri: str, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -348,7 +316,7 @@ def build_download_process_entity_document_request(  # pylint: disable=name-too-
     accept = _headers.pop("Accept", "application/octet-stream, application/json")
 
     # Construct URL
-    _url = "/processes/{id}/entity/~actions/download-document"
+    _url = "/process-items/{id}/task/data/~actions/download-document"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
@@ -364,14 +332,39 @@ def build_download_process_entity_document_request(  # pylint: disable=name-too-
     return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
 
 
-class ProcessOperations:
+def build_download_process_item_task_data_webforms_as_document_request(  # pylint: disable=name-too-long
+    id: str, *, property_path: str, **kwargs: Any
+) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+    _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
+
+    accept = _headers.pop("Accept", "application/pdf, application/zip, application/json")
+
+    # Construct URL
+    _url = "/process-items/{id}/task/data/~actions/download-webforms-as-document"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
+
+    # Construct parameters
+    _params["propertyPath"] = _SERIALIZER.query("property_path", property_path, "str")
+
+    # Construct headers
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
+
+
+class ProcessItemOperations:
     """
     .. warning::
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
         :class:`~kuflow.rest.KuFlowRestClient`'s
-        :attr:`process` attribute.
+        :attr:`process_item` attribute.
     """
 
     models = _models
@@ -384,20 +377,25 @@ class ProcessOperations:
         self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
     @distributed_trace
-    def find_processes(
+    def find_process_items(
         self,
         *,
         size: int = 25,
         page: int = 0,
         sort: Optional[List[str]] = None,
+        process_id: Optional[List[str]] = None,
+        type: Optional[List[Union[str, _models.ProcessItemType]]] = None,
+        task_state: Optional[List[Union[str, _models.ProcessItemTaskState]]] = None,
+        task_definition_code: Optional[List[str]] = None,
         tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
-    ) -> _models.ProcessPage:
-        """Find all accessible Processes.
+    ) -> _models.ProcessItemPage:
+        """Find all accessible Process Items.
 
-        List all the Processes that have been created and the credentials has access.
+        List all Process Items that have been created and the credentials has access.
 
-        Available sort query values: id, createdAt, lastModifiedAt.
+        Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt,
+        cancelledAt.
 
         :keyword size: The number of records returned within a single API call. Default value is 25.
         :paramtype size: int
@@ -410,10 +408,19 @@ class ProcessOperations:
 
          Please refer to the method description for supported properties. Default value is None.
         :paramtype sort: list[str]
+        :keyword process_id: Filter by an array of process ids. Default value is None.
+        :paramtype process_id: list[str]
+        :keyword type: Filter by an array of type. Default value is None.
+        :paramtype type: list[str or ~kuflow.rest.models.ProcessItemType]
+        :keyword task_state: Filter by an array of task states. Default value is None.
+        :paramtype task_state: list[str or ~kuflow.rest.models.ProcessItemTaskState]
+        :keyword task_definition_code: Filter by an array of task definition codes. Default value is
+         None.
+        :paramtype task_definition_code: list[str]
         :keyword tenant_id: Filter by tenantId. Default value is None.
         :paramtype tenant_id: list[str]
-        :return: ProcessPage
-        :rtype: ~kuflow.rest.models.ProcessPage
+        :return: ProcessItemPage
+        :rtype: ~kuflow.rest.models.ProcessItemPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping[int, Type[HttpResponseError]] = {
@@ -427,12 +434,16 @@ class ProcessOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.ProcessPage] = kwargs.pop("cls", None)
+        cls: ClsType[_models.ProcessItemPage] = kwargs.pop("cls", None)
 
-        _request = build_find_processes_request(
+        _request = build_find_process_items_request(
             size=size,
             page=page,
             sort=sort,
+            process_id=process_id,
+            type=type,
+            task_state=task_state,
+            task_definition_code=task_definition_code,
             tenant_id=tenant_id,
             headers=_headers,
             params=_params,
@@ -451,7 +462,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("ProcessPage", pipeline_response.http_response)
+        deserialized = self._deserialize("ProcessItemPage", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -459,67 +470,82 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @overload
-    def create_process(
+    def create_process_item(
         self,
-        process_create_params: _models.ProcessCreateParams,
+        process_item_create_params: _models.ProcessItemCreateParams,
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.Process:
-        """Create a new process.
+    ) -> _models.ProcessItem:
+        """Create a new Process Item in the selected Process.
 
-        Creates a process. This option has direct correspondence to the action of starting a process in
-        the Kuflow GUI.
+        Create a Process Item and optionally fill its value.
+
+        If you want to add document type elements, you can pass a reference to an existing document
+        type element
+        indicating its 'uri'. This will copy that document into the element. In case you want to add a
+        new document,
+        please use the corresponding API method.
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process_create_params: Process to create. Required.
-        :type process_create_params: ~kuflow.rest.models.ProcessCreateParams
+        :param process_item_create_params: Process Item to be created. Required.
+        :type process_item_create_params: ~kuflow.rest.models.ProcessItemCreateParams
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    def create_process(
-        self, process_create_params: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
-    ) -> _models.Process:
-        """Create a new process.
+    def create_process_item(
+        self, process_item_create_params: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
+    ) -> _models.ProcessItem:
+        """Create a new Process Item in the selected Process.
 
-        Creates a process. This option has direct correspondence to the action of starting a process in
-        the Kuflow GUI.
+        Create a Process Item and optionally fill its value.
+
+        If you want to add document type elements, you can pass a reference to an existing document
+        type element
+        indicating its 'uri'. This will copy that document into the element. In case you want to add a
+        new document,
+        please use the corresponding API method.
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process_create_params: Process to create. Required.
-        :type process_create_params: IO[bytes]
+        :param process_item_create_params: Process Item to be created. Required.
+        :type process_item_create_params: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @distributed_trace
-    def create_process(
-        self, process_create_params: Union[_models.ProcessCreateParams, IO[bytes]], **kwargs: Any
-    ) -> _models.Process:
-        """Create a new process.
+    def create_process_item(
+        self, process_item_create_params: Union[_models.ProcessItemCreateParams, IO[bytes]], **kwargs: Any
+    ) -> _models.ProcessItem:
+        """Create a new Process Item in the selected Process.
 
-        Creates a process. This option has direct correspondence to the action of starting a process in
-        the Kuflow GUI.
+        Create a Process Item and optionally fill its value.
+
+        If you want to add document type elements, you can pass a reference to an existing document
+        type element
+        indicating its 'uri'. This will copy that document into the element. In case you want to add a
+        new document,
+        please use the corresponding API method.
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process_create_params: Process to create. Is either a ProcessCreateParams type or a
-         IO[bytes] type. Required.
-        :type process_create_params: ~kuflow.rest.models.ProcessCreateParams or IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :param process_item_create_params: Process Item to be created. Is either a
+         ProcessItemCreateParams type or a IO[bytes] type. Required.
+        :type process_item_create_params: ~kuflow.rest.models.ProcessItemCreateParams or IO[bytes]
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping[int, Type[HttpResponseError]] = {
@@ -534,17 +560,17 @@ class ProcessOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.ProcessItem] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(process_create_params, (IOBase, bytes)):
-            _content = process_create_params
+        if isinstance(process_item_create_params, (IOBase, bytes)):
+            _content = process_item_create_params
         else:
-            _json = self._serialize.body(process_create_params, "ProcessCreateParams")
+            _json = self._serialize.body(process_item_create_params, "ProcessItemCreateParams")
 
-        _request = build_create_process_request(
+        _request = build_create_process_item_request(
             content_type=content_type,
             json=_json,
             content=_content,
@@ -565,7 +591,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("ProcessItem", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -573,15 +599,15 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace
-    def retrieve_process(self, id: str, **kwargs: Any) -> _models.Process:
-        """Get a Process by ID.
+    def retrieve_process_item(self, id: str, **kwargs: Any) -> _models.ProcessItem:
+        """Get a process item given it ID.
 
-        Returns the requested Process when has access to do it.
+        Allow to get a process item by ID.
 
         :param id: The resource ID. Required.
         :type id: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping[int, Type[HttpResponseError]] = {
@@ -595,9 +621,9 @@ class ProcessOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.ProcessItem] = kwargs.pop("cls", None)
 
-        _request = build_retrieve_process_request(
+        _request = build_retrieve_process_item_request(
             id=id,
             headers=_headers,
             params=_params,
@@ -616,7 +642,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("ProcessItem", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -624,17 +650,15 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace
-    def complete_process(self, id: str, **kwargs: Any) -> _models.Process:
-        """Complete a Process.
+    def claim_process_item_task(self, id: str, **kwargs: Any) -> _models.ProcessItem:
+        """Claim a process item task.
 
-        Complete a Process. The state of Process is set to 'completed'.
-
-        If you are already in this state, no action is taken.
+        Allow to claim a task.
 
         :param id: The resource ID. Required.
         :type id: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping[int, Type[HttpResponseError]] = {
@@ -648,9 +672,9 @@ class ProcessOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.ProcessItem] = kwargs.pop("cls", None)
 
-        _request = build_complete_process_request(
+        _request = build_claim_process_item_task_request(
             id=id,
             headers=_headers,
             params=_params,
@@ -669,62 +693,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
-
-        return deserialized  # type: ignore
-
-    @distributed_trace
-    def cancel_process(self, id: str, **kwargs: Any) -> _models.Process:
-        """Cancel a Process.
-
-        Cancel a Process. The Process state is set to 'cancelled'.
-
-        All the active process items will be marked as cancelled too.
-
-        If you are already in this state, no action is taken.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        error_map: MutableMapping[int, Type[HttpResponseError]] = {
-            401: ClientAuthenticationError,
-            404: ResourceNotFoundError,
-            409: ResourceExistsError,
-            304: ResourceNotModifiedError,
-        }
-        error_map.update(kwargs.pop("error_map", {}) or {})
-
-        _headers = kwargs.pop("headers", {}) or {}
-        _params = kwargs.pop("params", {}) or {}
-
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
-
-        _request = build_cancel_process_request(
-            id=id,
-            headers=_headers,
-            params=_params,
-        )
-        _request.url = self._client.format_url(_request.url)
-
-        _stream = False
-        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            _request, stream=_stream, **kwargs
-        )
-
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
-            raise HttpResponseError(response=response, model=error)
-
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("ProcessItem", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -732,86 +701,77 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @overload
-    def change_process_initiator(
+    def assign_process_item_task(
         self,
         id: str,
-        process_change_initiator_params: _models.ProcessChangeInitiatorParams,
+        process_item_task_assign_params: _models.ProcessItemTaskAssignParams,
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.Process:
-        """Change process initiator.
+    ) -> _models.ProcessItem:
+        """Assign a process item task.
 
-        Change the current initiator of a process.
-
-        Allows you to choose a user (by email or principal identifier) or an application (principal
-        identifier).
-        Only one option will be necessary.
+        Allow to assign a process item task to a user or application. Only one option will be
+        necessary.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_change_initiator_params: Params to change the process initiator. Required.
-        :type process_change_initiator_params: ~kuflow.rest.models.ProcessChangeInitiatorParams
+        :param process_item_task_assign_params: Params to change the process item task owner. Required.
+        :type process_item_task_assign_params: ~kuflow.rest.models.ProcessItemTaskAssignParams
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    def change_process_initiator(
+    def assign_process_item_task(
         self,
         id: str,
-        process_change_initiator_params: IO[bytes],
+        process_item_task_assign_params: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.Process:
-        """Change process initiator.
+    ) -> _models.ProcessItem:
+        """Assign a process item task.
 
-        Change the current initiator of a process.
-
-        Allows you to choose a user (by email or principal identifier) or an application (principal
-        identifier).
-        Only one option will be necessary.
+        Allow to assign a process item task to a user or application. Only one option will be
+        necessary.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_change_initiator_params: Params to change the process initiator. Required.
-        :type process_change_initiator_params: IO[bytes]
+        :param process_item_task_assign_params: Params to change the process item task owner. Required.
+        :type process_item_task_assign_params: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @distributed_trace
-    def change_process_initiator(
+    def assign_process_item_task(
         self,
         id: str,
-        process_change_initiator_params: Union[_models.ProcessChangeInitiatorParams, IO[bytes]],
+        process_item_task_assign_params: Union[_models.ProcessItemTaskAssignParams, IO[bytes]],
         **kwargs: Any,
-    ) -> _models.Process:
-        """Change process initiator.
+    ) -> _models.ProcessItem:
+        """Assign a process item task.
 
-        Change the current initiator of a process.
-
-        Allows you to choose a user (by email or principal identifier) or an application (principal
-        identifier).
-        Only one option will be necessary.
+        Allow to assign a process item task to a user or application. Only one option will be
+        necessary.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_change_initiator_params: Params to change the process initiator. Is either a
-         ProcessChangeInitiatorParams type or a IO[bytes] type. Required.
-        :type process_change_initiator_params: ~kuflow.rest.models.ProcessChangeInitiatorParams or
+        :param process_item_task_assign_params: Params to change the process item task owner. Is either
+         a ProcessItemTaskAssignParams type or a IO[bytes] type. Required.
+        :type process_item_task_assign_params: ~kuflow.rest.models.ProcessItemTaskAssignParams or
          IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping[int, Type[HttpResponseError]] = {
@@ -826,17 +786,17 @@ class ProcessOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.ProcessItem] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(process_change_initiator_params, (IOBase, bytes)):
-            _content = process_change_initiator_params
+        if isinstance(process_item_task_assign_params, (IOBase, bytes)):
+            _content = process_item_task_assign_params
         else:
-            _json = self._serialize.body(process_change_initiator_params, "ProcessChangeInitiatorParams")
+            _json = self._serialize.body(process_item_task_assign_params, "ProcessItemTaskAssignParams")
 
-        _request = build_change_process_initiator_request(
+        _request = build_assign_process_item_task_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -858,7 +818,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("ProcessItem", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -866,32 +826,15 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace
-    def upload_process_user_action_document(
-        self,
-        id: str,
-        file: IO[bytes],
-        *,
-        file_content_type: str,
-        file_name: str,
-        user_action_value_id: str,
-        **kwargs: Any,
-    ) -> Optional[_models.Process]:
-        """Upload and save a document in a user action.
+    def complete_process_item_task(self, id: str, **kwargs: Any) -> _models.ProcessItem:
+        """Complete a process item task.
 
-        Allow saving a user action document uploading the content.
+        Allow to complete a claimed task by the principal.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param file: Document to save. Required.
-        :type file: IO[bytes]
-        :keyword file_content_type: Document content type. Required.
-        :paramtype file_content_type: str
-        :keyword file_name: Document name. Required.
-        :paramtype file_name: str
-        :keyword user_action_value_id: User action value ID related to de document. Required.
-        :paramtype user_action_value_id: str
-        :return: Process or None
-        :rtype: ~kuflow.rest.models.Process or None
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping[int, Type[HttpResponseError]] = {
@@ -902,21 +845,13 @@ class ProcessOperations:
         }
         error_map.update(kwargs.pop("error_map", {}) or {})
 
-        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/octet-stream"))
-        cls: ClsType[Optional[_models.Process]] = kwargs.pop("cls", None)
+        cls: ClsType[_models.ProcessItem] = kwargs.pop("cls", None)
 
-        _content = file
-
-        _request = build_upload_process_user_action_document_request(
+        _request = build_complete_process_item_task_request(
             id=id,
-            file_content_type=file_content_type,
-            file_name=file_name,
-            user_action_value_id=user_action_value_id,
-            content_type=content_type,
-            content=_content,
             headers=_headers,
             params=_params,
         )
@@ -929,14 +864,12 @@ class ProcessOperations:
 
         response = pipeline_response.http_response
 
-        if response.status_code not in [200, 304]:
+        if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("ProcessItem", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -944,74 +877,77 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @overload
-    def update_process_metadata(
+    def append_process_item_task_log(
         self,
         id: str,
-        process_metadata_update_params: _models.ProcessMetadataUpdateParams,
+        process_item_task_append_log_params: _models.ProcessItemTaskAppendLogParams,
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.Process:
-        """Save process metadata.
+    ) -> _models.ProcessItem:
+        """Append a log to the process item task.
 
-        Save process metadata.
+        A log entry is added to the task. If the number of log entries is reached, the oldest log entry
+        is removed.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_metadata_update_params: Params to save the metadata data. Required.
-        :type process_metadata_update_params: ~kuflow.rest.models.ProcessMetadataUpdateParams
+        :param process_item_task_append_log_params: Log to be created. Required.
+        :type process_item_task_append_log_params: ~kuflow.rest.models.ProcessItemTaskAppendLogParams
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    def update_process_metadata(
+    def append_process_item_task_log(
         self,
         id: str,
-        process_metadata_update_params: IO[bytes],
+        process_item_task_append_log_params: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.Process:
-        """Save process metadata.
+    ) -> _models.ProcessItem:
+        """Append a log to the process item task.
 
-        Save process metadata.
+        A log entry is added to the task. If the number of log entries is reached, the oldest log entry
+        is removed.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_metadata_update_params: Params to save the metadata data. Required.
-        :type process_metadata_update_params: IO[bytes]
+        :param process_item_task_append_log_params: Log to be created. Required.
+        :type process_item_task_append_log_params: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @distributed_trace
-    def update_process_metadata(
+    def append_process_item_task_log(
         self,
         id: str,
-        process_metadata_update_params: Union[_models.ProcessMetadataUpdateParams, IO[bytes]],
+        process_item_task_append_log_params: Union[_models.ProcessItemTaskAppendLogParams, IO[bytes]],
         **kwargs: Any,
-    ) -> _models.Process:
-        """Save process metadata.
+    ) -> _models.ProcessItem:
+        """Append a log to the process item task.
 
-        Save process metadata.
+        A log entry is added to the task. If the number of log entries is reached, the oldest log entry
+        is removed.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_metadata_update_params: Params to save the metadata data. Is either a
-         ProcessMetadataUpdateParams type or a IO[bytes] type. Required.
-        :type process_metadata_update_params: ~kuflow.rest.models.ProcessMetadataUpdateParams or
-         IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :param process_item_task_append_log_params: Log to be created. Is either a
+         ProcessItemTaskAppendLogParams type or a IO[bytes] type. Required.
+        :type process_item_task_append_log_params: ~kuflow.rest.models.ProcessItemTaskAppendLogParams
+         or IO[bytes]
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping[int, Type[HttpResponseError]] = {
@@ -1026,17 +962,17 @@ class ProcessOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.ProcessItem] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(process_metadata_update_params, (IOBase, bytes)):
-            _content = process_metadata_update_params
+        if isinstance(process_item_task_append_log_params, (IOBase, bytes)):
+            _content = process_item_task_append_log_params
         else:
-            _json = self._serialize.body(process_metadata_update_params, "ProcessMetadataUpdateParams")
+            _json = self._serialize.body(process_item_task_append_log_params, "ProcessItemTaskAppendLogParams")
 
-        _request = build_update_process_metadata_request(
+        _request = build_append_process_item_task_log_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -1058,7 +994,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("ProcessItem", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -1066,14 +1002,142 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @overload
-    def patch_process_metadata(
+    def update_process_item_task_data(
+        self,
+        id: str,
+        process_item_task_data_update_params: _models.ProcessItemTaskDataUpdateParams,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.ProcessItem:
+        """Save JSON data.
+
+        Allow to save a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_task_data_update_params: Params used to update the JSON value. Required.
+        :type process_item_task_data_update_params: ~kuflow.rest.models.ProcessItemTaskDataUpdateParams
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @overload
+    def update_process_item_task_data(
+        self,
+        id: str,
+        process_item_task_data_update_params: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.ProcessItem:
+        """Save JSON data.
+
+        Allow to save a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_task_data_update_params: Params used to update the JSON value. Required.
+        :type process_item_task_data_update_params: IO[bytes]
+        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @distributed_trace
+    def update_process_item_task_data(
+        self,
+        id: str,
+        process_item_task_data_update_params: Union[_models.ProcessItemTaskDataUpdateParams, IO[bytes]],
+        **kwargs: Any,
+    ) -> _models.ProcessItem:
+        """Save JSON data.
+
+        Allow to save a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_task_data_update_params: Params used to update the JSON value. Is either a
+         ProcessItemTaskDataUpdateParams type or a IO[bytes] type. Required.
+        :type process_item_task_data_update_params: ~kuflow.rest.models.ProcessItemTaskDataUpdateParams
+         or IO[bytes]
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        cls: ClsType[_models.ProcessItem] = kwargs.pop("cls", None)
+
+        content_type = content_type or "application/json"
+        _json = None
+        _content = None
+        if isinstance(process_item_task_data_update_params, (IOBase, bytes)):
+            _content = process_item_task_data_update_params
+        else:
+            _json = self._serialize.body(process_item_task_data_update_params, "ProcessItemTaskDataUpdateParams")
+
+        _request = build_update_process_item_task_data_request(
+            id=id,
+            content_type=content_type,
+            json=_json,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("ProcessItem", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @overload
+    def patch_process_item_task_data(
         self,
         id: str,
         json_patch: List[_models.JsonPatchOperation],
         *,
         content_type: str = "application/json-patch+json",
         **kwargs: Any,
-    ) -> _models.Process:
+    ) -> _models.ProcessItem:
         """Patch JSON data.
 
         Allow to patch a JSON data validating that the data follow the related schema. If the data is
@@ -1087,15 +1151,15 @@ class ProcessOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json-patch+json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    def patch_process_metadata(
+    def patch_process_item_task_data(
         self, id: str, json_patch: IO[bytes], *, content_type: str = "application/json-patch+json", **kwargs: Any
-    ) -> _models.Process:
+    ) -> _models.ProcessItem:
         """Patch JSON data.
 
         Allow to patch a JSON data validating that the data follow the related schema. If the data is
@@ -1109,15 +1173,15 @@ class ProcessOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json-patch+json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @distributed_trace
-    def patch_process_metadata(
+    def patch_process_item_task_data(
         self, id: str, json_patch: Union[List[_models.JsonPatchOperation], IO[bytes]], **kwargs: Any
-    ) -> _models.Process:
+    ) -> _models.ProcessItem:
         """Patch JSON data.
 
         Allow to patch a JSON data validating that the data follow the related schema. If the data is
@@ -1129,8 +1193,8 @@ class ProcessOperations:
         :param json_patch: Params to save the JSON value. Is either a [JsonPatchOperation] type or a
          IO[bytes] type. Required.
         :type json_patch: list[~kuflow.rest.models.JsonPatchOperation] or IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping[int, Type[HttpResponseError]] = {
@@ -1145,7 +1209,7 @@ class ProcessOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.ProcessItem] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json-patch+json"
         _json = None
@@ -1155,7 +1219,7 @@ class ProcessOperations:
         else:
             _json = self._serialize.body(json_patch, "[JsonPatchOperation]")
 
-        _request = build_patch_process_metadata_request(
+        _request = build_patch_process_item_task_data_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -1177,245 +1241,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
-
-        return deserialized  # type: ignore
-
-    @overload
-    def update_process_entity(
-        self,
-        id: str,
-        process_entity_update_params: _models.ProcessEntityUpdateParams,
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
-    ) -> _models.Process:
-        """Save JSON data.
-
-        Allow to save a JSON validating that the data follow the related schema. If the data is
-        invalid, then
-        the json form is marked as invalid.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param process_entity_update_params: Params to save the JSON value. Required.
-        :type process_entity_update_params: ~kuflow.rest.models.ProcessEntityUpdateParams
-        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
-         Default value is "application/json".
-        :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-
-    @overload
-    def update_process_entity(
-        self, id: str, process_entity_update_params: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
-    ) -> _models.Process:
-        """Save JSON data.
-
-        Allow to save a JSON validating that the data follow the related schema. If the data is
-        invalid, then
-        the json form is marked as invalid.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param process_entity_update_params: Params to save the JSON value. Required.
-        :type process_entity_update_params: IO[bytes]
-        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
-         Default value is "application/json".
-        :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-
-    @distributed_trace
-    def update_process_entity(
-        self, id: str, process_entity_update_params: Union[_models.ProcessEntityUpdateParams, IO[bytes]], **kwargs: Any
-    ) -> _models.Process:
-        """Save JSON data.
-
-        Allow to save a JSON validating that the data follow the related schema. If the data is
-        invalid, then
-        the json form is marked as invalid.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param process_entity_update_params: Params to save the JSON value. Is either a
-         ProcessEntityUpdateParams type or a IO[bytes] type. Required.
-        :type process_entity_update_params: ~kuflow.rest.models.ProcessEntityUpdateParams or IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        error_map: MutableMapping[int, Type[HttpResponseError]] = {
-            401: ClientAuthenticationError,
-            404: ResourceNotFoundError,
-            409: ResourceExistsError,
-            304: ResourceNotModifiedError,
-        }
-        error_map.update(kwargs.pop("error_map", {}) or {})
-
-        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
-        _params = kwargs.pop("params", {}) or {}
-
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
-
-        content_type = content_type or "application/json"
-        _json = None
-        _content = None
-        if isinstance(process_entity_update_params, (IOBase, bytes)):
-            _content = process_entity_update_params
-        else:
-            _json = self._serialize.body(process_entity_update_params, "ProcessEntityUpdateParams")
-
-        _request = build_update_process_entity_request(
-            id=id,
-            content_type=content_type,
-            json=_json,
-            content=_content,
-            headers=_headers,
-            params=_params,
-        )
-        _request.url = self._client.format_url(_request.url)
-
-        _stream = False
-        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            _request, stream=_stream, **kwargs
-        )
-
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
-            raise HttpResponseError(response=response, model=error)
-
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
-
-        return deserialized  # type: ignore
-
-    @overload
-    def patch_process_entity(
-        self,
-        id: str,
-        json_patch: List[_models.JsonPatchOperation],
-        *,
-        content_type: str = "application/json-patch+json",
-        **kwargs: Any,
-    ) -> _models.Process:
-        """Patch JSON data.
-
-        Allow to patch a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param json_patch: Params to save the JSON value. Required.
-        :type json_patch: list[~kuflow.rest.models.JsonPatchOperation]
-        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
-         Default value is "application/json-patch+json".
-        :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-
-    @overload
-    def patch_process_entity(
-        self, id: str, json_patch: IO[bytes], *, content_type: str = "application/json-patch+json", **kwargs: Any
-    ) -> _models.Process:
-        """Patch JSON data.
-
-        Allow to patch a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param json_patch: Params to save the JSON value. Required.
-        :type json_patch: IO[bytes]
-        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
-         Default value is "application/json-patch+json".
-        :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-
-    @distributed_trace
-    def patch_process_entity(
-        self, id: str, json_patch: Union[List[_models.JsonPatchOperation], IO[bytes]], **kwargs: Any
-    ) -> _models.Process:
-        """Patch JSON data.
-
-        Allow to patch a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param json_patch: Params to save the JSON value. Is either a [JsonPatchOperation] type or a
-         IO[bytes] type. Required.
-        :type json_patch: list[~kuflow.rest.models.JsonPatchOperation] or IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        error_map: MutableMapping[int, Type[HttpResponseError]] = {
-            401: ClientAuthenticationError,
-            404: ResourceNotFoundError,
-            409: ResourceExistsError,
-            304: ResourceNotModifiedError,
-        }
-        error_map.update(kwargs.pop("error_map", {}) or {})
-
-        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
-        _params = kwargs.pop("params", {}) or {}
-
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
-
-        content_type = content_type or "application/json-patch+json"
-        _json = None
-        _content = None
-        if isinstance(json_patch, (IOBase, bytes)):
-            _content = json_patch
-        else:
-            _json = self._serialize.body(json_patch, "[JsonPatchOperation]")
-
-        _request = build_patch_process_entity_request(
-            id=id,
-            content_type=content_type,
-            json=_json,
-            content=_content,
-            headers=_headers,
-            params=_params,
-        )
-        _request.url = self._client.format_url(_request.url)
-
-        _stream = False
-        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            _request, stream=_stream, **kwargs
-        )
-
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
-            raise HttpResponseError(response=response, model=error)
-
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("ProcessItem", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -1423,12 +1249,12 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace
-    def upload_process_entity_document(
+    def upload_process_item_task_data_document(
         self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
     ) -> _models.DocumentReference:
-        """Upload an entity document.
+        """Upload a document associated with the process item task data.
 
-        Save a document in the process to later be linked into the JSON data.
+        Save a document in the task to later be linked into the JSON data.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -1463,7 +1289,7 @@ class ProcessOperations:
 
         _content = file
 
-        _request = build_upload_process_entity_document_request(
+        _request = build_upload_process_item_task_data_document_request(
             id=id,
             file_content_type=file_content_type,
             file_name=file_name,
@@ -1495,10 +1321,10 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace
-    def download_process_entity_document(self, id: str, *, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
-        """Download entity document.
+    def download_process_item_task_data_document(self, id: str, *, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
+        """Download document.
 
-        Given a process and a documentUri, download a document.
+        Given a task, download a document from a json form data.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -1521,9 +1347,75 @@ class ProcessOperations:
 
         cls: ClsType[Iterator[bytes]] = kwargs.pop("cls", None)
 
-        _request = build_download_process_entity_document_request(
+        _request = build_download_process_item_task_data_document_request(
             id=id,
             document_uri=document_uri,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = True
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            try:
+                response.read()  # Load the body in memory and close the socket
+            except (StreamConsumedError, StreamClosedError):
+                pass
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = response.iter_bytes()
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace
+    def download_process_item_task_data_webforms_as_document(  # pylint: disable=name-too-long
+        self, id: str, *, property_path: str, **kwargs: Any
+    ) -> Iterator[bytes]:
+        """Download a Form rendered as PDF or Zip of PDFs (when the element is multiple).
+
+        Given a task, generate a PDF from a Form type element with the data filled in, if any. If there
+        are multiple form values, they are packed into a ZIP.
+
+        Important!: To use this feature, please contact to kuflow@kuflow.com.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :keyword property_path: JSON pointer to the property with the error. See:
+         https://datatracker.ietf.org/doc/html/rfc6901
+
+         ie: /user/name or /users/1/name. Required.
+        :paramtype property_path: str
+        :return: Iterator[bytes]
+        :rtype: Iterator[bytes]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping[int, Type[HttpResponseError]] = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[Iterator[bytes]] = kwargs.pop("cls", None)
+
+        _request = build_download_process_item_task_data_webforms_as_document_request(
+            id=id,
+            property_path=property_path,
             headers=_headers,
             params=_params,
         )

@@ -57,9 +57,9 @@ async def main():
     logging.basicConfig(level=logging.INFO)
 
     kuflow_rest_client = KuFlowRestClient(
+        endpoint=endpoint,
         client_id=client_id,
         client_secret=client_secret,
-        endpoint=endpoint,
         allow_insecure_connection=True,
     )
 

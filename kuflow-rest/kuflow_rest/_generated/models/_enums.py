@@ -34,43 +34,22 @@ from enum import Enum
 from azure.core import CaseInsensitiveEnumMeta
 
 
-class AuditedObjectType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Audited object Types."""
-
-    AUTHENTICATION = "AUTHENTICATION"
-    TENANT_USER = "TENANT_USER"
-    PROCESS = "PROCESS"
-    PROCESS_PAGE_ITEM = "PROCESS_PAGE_ITEM"
-    TASK = "TASK"
-    TASK_PAGE_ITEM = "TASK_PAGE_ITEM"
-    WORKER = "WORKER"
-    ROBOT = "ROBOT"
-
-
 class AuthenticationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """AuthenticationType."""
 
-    ENGINE = "ENGINE"
     ENGINE_TOKEN = "ENGINE_TOKEN"
     ENGINE_CERTIFICATE = "ENGINE_CERTIFICATE"
 
 
-class LogLevel(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """LogLevel."""
+class JsonPatchOperationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The operation to perform."""
 
-    INFO = "INFO"
-    WARN = "WARN"
-    ERROR = "ERROR"
-
-
-class PagedObjectType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Paged Model types."""
-
-    PRINCIPAL_PAGE = "PRINCIPAL_PAGE"
-    TENANT_USER_PAGE = "TENANT_USER_PAGE"
-    PROCESS_PAGE = "PROCESS_PAGE"
-    TASK_PAGE = "TASK_PAGE"
-    ROBOT_PAGE = "ROBOT_PAGE"
+    ADD = "add"
+    REMOVE = "remove"
+    REPLACE = "replace"
+    MOVE = "move"
+    COPY = "copy"
+    TEST = "test"
 
 
 class PrincipalType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -81,11 +60,28 @@ class PrincipalType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     SYSTEM = "SYSTEM"
 
 
-class ProcessElementValueType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Process element value types."""
+class ProcessItemTaskLogLevel(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """ProcessItemTaskLogLevel."""
 
-    STRING = "STRING"
-    NUMBER = "NUMBER"
+    INFO = "INFO"
+    WARN = "WARN"
+    ERROR = "ERROR"
+
+
+class ProcessItemTaskState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Process Item Task state."""
+
+    READY = "READY"
+    CLAIMED = "CLAIMED"
+    COMPLETED = "COMPLETED"
+    CANCELLED = "CANCELLED"
+
+
+class ProcessItemType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Process Item Type."""
+
+    TASK = "TASK"
+    MESSAGE = "MESSAGE"
 
 
 class ProcessState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -136,30 +132,13 @@ class RobotSourceType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Robot source type."""
 
     PACKAGE = "PACKAGE"
-    ROBOT_FRAMEWORK_PYTHON_WHEEL = "ROBOT_FRAMEWORK_PYTHON_WHEEL"
-
-
-class TaskElementValueType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """TaskElementValueType."""
-
-    STRING = "STRING"
-    NUMBER = "NUMBER"
-    OBJECT = "OBJECT"
-    DOCUMENT = "DOCUMENT"
-    PRINCIPAL = "PRINCIPAL"
-
-
-class TaskState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Task state."""
-
-    READY = "READY"
-    CLAIMED = "CLAIMED"
-    COMPLETED = "COMPLETED"
-    CANCELLED = "CANCELLED"
+    UNKNOWN = "UNKNOWN"
 
 
 class WebhookType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Type of the Event."""
 
+    PROCESS_CREATED = "PROCESS.CREATED"
     PROCESS_STATE_CHANGED = "PROCESS.STATE_CHANGED"
-    TASK_STATE_CHANGED = "TASK.STATE_CHANGED"
+    PROCESS_ITEM_CREATED = "PROCESS_ITEM.CREATED"
+    PROCESS_ITEM_TASK_STATE_CHANGED = "PROCESS_ITEM.TASK_STATE_CHANGED"

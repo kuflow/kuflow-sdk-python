@@ -32,77 +32,75 @@
 
 from ._models import AbstractAudited
 from ._models import Authentication
+from ._models import AuthenticationCreateParams
 from ._models import AuthenticationEngineCertificate
 from ._models import AuthenticationEngineCertificateTls
 from ._models import AuthenticationEngineToken
 from ._models import DefaultError
 from ._models import DefaultErrorInfo
-from ._models import JsonFormsValue
-from ._models import Log
+from ._models import DocumentReference
+from ._models import JsonPatchOperation
+from ._models import JsonValue
+from ._models import JsonValueError
 from ._models import Page
 from ._models import PageMetadata
 from ._models import Principal
 from ._models import PrincipalApplication
 from ._models import PrincipalPage
+from ._models import PrincipalPageItem
 from ._models import PrincipalUser
 from ._models import Process
-from ._models import ProcessChangeInitiatorCommand
+from ._models import ProcessChangeInitiatorParams
+from ._models import ProcessCreateParams
 from ._models import ProcessDefinitionSummary
-from ._models import ProcessDeleteElementCommand
-from ._models import ProcessElementValue
-from ._models import ProcessElementValueNumber
-from ._models import ProcessElementValueString
+from ._models import ProcessEntityUpdateParams
+from ._models import ProcessItem
+from ._models import ProcessItemCreateParams
+from ._models import ProcessItemPage
+from ._models import ProcessItemPageItem
+from ._models import ProcessItemTask
+from ._models import ProcessItemTaskAppendLogParams
+from ._models import ProcessItemTaskAssignParams
+from ._models import ProcessItemTaskCreateParams
+from ._models import ProcessItemTaskDataUpdateParams
+from ._models import ProcessItemTaskLog
+from ._models import ProcessItemTaskPageItem
+from ._models import ProcessMetadataUpdateParams
 from ._models import ProcessPage
 from ._models import ProcessPageItem
-from ._models import ProcessSaveElementCommand
-from ._models import ProcessSaveEntityDataCommand
-from ._models import ProcessSaveEntityDocumentResponseCommand
-from ._models import RelatedProcess
+from ._models import ProcessRelated
 from ._models import Robot
 from ._models import RobotPage
+from ._models import RobotPageItem
 from ._models import RobotSourceFile
-from ._models import Task
-from ._models import TaskAssignCommand
 from ._models import TaskDefinitionSummary
-from ._models import TaskDeleteElementCommand
-from ._models import TaskDeleteElementValueDocumentCommand
-from ._models import TaskElementValue
-from ._models import TaskElementValueDocument
-from ._models import TaskElementValueDocumentItem
-from ._models import TaskElementValueNumber
-from ._models import TaskElementValueObject
-from ._models import TaskElementValuePrincipal
-from ._models import TaskElementValuePrincipalItem
-from ._models import TaskElementValueString
-from ._models import TaskPage
-from ._models import TaskPageItem
-from ._models import TaskSaveElementCommand
-from ._models import TaskSaveJsonFormsValueDataCommand
-from ._models import TaskSaveJsonFormsValueDocumentResponseCommand
 from ._models import TenantUser
-from ._models import TenantUserMetadata
 from ._models import TenantUserPage
+from ._models import TenantUserPageItem
 from ._models import WebhookEvent
+from ._models import WebhookEventProcessCreated
+from ._models import WebhookEventProcessCreatedData
+from ._models import WebhookEventProcessItemCreated
+from ._models import WebhookEventProcessItemCreatedData
+from ._models import WebhookEventProcessItemTaskStateChanged
+from ._models import WebhookEventProcessItemTaskStateChangedData
 from ._models import WebhookEventProcessStateChanged
 from ._models import WebhookEventProcessStateChangedData
-from ._models import WebhookEventTaskStateChanged
-from ._models import WebhookEventTaskStateChangedData
 from ._models import Worker
+from ._models import WorkerCreateParams
 
-from ._enums import AuditedObjectType
 from ._enums import AuthenticationType
-from ._enums import LogLevel
-from ._enums import PagedObjectType
+from ._enums import JsonPatchOperationType
 from ._enums import PrincipalType
-from ._enums import ProcessElementValueType
+from ._enums import ProcessItemTaskLogLevel
+from ._enums import ProcessItemTaskState
+from ._enums import ProcessItemType
 from ._enums import ProcessState
 from ._enums import RobotAssetArchitecture
 from ._enums import RobotAssetPlatform
 from ._enums import RobotAssetType
 from ._enums import RobotFilterContext
 from ._enums import RobotSourceType
-from ._enums import TaskElementValueType
-from ._enums import TaskState
 from ._enums import WebhookType
 from ._patch import __all__ as _patch_all
 from ._patch import *  # pylint: disable=unused-wildcard-import
@@ -111,76 +109,74 @@ from ._patch import patch_sdk as _patch_sdk
 __all__ = [
     "AbstractAudited",
     "Authentication",
+    "AuthenticationCreateParams",
     "AuthenticationEngineCertificate",
     "AuthenticationEngineCertificateTls",
     "AuthenticationEngineToken",
     "DefaultError",
     "DefaultErrorInfo",
-    "JsonFormsValue",
-    "Log",
+    "DocumentReference",
+    "JsonPatchOperation",
+    "JsonValue",
+    "JsonValueError",
     "Page",
     "PageMetadata",
     "Principal",
     "PrincipalApplication",
     "PrincipalPage",
+    "PrincipalPageItem",
     "PrincipalUser",
     "Process",
-    "ProcessChangeInitiatorCommand",
+    "ProcessChangeInitiatorParams",
+    "ProcessCreateParams",
     "ProcessDefinitionSummary",
-    "ProcessDeleteElementCommand",
-    "ProcessElementValue",
-    "ProcessElementValueNumber",
-    "ProcessElementValueString",
+    "ProcessEntityUpdateParams",
+    "ProcessItem",
+    "ProcessItemCreateParams",
+    "ProcessItemPage",
+    "ProcessItemPageItem",
+    "ProcessItemTask",
+    "ProcessItemTaskAppendLogParams",
+    "ProcessItemTaskAssignParams",
+    "ProcessItemTaskCreateParams",
+    "ProcessItemTaskDataUpdateParams",
+    "ProcessItemTaskLog",
+    "ProcessItemTaskPageItem",
+    "ProcessMetadataUpdateParams",
     "ProcessPage",
     "ProcessPageItem",
-    "ProcessSaveElementCommand",
-    "ProcessSaveEntityDataCommand",
-    "ProcessSaveEntityDocumentResponseCommand",
-    "RelatedProcess",
+    "ProcessRelated",
     "Robot",
     "RobotPage",
+    "RobotPageItem",
     "RobotSourceFile",
-    "Task",
-    "TaskAssignCommand",
     "TaskDefinitionSummary",
-    "TaskDeleteElementCommand",
-    "TaskDeleteElementValueDocumentCommand",
-    "TaskElementValue",
-    "TaskElementValueDocument",
-    "TaskElementValueDocumentItem",
-    "TaskElementValueNumber",
-    "TaskElementValueObject",
-    "TaskElementValuePrincipal",
-    "TaskElementValuePrincipalItem",
-    "TaskElementValueString",
-    "TaskPage",
-    "TaskPageItem",
-    "TaskSaveElementCommand",
-    "TaskSaveJsonFormsValueDataCommand",
-    "TaskSaveJsonFormsValueDocumentResponseCommand",
     "TenantUser",
-    "TenantUserMetadata",
     "TenantUserPage",
+    "TenantUserPageItem",
     "WebhookEvent",
+    "WebhookEventProcessCreated",
+    "WebhookEventProcessCreatedData",
+    "WebhookEventProcessItemCreated",
+    "WebhookEventProcessItemCreatedData",
+    "WebhookEventProcessItemTaskStateChanged",
+    "WebhookEventProcessItemTaskStateChangedData",
     "WebhookEventProcessStateChanged",
     "WebhookEventProcessStateChangedData",
-    "WebhookEventTaskStateChanged",
-    "WebhookEventTaskStateChangedData",
     "Worker",
-    "AuditedObjectType",
+    "WorkerCreateParams",
     "AuthenticationType",
-    "LogLevel",
-    "PagedObjectType",
+    "JsonPatchOperationType",
     "PrincipalType",
-    "ProcessElementValueType",
+    "ProcessItemTaskLogLevel",
+    "ProcessItemTaskState",
+    "ProcessItemType",
     "ProcessState",
     "RobotAssetArchitecture",
     "RobotAssetPlatform",
     "RobotAssetType",
     "RobotFilterContext",
     "RobotSourceType",
-    "TaskElementValueType",
-    "TaskState",
     "WebhookType",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])

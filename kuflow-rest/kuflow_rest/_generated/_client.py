@@ -32,6 +32,7 @@
 
 from copy import deepcopy
 from typing import Any, TYPE_CHECKING
+from typing_extensions import Self
 
 from azure.core import PipelineClient
 from azure.core.pipeline import policies
@@ -43,9 +44,9 @@ from ._serialization import Deserializer, Serializer
 from .operations import (
     AuthenticationOperations,
     PrincipalOperations,
+    ProcessItemOperations,
     ProcessOperations,
     RobotOperations,
-    TaskOperations,
     TenantUserOperations,
     WorkerOperations,
 )
@@ -115,20 +116,20 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
     :vartype tenant_user: kuflow.rest.operations.TenantUserOperations
     :ivar process: ProcessOperations operations
     :vartype process: kuflow.rest.operations.ProcessOperations
-    :ivar task: TaskOperations operations
-    :vartype task: kuflow.rest.operations.TaskOperations
+    :ivar process_item: ProcessItemOperations operations
+    :vartype process_item: kuflow.rest.operations.ProcessItemOperations
     :ivar worker: WorkerOperations operations
     :vartype worker: kuflow.rest.operations.WorkerOperations
     :ivar robot: RobotOperations operations
     :vartype robot: kuflow.rest.operations.RobotOperations
     :param credential: Credential needed for the client to connect to Azure. Required.
     :type credential: ~azure.core.credentials.TokenCredential
-    :keyword endpoint: Service URL. Default value is "https://api.kuflow.com/v2022-10-08".
+    :keyword endpoint: Service URL. Default value is "https://api.kuflow.com/v2024-06-14".
     :paramtype endpoint: str
     """
 
     def __init__(
-        self, credential: "TokenCredential", *, endpoint: str = "https://api.kuflow.com/v2022-10-08", **kwargs: Any
+        self, credential: "TokenCredential", *, endpoint: str = "https://api.kuflow.com/v2024-06-14", **kwargs: Any
     ) -> None:
         self._config = KuFlowRestClientConfiguration(credential=credential, **kwargs)
         _policies = kwargs.pop("policies", None)
@@ -158,7 +159,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
         self.principal = PrincipalOperations(self._client, self._config, self._serialize, self._deserialize)
         self.tenant_user = TenantUserOperations(self._client, self._config, self._serialize, self._deserialize)
         self.process = ProcessOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.task = TaskOperations(self._client, self._config, self._serialize, self._deserialize)
+        self.process_item = ProcessItemOperations(self._client, self._config, self._serialize, self._deserialize)
         self.worker = WorkerOperations(self._client, self._config, self._serialize, self._deserialize)
         self.robot = RobotOperations(self._client, self._config, self._serialize, self._deserialize)
 
@@ -187,7 +188,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
     def close(self) -> None:
         self._client.close()
 
-    def __enter__(self) -> "KuFlowRestClient":
+    def __enter__(self) -> Self:
         self._client.__enter__()
         return self
 

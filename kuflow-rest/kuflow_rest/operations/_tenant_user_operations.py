@@ -46,7 +46,6 @@ class TenantUserOperations:
         size: int = 25,
         page: int = 0,
         sort: Optional[Union[str, List[str]]] = None,
-        type: Optional[_models.PrincipalType] = None,
         group_id: Optional[Union[str, List[str]]] = None,
         email: Optional[Union[str, List[str]]] = None,
         tenant_id: Optional[Union[str, List[str]]] = None,
@@ -59,21 +58,21 @@ class TenantUserOperations:
         Available sort query values: id, name.
 
         :keyword size: The number of records returned within a single API call. Default value is 25.
-        :paramtype size: int
+        :type size: int
         :keyword page: The page number of the current page in the returned records, 0 is the first
          page. Default value is 0.
-        :paramtype page: int
+        :type page: int
         :keyword sort: Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
 
          Default sort order is ascending. Multiple sort criteria are supported.
 
          Please refer to the method description for supported properties. Default value is None.
-        :paramtype sort: list[str]
+        :type sort: list[str]
         :keyword group_id: Filter tenant users that exists in one of the group ids. Default value is
          None.
-        :paramtype group_id: list[str]
+        :type group_id: list[str]
         :keyword email: Filter tenant users that have one of the emails. Default value is None.
-        :paramtype email: list[str]
+        :type email: list[str]
         :return: TenantUserPage
         :rtype: ~kuflow.rest.models.TenantUserPage
         :raises ~azure.core.exceptions.HttpResponseError:

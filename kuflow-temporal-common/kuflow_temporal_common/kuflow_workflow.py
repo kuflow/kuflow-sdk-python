@@ -22,9 +22,37 @@
 # SOFTWARE.
 #
 
-from ._save_process_element_utils import SaveProcessElementRequestUtils
-from ._save_task_element_utils import SaveTaskElementRequestUtils
-from ._save_task_json_forms_value_data_request_utils import SaveTaskJsonFormsValueDataRequestUtils
+import uuid
+
+from temporalio import workflow
 
 
-__all__ = ["SaveProcessElementRequestUtils", "SaveTaskElementRequestUtils", "SaveTaskJsonFormsValueDataRequestUtils"]
+def uuid7() -> uuid.UUID:
+    """Get a new, determinism-safe v7 UUID based on :py:func:`random`.
+
+    Note, this UUID is not cryptographically safe and should not be used for
+    security purposes.
+
+    Returns:
+        A deterministically-seeded v7 UUID.
+    """
+    # random bytes
+    random_bytes = workflow.random().getrandbits(16 * 8).to_bytes(16, "big")
+    value = bytearray(random_bytes)
+
+    # current timestamp in ms
+    timestamp = int(workflow.time_ns() / 1_000_000)
+
+    # timestamp
+    value[0] = (timestamp >> 40) & 0xFF
+    value[1] = (timestamp >> 32) & 0xFF
+    value[2] = (timestamp >> 24) & 0xFF
+    value[3] = (timestamp >> 16) & 0xFF
+    value[4] = (timestamp >> 8) & 0xFF
+    value[5] = timestamp & 0xFF
+
+    # version and variant
+    value[6] = (value[6] & 0x0F) | 0x70
+    value[8] = (value[8] & 0x3F) | 0x80
+
+    return uuid.UUID(bytes=bytes(value))

@@ -41,15 +41,19 @@ class AuthenticationOperations:
     def __init__(self, kuflow_client: KuFlowRestClientGenerated):
         self._kuflow_client = kuflow_client
 
-    def create_authentication(self, authentication: _models.Authentication, **kwargs: Any) -> _models.Authentication:
+    def create_authentication(
+        self, authentication_create_params: _models.AuthenticationCreateParams, **kwargs: Any
+    ) -> _models.Authentication:
         """Create an authentication for the current principal.
 
         Create an authentication for the current principal.
 
-        :param authentication: Authentication to be created. Is either a model type or a IO type. Required.
-        :type authentication: ~kuflow.rest.models.Authentication or IO
+        :param authentication_create_params: Authentication to be created. Required.
+        :type authentication_create_params: ~kuflow.rest.models.Authentication or IO
         :return: Authentication
         :rtype: ~kuflow.rest.models.Authentication
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.authentication.create_authentication(authentication=authentication, **kwargs)
+        return self._kuflow_client.authentication.create_authentication(
+            authentication_create_params=authentication_create_params, **kwargs
+        )

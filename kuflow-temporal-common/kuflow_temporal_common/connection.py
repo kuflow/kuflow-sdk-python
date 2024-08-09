@@ -80,7 +80,7 @@ class KuFlowTemporalConnection:
 
         self._register_encoding_payload_converter()
 
-        client_config = clean_dict(self._temporal.client.__dict__.copy())
+        client_config = self._temporal.client.__dict__.copy()
         client_config.pop("target_host", None)
 
         target_host = self._temporal.client.target_host or "engine.kuflow.com:443"
@@ -102,7 +102,7 @@ class KuFlowTemporalConnection:
 
         client = await self.connect()
 
-        worker_config = clean_dict(self._temporal.worker.__dict__.copy())
+        worker_config = self._temporal.worker.__dict__.copy()
 
         self._worker = Worker(client, **worker_config)
 
@@ -207,10 +207,6 @@ class KuFlowTemporalConnection:
             self._temporal.client.namespace = authentication.engine_certificate.namespace
 
         self._temporal.client.namespace = self._temporal.client.namespace or "default"
-
-
-def clean_dict(value: dict) -> dict:
-    return {k: v for k, v in value.items() if v is not None}
 
 
 # __all__ is used to allow reexport some imports

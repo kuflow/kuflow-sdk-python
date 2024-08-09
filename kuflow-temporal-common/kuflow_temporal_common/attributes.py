@@ -28,7 +28,7 @@ from temporalio.common import SearchAttributeIndexedValueType
 
 
 class WorkflowSearchAttribute(Enum):
-    KUFLOW_WORKFLOW_VERSION = "KuFlowWorkflowVersion", SearchAttributeIndexedValueType.INDEXED_VALUE_TYPE_INT
+    KUFLOW_WORKFLOW_VERSION = "KuFlowWorkflowVersion", SearchAttributeIndexedValueType.INT
 
     def __init__(self, key, indexed_value_type):
         self.key = key
