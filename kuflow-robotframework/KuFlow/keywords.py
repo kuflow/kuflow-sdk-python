@@ -177,7 +177,7 @@ class Keywords:
         | Update Process Item Task Data | ${PROCESS_ITEM_ID} | ${json_data}
         """
         if not is_dict_like(value):
-            raise TypeError("Expected argument to be a dict or dict-like, " "got %s instead." % (type_name(value)))
+            raise TypeError(f"Expected argument to be a dict or dict-like, got {type_name(value)} instead.")
 
         params = models.ProcessItemTaskDataUpdateParams(
             data=models.JsonValue(value=self.convert_to_dictionary_recursively(value))

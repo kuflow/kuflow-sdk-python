@@ -32,7 +32,7 @@ import temporalio.common
 import temporalio.converter
 import temporalio.runtime
 import temporalio.workflow
-from temporalio.client import Interceptor, KeepAliveConfig, RetryConfig, TLSConfig
+from temporalio.client import HttpConnectProxyConfig, Interceptor, KeepAliveConfig, RetryConfig, TLSConfig
 from temporalio.worker import SharedStateManager, UnsandboxedWorkflowRunner, WorkflowRunner
 from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner
 
@@ -100,7 +100,7 @@ class TemporalClientConfig:
     target_host: Optional[str] = None
     """``host:port`` for the Temporal server. For local development, this is often "localhost:7233"."""
 
-    namespace: str = "default"
+    namespace: Optional[str] = None
     """Namespace to use for client calls."""
 
     data_converter: temporalio.converter.DataConverter = temporalio.converter.DataConverter.default
@@ -141,6 +141,9 @@ class TemporalClientConfig:
 
     runtime: Optional[temporalio.runtime.Runtime] = None
     """The runtime for this client, or the default if unset."""
+
+    http_connect_proxy_config: Optional[HttpConnectProxyConfig] = None
+    """Configuration for HTTP CONNECT proxy."""
 
 
 @dataclass

@@ -28,6 +28,8 @@ from typing import List
 from temporalio import workflow
 from temporalio.common import RetryPolicy
 
+from kuflow_temporal_common import kuflow_workflow
+
 
 with workflow.unsafe.imports_passed_through():
     from kuflow_rest import models as models_rest
@@ -46,7 +48,9 @@ class GreetingWorkflow:
 
     @workflow.run
     async def run(self, request: models_temporal.WorkflowRequest) -> models_temporal.WorkflowResponse:
-        id = str(workflow.uuid4())
+        workflow.logger.info(f"Started {request.process_id}")
+
+        id = str(kuflow_workflow.uuid7())
 
         process_item_create_request = models_temporal.ProcessItemCreateRequest(
             id=id,
@@ -60,7 +64,7 @@ class GreetingWorkflow:
 
         workflow.logger.info(f"Finished {request.process_id}")
 
-        return models_temporal.WorkflowResponse(f"Workflow {request.process_id} finished")
+        return models_temporal.WorkflowResponse(message=f"Workflow {request.process_id} finished")
 
     async def _create_process_item_and_wait_completion(
         self, create_process_item_request: models_temporal.ProcessItemCreateRequest
