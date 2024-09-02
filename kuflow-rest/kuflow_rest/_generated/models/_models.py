@@ -426,11 +426,6 @@ class DocumentReference(_serialization.Model):
 
     All required parameters must be populated in order to send to server.
 
-    :ivar schema_path: JSON Schema path related to the document. The uploaded document will be
-     validated by the passed schema path.
-
-     ie: "#/properties/file", "#/definitions/UserType/name". Required.
-    :vartype schema_path: str
     :ivar document_uri: JSON value representing the uploaded file.
 
      Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
@@ -439,22 +434,15 @@ class DocumentReference(_serialization.Model):
     """
 
     _validation = {
-        "schema_path": {"required": True},
         "document_uri": {"required": True},
     }
 
     _attribute_map = {
-        "schema_path": {"key": "schemaPath", "type": "str"},
         "document_uri": {"key": "documentUri", "type": "str"},
     }
 
-    def __init__(self, *, schema_path: str, document_uri: str, **kwargs: Any) -> None:
+    def __init__(self, *, document_uri: str, **kwargs: Any) -> None:
         """
-        :keyword schema_path: JSON Schema path related to the document. The uploaded document will be
-         validated by the passed schema path.
-
-         ie: "#/properties/file", "#/definitions/UserType/name". Required.
-        :paramtype schema_path: str
         :keyword document_uri: JSON value representing the uploaded file.
 
          Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
@@ -462,7 +450,6 @@ class DocumentReference(_serialization.Model):
         :paramtype document_uri: str
         """
         super().__init__(**kwargs)
-        self.schema_path = schema_path
         self.document_uri = document_uri
 
 
@@ -1122,7 +1109,7 @@ class ProcessEntityUpdateParams(_serialization.Model):
         self.entity = entity
 
 
-class ProcessItem(AbstractAudited):
+class ProcessItem(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """ProcessItem.
 
     All required parameters must be populated in order to send to server.
@@ -1147,6 +1134,8 @@ class ProcessItem(AbstractAudited):
     :vartype tenant_id: str
     :ivar task:
     :vartype task: ~kuflow.rest.models.ProcessItemTask
+    :ivar message:
+    :vartype message: ~kuflow.rest.models.ProcessItemMessage
     """
 
     _validation = {
@@ -1166,6 +1155,7 @@ class ProcessItem(AbstractAudited):
         "owner_id": {"key": "ownerId", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
         "task": {"key": "task", "type": "ProcessItemTask"},
+        "message": {"key": "message", "type": "ProcessItemMessage"},
     }
 
     def __init__(
@@ -1181,6 +1171,7 @@ class ProcessItem(AbstractAudited):
         owner_id: Optional[str] = None,
         tenant_id: Optional[str] = None,
         task: Optional["_models.ProcessItemTask"] = None,
+        message: Optional["_models.ProcessItemMessage"] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -1204,6 +1195,8 @@ class ProcessItem(AbstractAudited):
         :paramtype tenant_id: str
         :keyword task:
         :paramtype task: ~kuflow.rest.models.ProcessItemTask
+        :keyword message:
+        :paramtype message: ~kuflow.rest.models.ProcessItemMessage
         """
         super().__init__(
             created_by=created_by,
@@ -1218,6 +1211,7 @@ class ProcessItem(AbstractAudited):
         self.owner_id = owner_id
         self.tenant_id = tenant_id
         self.task = task
+        self.message = message
 
 
 class ProcessItemCreateParams(_serialization.Model):
@@ -1237,6 +1231,8 @@ class ProcessItemCreateParams(_serialization.Model):
     :vartype owner_email: str
     :ivar task:
     :vartype task: ~kuflow.rest.models.ProcessItemTaskCreateParams
+    :ivar message:
+    :vartype message: ~kuflow.rest.models.ProcessItemMessageCreateParams
     """
 
     _validation = {
@@ -1251,6 +1247,7 @@ class ProcessItemCreateParams(_serialization.Model):
         "owner_id": {"key": "ownerId", "type": "str"},
         "owner_email": {"key": "ownerEmail", "type": "str"},
         "task": {"key": "task", "type": "ProcessItemTaskCreateParams"},
+        "message": {"key": "message", "type": "ProcessItemMessageCreateParams"},
     }
 
     def __init__(
@@ -1262,6 +1259,7 @@ class ProcessItemCreateParams(_serialization.Model):
         owner_id: Optional[str] = None,
         owner_email: Optional[str] = None,
         task: Optional["_models.ProcessItemTaskCreateParams"] = None,
+        message: Optional["_models.ProcessItemMessageCreateParams"] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -1277,6 +1275,8 @@ class ProcessItemCreateParams(_serialization.Model):
         :paramtype owner_email: str
         :keyword task:
         :paramtype task: ~kuflow.rest.models.ProcessItemTaskCreateParams
+        :keyword message:
+        :paramtype message: ~kuflow.rest.models.ProcessItemMessageCreateParams
         """
         super().__init__(**kwargs)
         self.id = id
@@ -1285,6 +1285,113 @@ class ProcessItemCreateParams(_serialization.Model):
         self.owner_id = owner_id
         self.owner_email = owner_email
         self.task = task
+        self.message = message
+
+
+class ProcessItemMessage(_serialization.Model):
+    """ProcessItemMessage.
+
+    :ivar text:
+    :vartype text: str
+    :ivar data: Json value.
+    :vartype data: ~kuflow.rest.models.JsonValue
+    :ivar data_structure_data_definition_code:
+    :vartype data_structure_data_definition_code: str
+    """
+
+    _attribute_map = {
+        "text": {"key": "text", "type": "str"},
+        "data": {"key": "data", "type": "JsonValue"},
+        "data_structure_data_definition_code": {"key": "dataStructureDataDefinitionCode", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        text: Optional[str] = None,
+        data: Optional["_models.JsonValue"] = None,
+        data_structure_data_definition_code: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword text:
+        :paramtype text: str
+        :keyword data: Json value.
+        :paramtype data: ~kuflow.rest.models.JsonValue
+        :keyword data_structure_data_definition_code:
+        :paramtype data_structure_data_definition_code: str
+        """
+        super().__init__(**kwargs)
+        self.text = text
+        self.data = data
+        self.data_structure_data_definition_code = data_structure_data_definition_code
+
+
+class ProcessItemMessageCreateParams(_serialization.Model):
+    """ProcessItemMessageCreateParams.
+
+    :ivar text:
+    :vartype text: str
+    :ivar data: Json value.
+    :vartype data: ~kuflow.rest.models.JsonValue
+    :ivar data_structure_data_definition_code:
+    :vartype data_structure_data_definition_code: str
+    """
+
+    _attribute_map = {
+        "text": {"key": "text", "type": "str"},
+        "data": {"key": "data", "type": "JsonValue"},
+        "data_structure_data_definition_code": {"key": "dataStructureDataDefinitionCode", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        text: Optional[str] = None,
+        data: Optional["_models.JsonValue"] = None,
+        data_structure_data_definition_code: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword text:
+        :paramtype text: str
+        :keyword data: Json value.
+        :paramtype data: ~kuflow.rest.models.JsonValue
+        :keyword data_structure_data_definition_code:
+        :paramtype data_structure_data_definition_code: str
+        """
+        super().__init__(**kwargs)
+        self.text = text
+        self.data = data
+        self.data_structure_data_definition_code = data_structure_data_definition_code
+
+
+class ProcessItemMessagePageItem(_serialization.Model):
+    """ProcessItemMessagePageItem.
+
+    :ivar text:
+    :vartype text: str
+    :ivar data_structure_data_definition_code:
+    :vartype data_structure_data_definition_code: str
+    """
+
+    _attribute_map = {
+        "text": {"key": "text", "type": "str"},
+        "data_structure_data_definition_code": {"key": "dataStructureDataDefinitionCode", "type": "str"},
+    }
+
+    def __init__(
+        self, *, text: Optional[str] = None, data_structure_data_definition_code: Optional[str] = None, **kwargs: Any
+    ) -> None:
+        """
+        :keyword text:
+        :paramtype text: str
+        :keyword data_structure_data_definition_code:
+        :paramtype data_structure_data_definition_code: str
+        """
+        super().__init__(**kwargs)
+        self.text = text
+        self.data_structure_data_definition_code = data_structure_data_definition_code
 
 
 class ProcessItemPage(Page):
@@ -1321,7 +1428,7 @@ class ProcessItemPage(Page):
         self.content = content
 
 
-class ProcessItemPageItem(AbstractAudited):
+class ProcessItemPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """ProcessItemPageItem.
 
     All required parameters must be populated in order to send to server.
@@ -1346,6 +1453,8 @@ class ProcessItemPageItem(AbstractAudited):
     :vartype tenant_id: str
     :ivar task:
     :vartype task: ~kuflow.rest.models.ProcessItemTaskPageItem
+    :ivar message:
+    :vartype message: ~kuflow.rest.models.ProcessItemMessagePageItem
     """
 
     _validation = {
@@ -1366,6 +1475,7 @@ class ProcessItemPageItem(AbstractAudited):
         "owner_id": {"key": "ownerId", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
         "task": {"key": "task", "type": "ProcessItemTaskPageItem"},
+        "message": {"key": "message", "type": "ProcessItemMessagePageItem"},
     }
 
     def __init__(
@@ -1381,6 +1491,7 @@ class ProcessItemPageItem(AbstractAudited):
         last_modified_at: Optional[datetime.datetime] = None,
         owner_id: Optional[str] = None,
         task: Optional["_models.ProcessItemTaskPageItem"] = None,
+        message: Optional["_models.ProcessItemMessagePageItem"] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -1404,6 +1515,8 @@ class ProcessItemPageItem(AbstractAudited):
         :paramtype tenant_id: str
         :keyword task:
         :paramtype task: ~kuflow.rest.models.ProcessItemTaskPageItem
+        :keyword message:
+        :paramtype message: ~kuflow.rest.models.ProcessItemMessagePageItem
         """
         super().__init__(
             created_by=created_by,
@@ -1418,6 +1531,7 @@ class ProcessItemPageItem(AbstractAudited):
         self.owner_id = owner_id
         self.tenant_id = tenant_id
         self.task = task
+        self.message = message
 
 
 class ProcessItemTask(_serialization.Model):

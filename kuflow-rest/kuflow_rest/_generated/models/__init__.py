@@ -56,6 +56,9 @@ from ._models import ProcessDefinitionSummary
 from ._models import ProcessEntityUpdateParams
 from ._models import ProcessItem
 from ._models import ProcessItemCreateParams
+from ._models import ProcessItemMessage
+from ._models import ProcessItemMessageCreateParams
+from ._models import ProcessItemMessagePageItem
 from ._models import ProcessItemPage
 from ._models import ProcessItemPageItem
 from ._models import ProcessItemTask
@@ -133,6 +136,9 @@ __all__ = [
     "ProcessEntityUpdateParams",
     "ProcessItem",
     "ProcessItemCreateParams",
+    "ProcessItemMessage",
+    "ProcessItemMessageCreateParams",
+    "ProcessItemMessagePageItem",
     "ProcessItemPage",
     "ProcessItemPageItem",
     "ProcessItemTask",

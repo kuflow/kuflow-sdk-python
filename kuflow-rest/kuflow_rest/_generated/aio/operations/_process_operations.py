@@ -55,14 +55,14 @@ from ...operations._process_operations import (
     build_change_process_initiator_request,
     build_complete_process_request,
     build_create_process_request,
-    build_download_process_entity_document_request,
+    build_download_process_document_request,
     build_find_processes_request,
     build_patch_process_entity_request,
     build_patch_process_metadata_request,
     build_retrieve_process_request,
     build_update_process_entity_request,
     build_update_process_metadata_request,
-    build_upload_process_entity_document_request,
+    build_upload_process_document_request,
     build_upload_process_user_action_document_request,
 )
 
@@ -1133,12 +1133,18 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace_async
-    async def upload_process_entity_document(
-        self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
+    async def upload_process_document(
+        self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, **kwargs: Any
     ) -> _models.DocumentReference:
-        """Upload an entity document.
+        """Upload a temporal document into the process that later on must be linked with a process domain
+        resource.
 
-        Save a document in the process to later be linked into the JSON data.
+        Upload a temporal document into the process that later on must be linked with a process domain
+        resource.
+
+        Documents uploaded with this API will be deleted after 24 hours as long as they have not been
+        linked to a
+        process or process item..
 
         :param id: The resource ID. Required.
         :type id: str
@@ -1148,11 +1154,6 @@ class ProcessOperations:
         :paramtype file_content_type: str
         :keyword file_name: Document name. Required.
         :paramtype file_name: str
-        :keyword schema_path: JSON Schema path related to the document. The uploaded document will be
-         validated by the passed schema path.
-
-         ie: "#/properties/file", "#/definitions/UserType/name". Required.
-        :paramtype schema_path: str
         :return: DocumentReference
         :rtype: ~kuflow.rest.models.DocumentReference
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -1173,11 +1174,10 @@ class ProcessOperations:
 
         _content = file
 
-        _request = build_upload_process_entity_document_request(
+        _request = build_upload_process_document_request(
             id=id,
             file_content_type=file_content_type,
             file_name=file_name,
-            schema_path=schema_path,
             content_type=content_type,
             content=_content,
             headers=_headers,
@@ -1205,12 +1205,10 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace_async
-    async def download_process_entity_document(
-        self, id: str, *, document_uri: str, **kwargs: Any
-    ) -> AsyncIterator[bytes]:
-        """Download entity document.
+    async def download_process_document(self, id: str, *, document_uri: str, **kwargs: Any) -> AsyncIterator[bytes]:
+        """Download document.
 
-        Given a process and a documentUri, download a document.
+        Given a document uri download a document.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -1233,7 +1231,7 @@ class ProcessOperations:
 
         cls: ClsType[AsyncIterator[bytes]] = kwargs.pop("cls", None)
 
-        _request = build_download_process_entity_document_request(
+        _request = build_download_process_document_request(
             id=id,
             document_uri=document_uri,
             headers=_headers,
