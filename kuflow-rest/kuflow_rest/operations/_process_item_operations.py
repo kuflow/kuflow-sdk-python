@@ -258,60 +258,6 @@ class ProcessItemOperations:
         """
         return self._kuflow_client.process_item.patch_process_item_task_data(id=id, json_patch=json_patch, **kwargs)
 
-    def upload_process_item_task_data_document(
-        self,
-        id: str,
-        file: _models.Document,
-        schema_path: str,
-        **kwargs: Any,
-    ) -> _models.ProcessItem:
-        """Save an element document.
-
-        Allow to save an element document uploading the content.
-
-        If it is a multiple element, and the ID referenced in the body does not exist or is empty, the
-        document will be added to the element. If the element already exists (the ID referenced in the
-        body corresponds to an existing one), it updates it.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param file: Document to save. Required.
-        :type file: ~kuflow.rest.models.Document
-        :keyword schema_path: JSON Schema path related to the document. The uploaded document will be
-         validated by the passed schema path.
-
-         ie: "#/properties/file", "#/definitions/UserType/name". Required.
-        :type schema_path: str
-        :return: ProcessItem
-        :rtype: ~kuflow.rest.models.ProcessItem
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        return self._kuflow_client.process_item.upload_process_item_task_data_document(
-            id=id,
-            file=file.file_content,
-            file_content_type=file.content_type,
-            file_name=file.file_mame,
-            schema_path=schema_path,
-            **kwargs,
-        )
-
-    def download_process_item_task_data_document(self, id: str, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
-        """Download document.
-
-        Given a task, download a document from a json form data.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :keyword document_uri: Document URI to download. Required.
-        :type document_uri: str
-        :return: Iterator of the response bytes
-        :rtype: Iterator[bytes]
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        return self._kuflow_client.process_item.download_process_item_task_data_document(
-            id=id, document_uri=document_uri, **kwargs
-        )
-
     def download_process_item_task_data_webforms_as_document(
         self, id: str, property_path: str, **kwargs: Any
     ) -> Iterator[bytes]:

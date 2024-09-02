@@ -291,12 +291,18 @@ class ProcessOperations:
         """
         return self._kuflow_client.process.patch_process_entity(id=id, json_patch=json_patch, **kwargs)
 
-    def upload_process_entity_document(
-        self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
+    def upload_process_document(
+        self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, **kwargs: Any
     ) -> _models.DocumentReference:
-        """Save an entity value document.
+        """Upload a temporal document into the process that later on must be linked with a process domain
+        resource.
 
-        Save a document in the process to later be linked into the JSON data.
+        Upload a temporal document into the process that later on must be linked with a process domain
+        resource.
+
+        Documents uploaded with this API will be deleted after 24 hours as long as they have not been
+        linked to a
+        process or process item.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -306,23 +312,19 @@ class ProcessOperations:
         :type file_content_type: str
         :keyword file_name: Document name. Required.
         :type file_name: str
-        :keyword schema_path: JSON Schema path related to the document. The uploaded document will be
-         validated by the passed schema path. Required.
-        :type schema_path: str
         :return: ProcessSaveEntityDocumentResponseCommand
         :rtype: ~kuflow.rest.models.ProcessSaveEntityDocumentResponseCommand
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.upload_process_entity_document(
+        return self._kuflow_client.process.upload_process_document(
             id=id,
             file=file,
             file_content_type=file_content_type,
             file_name=file_name,
-            schema_path=schema_path,
             **kwargs,
         )
 
-    def download_process_entity_document(self, id: str, *, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
+    def download_process_document(self, id: str, *, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
         """Download document.
 
         Given a process and a documentUri, download a document.
@@ -335,4 +337,4 @@ class ProcessOperations:
         :rtype: Iterator[bytes]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.download_process_entity_document(id=id, document_uri=document_uri, **kwargs)
+        return self._kuflow_client.process.download_process_document(id=id, document_uri=document_uri, **kwargs)

@@ -309,8 +309,8 @@ def build_patch_process_entity_request(id: str, **kwargs: Any) -> HttpRequest:
     return HttpRequest(method="PATCH", url=_url, headers=_headers, **kwargs)
 
 
-def build_upload_process_entity_document_request(  # pylint: disable=name-too-long
-    id: str, *, file_content_type: str, file_name: str, schema_path: str, content: IO[bytes], **kwargs: Any
+def build_upload_process_document_request(
+    id: str, *, file_content_type: str, file_name: str, content: IO[bytes], **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
@@ -319,7 +319,7 @@ def build_upload_process_entity_document_request(  # pylint: disable=name-too-lo
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/processes/{id}/entity/~actions/upload-document"
+    _url = "/processes/{id}/~actions/upload-document"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
@@ -329,7 +329,6 @@ def build_upload_process_entity_document_request(  # pylint: disable=name-too-lo
     # Construct parameters
     _params["fileContentType"] = _SERIALIZER.query("file_content_type", file_content_type, "str")
     _params["fileName"] = _SERIALIZER.query("file_name", file_name, "str")
-    _params["schemaPath"] = _SERIALIZER.query("schema_path", schema_path, "str")
 
     # Construct headers
     if content_type is not None:
@@ -339,16 +338,14 @@ def build_upload_process_entity_document_request(  # pylint: disable=name-too-lo
     return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, content=content, **kwargs)
 
 
-def build_download_process_entity_document_request(  # pylint: disable=name-too-long
-    id: str, *, document_uri: str, **kwargs: Any
-) -> HttpRequest:
+def build_download_process_document_request(id: str, *, document_uri: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
     accept = _headers.pop("Accept", "application/octet-stream, application/json")
 
     # Construct URL
-    _url = "/processes/{id}/entity/~actions/download-document"
+    _url = "/processes/{id}/~actions/download-document"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
@@ -1423,12 +1420,18 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace
-    def upload_process_entity_document(
-        self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, schema_path: str, **kwargs: Any
+    def upload_process_document(
+        self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, **kwargs: Any
     ) -> _models.DocumentReference:
-        """Upload an entity document.
+        """Upload a temporal document into the process that later on must be linked with a process domain
+        resource.
 
-        Save a document in the process to later be linked into the JSON data.
+        Upload a temporal document into the process that later on must be linked with a process domain
+        resource.
+
+        Documents uploaded with this API will be deleted after 24 hours as long as they have not been
+        linked to a
+        process or process item..
 
         :param id: The resource ID. Required.
         :type id: str
@@ -1438,11 +1441,6 @@ class ProcessOperations:
         :paramtype file_content_type: str
         :keyword file_name: Document name. Required.
         :paramtype file_name: str
-        :keyword schema_path: JSON Schema path related to the document. The uploaded document will be
-         validated by the passed schema path.
-
-         ie: "#/properties/file", "#/definitions/UserType/name". Required.
-        :paramtype schema_path: str
         :return: DocumentReference
         :rtype: ~kuflow.rest.models.DocumentReference
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -1463,11 +1461,10 @@ class ProcessOperations:
 
         _content = file
 
-        _request = build_upload_process_entity_document_request(
+        _request = build_upload_process_document_request(
             id=id,
             file_content_type=file_content_type,
             file_name=file_name,
-            schema_path=schema_path,
             content_type=content_type,
             content=_content,
             headers=_headers,
@@ -1495,10 +1492,10 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace
-    def download_process_entity_document(self, id: str, *, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
-        """Download entity document.
+    def download_process_document(self, id: str, *, document_uri: str, **kwargs: Any) -> Iterator[bytes]:
+        """Download document.
 
-        Given a process and a documentUri, download a document.
+        Given a document uri download a document.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -1521,7 +1518,7 @@ class ProcessOperations:
 
         cls: ClsType[Iterator[bytes]] = kwargs.pop("cls", None)
 
-        _request = build_download_process_entity_document_request(
+        _request = build_download_process_document_request(
             id=id,
             document_uri=document_uri,
             headers=_headers,
