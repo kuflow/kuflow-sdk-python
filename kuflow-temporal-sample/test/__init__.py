@@ -22,8 +22,4 @@
 # SOFTWARE.
 #
 
-from ._activities import KuFlowActivities
-
-
-__all__ = ["KuFlowActivities"]
-__version__ = "2.0.0.dev0"
+__path__ = __import__("pkgutil").extend_path(__path__, __name__)  # type: ignore

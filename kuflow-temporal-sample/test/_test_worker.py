@@ -27,11 +27,11 @@ import logging
 from pathlib import Path
 
 import yaml
-from _test_workflow import GreetingWorkflow
+from _test_workflow import SampleEngineWorkerLoanWorkflow
 
 from kuflow_rest import KuFlowRestClient
 from kuflow_temporal_activity_kuflow import KuFlowActivities
-from kuflow_temporal_common.connection import (
+from kuflow_temporal_worker import (
     KuFlowConfig,
     KuFlowTemporalConnection,
     TemporalClientConfig,
@@ -73,7 +73,7 @@ async def main():
             ),
             worker=TemporalWorkerConfig(
                 task_queue=temporal_queue,
-                workflows=[GreetingWorkflow],
+                workflows=[SampleEngineWorkerLoanWorkflow],
                 activities=kuflow_activities.activities,
                 debug_mode=True,
             ),

@@ -26,11 +26,10 @@ from temporalio import activity
 
 from kuflow_rest import KuFlowRestClient
 from kuflow_rest import models as models_rest
-from kuflow_temporal_common import converter, exceptions
+from kuflow_temporal_common import create_application_error
 
 from . import _validation as validation
 from . import models as models_temporal
-from .converter import KuFlowComposableEncodingPayloadConverter
 
 
 class KuFlowActivities:
@@ -58,7 +57,6 @@ class KuFlowActivities:
         ]
 
     @activity.defn(name="KuFlow_Engine_retrievePrincipal")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def retrieve_principal(
         self,
         request: models_temporal.PrincipalRetrieveRequest,
@@ -70,10 +68,9 @@ class KuFlowActivities:
 
             return models_temporal.PrincipalRetrieveResponse(principal=principal)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_retrieveTenantUser")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def retrieve_tenant_user(
         self,
         request: models_temporal.TenantUserRetrieveRequest,
@@ -85,10 +82,9 @@ class KuFlowActivities:
 
             return models_temporal.TenantUserRetrieveResponse(tenant_user=tenant_user)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_findProcesses")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def find_processes(
         self,
         request: models_temporal.ProcesFindRequest,
@@ -100,10 +96,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcesFindResponse(processes=proces_page)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_retrieveProcess")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def retrieve_process(
         self,
         request: models_temporal.ProcessRetrieveRequest,
@@ -115,10 +110,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessRetrieveResponse(process=process)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_updateProcessEntity")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def update_process_entity(
         self,
         request: models_temporal.ProcessEntityUpdateRequest,
@@ -134,10 +128,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessEntityUpdateResponse(process=process)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_patchProcessEntity")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def patch_process_entity(
         self,
         request: models_temporal.ProcessEntityPatchRequest,
@@ -151,10 +144,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessEntityPatchResponse(process=process)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_updateProcessMetadata")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def update_process_metadata(
         self,
         request: models_temporal.ProcessMetadataUpdateRequest,
@@ -170,10 +162,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessMetadataUpdateResponse(process=process)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_patchProcessMetadata")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def patch_process_metadata(
         self,
         request: models_temporal.ProcessMetadataPatchRequest,
@@ -187,10 +178,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessMetadataPatchResponse(process=process)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_changeProcessInitiator")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def change_process_initiator(
         self,
         request: models_temporal.ProcessInitiatorChangeRequest,
@@ -208,10 +198,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessInitiatorChangeResponse(process=process)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_findProcessItems")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def find_process_items(
         self,
         request: models_temporal.ProcessItemFindRequest,
@@ -224,10 +213,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemFindResponse(process_items=process_items)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_retrieveProcessItem")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def retrieve_process_item(
         self,
         request: models_temporal.ProcessItemRetrieveRequest,
@@ -239,10 +227,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemRetrieveResponse(process_item=process_item)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_createProcessItem")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def create_process_item(
         self,
         request: models_temporal.ProcessItemCreateRequest,
@@ -263,10 +250,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemCreateResponse(process_item=process_item)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_completeProcessItemTask")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def complete_process_item_task(
         self,
         request: models_temporal.ProcessItemTaskCompleteRequest,
@@ -278,10 +264,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskCompleteResponse(process_item=process_item)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_claimProcessItemTask")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def claim_process_item_task(
         self,
         request: models_temporal.ProcessItemTaskClaimRequest,
@@ -293,10 +278,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskClaimResponse(process_item=process_item)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_assignProcessItemTask")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def assign_process_item_task(
         self,
         request: models_temporal.ProcessItemTaskAssignRequest,
@@ -312,10 +296,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskAssignResponse(process_item=process_item)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_updateProcessItemTaskData")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def update_process_item_task_data(
         self,
         request: models_temporal.ProcessItemTaskDataUpdateRequest,
@@ -331,10 +314,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskDataUpdateResponse(process_item=process_item)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_patchProcessItemTaskData")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def patch_process_item_task_data(
         self,
         request: models_temporal.ProcessItemTaskDataPatchRequest,
@@ -348,10 +330,9 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskDataPatchResponse(process_item=process_item)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err
 
     @activity.defn(name="KuFlow_Engine_appendProcessItemTaskLog")
-    @converter.register(encoding_payload_converter_class=KuFlowComposableEncodingPayloadConverter)
     async def append_process_item_task_log(
         self,
         request: models_temporal.ProcessItemTaskLogAppendRequest,
@@ -367,4 +348,4 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskLogAppendResponse(process_item=process_item)
         except Exception as err:
-            raise exceptions.create_application_error(err) from err
+            raise create_application_error(err) from err

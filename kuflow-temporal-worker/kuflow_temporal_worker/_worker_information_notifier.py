@@ -32,7 +32,8 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 from kuflow_rest import KuFlowRestClient, models
-from kuflow_temporal_common._connection_config import (
+
+from ._connection_config import (
     KuFlowConfig,
     KuFlowWorkerInformationNotifierBackoff,
     TemporalConfig,

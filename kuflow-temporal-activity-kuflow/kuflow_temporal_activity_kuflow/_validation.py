@@ -25,7 +25,7 @@
 from temporalio.exceptions import ApplicationError
 
 from kuflow_rest import models as models_rest
-from kuflow_temporal_common.exceptions import KuFlowFailureType
+from kuflow_temporal_common import KuFlowFailureType
 
 from . import models as models_temporal
 

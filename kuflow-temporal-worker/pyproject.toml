@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "kuflow-temporal-worker"
+version = "2.0.0.dev0"
+description = "KuFlow utilities to use Temporal.io"
+license = "MIT"
+authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
+homepage = "https://kuflow.com/"
+documentation = "https://docs.kuflow.com/"
+repository = "https://github.com/kuflow/kuflow-sdk-python"
+readme = "README.md"
+include = ["VERSION", "README.md", "CHANGELOG.md"]
+packages = [{ include = "kuflow_temporal_worker" }]
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+kuflow-temporal-common = {path="../kuflow-temporal-common", develop=true}
+temporalio = "~1.6.0"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.11.1"
+ruff = ">=0.1.8,<1.0.0"
+pytest = "^8.3.2"
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+python_files= "test_*.py"

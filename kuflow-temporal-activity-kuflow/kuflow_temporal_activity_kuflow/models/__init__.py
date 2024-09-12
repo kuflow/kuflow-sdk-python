@@ -57,14 +57,8 @@ from ._models import (
     ProcessMetadataUpdateResponse,
     ProcessRetrieveRequest,
     ProcessRetrieveResponse,
-    RobotWorkflowRequest,
-    RobotWorkflowResponse,
     TenantUserRetrieveRequest,
     TenantUserRetrieveResponse,
-    UserActionWorkflowRequest,
-    UserActionWorkflowResponse,
-    WorkflowRequest,
-    WorkflowResponse,
 )
 
 
@@ -103,12 +97,15 @@ __all__ = [
     "ProcessMetadataUpdateResponse",
     "ProcessRetrieveRequest",
     "ProcessRetrieveResponse",
-    "RobotWorkflowRequest",
-    "RobotWorkflowResponse",
     "TenantUserRetrieveRequest",
     "TenantUserRetrieveResponse",
-    "UserActionWorkflowRequest",
-    "UserActionWorkflowResponse",
-    "WorkflowRequest",
-    "WorkflowResponse",
 ]
+
+from kuflow_rest import models as models_rest
+from kuflow_temporal_common import register_serializable_models
+
+from .. import models as models_activity
+
+
+register_serializable_models(models_rest.__dict__)
+register_serializable_models(models_activity.__dict__)

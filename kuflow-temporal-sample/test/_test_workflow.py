@@ -28,35 +28,37 @@ from typing import List
 from temporalio import workflow
 from temporalio.common import RetryPolicy
 
-from kuflow_temporal_common import kuflow_workflow
+from kuflow_temporal_workflow_kuflow import uuid7
 
 
 with workflow.unsafe.imports_passed_through():
     from kuflow_rest import models as models_rest
-    from kuflow_temporal_activity_kuflow import KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK, KuFlowActivities
-    from kuflow_temporal_activity_kuflow import models as models_temporal
+    from kuflow_temporal_activity_kuflow import KuFlowActivities
+    from kuflow_temporal_activity_kuflow import models as models_activity
+    from kuflow_temporal_workflow_kuflow import models as models_workflow
 
 
 @workflow.defn
-class GreetingWorkflow:
+class SampleEngineWorkerLoanWorkflow:
     def __init__(self) -> None:
         self._kuflow_completed_process_item_ids: List[str] = []
 
-    @workflow.signal(name=KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK)
-    async def kuflow_engine_completed_task(self, task_id: str) -> None:
-        self._kuflow_completed_process_item_ids.append(task_id)
+    @workflow.signal(name=models_workflow.KUFLOW_ENGINE_SIGNAL_PROCESS_ITEM)
+    async def kuflow_engine_signal_process_item(self, signal: models_workflow.SignalProcessItem) -> None:
+        if signal.type == models_workflow.SignalProcessItemType.TASK:
+            self._kuflow_completed_process_item_ids.append(signal.id)
 
     @workflow.run
-    async def run(self, request: models_temporal.WorkflowRequest) -> models_temporal.WorkflowResponse:
+    async def run(self, request: models_workflow.WorkflowRequest) -> models_workflow.WorkflowResponse:
         workflow.logger.info(f"Started {request.process_id}")
 
-        id = str(kuflow_workflow.uuid7())
+        id = str(uuid7())
 
-        process_item_create_request = models_temporal.ProcessItemCreateRequest(
+        process_item_create_request = models_activity.ProcessItemCreateRequest(
             id=id,
             type=models_rest.ProcessItemType.TASK,
             process_id=request.process_id,
-            task=models_rest.ProcessItemTaskCreateParams(task_definition_code="T_ONE"),
+            task=models_rest.ProcessItemTaskCreateParams(task_definition_code="LOAN_APPLICATION"),
         )
 
         # Create Process Item Task
@@ -64,10 +66,10 @@ class GreetingWorkflow:
 
         workflow.logger.info(f"Finished {request.process_id}")
 
-        return models_temporal.WorkflowResponse(message=f"Workflow {request.process_id} finished")
+        return models_workflow.WorkflowResponse(message=f"Workflow {request.process_id} finished")
 
     async def _create_process_item_and_wait_completion(
-        self, create_process_item_request: models_temporal.ProcessItemCreateRequest
+        self, create_process_item_request: models_activity.ProcessItemCreateRequest
     ) -> None:
         await workflow.execute_activity(
             KuFlowActivities.create_process_item,

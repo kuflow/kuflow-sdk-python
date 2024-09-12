@@ -22,8 +22,11 @@
 # SOFTWARE.
 #
 
-from ._activities import KuFlowActivities
+from enum import Enum
 
 
-__all__ = ["KuFlowActivities"]
-__version__ = "2.0.0.dev0"
+class SignalProcessItemType(str, Enum):
+    """SignalProcessItemType."""
+
+    TASK = "TASK"
+    MESSAGE = "MESSAGE"
