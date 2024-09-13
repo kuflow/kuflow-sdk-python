@@ -23,7 +23,7 @@
 #
 
 import json
-from typing import Any, Optional, Type
+from typing import Any, Dict, List, Optional, Type
 
 from temporalio.api.common.v1 import Payload
 from temporalio.converter import (
@@ -32,17 +32,64 @@ from temporalio.converter import (
 )
 
 from kuflow_rest import Deserializer, Model, Serializer
-from kuflow_rest import models as models_rest
 
-from . import models as models_temporal
+
+temporal_models: Dict[str, type] = {}
+
+
+def register_serializable_models(models: Dict[str, type]):
+    global temporal_models
+
+    temporal_models_tmp = {k: v for k, v in models.items() if isinstance(v, type)}
+    temporal_models_tmp = {**temporal_models, **temporal_models_tmp}
+    temporal_models = temporal_models_tmp
+
+
+class CompositeEncodingPayloadConverter(EncodingPayloadConverter):
+    """Composite encoding payload converter that delegates to a list of encoding payload converters.
+
+    Encoding/decoding are attempted on each payload converter successively until
+    it succeeds.
+
+    """
+
+    def __init__(self, encoding: str, converters: List[EncodingPayloadConverter]):
+        """Initializes the encoding data converter.
+
+        Arguments:
+            encoding: Encoding of this EncodingPayloadConverter
+            converters: Encoding payload converters to delegate to, in order.
+        """
+        self.register_encoding = encoding
+        self.converters = converters
+
+    @property
+    def encoding(self) -> str:
+        return self.register_encoding
+
+    def to_payload(self, value: Any) -> Optional[Payload]:
+        payload: Optional[Payload] = None
+        for converter in self.converters:
+            payload = converter.to_payload(value)
+            if payload is not None:
+                break
+
+        return payload
+
+    def from_payload(self, payload: Payload, type_hint: Optional[Type] = None) -> Any:
+        value: Optional[Payload] = None
+        for converter in self.converters:
+            value = converter.from_payload(payload, type_hint)
+            if value is not None:
+                break
+
+        return value
 
 
 class KuFlowComposableEncodingPayloadConverter(EncodingPayloadConverter):
     def __init__(self, default_json_converter=JSONPlainPayloadConverter()) -> None:
         self._default_json_converter = default_json_converter
-        client_models_rest = {k: v for k, v in models_rest.__dict__.items() if isinstance(v, type)}
-        client_models_temporal = {k: v for k, v in models_temporal.__dict__.items() if isinstance(v, type)}
-        client_models = {**client_models_rest, **client_models_temporal}
+        client_models = {k: v for k, v in temporal_models.items() if isinstance(v, type)}
         self._serialize = Serializer(client_models)
         self._deserialize = Deserializer(client_models)
 

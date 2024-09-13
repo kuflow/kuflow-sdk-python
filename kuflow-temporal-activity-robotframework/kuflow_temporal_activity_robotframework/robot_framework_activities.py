@@ -30,8 +30,7 @@ import robot
 from temporalio import activity
 from temporalio.exceptions import ApplicationError
 
-from kuflow_temporal_common.activity_utils import auto_heartbeater
-from kuflow_temporal_common.exceptions import KuFlowFailureType
+from kuflow_temporal_common import KuFlowFailureType, auto_heartbeater
 
 
 def _default_variables() -> List[str]:

@@ -29,8 +29,9 @@ from typing import Mapping, Optional
 
 from temporalio.client import Client
 
-from kuflow_rest import models
-from kuflow_temporal_common._connection_config import (
+from kuflow_rest import models as models_rest
+
+from ._connection_config import (
     KuFlowAuthorizationTokenProviderBackoff,
     KuFlowConfig,
     TemporalConfig,
@@ -121,9 +122,9 @@ class KuFlowAuthorizationTokenProvider:
 
         return new_metadata
 
-    def _create_authentication(self) -> models.Authentication:
-        authentication_create_params = models.AuthenticationCreateParams(
-            type=models.AuthenticationType.ENGINE_TOKEN,
+    def _create_authentication(self) -> models_rest.Authentication:
+        authentication_create_params = models_rest.AuthenticationCreateParams(
+            type=models_rest.AuthenticationType.ENGINE_TOKEN,
             tenant_id=self._kuflow_config.tenant_id,
         )
 

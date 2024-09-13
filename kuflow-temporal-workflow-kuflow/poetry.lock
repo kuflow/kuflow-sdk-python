@@ -217,6 +217,24 @@ type = "directory"
 url = "../kuflow-rest"
 
 [[package]]
+name = "kuflow-temporal-common"
+version = "2.0.0.dev0"
+description = "KuFlow utilities to use Temporal.io"
+category = "main"
+optional = false
+python-versions = "^3.8"
+files = []
+develop = true
+
+[package.dependencies]
+kuflow-rest = {path = "../kuflow-rest", develop = true}
+temporalio = "~1.6.0"
+
+[package.source]
+type = "directory"
+url = "../kuflow-temporal-common"
+
+[[package]]
 name = "mypy"
 version = "1.11.2"
 description = "Optional static typing for Python"
@@ -508,4 +526,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "1b10465aa9f1fd4d265b5297cda43f9765c1cc39ef85ca78b400f726f466ae83"
+content-hash = "91c6a03cbea2cfa7001cb3ffdabfc32eff97466dfc4622da483e72a43062b0ef"

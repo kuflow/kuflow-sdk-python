@@ -23,7 +23,7 @@
 #
 
 import dataclasses
-from typing import Dict, List, Optional, Set, Type
+from typing import Dict, List, Optional, Set
 
 import temporalio.activity
 import temporalio.common
@@ -34,17 +34,14 @@ from temporalio.client import Client, TLSConfig
 from temporalio.worker import Worker
 
 from kuflow_rest import models
-from kuflow_temporal_common._connection_config import (
-    KuFlowAuthorizationTokenProviderBackoff,
+from kuflow_temporal_common import CompositeEncodingPayloadConverter, KuFlowComposableEncodingPayloadConverter
+
+from ._authentication import KuFlowAuthorizationTokenProvider
+from ._connection_config import (
     KuFlowConfig,
-    KuFlowWorkerInformationNotifierBackoff,
-    TemporalClientConfig,
     TemporalConfig,
-    TemporalWorkerConfig,
 )
-from kuflow_temporal_common.authentication import KuFlowAuthorizationTokenProvider
-from kuflow_temporal_common.converter import CompositeEncodingPayloadConverter
-from kuflow_temporal_common.worker_information_notifier import KuFlowWorkerInformationNotifier
+from ._worker_information_notifier import KuFlowWorkerInformationNotifier
 
 
 class KuFlowTemporalConnection:
@@ -142,15 +139,13 @@ class KuFlowTemporalConnection:
         await worker.run()
 
     def _register_encoding_payload_converter(self):
-        registered_converter_classes = self._get_registered_encoding_payload_converter_classes()
-        if len(registered_converter_classes) <= 0:
-            return
+        additional_converter_classes = [KuFlowComposableEncodingPayloadConverter]
 
         converters = list(temporalio.converter.DefaultPayloadConverter.default_encoding_payload_converters)
 
         converters_by_encoding: Dict[str, List[temporalio.converter.EncodingPayloadConverter]] = {}
 
-        for converter_class in registered_converter_classes:
+        for converter_class in additional_converter_classes:
             converter = converter_class()
 
             converters_encoding = converters_by_encoding.get(converter.encoding, None)
@@ -171,24 +166,6 @@ class KuFlowTemporalConnection:
 
         self._temporal.client.data_converter = dataclasses.replace(temporalio.converter.DataConverter.default)
 
-    def _get_registered_encoding_payload_converter_classes(
-        self,
-    ) -> List[Type[temporalio.converter.EncodingPayloadConverter]]:
-        converters = []
-        for activity in self._temporal.worker.activities:
-            if hasattr(activity, "__kuflow_encoding_payload_converter_class__"):
-                converter_class = activity.__kuflow_encoding_payload_converter_class__
-                if converter_class not in converters:
-                    converters.append(converter_class)
-
-        for workflow in self._temporal.worker.workflows:
-            if hasattr(workflow, "__kuflow_encoding_payload_converter_class__"):
-                converter_class = workflow.__kuflow_encoding_payload_converter_class__
-                if converter_class not in converters:
-                    converters.append(converter_class)
-
-        return converters
-
     def _apply_default_configurations(self):
         authentication = models.Authentication(
             type=models.AuthenticationType.ENGINE_CERTIFICATE,
@@ -207,17 +184,3 @@ class KuFlowTemporalConnection:
             self._temporal.client.namespace = authentication.engine_certificate.namespace
 
         self._temporal.client.namespace = self._temporal.client.namespace or "default"
-
-
-# __all__ is used to allow reexport some imports
-__all__ = [
-    "KuFlowAuthorizationTokenProviderBackoff",
-    "KuFlowConfig",
-    "KuFlowTemporalConnection",
-    "KuFlowTemporalConnection",
-    "KuFlowWorkerInformationNotifierBackoff",
-    "TemporalClientConfig",
-    "TemporalClientConfig",
-    "TemporalConfig",
-    "TemporalWorkerConfig",
-]

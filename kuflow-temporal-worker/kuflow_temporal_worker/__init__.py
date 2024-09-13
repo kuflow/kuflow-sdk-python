@@ -22,8 +22,24 @@
 # SOFTWARE.
 #
 
-from ._activities import KuFlowActivities
+from kuflow_temporal_worker._connection import KuFlowTemporalConnection
+from kuflow_temporal_worker._connection_config import (
+    KuFlowAuthorizationTokenProviderBackoff,
+    KuFlowConfig,
+    KuFlowWorkerInformationNotifierBackoff,
+    TemporalClientConfig,
+    TemporalConfig,
+    TemporalWorkerConfig,
+)
 
 
-__all__ = ["KuFlowActivities"]
+__all__ = [
+    "KuFlowAuthorizationTokenProviderBackoff",
+    "KuFlowConfig",
+    "KuFlowTemporalConnection",
+    "KuFlowWorkerInformationNotifierBackoff",
+    "TemporalClientConfig",
+    "TemporalConfig",
+    "TemporalWorkerConfig",
+]
 __version__ = "2.0.0.dev0"
