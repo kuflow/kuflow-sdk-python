@@ -14,5 +14,12 @@ for p in $_projects
 do
   cd "${DIR}/../${p}" || (echo "ERROR!!! Project ${p} doesn't exist" && exit 2)
   echo "=== running in ${p} $> poetry $@ ==="
+
+  # Avoid publish private packages
+  if [ "$1" = "publish" ] && grep -q "Private :: Do not Upload" "pyproject.toml"; then
+    echo "SKIPPED !!!!"
+    continue
+  fi
+
   poetry $@
 done
