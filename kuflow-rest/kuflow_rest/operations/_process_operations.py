@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-from typing import IO, Any, Iterator, List, Optional, Union
+from typing import Any, Iterator, List, Optional, Union
 
 from .. import models as _models
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
@@ -291,9 +291,7 @@ class ProcessOperations:
         """
         return self._kuflow_client.process.patch_process_entity(id=id, json_patch=json_patch, **kwargs)
 
-    def upload_process_document(
-        self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, **kwargs: Any
-    ) -> _models.DocumentReference:
+    def upload_process_document(self, id: str, document: _models.Document, **kwargs: Any) -> _models.DocumentReference:
         """Upload a temporal document into the process that later on must be linked with a process domain
         resource.
 
@@ -306,21 +304,17 @@ class ProcessOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param file: Document to save. Required.
-        :type file: IO[bytes]
-        :keyword file_content_type: Document content type. Required.
-        :type file_content_type: str
-        :keyword file_name: Document name. Required.
-        :type file_name: str
-        :return: ProcessSaveEntityDocumentResponseCommand
-        :rtype: ~kuflow.rest.models.ProcessSaveEntityDocumentResponseCommand
+        :param document: Document to save. Required.
+        :type document: ~kuflow.rest.models.Document
+        :return: DocumentReference
+        :rtype: ~kuflow.rest.models.DocumentReference
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self._kuflow_client.process.upload_process_document(
             id=id,
-            file=file,
-            file_content_type=file_content_type,
-            file_name=file_name,
+            document=document.file_content,
+            file_content_type=document.content_type,
+            file_name=document.file_mame,
             **kwargs,
         )
 

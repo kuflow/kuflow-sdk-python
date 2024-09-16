@@ -53,9 +53,9 @@ class ProcessItemOperations:
         tenant_id: Optional[Union[str, List[str]]] = None,
         **kwargs: Any,
     ) -> _models.ProcessItemPage:
-        """Find all accessible Tasks.
+        """Find all accessible Process Items.
 
-        List all Tasks that have been created and the credentials has access.
+        List all Process Items that have been created and the credentials has access.
 
         Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt,
         cancelledAt.
@@ -77,7 +77,7 @@ class ProcessItemOperations:
         :type task_state: list[~kuflow.rest.models.ProcessItemTaskState]
         :keyword task_definition_code: Filter by an array of task definition codes. Default value is None.
         :type task_definition_code: list[str]
-        :keyword tenant_id: Filter tasks that exists in one of tenant ids. Default value is None.
+        :keyword tenant_id: Filter process items that exists in one of tenant ids. Default value is None.
         :type tenant_id: Optional[Union[str, List[str]]]
         :return: ProcessItemPage
         :rtype: ~kuflow.rest.models.ProcessItemPage
