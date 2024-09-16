@@ -27,7 +27,7 @@ import logging
 from pathlib import Path
 
 import yaml
-from _test_workflow import SampleEngineWorkerLoanWorkflow
+from workflow import SampleEngineWorkerLoanWorkflow
 
 from kuflow_rest import KuFlowRestClient
 from kuflow_temporal_activity_kuflow import KuFlowActivities

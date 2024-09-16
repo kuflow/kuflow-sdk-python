@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuflow-temporal-sample"
-version = "2.0.0.dev0"
+version = "2.0.0"
 description = "KuFlow samples"
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
@@ -9,7 +9,7 @@ documentation = "https://docs.kuflow.com/"
 repository = "https://github.com/kuflow/kuflow-sdk-python"
 readme = "README.md"
 include = ["VERSION", "README.md", "CHANGELOG.md"]
-packages = []
+packages = [{ include = "kuflow_temporal_sample" }]
 classifiers = ["Private :: Do not Upload"]
 
 [build-system]
