@@ -2,9 +2,9 @@
 [![Python](https://img.shields.io/pypi/pyversions/kuflow-temporal-worker.svg)](https://pypi.org/project/kuflow-temporal-worker)
 [![PyPI](https://img.shields.io/pypi/v/kuflow-temporal-worker.svg)](https://pypi.org/project/kuflow-temporal-worker)
 
-# KuFlow Temporal Common
+# KuFlow Temporal worker
 
-TODO
+Temporal worker utilities to connect to KuFlow.
 
 ## Documentation
 
