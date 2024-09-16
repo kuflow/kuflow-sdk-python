@@ -255,6 +255,24 @@ type = "directory"
 url = "../kuflow-temporal-common"
 
 [[package]]
+name = "kuflow-temporal-worker"
+version = "2.0.2.dev0"
+description = "KuFlow utilities to use Temporal.io"
+category = "main"
+optional = false
+python-versions = "^3.8"
+files = []
+develop = true
+
+[package.dependencies]
+kuflow-temporal-common = {path = "../kuflow-temporal-common", develop = true}
+temporalio = "~1.6.0"
+
+[package.source]
+type = "directory"
+url = "../kuflow-temporal-worker"
+
+[[package]]
 name = "kuflow-temporal-workflow-kuflow"
 version = "2.0.2.dev0"
 description = "KuFlow SDK :: Temporal.io workflow utilities to interact with KuFlow"
@@ -563,4 +581,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "516e983f63668d6eff08652ec44ed25a370e389e8560d2dfe7dbd969be7ae8bc"
+content-hash = "23c63988b5cfd95fa769beb1db7cb71b8171541e45f7f7d6c1423aafd1dd4702"

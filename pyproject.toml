@@ -21,6 +21,9 @@ kuflow-robotframework = { path = "./kuflow-robotframework", develop = true }
 kuflow-temporal-common = { path = "./kuflow-temporal-common", develop = true }
 kuflow-temporal-activity-kuflow = { path = "./kuflow-temporal-activity-kuflow", develop = true }
 kuflow-temporal-activity-robotframework = { path = "./kuflow-temporal-activity-robotframework", develop = true }
+kuflow-temporal-workflow-kuflow = { path = "./kuflow-temporal-workflow-kuflow", develop = true }
+kuflow-temporal-worker = { path = "./kuflow-temporal-worker", develop = true }
+kuflow-temporal-sample = { path = "./kuflow-temporal-sample", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.11.1"

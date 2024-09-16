@@ -22,6 +22,7 @@ kuflow-rest = {path="../kuflow-rest", develop=true}
 kuflow-temporal-common = {path="../kuflow-temporal-common", develop=true}
 kuflow-temporal-activity-kuflow = {path="../kuflow-temporal-activity-kuflow", develop=true}
 kuflow-temporal-workflow-kuflow = {path="../kuflow-temporal-workflow-kuflow", develop=true}
+kuflow-temporal-worker = {path="../kuflow-temporal-worker", develop=true}
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.11.1"
