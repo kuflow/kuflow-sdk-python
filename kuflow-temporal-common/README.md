@@ -4,7 +4,7 @@
 
 # KuFlow Temporal Common
 
-TODO
+KuFlow utilities to use with Temporal.
 
 ## Documentation
 
