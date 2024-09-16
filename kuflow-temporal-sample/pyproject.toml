@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuflow-temporal-sample"
-version = "2.0.2.dev0"
+version = "2.0.3"
 description = "KuFlow samples"
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
