@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuflow-temporal-activity-robotframework"
-version = "2.0.1"
+version = "2.0.2.dev0"
 description = "KuFlow SDK :: Temporal.io activities to execute Robot Frameworks tasks"
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]

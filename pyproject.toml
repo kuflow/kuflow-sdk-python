@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuflow-sdk-python"
-version = "2.0.1"
+version = "2.0.2.dev0"
 description = "KuFlow packages to build awesome clients"
 license = "MIT"
 authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
