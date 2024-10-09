@@ -77,6 +77,8 @@ from ._models import RobotPage
 from ._models import RobotPageItem
 from ._models import RobotSourceFile
 from ._models import TaskDefinitionSummary
+from ._models import TenantPage
+from ._models import TenantPageItem
 from ._models import TenantUser
 from ._models import TenantUserPage
 from ._models import TenantUserPageItem
@@ -157,6 +159,8 @@ __all__ = [
     "RobotPageItem",
     "RobotSourceFile",
     "TaskDefinitionSummary",
+    "TenantPage",
+    "TenantPageItem",
     "TenantUser",
     "TenantUserPage",
     "TenantUserPageItem",

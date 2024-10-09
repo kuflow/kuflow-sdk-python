@@ -167,6 +167,8 @@ __all__ = [
     "RobotSourceFile",
     "RobotSourceType",
     "TaskDefinitionSummary",
+    "TenantPage",
+    "TenantPageItem",
     "TenantUser",
     "TenantUserPage",
     "TenantUserPageItem",

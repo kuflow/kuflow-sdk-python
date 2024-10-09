@@ -1291,7 +1291,8 @@ class ProcessItemCreateParams(_serialization.Model):
 class ProcessItemMessage(_serialization.Model):
     """ProcessItemMessage.
 
-    :ivar text:
+    :ivar text: Message text in Markdown format according to the specification
+     https://spec.commonmark.org/.
     :vartype text: str
     :ivar data: Json value.
     :vartype data: ~kuflow.rest.models.JsonValue
@@ -1314,7 +1315,8 @@ class ProcessItemMessage(_serialization.Model):
         **kwargs: Any,
     ) -> None:
         """
-        :keyword text:
+        :keyword text: Message text in Markdown format according to the specification
+         https://spec.commonmark.org/.
         :paramtype text: str
         :keyword data: Json value.
         :paramtype data: ~kuflow.rest.models.JsonValue
@@ -1330,7 +1332,8 @@ class ProcessItemMessage(_serialization.Model):
 class ProcessItemMessageCreateParams(_serialization.Model):
     """ProcessItemMessageCreateParams.
 
-    :ivar text:
+    :ivar text: Message text in Markdown format according to the specification
+     https://spec.commonmark.org/.
     :vartype text: str
     :ivar data: Json value.
     :vartype data: ~kuflow.rest.models.JsonValue
@@ -1353,7 +1356,8 @@ class ProcessItemMessageCreateParams(_serialization.Model):
         **kwargs: Any,
     ) -> None:
         """
-        :keyword text:
+        :keyword text: Message text in Markdown format according to the specification
+         https://spec.commonmark.org/.
         :paramtype text: str
         :keyword data: Json value.
         :paramtype data: ~kuflow.rest.models.JsonValue
@@ -1369,7 +1373,8 @@ class ProcessItemMessageCreateParams(_serialization.Model):
 class ProcessItemMessagePageItem(_serialization.Model):
     """ProcessItemMessagePageItem.
 
-    :ivar text:
+    :ivar text: Message text in Markdown format according to the specification
+     https://spec.commonmark.org/.
     :vartype text: str
     :ivar data_structure_data_definition_code:
     :vartype data_structure_data_definition_code: str
@@ -1384,7 +1389,8 @@ class ProcessItemMessagePageItem(_serialization.Model):
         self, *, text: Optional[str] = None, data_structure_data_definition_code: Optional[str] = None, **kwargs: Any
     ) -> None:
         """
-        :keyword text:
+        :keyword text: Message text in Markdown format according to the specification
+         https://spec.commonmark.org/.
         :paramtype text: str
         :keyword data_structure_data_definition_code:
         :paramtype data_structure_data_definition_code: str
@@ -2134,7 +2140,7 @@ class RobotPage(Page):
         self.content = content
 
 
-class RobotPageItem(AbstractAudited):
+class RobotPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     """RobotPageItem.
 
     All required parameters must be populated in order to send to server.
@@ -2155,6 +2161,10 @@ class RobotPageItem(AbstractAudited):
     :vartype name: str
     :ivar description: Robot description.
     :vartype description: str
+    :ivar source_type: Robot source type. Required. Known values are: "PACKAGE" and "UNKNOWN".
+    :vartype source_type: str or ~kuflow.rest.models.RobotSourceType
+    :ivar source_file: Robot source type. Required.
+    :vartype source_file: ~kuflow.rest.models.RobotSourceFile
     :ivar tenant_id: Tenant ID. Required.
     :vartype tenant_id: str
     """
@@ -2164,6 +2174,8 @@ class RobotPageItem(AbstractAudited):
         "code": {"required": True, "max_length": 50, "min_length": 1},
         "name": {"required": True, "max_length": 50, "min_length": 1},
         "description": {"max_length": 4000, "min_length": 1},
+        "source_type": {"required": True},
+        "source_file": {"required": True},
         "tenant_id": {"required": True},
     }
 
@@ -2176,6 +2188,8 @@ class RobotPageItem(AbstractAudited):
         "code": {"key": "code", "type": "str"},
         "name": {"key": "name", "type": "str"},
         "description": {"key": "description", "type": "str"},
+        "source_type": {"key": "sourceType", "type": "str"},
+        "source_file": {"key": "sourceFile", "type": "RobotSourceFile"},
         "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
@@ -2185,6 +2199,8 @@ class RobotPageItem(AbstractAudited):
         id: str,  # pylint: disable=redefined-builtin
         code: str,
         name: str,
+        source_type: Union[str, "_models.RobotSourceType"],
+        source_file: "_models.RobotSourceFile",
         tenant_id: str,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
@@ -2210,6 +2226,10 @@ class RobotPageItem(AbstractAudited):
         :paramtype name: str
         :keyword description: Robot description.
         :paramtype description: str
+        :keyword source_type: Robot source type. Required. Known values are: "PACKAGE" and "UNKNOWN".
+        :paramtype source_type: str or ~kuflow.rest.models.RobotSourceType
+        :keyword source_file: Robot source type. Required.
+        :paramtype source_file: ~kuflow.rest.models.RobotSourceFile
         :keyword tenant_id: Tenant ID. Required.
         :paramtype tenant_id: str
         """
@@ -2224,6 +2244,8 @@ class RobotPageItem(AbstractAudited):
         self.code = code
         self.name = name
         self.description = description
+        self.source_type = source_type
+        self.source_file = source_file
         self.tenant_id = tenant_id
 
 
@@ -2342,6 +2364,79 @@ class TaskDefinitionSummary(_serialization.Model):
         self.id = id
         self.version = version
         self.code = code
+        self.name = name
+
+
+class TenantPage(Page):
+    """TenantPage.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar metadata: Required.
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
+    :ivar content: Required.
+    :vartype content: list[~kuflow.rest.models.TenantPageItem]
+    """
+
+    _validation = {
+        "metadata": {"required": True},
+        "content": {"required": True},
+    }
+
+    _attribute_map = {
+        "metadata": {"key": "metadata", "type": "PageMetadata"},
+        "content": {"key": "content", "type": "[TenantPageItem]"},
+    }
+
+    def __init__(
+        self, *, metadata: "_models.PageMetadata", content: List["_models.TenantPageItem"], **kwargs: Any
+    ) -> None:
+        """
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        :keyword content: Required.
+        :paramtype content: list[~kuflow.rest.models.TenantPageItem]
+        """
+        super().__init__(metadata=metadata, **kwargs)
+        self.content = content
+
+
+class TenantPageItem(_serialization.Model):
+    """TenantPageItem.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Required.
+    :vartype id: str
+    :ivar name: Required.
+    :vartype name: str
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "name": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        name: str,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword name: Required.
+        :paramtype name: str
+        """
+        super().__init__(**kwargs)
+        self.id = id
         self.name = name
 
 

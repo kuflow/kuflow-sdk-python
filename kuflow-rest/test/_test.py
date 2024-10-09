@@ -45,6 +45,13 @@ def main() -> int:
     # Variables
     group_id_users = "7bed4109-c867-4f25-869b-071881a82a2b"
     group_id_owners = "f0565aee-7a90-463f-9a24-65f5e9da0210"
+    tenant_id = "d434658f-abe2-491a-b2ef-65f5e9da0210"
+
+    # Test tenant operations
+    tenants = client.tenant.find_tenants()
+    print(tenants)
+    tenants = client.tenant.find_tenants(tenant_id=[tenant_id])
+    print(tenants)
 
     # Test group operations
     principals = client.principal.find_principals()

@@ -28,6 +28,7 @@ from ._principal_operations import PrincipalOperations
 from ._process_item_operations import ProcessItemOperations
 from ._process_operations import ProcessOperations
 from ._robot_operations import RobotOperations
+from ._tenant_operations import TenantOperations
 from ._tenant_user_operations import TenantUserOperations
 from ._worker_operations import WorkerOperations
 
@@ -38,6 +39,7 @@ __all__ = [
     "ProcessItemOperations",
     "ProcessOperations",
     "RobotOperations",
+    "TenantOperations",
     "TenantUserOperations",
     "WorkerOperations",
 ]
