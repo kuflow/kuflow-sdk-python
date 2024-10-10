@@ -77,6 +77,7 @@ from ._models import RobotPage
 from ._models import RobotPageItem
 from ._models import RobotSourceFile
 from ._models import TaskDefinitionSummary
+from ._models import Tenant
 from ._models import TenantPage
 from ._models import TenantPageItem
 from ._models import TenantUser
@@ -106,6 +107,7 @@ from ._enums import RobotAssetPlatform
 from ._enums import RobotAssetType
 from ._enums import RobotFilterContext
 from ._enums import RobotSourceType
+from ._enums import TenantPricingPlan
 from ._enums import WebhookType
 from ._patch import __all__ as _patch_all
 from ._patch import *  # pylint: disable=unused-wildcard-import
@@ -159,6 +161,7 @@ __all__ = [
     "RobotPageItem",
     "RobotSourceFile",
     "TaskDefinitionSummary",
+    "Tenant",
     "TenantPage",
     "TenantPageItem",
     "TenantUser",
@@ -187,6 +190,7 @@ __all__ = [
     "RobotAssetType",
     "RobotFilterContext",
     "RobotSourceType",
+    "TenantPricingPlan",
     "WebhookType",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])

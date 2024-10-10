@@ -52,6 +52,8 @@ def main() -> int:
     print(tenants)
     tenants = client.tenant.find_tenants(tenant_id=[tenant_id])
     print(tenants)
+    tenant = client.tenant.retrieve_tenant(tenant_id=[tenant_id])
+    print(tenant)
 
     # Test group operations
     principals = client.principal.find_principals()

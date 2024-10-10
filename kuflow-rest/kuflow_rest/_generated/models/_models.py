@@ -2367,6 +2367,85 @@ class TaskDefinitionSummary(_serialization.Model):
         self.name = name
 
 
+class Tenant(AbstractAudited):
+    """Tenant.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Required.
+    :vartype id: str
+    :ivar name: Required.
+    :vartype name: str
+    :ivar plan: Tenant pricing plan. Required. Known values are: "FREE", "PREMIUM", and
+     "UNLIMITED".
+    :vartype plan: str or ~kuflow.rest.models.TenantPricingPlan
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "name": {"required": True},
+        "plan": {"required": True},
+    }
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+        "plan": {"key": "plan", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        name: str,
+        plan: Union[str, "_models.TenantPricingPlan"],
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword name: Required.
+        :paramtype name: str
+        :keyword plan: Tenant pricing plan. Required. Known values are: "FREE", "PREMIUM", and
+         "UNLIMITED".
+        :paramtype plan: str or ~kuflow.rest.models.TenantPricingPlan
+        """
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.name = name
+        self.plan = plan
+
+
 class TenantPage(Page):
     """TenantPage.
 

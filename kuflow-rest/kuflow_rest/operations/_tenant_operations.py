@@ -87,3 +87,15 @@ class TenantOperations:
             **kwargs,
         )
 
+    def retrieve_tenant(self, id: str, **kwargs: Any) -> _models.Tenant:
+        """Get a Tenant by ID.
+
+        Returns the requested Tenant when has access to do it.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: Tenant
+        :rtype: ~kuflow.rest.models.Tenant
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.tenant.retrieve_tenant(id=id, **kwargs)
