@@ -38,6 +38,7 @@ from .operations import (
     ProcessItemOperations,
     ProcessOperations,
     RobotOperations,
+    TenantOperations,
     TenantUserOperations,
     WorkerOperations,
 )
@@ -236,6 +237,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         self.process_item = ProcessItemOperations(self._kuflow_client)
         self.worker = WorkerOperations(self._kuflow_client)
         self.robot = RobotOperations(self._kuflow_client)
+        self.tenant = TenantOperations(self._kuflow_client)
 
     def __enter__(self):
         self._kuflow_client.__enter__()  # pylint:disable=no-member

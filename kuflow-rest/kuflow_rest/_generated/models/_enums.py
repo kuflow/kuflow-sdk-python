@@ -135,6 +135,14 @@ class RobotSourceType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     UNKNOWN = "UNKNOWN"
 
 
+class TenantPricingPlan(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Tenant pricing plan."""
+
+    FREE = "FREE"
+    PREMIUM = "PREMIUM"
+    UNLIMITED = "UNLIMITED"
+
+
 class WebhookType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Type of the Event."""
 
