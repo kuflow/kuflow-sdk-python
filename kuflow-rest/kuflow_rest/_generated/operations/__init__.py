@@ -29,18 +29,24 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 #
 # --------------------------------------------------------------------------
+# pylint: disable=wrong-import-position
 
-from ._authentication_operations import AuthenticationOperations
-from ._principal_operations import PrincipalOperations
-from ._tenant_operations import TenantOperations
-from ._tenant_user_operations import TenantUserOperations
-from ._process_operations import ProcessOperations
-from ._process_item_operations import ProcessItemOperations
-from ._worker_operations import WorkerOperations
-from ._robot_operations import RobotOperations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ._patch import *  # pylint: disable=unused-wildcard-import
+
+from ._authentication_operations import AuthenticationOperations  # type: ignore
+from ._principal_operations import PrincipalOperations  # type: ignore
+from ._tenant_operations import TenantOperations  # type: ignore
+from ._tenant_user_operations import TenantUserOperations  # type: ignore
+from ._process_operations import ProcessOperations  # type: ignore
+from ._process_item_operations import ProcessItemOperations  # type: ignore
+from ._worker_operations import WorkerOperations  # type: ignore
+from ._robot_operations import RobotOperations  # type: ignore
 
 from ._patch import __all__ as _patch_all
-from ._patch import *  # pylint: disable=unused-wildcard-import
+from ._patch import *
 from ._patch import patch_sdk as _patch_sdk
 
 __all__ = [
@@ -53,5 +59,5 @@ __all__ = [
     "WorkerOperations",
     "RobotOperations",
 ]
-__all__.extend([p for p in _patch_all if p not in __all__])
+__all__.extend([p for p in _patch_all if p not in __all__])  # pyright: ignore
 _patch_sdk()
