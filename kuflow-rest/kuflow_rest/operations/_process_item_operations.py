@@ -49,7 +49,7 @@ class ProcessItemOperations:
         process_id: Optional[Union[str, List[str]]] = None,
         type: Optional[List[_models.ProcessItemType]] = None,
         task_state: Optional[Union[_models.ProcessItemTaskState, List[_models.ProcessItemTaskState]]] = None,
-        task_definition_code: Optional[Union[str, List[str]]] = None,
+        process_item_definition_code: Optional[Union[str, List[str]]] = None,
         tenant_id: Optional[Union[str, List[str]]] = None,
         **kwargs: Any,
     ) -> _models.ProcessItemPage:
@@ -75,8 +75,8 @@ class ProcessItemOperations:
         :type type: list[~kuflow.rest.models.ProcessItemType]
         :keyword task_state: Filter by an array of process item task states. Default value is None.
         :type task_state: list[~kuflow.rest.models.ProcessItemTaskState]
-        :keyword task_definition_code: Filter by an array of task definition codes. Default value is None.
-        :type task_definition_code: list[str]
+        :keyword process_item_definition_code: Filter by an array of process item definition codes. Default value is None.
+        :type process_item_definition_code: list[str]
         :keyword tenant_id: Filter process items that exists in one of tenant ids. Default value is None.
         :type tenant_id: Optional[Union[str, List[str]]]
         :return: ProcessItemPage
@@ -95,8 +95,8 @@ class ProcessItemOperations:
         if task_state is not None and isinstance(task_state, _models.ProcessItemTaskState):
             task_state = [task_state]
 
-        if task_definition_code is not None and isinstance(task_definition_code, str):
-            task_definition_code = [task_definition_code]
+        if process_item_definition_code is not None and isinstance(process_item_definition_code, str):
+            process_item_definition_code = [process_item_definition_code]
 
         if tenant_id is not None and isinstance(tenant_id, str):
             tenant_id = [tenant_id]
@@ -108,7 +108,7 @@ class ProcessItemOperations:
             process_id=process_id,
             type=type,
             task_state=task_state,
-            task_definition_code=task_definition_code,
+            process_item_definition_code=process_item_definition_code,
             tenant_id=tenant_id,
             **kwargs,
         )

@@ -100,7 +100,7 @@ class ProcessItemOperations:
         process_id: Optional[List[str]] = None,
         type: Optional[List[Union[str, _models.ProcessItemType]]] = None,
         task_state: Optional[List[Union[str, _models.ProcessItemTaskState]]] = None,
-        task_definition_code: Optional[List[str]] = None,
+        process_item_definition_code: Optional[List[str]] = None,
         tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> _models.ProcessItemPage:
@@ -128,9 +128,9 @@ class ProcessItemOperations:
         :paramtype type: list[str or ~kuflow.rest.models.ProcessItemType]
         :keyword task_state: Filter by an array of task states. Default value is None.
         :paramtype task_state: list[str or ~kuflow.rest.models.ProcessItemTaskState]
-        :keyword task_definition_code: Filter by an array of task definition codes. Default value is
-         None.
-        :paramtype task_definition_code: list[str]
+        :keyword process_item_definition_code: Filter by an array of task definition codes. Default
+         value is None.
+        :paramtype process_item_definition_code: list[str]
         :keyword tenant_id: Filter by tenantId. Default value is None.
         :paramtype tenant_id: list[str]
         :return: ProcessItemPage
@@ -157,7 +157,7 @@ class ProcessItemOperations:
             process_id=process_id,
             type=type,
             task_state=task_state,
-            task_definition_code=task_definition_code,
+            process_item_definition_code=process_item_definition_code,
             tenant_id=tenant_id,
             headers=_headers,
             params=_params,

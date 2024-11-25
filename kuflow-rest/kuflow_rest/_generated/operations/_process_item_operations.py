@@ -71,7 +71,7 @@ def build_find_process_items_request(
     process_id: Optional[List[str]] = None,
     type: Optional[List[Union[str, _models.ProcessItemType]]] = None,
     task_state: Optional[List[Union[str, _models.ProcessItemTaskState]]] = None,
-    task_definition_code: Optional[List[str]] = None,
+    process_item_definition_code: Optional[List[str]] = None,
     tenant_id: Optional[List[str]] = None,
     **kwargs: Any,
 ) -> HttpRequest:
@@ -96,9 +96,10 @@ def build_find_process_items_request(
         _params["type"] = [_SERIALIZER.query("type", q, "str") if q is not None else "" for q in type]
     if task_state is not None:
         _params["taskState"] = [_SERIALIZER.query("task_state", q, "str") if q is not None else "" for q in task_state]
-    if task_definition_code is not None:
-        _params["taskDefinitionCode"] = [
-            _SERIALIZER.query("task_definition_code", q, "str") if q is not None else "" for q in task_definition_code
+    if process_item_definition_code is not None:
+        _params["processItemDefinitionCode"] = [
+            _SERIALIZER.query("process_item_definition_code", q, "str") if q is not None else ""
+            for q in process_item_definition_code
         ]
     if tenant_id is not None:
         _params["tenantId"] = [_SERIALIZER.query("tenant_id", q, "str") if q is not None else "" for q in tenant_id]
@@ -331,7 +332,7 @@ class ProcessItemOperations:
         process_id: Optional[List[str]] = None,
         type: Optional[List[Union[str, _models.ProcessItemType]]] = None,
         task_state: Optional[List[Union[str, _models.ProcessItemTaskState]]] = None,
-        task_definition_code: Optional[List[str]] = None,
+        process_item_definition_code: Optional[List[str]] = None,
         tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> _models.ProcessItemPage:
@@ -359,9 +360,9 @@ class ProcessItemOperations:
         :paramtype type: list[str or ~kuflow.rest.models.ProcessItemType]
         :keyword task_state: Filter by an array of task states. Default value is None.
         :paramtype task_state: list[str or ~kuflow.rest.models.ProcessItemTaskState]
-        :keyword task_definition_code: Filter by an array of task definition codes. Default value is
-         None.
-        :paramtype task_definition_code: list[str]
+        :keyword process_item_definition_code: Filter by an array of task definition codes. Default
+         value is None.
+        :paramtype process_item_definition_code: list[str]
         :keyword tenant_id: Filter by tenantId. Default value is None.
         :paramtype tenant_id: list[str]
         :return: ProcessItemPage
@@ -388,7 +389,7 @@ class ProcessItemOperations:
             process_id=process_id,
             type=type,
             task_state=task_state,
-            task_definition_code=task_definition_code,
+            process_item_definition_code=process_item_definition_code,
             tenant_id=tenant_id,
             headers=_headers,
             params=_params,

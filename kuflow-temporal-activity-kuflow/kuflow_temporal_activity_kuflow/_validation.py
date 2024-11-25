@@ -165,16 +165,39 @@ def validate_process_item_create_request(
         )
 
     if request.type is models_rest.ProcessItemType.TASK:
-        if not request.task:
+        if not request.process_item_definition_code:
             raise ApplicationError(
-                "'task' is required",
+                "'process_item_definition_code' is required",
                 type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
                 non_retryable=True,
             )
 
-        if not request.task.task_definition_code:
+    if request.type is models_rest.ProcessItemType.MESSAGE:
+        if not request.message:
             raise ApplicationError(
-                "'task.task_definition_code' is required",
+                "'message' is required",
+                type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+                non_retryable=True,
+            )
+
+        if not request.message.text and not request.message.data:
+            raise ApplicationError(
+                "'message.text' and/or 'message.data' is required for message items",
+                type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+                non_retryable=True,
+            )
+
+        if request.message.data and not request.message.data_structure_data_definition_code:
+            raise ApplicationError(
+                "'message.dataStructureDataDefinitionCode' is required for message items when 'message.data' is set",
+                type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+                non_retryable=True,
+            )
+
+    if request.type is models_rest.ProcessItemType.THREAD:
+        if not request.process_item_definition_code:
+            raise ApplicationError(
+                "'processItemDefinitionCode' is required for thread items",
                 type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
                 non_retryable=True,
             )

@@ -52,10 +52,11 @@ from ._models import PrincipalUser
 from ._models import Process
 from ._models import ProcessChangeInitiatorParams
 from ._models import ProcessCreateParams
-from ._models import ProcessDefinitionSummary
+from ._models import ProcessDefinitionRef
 from ._models import ProcessEntityUpdateParams
 from ._models import ProcessItem
 from ._models import ProcessItemCreateParams
+from ._models import ProcessItemDefinitionRef
 from ._models import ProcessItemMessage
 from ._models import ProcessItemMessageCreateParams
 from ._models import ProcessItemMessagePageItem
@@ -76,7 +77,6 @@ from ._models import Robot
 from ._models import RobotPage
 from ._models import RobotPageItem
 from ._models import RobotSourceFile
-from ._models import TaskDefinitionSummary
 from ._models import Tenant
 from ._models import TenantPage
 from ._models import TenantPageItem
@@ -136,10 +136,11 @@ __all__ = [
     "Process",
     "ProcessChangeInitiatorParams",
     "ProcessCreateParams",
-    "ProcessDefinitionSummary",
+    "ProcessDefinitionRef",
     "ProcessEntityUpdateParams",
     "ProcessItem",
     "ProcessItemCreateParams",
+    "ProcessItemDefinitionRef",
     "ProcessItemMessage",
     "ProcessItemMessageCreateParams",
     "ProcessItemMessagePageItem",
@@ -160,7 +161,6 @@ __all__ = [
     "RobotPage",
     "RobotPageItem",
     "RobotSourceFile",
-    "TaskDefinitionSummary",
     "Tenant",
     "TenantPage",
     "TenantPageItem",
