@@ -77,7 +77,7 @@ license-header: |
 # hide-clients: true
 
 use-extension:
-  '@autorest/python': '6.17.1'
+  '@autorest/python': '6.26.5'
 
 modelerfour:
   seal-single-value-enum-by-default: false

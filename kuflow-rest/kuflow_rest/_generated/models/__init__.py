@@ -29,88 +29,99 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 #
 # --------------------------------------------------------------------------
+# pylint: disable=wrong-import-position
 
-from ._models import AbstractAudited
-from ._models import Authentication
-from ._models import AuthenticationCreateParams
-from ._models import AuthenticationEngineCertificate
-from ._models import AuthenticationEngineCertificateTls
-from ._models import AuthenticationEngineToken
-from ._models import DefaultError
-from ._models import DefaultErrorInfo
-from ._models import DocumentReference
-from ._models import JsonPatchOperation
-from ._models import JsonValue
-from ._models import JsonValueError
-from ._models import Page
-from ._models import PageMetadata
-from ._models import Principal
-from ._models import PrincipalApplication
-from ._models import PrincipalPage
-from ._models import PrincipalPageItem
-from ._models import PrincipalUser
-from ._models import Process
-from ._models import ProcessChangeInitiatorParams
-from ._models import ProcessCreateParams
-from ._models import ProcessDefinitionRef
-from ._models import ProcessEntityUpdateParams
-from ._models import ProcessItem
-from ._models import ProcessItemCreateParams
-from ._models import ProcessItemDefinitionRef
-from ._models import ProcessItemMessage
-from ._models import ProcessItemMessageCreateParams
-from ._models import ProcessItemMessagePageItem
-from ._models import ProcessItemPage
-from ._models import ProcessItemPageItem
-from ._models import ProcessItemTask
-from ._models import ProcessItemTaskAppendLogParams
-from ._models import ProcessItemTaskAssignParams
-from ._models import ProcessItemTaskCreateParams
-from ._models import ProcessItemTaskDataUpdateParams
-from ._models import ProcessItemTaskLog
-from ._models import ProcessItemTaskPageItem
-from ._models import ProcessMetadataUpdateParams
-from ._models import ProcessPage
-from ._models import ProcessPageItem
-from ._models import ProcessRelated
-from ._models import Robot
-from ._models import RobotPage
-from ._models import RobotPageItem
-from ._models import RobotSourceFile
-from ._models import Tenant
-from ._models import TenantPage
-from ._models import TenantPageItem
-from ._models import TenantUser
-from ._models import TenantUserPage
-from ._models import TenantUserPageItem
-from ._models import WebhookEvent
-from ._models import WebhookEventProcessCreated
-from ._models import WebhookEventProcessCreatedData
-from ._models import WebhookEventProcessItemCreated
-from ._models import WebhookEventProcessItemCreatedData
-from ._models import WebhookEventProcessItemTaskStateChanged
-from ._models import WebhookEventProcessItemTaskStateChangedData
-from ._models import WebhookEventProcessStateChanged
-from ._models import WebhookEventProcessStateChangedData
-from ._models import Worker
-from ._models import WorkerCreateParams
+from typing import TYPE_CHECKING
 
-from ._enums import AuthenticationType
-from ._enums import JsonPatchOperationType
-from ._enums import PrincipalType
-from ._enums import ProcessItemTaskLogLevel
-from ._enums import ProcessItemTaskState
-from ._enums import ProcessItemType
-from ._enums import ProcessState
-from ._enums import RobotAssetArchitecture
-from ._enums import RobotAssetPlatform
-from ._enums import RobotAssetType
-from ._enums import RobotFilterContext
-from ._enums import RobotSourceType
-from ._enums import TenantPricingPlan
-from ._enums import WebhookType
+if TYPE_CHECKING:
+    from ._patch import *  # pylint: disable=unused-wildcard-import
+
+
+from ._models import (  # type: ignore
+    AbstractAudited,
+    Authentication,
+    AuthenticationCreateParams,
+    AuthenticationEngineCertificate,
+    AuthenticationEngineCertificateTls,
+    AuthenticationEngineToken,
+    DefaultError,
+    DefaultErrorInfo,
+    DocumentReference,
+    JsonPatchOperation,
+    JsonValue,
+    JsonValueError,
+    Page,
+    PageMetadata,
+    Principal,
+    PrincipalApplication,
+    PrincipalPage,
+    PrincipalPageItem,
+    PrincipalUser,
+    Process,
+    ProcessChangeInitiatorParams,
+    ProcessCreateParams,
+    ProcessDefinitionRef,
+    ProcessEntityUpdateParams,
+    ProcessItem,
+    ProcessItemCreateParams,
+    ProcessItemDefinitionRef,
+    ProcessItemMessage,
+    ProcessItemMessageCreateParams,
+    ProcessItemMessagePageItem,
+    ProcessItemPage,
+    ProcessItemPageItem,
+    ProcessItemTask,
+    ProcessItemTaskAppendLogParams,
+    ProcessItemTaskAssignParams,
+    ProcessItemTaskCreateParams,
+    ProcessItemTaskDataUpdateParams,
+    ProcessItemTaskLog,
+    ProcessItemTaskPageItem,
+    ProcessMetadataUpdateParams,
+    ProcessPage,
+    ProcessPageItem,
+    ProcessRelated,
+    Robot,
+    RobotPage,
+    RobotPageItem,
+    RobotSourceFile,
+    Tenant,
+    TenantPage,
+    TenantPageItem,
+    TenantUser,
+    TenantUserPage,
+    TenantUserPageItem,
+    WebhookEvent,
+    WebhookEventProcessCreated,
+    WebhookEventProcessCreatedData,
+    WebhookEventProcessItemCreated,
+    WebhookEventProcessItemCreatedData,
+    WebhookEventProcessItemTaskStateChanged,
+    WebhookEventProcessItemTaskStateChangedData,
+    WebhookEventProcessStateChanged,
+    WebhookEventProcessStateChangedData,
+    Worker,
+    WorkerCreateParams,
+)
+
+from ._enums import (  # type: ignore
+    AuthenticationType,
+    JsonPatchOperationType,
+    PrincipalType,
+    ProcessItemTaskLogLevel,
+    ProcessItemTaskState,
+    ProcessItemType,
+    ProcessState,
+    RobotAssetArchitecture,
+    RobotAssetPlatform,
+    RobotAssetType,
+    RobotFilterContext,
+    RobotSourceType,
+    TenantPricingPlan,
+    WebhookType,
+)
 from ._patch import __all__ as _patch_all
-from ._patch import *  # pylint: disable=unused-wildcard-import
+from ._patch import *
 from ._patch import patch_sdk as _patch_sdk
 
 __all__ = [
@@ -193,5 +204,5 @@ __all__ = [
     "TenantPricingPlan",
     "WebhookType",
 ]
-__all__.extend([p for p in _patch_all if p not in __all__])
+__all__.extend([p for p in _patch_all if p not in __all__])  # pyright: ignore
 _patch_sdk()

@@ -1,5 +1,4 @@
 # coding=utf-8
-# pylint: disable=too-many-lines
 # --------------------------------------------------------------------------
 #
 # MIT License
@@ -37,7 +36,6 @@ from typing import Any, Dict, List, Optional, TYPE_CHECKING, Union
 from .. import _serialization
 
 if TYPE_CHECKING:
-    # pylint: disable=unused-import,ungrouped-imports
     from .. import models as _models
 
 
@@ -834,7 +832,7 @@ class PrincipalUser(_serialization.Model):
         self.email = email
 
 
-class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
+class Process(AbstractAudited):
     """Process.
 
     All required parameters must be populated in order to send to server.
@@ -1100,7 +1098,7 @@ class ProcessEntityUpdateParams(_serialization.Model):
         self.entity = entity
 
 
-class ProcessItem(AbstractAudited):  # pylint: disable=too-many-instance-attributes
+class ProcessItem(AbstractAudited):
     """ProcessItem.
 
     All required parameters must be populated in order to send to server.
@@ -1486,7 +1484,7 @@ class ProcessItemPage(Page):
         self.content = content
 
 
-class ProcessItemPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attributes
+class ProcessItemPageItem(AbstractAudited):
     """ProcessItemPageItem.
 
     All required parameters must be populated in order to send to server.
@@ -2016,7 +2014,7 @@ class ProcessRelated(_serialization.Model):
         self.outcoming = outcoming
 
 
-class Robot(AbstractAudited):  # pylint: disable=too-many-instance-attributes
+class Robot(AbstractAudited):
     """Robot.
 
     All required parameters must be populated in order to send to server.
@@ -2166,7 +2164,7 @@ class RobotPage(Page):
         self.content = content
 
 
-class RobotPageItem(AbstractAudited):  # pylint: disable=too-many-instance-attributes
+class RobotPageItem(AbstractAudited):
     """RobotPageItem.
 
     All required parameters must be populated in order to send to server.
@@ -3177,7 +3175,7 @@ class WebhookEventProcessStateChangedData(_serialization.Model):
         self.process_state = process_state
 
 
-class Worker(AbstractAudited):  # pylint: disable=too-many-instance-attributes
+class Worker(AbstractAudited):
     """Worker.
 
     All required parameters must be populated in order to send to server.
