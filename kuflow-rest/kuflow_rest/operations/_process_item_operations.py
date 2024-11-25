@@ -75,7 +75,8 @@ class ProcessItemOperations:
         :type type: list[~kuflow.rest.models.ProcessItemType]
         :keyword task_state: Filter by an array of process item task states. Default value is None.
         :type task_state: list[~kuflow.rest.models.ProcessItemTaskState]
-        :keyword process_item_definition_code: Filter by an array of process item definition codes. Default value is None.
+        :keyword process_item_definition_code: Filter by an array of process item definition codes.
+                                               Default value is None.
         :type process_item_definition_code: list[str]
         :keyword tenant_id: Filter process items that exists in one of tenant ids. Default value is None.
         :type tenant_id: Optional[Union[str, List[str]]]

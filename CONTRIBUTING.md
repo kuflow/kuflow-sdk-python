@@ -58,15 +58,19 @@ Then, execute
 ```bash
 ./scripts/create_local_version.sh
 ```
-After that, execute a lock in each submodule:
+After that, execute a lock in each submodule and in the root module:
 
 ```bash
 ./scripts/poetry_run_on_each.sh lock
+
+poetry lock
 ```
 
 Or without update dependencies:
 ```bash
 ./scripts/poetry_run_on_each.sh lock --no-update
+
+poetry lock
 ```
 
 ### See more
