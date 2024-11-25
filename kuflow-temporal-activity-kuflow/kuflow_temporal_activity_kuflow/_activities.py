@@ -206,10 +206,16 @@ class KuFlowActivities:
         request: models_temporal.ProcessItemFindRequest,
     ) -> models_temporal.ProcessItemFindResponse:
         try:
-            # Get all non-None properties of the object to avoid overwrite defaults
-            non_none_props = {k: v for k, v in vars(request).items() if v is not None}
-
-            process_items = self._kuflow_client.process_item.find_process_items(**non_none_props)
+            process_items = self._kuflow_client.process_item.find_process_items(
+                size=request.size,
+                page=request.page,
+                sort=request.sorts,
+                process_id=request.process_ids,
+                type=request.types,
+                task_state=request.task_states,
+                process_item_definition_code=request.process_item_definition_codes,
+                tenant_id=request.tenant_ids,
+            )
 
             return models_temporal.ProcessItemFindResponse(process_items=process_items)
         except Exception as err:
@@ -243,7 +249,9 @@ class KuFlowActivities:
                 process_id=request.process_id,
                 owner_id=request.owner_id,
                 owner_email=request.owner_email,
+                process_item_definition_code=request.process_item_definition_code,
                 task=request.task,
+                metadata=request.message,
             )
 
             process_item = self._kuflow_client.process_item.create_process_item(process_item_create_params=params)

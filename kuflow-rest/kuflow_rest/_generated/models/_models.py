@@ -852,8 +852,8 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     :ivar state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
      "CANCELLED".
     :vartype state: str or ~kuflow.rest.models.ProcessState
-    :ivar process_definition: Required.
-    :vartype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
+    :ivar process_definition_ref:
+    :vartype process_definition_ref: ~kuflow.rest.models.ProcessDefinitionRef
     :ivar metadata: Json value.
     :vartype metadata: ~kuflow.rest.models.JsonValue
     :ivar entity: Json value.
@@ -869,7 +869,6 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
     _validation = {
         "id": {"required": True},
         "state": {"required": True},
-        "process_definition": {"required": True},
         "tenant_id": {"required": True},
     }
 
@@ -880,7 +879,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
         "state": {"key": "state", "type": "str"},
-        "process_definition": {"key": "processDefinition", "type": "ProcessDefinitionSummary"},
+        "process_definition_ref": {"key": "processDefinitionRef", "type": "ProcessDefinitionRef"},
         "metadata": {"key": "metadata", "type": "JsonValue"},
         "entity": {"key": "entity", "type": "JsonValue"},
         "process_related": {"key": "processRelated", "type": "ProcessRelated"},
@@ -893,12 +892,12 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         *,
         id: str,  # pylint: disable=redefined-builtin
         state: Union[str, "_models.ProcessState"],
-        process_definition: "_models.ProcessDefinitionSummary",
         tenant_id: str,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
+        process_definition_ref: Optional["_models.ProcessDefinitionRef"] = None,
         metadata: Optional["_models.JsonValue"] = None,
         entity: Optional["_models.JsonValue"] = None,
         process_related: Optional["_models.ProcessRelated"] = None,
@@ -919,8 +918,8 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         :keyword state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
          "CANCELLED".
         :paramtype state: str or ~kuflow.rest.models.ProcessState
-        :keyword process_definition: Required.
-        :paramtype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
+        :keyword process_definition_ref:
+        :paramtype process_definition_ref: ~kuflow.rest.models.ProcessDefinitionRef
         :keyword metadata: Json value.
         :paramtype metadata: ~kuflow.rest.models.JsonValue
         :keyword entity: Json value.
@@ -941,7 +940,7 @@ class Process(AbstractAudited):  # pylint: disable=too-many-instance-attributes
         )
         self.id = id
         self.state = state
-        self.process_definition = process_definition
+        self.process_definition_ref = process_definition_ref
         self.metadata = metadata
         self.entity = entity
         self.process_related = process_related
@@ -1036,8 +1035,8 @@ class ProcessCreateParams(_serialization.Model):
         self.initiator_email = initiator_email
 
 
-class ProcessDefinitionSummary(_serialization.Model):
-    """ProcessDefinitionSummary.
+class ProcessDefinitionRef(_serialization.Model):
+    """ProcessDefinitionRef.
 
     All required parameters must be populated in order to send to server.
 
@@ -1045,20 +1044,16 @@ class ProcessDefinitionSummary(_serialization.Model):
     :vartype id: str
     :ivar version: Required.
     :vartype version: str
-    :ivar name: Required.
-    :vartype name: str
     """
 
     _validation = {
         "id": {"required": True},
         "version": {"required": True},
-        "name": {"required": True, "max_length": 50, "min_length": 1},
     }
 
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
         "version": {"key": "version", "type": "str"},
-        "name": {"key": "name", "type": "str"},
     }
 
     def __init__(
@@ -1066,7 +1061,6 @@ class ProcessDefinitionSummary(_serialization.Model):
         *,
         id: str,  # pylint: disable=redefined-builtin
         version: str,
-        name: str,
         **kwargs: Any,
     ) -> None:
         """
@@ -1074,13 +1068,10 @@ class ProcessDefinitionSummary(_serialization.Model):
         :paramtype id: str
         :keyword version: Required.
         :paramtype version: str
-        :keyword name: Required.
-        :paramtype name: str
         """
         super().__init__(**kwargs)
         self.id = id
         self.version = version
-        self.name = name
 
 
 class ProcessEntityUpdateParams(_serialization.Model):
@@ -1124,7 +1115,7 @@ class ProcessItem(AbstractAudited):  # pylint: disable=too-many-instance-attribu
     :vartype last_modified_at: ~datetime.datetime
     :ivar id: Required.
     :vartype id: str
-    :ivar type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+    :ivar type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and "THREAD".
     :vartype type: str or ~kuflow.rest.models.ProcessItemType
     :ivar process_id: Required.
     :vartype process_id: str
@@ -1132,6 +1123,8 @@ class ProcessItem(AbstractAudited):  # pylint: disable=too-many-instance-attribu
     :vartype owner_id: str
     :ivar tenant_id: Tenant ID.
     :vartype tenant_id: str
+    :ivar process_item_definition_ref:
+    :vartype process_item_definition_ref: ~kuflow.rest.models.ProcessItemDefinitionRef
     :ivar task:
     :vartype task: ~kuflow.rest.models.ProcessItemTask
     :ivar message:
@@ -1154,6 +1147,7 @@ class ProcessItem(AbstractAudited):  # pylint: disable=too-many-instance-attribu
         "process_id": {"key": "processId", "type": "str"},
         "owner_id": {"key": "ownerId", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
+        "process_item_definition_ref": {"key": "processItemDefinitionRef", "type": "ProcessItemDefinitionRef"},
         "task": {"key": "task", "type": "ProcessItemTask"},
         "message": {"key": "message", "type": "ProcessItemMessage"},
     }
@@ -1170,6 +1164,7 @@ class ProcessItem(AbstractAudited):  # pylint: disable=too-many-instance-attribu
         last_modified_at: Optional[datetime.datetime] = None,
         owner_id: Optional[str] = None,
         tenant_id: Optional[str] = None,
+        process_item_definition_ref: Optional["_models.ProcessItemDefinitionRef"] = None,
         task: Optional["_models.ProcessItemTask"] = None,
         message: Optional["_models.ProcessItemMessage"] = None,
         **kwargs: Any,
@@ -1185,7 +1180,7 @@ class ProcessItem(AbstractAudited):  # pylint: disable=too-many-instance-attribu
         :paramtype last_modified_at: ~datetime.datetime
         :keyword id: Required.
         :paramtype id: str
-        :keyword type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+        :keyword type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and "THREAD".
         :paramtype type: str or ~kuflow.rest.models.ProcessItemType
         :keyword process_id: Required.
         :paramtype process_id: str
@@ -1193,6 +1188,8 @@ class ProcessItem(AbstractAudited):  # pylint: disable=too-many-instance-attribu
         :paramtype owner_id: str
         :keyword tenant_id: Tenant ID.
         :paramtype tenant_id: str
+        :keyword process_item_definition_ref:
+        :paramtype process_item_definition_ref: ~kuflow.rest.models.ProcessItemDefinitionRef
         :keyword task:
         :paramtype task: ~kuflow.rest.models.ProcessItemTask
         :keyword message:
@@ -1210,6 +1207,7 @@ class ProcessItem(AbstractAudited):  # pylint: disable=too-many-instance-attribu
         self.process_id = process_id
         self.owner_id = owner_id
         self.tenant_id = tenant_id
+        self.process_item_definition_ref = process_item_definition_ref
         self.task = task
         self.message = message
 
@@ -1221,7 +1219,7 @@ class ProcessItemCreateParams(_serialization.Model):
 
     :ivar id:
     :vartype id: str
-    :ivar type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+    :ivar type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and "THREAD".
     :vartype type: str or ~kuflow.rest.models.ProcessItemType
     :ivar process_id: Required.
     :vartype process_id: str
@@ -1229,6 +1227,8 @@ class ProcessItemCreateParams(_serialization.Model):
     :vartype owner_id: str
     :ivar owner_email:
     :vartype owner_email: str
+    :ivar process_item_definition_code:
+    :vartype process_item_definition_code: str
     :ivar task:
     :vartype task: ~kuflow.rest.models.ProcessItemTaskCreateParams
     :ivar message:
@@ -1246,6 +1246,7 @@ class ProcessItemCreateParams(_serialization.Model):
         "process_id": {"key": "processId", "type": "str"},
         "owner_id": {"key": "ownerId", "type": "str"},
         "owner_email": {"key": "ownerEmail", "type": "str"},
+        "process_item_definition_code": {"key": "processItemDefinitionCode", "type": "str"},
         "task": {"key": "task", "type": "ProcessItemTaskCreateParams"},
         "message": {"key": "message", "type": "ProcessItemMessageCreateParams"},
     }
@@ -1258,6 +1259,7 @@ class ProcessItemCreateParams(_serialization.Model):
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
         owner_id: Optional[str] = None,
         owner_email: Optional[str] = None,
+        process_item_definition_code: Optional[str] = None,
         task: Optional["_models.ProcessItemTaskCreateParams"] = None,
         message: Optional["_models.ProcessItemMessageCreateParams"] = None,
         **kwargs: Any,
@@ -1265,7 +1267,7 @@ class ProcessItemCreateParams(_serialization.Model):
         """
         :keyword id:
         :paramtype id: str
-        :keyword type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+        :keyword type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and "THREAD".
         :paramtype type: str or ~kuflow.rest.models.ProcessItemType
         :keyword process_id: Required.
         :paramtype process_id: str
@@ -1273,6 +1275,8 @@ class ProcessItemCreateParams(_serialization.Model):
         :paramtype owner_id: str
         :keyword owner_email:
         :paramtype owner_email: str
+        :keyword process_item_definition_code:
+        :paramtype process_item_definition_code: str
         :keyword task:
         :paramtype task: ~kuflow.rest.models.ProcessItemTaskCreateParams
         :keyword message:
@@ -1284,8 +1288,56 @@ class ProcessItemCreateParams(_serialization.Model):
         self.process_id = process_id
         self.owner_id = owner_id
         self.owner_email = owner_email
+        self.process_item_definition_code = process_item_definition_code
         self.task = task
         self.message = message
+
+
+class ProcessItemDefinitionRef(_serialization.Model):
+    """ProcessItemDefinitionRef.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Required.
+    :vartype id: str
+    :ivar version: Required.
+    :vartype version: str
+    :ivar code: Required.
+    :vartype code: str
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "version": {"required": True},
+        "code": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "version": {"key": "version", "type": "str"},
+        "code": {"key": "code", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        version: str,
+        code: str,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword version: Required.
+        :paramtype version: str
+        :keyword code: Required.
+        :paramtype code: str
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.version = version
+        self.code = code
 
 
 class ProcessItemMessage(_serialization.Model):
@@ -1449,7 +1501,7 @@ class ProcessItemPageItem(AbstractAudited):  # pylint: disable=too-many-instance
     :vartype last_modified_at: ~datetime.datetime
     :ivar id: Required.
     :vartype id: str
-    :ivar type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+    :ivar type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and "THREAD".
     :vartype type: str or ~kuflow.rest.models.ProcessItemType
     :ivar process_id: Required.
     :vartype process_id: str
@@ -1457,6 +1509,8 @@ class ProcessItemPageItem(AbstractAudited):  # pylint: disable=too-many-instance
     :vartype owner_id: str
     :ivar tenant_id: Tenant ID. Required.
     :vartype tenant_id: str
+    :ivar process_item_definition_ref:
+    :vartype process_item_definition_ref: ~kuflow.rest.models.ProcessItemDefinitionRef
     :ivar task:
     :vartype task: ~kuflow.rest.models.ProcessItemTaskPageItem
     :ivar message:
@@ -1480,6 +1534,7 @@ class ProcessItemPageItem(AbstractAudited):  # pylint: disable=too-many-instance
         "process_id": {"key": "processId", "type": "str"},
         "owner_id": {"key": "ownerId", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
+        "process_item_definition_ref": {"key": "processItemDefinitionRef", "type": "ProcessItemDefinitionRef"},
         "task": {"key": "task", "type": "ProcessItemTaskPageItem"},
         "message": {"key": "message", "type": "ProcessItemMessagePageItem"},
     }
@@ -1496,6 +1551,7 @@ class ProcessItemPageItem(AbstractAudited):  # pylint: disable=too-many-instance
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
         owner_id: Optional[str] = None,
+        process_item_definition_ref: Optional["_models.ProcessItemDefinitionRef"] = None,
         task: Optional["_models.ProcessItemTaskPageItem"] = None,
         message: Optional["_models.ProcessItemMessagePageItem"] = None,
         **kwargs: Any,
@@ -1511,7 +1567,7 @@ class ProcessItemPageItem(AbstractAudited):  # pylint: disable=too-many-instance
         :paramtype last_modified_at: ~datetime.datetime
         :keyword id: Required.
         :paramtype id: str
-        :keyword type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+        :keyword type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and "THREAD".
         :paramtype type: str or ~kuflow.rest.models.ProcessItemType
         :keyword process_id: Required.
         :paramtype process_id: str
@@ -1519,6 +1575,8 @@ class ProcessItemPageItem(AbstractAudited):  # pylint: disable=too-many-instance
         :paramtype owner_id: str
         :keyword tenant_id: Tenant ID. Required.
         :paramtype tenant_id: str
+        :keyword process_item_definition_ref:
+        :paramtype process_item_definition_ref: ~kuflow.rest.models.ProcessItemDefinitionRef
         :keyword task:
         :paramtype task: ~kuflow.rest.models.ProcessItemTaskPageItem
         :keyword message:
@@ -1536,6 +1594,7 @@ class ProcessItemPageItem(AbstractAudited):  # pylint: disable=too-many-instance
         self.process_id = process_id
         self.owner_id = owner_id
         self.tenant_id = tenant_id
+        self.process_item_definition_ref = process_item_definition_ref
         self.task = task
         self.message = message
 
@@ -1548,8 +1607,6 @@ class ProcessItemTask(_serialization.Model):
     :ivar state: Process Item Task state. Required. Known values are: "READY", "CLAIMED",
      "COMPLETED", and "CANCELLED".
     :vartype state: str or ~kuflow.rest.models.ProcessItemTaskState
-    :ivar task_definition: Required.
-    :vartype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
     :ivar data: Json value.
     :vartype data: ~kuflow.rest.models.JsonValue
     :ivar logs:
@@ -1558,12 +1615,10 @@ class ProcessItemTask(_serialization.Model):
 
     _validation = {
         "state": {"required": True},
-        "task_definition": {"required": True},
     }
 
     _attribute_map = {
         "state": {"key": "state", "type": "str"},
-        "task_definition": {"key": "taskDefinition", "type": "TaskDefinitionSummary"},
         "data": {"key": "data", "type": "JsonValue"},
         "logs": {"key": "logs", "type": "[ProcessItemTaskLog]"},
     }
@@ -1572,7 +1627,6 @@ class ProcessItemTask(_serialization.Model):
         self,
         *,
         state: Union[str, "_models.ProcessItemTaskState"],
-        task_definition: "_models.TaskDefinitionSummary",
         data: Optional["_models.JsonValue"] = None,
         logs: Optional[List["_models.ProcessItemTaskLog"]] = None,
         **kwargs: Any,
@@ -1581,8 +1635,6 @@ class ProcessItemTask(_serialization.Model):
         :keyword state: Process Item Task state. Required. Known values are: "READY", "CLAIMED",
          "COMPLETED", and "CANCELLED".
         :paramtype state: str or ~kuflow.rest.models.ProcessItemTaskState
-        :keyword task_definition: Required.
-        :paramtype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
         :keyword data: Json value.
         :paramtype data: ~kuflow.rest.models.JsonValue
         :keyword logs:
@@ -1590,7 +1642,6 @@ class ProcessItemTask(_serialization.Model):
         """
         super().__init__(**kwargs)
         self.state = state
-        self.task_definition = task_definition
         self.data = data
         self.logs = logs
 
@@ -1657,32 +1708,20 @@ class ProcessItemTaskAssignParams(_serialization.Model):
 class ProcessItemTaskCreateParams(_serialization.Model):
     """ProcessItemTaskCreateParams.
 
-    All required parameters must be populated in order to send to server.
-
-    :ivar task_definition_code: Required.
-    :vartype task_definition_code: str
     :ivar data: Json value.
     :vartype data: ~kuflow.rest.models.JsonValue
     """
 
-    _validation = {
-        "task_definition_code": {"required": True},
-    }
-
     _attribute_map = {
-        "task_definition_code": {"key": "taskDefinitionCode", "type": "str"},
         "data": {"key": "data", "type": "JsonValue"},
     }
 
-    def __init__(self, *, task_definition_code: str, data: Optional["_models.JsonValue"] = None, **kwargs: Any) -> None:
+    def __init__(self, *, data: Optional["_models.JsonValue"] = None, **kwargs: Any) -> None:
         """
-        :keyword task_definition_code: Required.
-        :paramtype task_definition_code: str
         :keyword data: Json value.
         :paramtype data: ~kuflow.rest.models.JsonValue
         """
         super().__init__(**kwargs)
-        self.task_definition_code = task_definition_code
         self.data = data
 
 
@@ -1775,37 +1814,24 @@ class ProcessItemTaskPageItem(_serialization.Model):
     :ivar state: Process Item Task state. Required. Known values are: "READY", "CLAIMED",
      "COMPLETED", and "CANCELLED".
     :vartype state: str or ~kuflow.rest.models.ProcessItemTaskState
-    :ivar task_definition: Required.
-    :vartype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
     """
 
     _validation = {
         "state": {"required": True},
-        "task_definition": {"required": True},
     }
 
     _attribute_map = {
         "state": {"key": "state", "type": "str"},
-        "task_definition": {"key": "taskDefinition", "type": "TaskDefinitionSummary"},
     }
 
-    def __init__(
-        self,
-        *,
-        state: Union[str, "_models.ProcessItemTaskState"],
-        task_definition: "_models.TaskDefinitionSummary",
-        **kwargs: Any,
-    ) -> None:
+    def __init__(self, *, state: Union[str, "_models.ProcessItemTaskState"], **kwargs: Any) -> None:
         """
         :keyword state: Process Item Task state. Required. Known values are: "READY", "CLAIMED",
          "COMPLETED", and "CANCELLED".
         :paramtype state: str or ~kuflow.rest.models.ProcessItemTaskState
-        :keyword task_definition: Required.
-        :paramtype task_definition: ~kuflow.rest.models.TaskDefinitionSummary
         """
         super().__init__(**kwargs)
         self.state = state
-        self.task_definition = task_definition
 
 
 class ProcessMetadataUpdateParams(_serialization.Model):
@@ -1886,8 +1912,8 @@ class ProcessPageItem(AbstractAudited):
     :ivar state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
      "CANCELLED".
     :vartype state: str or ~kuflow.rest.models.ProcessState
-    :ivar process_definition: Required.
-    :vartype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
+    :ivar process_definition_ref: Required.
+    :vartype process_definition_ref: ~kuflow.rest.models.ProcessDefinitionRef
     :ivar initiator_id: Principal ID.
     :vartype initiator_id: str
     :ivar tenant_id: Tenant ID. Required.
@@ -1897,7 +1923,7 @@ class ProcessPageItem(AbstractAudited):
     _validation = {
         "id": {"required": True},
         "state": {"required": True},
-        "process_definition": {"required": True},
+        "process_definition_ref": {"required": True},
         "tenant_id": {"required": True},
     }
 
@@ -1908,7 +1934,7 @@ class ProcessPageItem(AbstractAudited):
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
         "state": {"key": "state", "type": "str"},
-        "process_definition": {"key": "processDefinition", "type": "ProcessDefinitionSummary"},
+        "process_definition_ref": {"key": "processDefinitionRef", "type": "ProcessDefinitionRef"},
         "initiator_id": {"key": "initiatorId", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
     }
@@ -1918,7 +1944,7 @@ class ProcessPageItem(AbstractAudited):
         *,
         id: str,  # pylint: disable=redefined-builtin
         state: Union[str, "_models.ProcessState"],
-        process_definition: "_models.ProcessDefinitionSummary",
+        process_definition_ref: "_models.ProcessDefinitionRef",
         tenant_id: str,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
@@ -1941,8 +1967,8 @@ class ProcessPageItem(AbstractAudited):
         :keyword state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
          "CANCELLED".
         :paramtype state: str or ~kuflow.rest.models.ProcessState
-        :keyword process_definition: Required.
-        :paramtype process_definition: ~kuflow.rest.models.ProcessDefinitionSummary
+        :keyword process_definition_ref: Required.
+        :paramtype process_definition_ref: ~kuflow.rest.models.ProcessDefinitionRef
         :keyword initiator_id: Principal ID.
         :paramtype initiator_id: str
         :keyword tenant_id: Tenant ID. Required.
@@ -1957,7 +1983,7 @@ class ProcessPageItem(AbstractAudited):
         )
         self.id = id
         self.state = state
-        self.process_definition = process_definition
+        self.process_definition_ref = process_definition_ref
         self.initiator_id = initiator_id
         self.tenant_id = tenant_id
 
@@ -2310,61 +2336,6 @@ class RobotSourceFile(_serialization.Model):
         self.content_type = content_type
         self.content_length = content_length
         self.content_hash = content_hash
-
-
-class TaskDefinitionSummary(_serialization.Model):
-    """TaskDefinitionSummary.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar id: Required.
-    :vartype id: str
-    :ivar version: Required.
-    :vartype version: str
-    :ivar code: Required.
-    :vartype code: str
-    :ivar name: Required.
-    :vartype name: str
-    """
-
-    _validation = {
-        "id": {"required": True},
-        "version": {"required": True},
-        "code": {"required": True},
-        "name": {"required": True, "max_length": 50, "min_length": 1},
-    }
-
-    _attribute_map = {
-        "id": {"key": "id", "type": "str"},
-        "version": {"key": "version", "type": "str"},
-        "code": {"key": "code", "type": "str"},
-        "name": {"key": "name", "type": "str"},
-    }
-
-    def __init__(
-        self,
-        *,
-        id: str,  # pylint: disable=redefined-builtin
-        version: str,
-        code: str,
-        name: str,
-        **kwargs: Any,
-    ) -> None:
-        """
-        :keyword id: Required.
-        :paramtype id: str
-        :keyword version: Required.
-        :paramtype version: str
-        :keyword code: Required.
-        :paramtype code: str
-        :keyword name: Required.
-        :paramtype name: str
-        """
-        super().__init__(**kwargs)
-        self.id = id
-        self.version = version
-        self.code = code
-        self.name = name
 
 
 class Tenant(AbstractAudited):
@@ -2932,13 +2903,14 @@ class WebhookEventProcessItemCreatedData(_serialization.Model):
     :vartype process_id: str
     :ivar process_item_id: Required.
     :vartype process_item_id: str
-    :ivar process_item_type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+    :ivar process_item_type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and
+     "THREAD".
     :vartype process_item_type: str or ~kuflow.rest.models.ProcessItemType
-    :ivar process_item_task_code:
-    :vartype process_item_task_code: str
     :ivar process_item_state: Process Item Task state. Known values are: "READY", "CLAIMED",
      "COMPLETED", and "CANCELLED".
     :vartype process_item_state: str or ~kuflow.rest.models.ProcessItemTaskState
+    :ivar process_item_definition_code:
+    :vartype process_item_definition_code: str
     """
 
     _validation = {
@@ -2951,8 +2923,8 @@ class WebhookEventProcessItemCreatedData(_serialization.Model):
         "process_id": {"key": "processId", "type": "str"},
         "process_item_id": {"key": "processItemId", "type": "str"},
         "process_item_type": {"key": "processItemType", "type": "str"},
-        "process_item_task_code": {"key": "processItemTaskCode", "type": "str"},
         "process_item_state": {"key": "processItemState", "type": "str"},
+        "process_item_definition_code": {"key": "processItemDefinitionCode", "type": "str"},
     }
 
     def __init__(
@@ -2961,8 +2933,8 @@ class WebhookEventProcessItemCreatedData(_serialization.Model):
         process_id: str,
         process_item_id: str,
         process_item_type: Union[str, "_models.ProcessItemType"],
-        process_item_task_code: Optional[str] = None,
         process_item_state: Optional[Union[str, "_models.ProcessItemTaskState"]] = None,
+        process_item_definition_code: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -2970,21 +2942,21 @@ class WebhookEventProcessItemCreatedData(_serialization.Model):
         :paramtype process_id: str
         :keyword process_item_id: Required.
         :paramtype process_item_id: str
-        :keyword process_item_type: Process Item Type. Required. Known values are: "TASK" and
-         "MESSAGE".
+        :keyword process_item_type: Process Item Type. Required. Known values are: "TASK", "MESSAGE",
+         and "THREAD".
         :paramtype process_item_type: str or ~kuflow.rest.models.ProcessItemType
-        :keyword process_item_task_code:
-        :paramtype process_item_task_code: str
         :keyword process_item_state: Process Item Task state. Known values are: "READY", "CLAIMED",
          "COMPLETED", and "CANCELLED".
         :paramtype process_item_state: str or ~kuflow.rest.models.ProcessItemTaskState
+        :keyword process_item_definition_code:
+        :paramtype process_item_definition_code: str
         """
         super().__init__(**kwargs)
         self.process_id = process_id
         self.process_item_id = process_item_id
         self.process_item_type = process_item_type
-        self.process_item_task_code = process_item_task_code
         self.process_item_state = process_item_state
+        self.process_item_definition_code = process_item_definition_code
 
 
 class WebhookEventProcessItemTaskStateChanged(WebhookEvent):
@@ -3054,29 +3026,30 @@ class WebhookEventProcessItemTaskStateChangedData(_serialization.Model):  # pyli
     :vartype process_id: str
     :ivar process_item_id: Required.
     :vartype process_item_id: str
-    :ivar process_item_type: Process Item Type. Required. Known values are: "TASK" and "MESSAGE".
+    :ivar process_item_type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and
+     "THREAD".
     :vartype process_item_type: str or ~kuflow.rest.models.ProcessItemType
-    :ivar process_item_task_code: Required.
-    :vartype process_item_task_code: str
     :ivar process_item_state: Process Item Task state. Required. Known values are: "READY",
      "CLAIMED", "COMPLETED", and "CANCELLED".
     :vartype process_item_state: str or ~kuflow.rest.models.ProcessItemTaskState
+    :ivar process_item_definition_code: Required.
+    :vartype process_item_definition_code: str
     """
 
     _validation = {
         "process_id": {"required": True},
         "process_item_id": {"required": True},
         "process_item_type": {"required": True},
-        "process_item_task_code": {"required": True},
         "process_item_state": {"required": True},
+        "process_item_definition_code": {"required": True},
     }
 
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
         "process_item_id": {"key": "processItemId", "type": "str"},
         "process_item_type": {"key": "processItemType", "type": "str"},
-        "process_item_task_code": {"key": "processItemTaskCode", "type": "str"},
         "process_item_state": {"key": "processItemState", "type": "str"},
+        "process_item_definition_code": {"key": "processItemDefinitionCode", "type": "str"},
     }
 
     def __init__(
@@ -3085,8 +3058,8 @@ class WebhookEventProcessItemTaskStateChangedData(_serialization.Model):  # pyli
         process_id: str,
         process_item_id: str,
         process_item_type: Union[str, "_models.ProcessItemType"],
-        process_item_task_code: str,
         process_item_state: Union[str, "_models.ProcessItemTaskState"],
+        process_item_definition_code: str,
         **kwargs: Any,
     ) -> None:
         """
@@ -3094,21 +3067,21 @@ class WebhookEventProcessItemTaskStateChangedData(_serialization.Model):  # pyli
         :paramtype process_id: str
         :keyword process_item_id: Required.
         :paramtype process_item_id: str
-        :keyword process_item_type: Process Item Type. Required. Known values are: "TASK" and
-         "MESSAGE".
+        :keyword process_item_type: Process Item Type. Required. Known values are: "TASK", "MESSAGE",
+         and "THREAD".
         :paramtype process_item_type: str or ~kuflow.rest.models.ProcessItemType
-        :keyword process_item_task_code: Required.
-        :paramtype process_item_task_code: str
         :keyword process_item_state: Process Item Task state. Required. Known values are: "READY",
          "CLAIMED", "COMPLETED", and "CANCELLED".
         :paramtype process_item_state: str or ~kuflow.rest.models.ProcessItemTaskState
+        :keyword process_item_definition_code: Required.
+        :paramtype process_item_definition_code: str
         """
         super().__init__(**kwargs)
         self.process_id = process_id
         self.process_item_id = process_item_id
         self.process_item_type = process_item_type
-        self.process_item_task_code = process_item_task_code
         self.process_item_state = process_item_state
+        self.process_item_definition_code = process_item_definition_code
 
 
 class WebhookEventProcessStateChanged(WebhookEvent):

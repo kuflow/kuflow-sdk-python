@@ -339,7 +339,7 @@ class ProcessItemFindRequest(_serialization.Model):
         "process_ids": {"key": "processIds", "type": "[str]"},
         "types": {"key": "processIds", "type": "[ProcessItemType]"},
         "task_states": {"key": "taskStates", "type": "[ProcessItemTaskState]"},
-        "task_definition_codes": {"key": "taskDefinitionCodes", "type": "[str]"},
+        "process_item_definition_codes": {"key": "processItemDefinitionCodes", "type": "[str]"},
     }
 
     def __init__(
@@ -351,7 +351,7 @@ class ProcessItemFindRequest(_serialization.Model):
         process_ids: Optional[List[str]] = None,
         types: Optional[List[models_rest.ProcessItemType]] = None,
         task_states: Optional[List[models_rest.ProcessItemTaskState]] = None,
-        task_definition_codes: Optional[List[str]] = None,
+        process_item_definition_codes: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -363,7 +363,7 @@ class ProcessItemFindRequest(_serialization.Model):
             process_ids: Filter process items  by the process identifiers
             types: Filter process items by the types
             task_states: Filter process items by the task states
-            task_definition_codes: Filter process items by the task_definition_codes
+            process_item_definition_codes: Filter process items by the process item definition codes
         """
         super().__init__(**kwargs)
         self.page = page
@@ -373,7 +373,7 @@ class ProcessItemFindRequest(_serialization.Model):
         self.process_ids = process_ids
         self.types = types
         self.task_states = task_states
-        self.task_definition_codes = task_definition_codes
+        self.process_item_definition_codes = process_item_definition_codes
 
 
 class ProcessItemFindResponse(_serialization.Model):
@@ -425,7 +425,9 @@ class ProcessItemCreateRequest(_serialization.Model):
         "process_id": {"key": "processId", "type": "str"},
         "owner_id": {"key": "ownerId", "type": "str"},
         "owner_email": {"key": "ownerEmail", "type": "str"},
+        "process_item_definition_code": {"key": "processItemDefinitionCode", "type": "str"},
         "task": {"key": "task", "type": "ProcessItemTaskCreateParams"},
+        "message": {"key": "task", "type": "ProcessItemMessageCreateParams"},
     }
 
     def __init__(
@@ -435,7 +437,9 @@ class ProcessItemCreateRequest(_serialization.Model):
         process_id: str,
         owner_id: Optional[str] = None,
         owner_email: Optional[str] = None,
+        process_item_definition_code: Optional[str] = None,
         task: Optional[models_rest.ProcessItemTaskCreateParams] = None,
+        message: Optional[models_rest.ProcessItemMessageCreateParams] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -445,7 +449,9 @@ class ProcessItemCreateRequest(_serialization.Model):
             process_id: Process id in which create the process item
             owner_id: Owner id, only owner_id or owner_email is allowed
             owner_email: Owner email, only owner_id or owner_email is allowed
+            process_item_definition_code: Process Item Task details
             task: Process Item Task details
+            message: Process Item Message details
         """
         super().__init__(**kwargs)
         self.id = id
@@ -453,7 +459,9 @@ class ProcessItemCreateRequest(_serialization.Model):
         self.process_id = process_id
         self.owner_id = owner_id
         self.owner_email = owner_email
+        self.process_item_definition_code = process_item_definition_code
         self.task = task
+        self.message = message
 
 
 class ProcessItemCreateResponse(_serialization.Model):

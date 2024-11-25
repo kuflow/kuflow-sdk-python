@@ -82,6 +82,7 @@ class ProcessItemType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
     TASK = "TASK"
     MESSAGE = "MESSAGE"
+    THREAD = "THREAD"
 
 
 class ProcessState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -95,8 +96,8 @@ class ProcessState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 class RobotAssetArchitecture(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Robot asset platform architecture."""
 
-    X86_BIT32 = "X86_32"
-    X86_BIT64 = "X86_64"
+    X86_32 = "X86_32"
+    X86_64 = "X86_64"
 
 
 class RobotAssetPlatform(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -112,7 +113,7 @@ class RobotAssetType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
     PYTHON = "PYTHON"
     PYTHON_PIP = "PYTHON_PIP"
-    NODE_JS = "NODEJS"
+    NODEJS = "NODEJS"
 
 
 class RobotFilterContext(str, Enum, metaclass=CaseInsensitiveEnumMeta):
