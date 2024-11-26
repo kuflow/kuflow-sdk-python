@@ -218,7 +218,7 @@ six = "*"
 
 [[package]]
 name = "kuflow-rest"
-version = "2.2.0.dev0"
+version = "3.0.0"
 description = "Client for KuFlow Rest Api"
 category = "main"
 optional = false
@@ -236,7 +236,7 @@ url = "../kuflow-rest"
 
 [[package]]
 name = "kuflow-temporal-activity-kuflow"
-version = "2.2.0.dev0"
+version = "3.0.0"
 description = "KuFlow SDK :: Temporal.io activities to interact with KuFlow"
 category = "main"
 optional = false
@@ -253,7 +253,7 @@ url = "../kuflow-temporal-activity-kuflow"
 
 [[package]]
 name = "kuflow-temporal-common"
-version = "2.2.0.dev0"
+version = "3.0.0"
 description = "KuFlow utilities to use Temporal.io"
 category = "main"
 optional = false
@@ -271,7 +271,7 @@ url = "../kuflow-temporal-common"
 
 [[package]]
 name = "kuflow-temporal-worker"
-version = "2.2.0.dev0"
+version = "3.0.0"
 description = "KuFlow utilities to use Temporal.io"
 category = "main"
 optional = false
@@ -289,7 +289,7 @@ url = "../kuflow-temporal-worker"
 
 [[package]]
 name = "kuflow-temporal-workflow-kuflow"
-version = "2.2.0.dev0"
+version = "3.0.0"
 description = "KuFlow SDK :: Temporal.io workflow utilities to interact with KuFlow"
 category = "main"
 optional = false
