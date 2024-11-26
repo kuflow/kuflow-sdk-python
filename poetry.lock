@@ -203,7 +203,7 @@ six = "*"
 
 [[package]]
 name = "kuflow-rest"
-version = "3.0.0"
+version = "3.0.1.dev0"
 description = "Client for KuFlow Rest Api"
 category = "main"
 optional = false
@@ -221,7 +221,7 @@ url = "kuflow-rest"
 
 [[package]]
 name = "kuflow-robotframework"
-version = "3.0.0"
+version = "3.0.1.dev0"
 description = "KuFlow library for Robot Framework"
 category = "main"
 optional = false
@@ -241,7 +241,7 @@ url = "kuflow-robotframework"
 
 [[package]]
 name = "kuflow-temporal-activity-kuflow"
-version = "3.0.0"
+version = "3.0.1.dev0"
 description = "KuFlow SDK :: Temporal.io activities to interact with KuFlow"
 category = "main"
 optional = false
@@ -258,7 +258,7 @@ url = "kuflow-temporal-activity-kuflow"
 
 [[package]]
 name = "kuflow-temporal-activity-robotframework"
-version = "3.0.0"
+version = "3.0.1.dev0"
 description = "KuFlow SDK :: Temporal.io activities to execute Robot Frameworks tasks"
 category = "main"
 optional = false
@@ -276,7 +276,7 @@ url = "kuflow-temporal-activity-robotframework"
 
 [[package]]
 name = "kuflow-temporal-common"
-version = "3.0.0"
+version = "3.0.1.dev0"
 description = "KuFlow utilities to use Temporal.io"
 category = "main"
 optional = false
@@ -294,7 +294,7 @@ url = "kuflow-temporal-common"
 
 [[package]]
 name = "kuflow-temporal-sample"
-version = "3.0.0"
+version = "3.0.1.dev0"
 description = "KuFlow samples"
 category = "main"
 optional = false
@@ -315,7 +315,7 @@ url = "kuflow-temporal-sample"
 
 [[package]]
 name = "kuflow-temporal-worker"
-version = "3.0.0"
+version = "3.0.1.dev0"
 description = "KuFlow utilities to use Temporal.io"
 category = "main"
 optional = false
@@ -333,7 +333,7 @@ url = "kuflow-temporal-worker"
 
 [[package]]
 name = "kuflow-temporal-workflow-kuflow"
-version = "3.0.0"
+version = "3.0.1.dev0"
 description = "KuFlow SDK :: Temporal.io workflow utilities to interact with KuFlow"
 category = "main"
 optional = false

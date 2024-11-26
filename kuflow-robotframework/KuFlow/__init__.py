@@ -25,7 +25,7 @@
 from .keywords import Keywords
 
 
-__version__ = "3.0.0"
+__version__ = "3.0.1.dev0"
 __all__ = ["KuFlow"]
 
 
