@@ -22,10 +22,11 @@
 # SOFTWARE.
 #
 
-from ._parser import parse_kuflow_file, parse_kuflow_principal
+from ._parser import generate_kuflow_principal_string, parse_kuflow_file, parse_kuflow_principal
 
 
 __all__ = [
+    "generate_kuflow_principal_string",
     "parse_kuflow_file",
     "parse_kuflow_principal",
 ]

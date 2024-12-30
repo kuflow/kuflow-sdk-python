@@ -24,12 +24,20 @@
 
 import urllib.parse
 from typing import Optional
+from uuid import UUID
 
 from ..models import (
     KuFlowFile,
     KuFlowPrincipal,
     PrincipalType,
 )
+
+
+# Constants
+PREFIX = "kuflow-principal:"
+METADATA_ID = "id"
+METADATA_TYPE = "type"
+METADATA_NAME = "name"
 
 
 def parse_kuflow_file(original: str) -> Optional[KuFlowFile]:
@@ -98,3 +106,18 @@ def parse_kuflow_principal(original: str) -> Optional[KuFlowPrincipal]:
         type=type,
         name=name,
     )
+
+
+def generate_kuflow_principal_string(id: UUID, principal_type: str, name: str) -> str:
+    return (
+        f"{PREFIX}{METADATA_ID}={encode(id)};"
+        f"{METADATA_TYPE}={encode(principal_type)};"
+        f"{METADATA_NAME}={encode(name)};"
+    )
+
+
+def encode(value: str) -> str:
+    if value is None:
+        return ""
+
+    return urllib.parse.quote(value.strip(), safe='').replace("+", "%20")
