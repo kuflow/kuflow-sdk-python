@@ -24,7 +24,7 @@
 
 import unittest
 
-from kuflow_rest.utils import parse_kuflow_file, parse_kuflow_principal
+from kuflow_rest.utils import generate_kuflow_principal_string, parse_kuflow_file, parse_kuflow_principal
 
 
 class UtilsParserTest(unittest.TestCase):
@@ -152,6 +152,16 @@ class UtilsParserTest(unittest.TestCase):
     def test_parse_kuflow_principal_missing_fields(self):
         kuflow_principal = parse_kuflow_principal("kuflow-principal:" "id=xxx-ssss-yyyy;" "type=USER;")
         self.assertIsNone(kuflow_principal)
+
+    def test_parse_kuflow_principal_missing_fieldssss(self):
+        kuflow_principal = generate_kuflow_principal_string("id=xxx-ssss-yyyy;", "USER", "Homer")
+        self.assertEqual(kuflow_principal, "kuflow-principal:id=id%3Dxxx-ssss-yyyy%3B;type=USER;name=Homer;")
+
+        kuflow_principal = generate_kuflow_principal_string("id=xxx-ssss-yyyy;", "CUSTOM", "Homer")
+        self.assertEqual(kuflow_principal, "kuflow-principal:id=id%3Dxxx-ssss-yyyy%3B;type=CUSTOM;name=Homer;")
+
+        kuflow_principal = generate_kuflow_principal_string("id=xxx-ssss-yyyy;", "USER", None)
+        self.assertEqual(kuflow_principal, "kuflow-principal:id=id%3Dxxx-ssss-yyyy%3B;type=USER;name=;")
 
 
 if __name__ == "__main__":
