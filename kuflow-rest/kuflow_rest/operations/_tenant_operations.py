@@ -24,8 +24,8 @@
 
 from typing import Any, List, Optional, Union
 
-from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
-from .._generated import models as _models
+from .. import models as _models
+from .._generated._client import KuFlowRestClient as KuFlowRestClientGenerated
 
 
 class TenantOperations:

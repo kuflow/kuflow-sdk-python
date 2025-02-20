@@ -539,9 +539,9 @@ class JsonValue(_serialization.Model):
         :paramtype value: dict[str, any]
         """
         super().__init__(**kwargs)
-        self.valid = None
+        self.valid: Optional[bool] = None
         self.value = value
-        self.errors = None
+        self.errors: Optional[List["_models.JsonValueError"]] = None
 
 
 class JsonValueError(_serialization.Model):
@@ -2568,7 +2568,7 @@ class TenantUser(AbstractAudited):
         self.id = id
         self.metadata = metadata
         self.principal = principal
-        self.tenant_id = None
+        self.tenant_id: Optional[str] = None
 
 
 class TenantUserPage(Page):
@@ -2670,9 +2670,9 @@ class TenantUserPageItem(AbstractAudited):
             last_modified_at=last_modified_at,
             **kwargs,
         )
-        self.id = None
-        self.principal_id = None
-        self.tenant_id = None
+        self.id: Optional[str] = None
+        self.principal_id: Optional[str] = None
+        self.tenant_id: Optional[str] = None
 
 
 class VaultCodecPayload(_serialization.Model):
