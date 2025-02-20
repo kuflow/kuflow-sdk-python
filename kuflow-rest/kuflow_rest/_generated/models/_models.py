@@ -2675,6 +2675,64 @@ class TenantUserPageItem(AbstractAudited):
         self.tenant_id = None
 
 
+class VaultCodecPayload(_serialization.Model):
+    """VaultCodecPayload.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar metadata: Payload data.
+    :vartype metadata: dict[str, bytes]
+    :ivar data: Payload data. Required.
+    :vartype data: bytes
+    """
+
+    _validation = {
+        "data": {"required": True},
+    }
+
+    _attribute_map = {
+        "metadata": {"key": "metadata", "type": "{bytearray}"},
+        "data": {"key": "data", "type": "bytearray"},
+    }
+
+    def __init__(self, *, data: bytes, metadata: Optional[Dict[str, bytes]] = None, **kwargs: Any) -> None:
+        """
+        :keyword metadata: Payload data.
+        :paramtype metadata: dict[str, bytes]
+        :keyword data: Payload data. Required.
+        :paramtype data: bytes
+        """
+        super().__init__(**kwargs)
+        self.metadata = metadata
+        self.data = data
+
+
+class VaultCodecPayloads(_serialization.Model):
+    """VaultCodecPayloads.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar payloads: Required.
+    :vartype payloads: list[~kuflow.rest.models.VaultCodecPayload]
+    """
+
+    _validation = {
+        "payloads": {"required": True, "min_items": 1},
+    }
+
+    _attribute_map = {
+        "payloads": {"key": "payloads", "type": "[VaultCodecPayload]"},
+    }
+
+    def __init__(self, *, payloads: List["_models.VaultCodecPayload"], **kwargs: Any) -> None:
+        """
+        :keyword payloads: Required.
+        :paramtype payloads: list[~kuflow.rest.models.VaultCodecPayload]
+        """
+        super().__init__(**kwargs)
+        self.payloads = payloads
+
+
 class WebhookEvent(_serialization.Model):
     """WebhookEvent.
 
