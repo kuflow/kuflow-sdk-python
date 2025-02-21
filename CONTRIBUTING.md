@@ -68,7 +68,7 @@ poetry lock
 
 Or without update dependencies:
 ```bash
-./scripts/poetry_run_on_each.sh lock --no-update
+`./scripts/poetry_run_on_each.sh lock --no-update`
 
 poetry lock
 ```

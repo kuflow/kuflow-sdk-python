@@ -23,7 +23,7 @@
 #
 
 import dataclasses
-from typing import Dict, List, Optional, Set
+from typing import Optional, Set
 
 import temporalio.activity
 import temporalio.common
@@ -34,12 +34,20 @@ from temporalio.client import Client, TLSConfig
 from temporalio.worker import Worker
 
 from kuflow_rest import models
-from kuflow_temporal_common import CompositeEncodingPayloadConverter, KuFlowComposableEncodingPayloadConverter
+from kuflow_temporal_common import (
+    KuFlowModelJSONEncoder,
+    KuFlowModelJSONTypeConverter,
+)
 
 from ._authentication import KuFlowAuthorizationTokenProvider
 from ._connection_config import (
     KuFlowConfig,
     TemporalConfig,
+)
+from ._encryption import (
+    KuFlowEncryptionInterceptor,
+    KuFlowEncryptionPayloadCodec,
+    KuFlowEncryptionPayloadConverter,
 )
 from ._worker_information_notifier import KuFlowWorkerInformationNotifier
 
@@ -75,10 +83,14 @@ class KuFlowTemporalConnection:
 
         self._temporal.client.rpc_metadata = self._kuflow_authorization_token_provider.initialize_rpc_auth_metadata()
 
-        self._register_encoding_payload_converter()
-
         client_config = self._temporal.client.__dict__.copy()
         client_config.pop("target_host", None)
+        client_config["data_converter"] = dataclasses.replace(
+            temporalio.converter.DataConverter.default,
+            payload_converter_class=KuFlowConverterClass,
+            payload_codec=KuFlowEncryptionPayloadCodec(self._kuflow.rest_client),
+        )
+        client_config["interceptors"] = [KuFlowEncryptionInterceptor()]
 
         target_host = self._temporal.client.target_host or "engine.kuflow.com:443"
 
@@ -100,6 +112,7 @@ class KuFlowTemporalConnection:
         client = await self.connect()
 
         worker_config = self._temporal.worker.__dict__.copy()
+        worker_config["interceptors"] = []
 
         self._worker = Worker(client, **worker_config)
 
@@ -138,34 +151,6 @@ class KuFlowTemporalConnection:
 
         await worker.run()
 
-    def _register_encoding_payload_converter(self):
-        additional_converter_classes = [KuFlowComposableEncodingPayloadConverter]
-
-        converters = list(temporalio.converter.DefaultPayloadConverter.default_encoding_payload_converters)
-
-        converters_by_encoding: Dict[str, List[temporalio.converter.EncodingPayloadConverter]] = {}
-
-        for converter_class in additional_converter_classes:
-            converter = converter_class()
-
-            converters_encoding = converters_by_encoding.get(converter.encoding, None)
-            if converters_encoding is None:
-                converters_encoding = [it for it in converters if it.encoding == converter.encoding]
-
-            converters_encoding.insert(0, converter)
-            converters_by_encoding[converter.encoding] = converters_encoding
-
-        for encoding in converters_by_encoding:
-            composite_converter = CompositeEncodingPayloadConverter(
-                encoding=encoding, converters=converters_by_encoding[encoding]
-            )
-
-            converters = [it if it.encoding != encoding else composite_converter for it in converters]
-
-        temporalio.converter.DefaultPayloadConverter.default_encoding_payload_converters = tuple(converters)
-
-        self._temporal.client.data_converter = dataclasses.replace(temporalio.converter.DataConverter.default)
-
     def _apply_default_configurations(self):
         authentication = models.Authentication(
             type=models.AuthenticationType.ENGINE_CERTIFICATE,
@@ -184,3 +169,18 @@ class KuFlowTemporalConnection:
             self._temporal.client.namespace = authentication.engine_certificate.namespace
 
         self._temporal.client.namespace = self._temporal.client.namespace or "default"
+
+
+class KuFlowConverterClass(temporalio.converter.CompositePayloadConverter):
+    def __init__(self) -> None:
+        super().__init__(
+            temporalio.converter.BinaryNullPayloadConverter(),
+            temporalio.converter.BinaryPlainPayloadConverter(),
+            temporalio.converter.JSONProtoPayloadConverter(),
+            temporalio.converter.BinaryProtoPayloadConverter(),
+            KuFlowEncryptionPayloadConverter(
+                delegate=temporalio.converter.JSONPlainPayloadConverter(
+                    encoder=KuFlowModelJSONEncoder, custom_type_converters=[KuFlowModelJSONTypeConverter()]
+                )
+            ),
+        )

@@ -58,7 +58,8 @@ class SampleEngineWorkerLoanWorkflow:
             id=id,
             type=models_rest.ProcessItemType.TASK,
             process_id=request.process_id,
-            task=models_rest.ProcessItemTaskCreateParams(task_definition_code="LOAN_APPLICATION"),
+            process_item_definition_code="LOAN_APPLICATION",
+            task=models_rest.ProcessItemTaskCreateParams(),
         )
 
         # Create Process Item Task

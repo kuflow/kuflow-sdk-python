@@ -29,10 +29,9 @@ from datetime import timedelta
 from typing import Awaitable, Callable, List, Mapping, Optional, Sequence, Type, Union
 
 import temporalio.common
-import temporalio.converter
 import temporalio.runtime
 import temporalio.workflow
-from temporalio.client import HttpConnectProxyConfig, Interceptor, KeepAliveConfig, RetryConfig, TLSConfig
+from temporalio.client import HttpConnectProxyConfig, KeepAliveConfig, RetryConfig, TLSConfig
 from temporalio.worker import SharedStateManager, UnsandboxedWorkflowRunner, WorkflowRunner
 from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner
 
@@ -103,16 +102,6 @@ class TemporalClientConfig:
     namespace: Optional[str] = None
     """Namespace to use for client calls."""
 
-    data_converter: temporalio.converter.DataConverter = temporalio.converter.DataConverter.default
-    """Data converter to use for all data conversions to/from payloads."""
-
-    interceptors: Sequence[Interceptor] = field(default_factory=list)
-    """Set of interceptors that are chained together to allow intercepting of client calls. The earlier interceptors
-    wrap the later ones.
-
-    Any interceptors that also implement :py:class:`temporalio.worker.Interceptor` will be used as worker interceptors
-    too so they should not be given when creating a worker."""
-
     default_workflow_query_reject_condition: Optional[temporalio.common.QueryRejectCondition] = None
     """The default rejection condition for workflow queries if not set during query. See :py:meth:`WorkflowHandle.query`
     for details on the rejection condition."""
@@ -176,10 +165,6 @@ class TemporalWorkerConfig:
 
     unsandboxed_workflow_runner: WorkflowRunner = UnsandboxedWorkflowRunner()
     """Runner for workflows that opt-out of sandboxing."""
-
-    interceptors: Sequence[Interceptor] = field(default_factory=list)
-    """Collection of interceptors for this worker. Any interceptors already on the client that also implement
-    :py:class:`Interceptor` are prepended to this list and should not be explicitly given here."""
 
     build_id: Optional[str] = None
     """Unique identifier for the current runtime. This is best set as a hash of all code and should change only when
