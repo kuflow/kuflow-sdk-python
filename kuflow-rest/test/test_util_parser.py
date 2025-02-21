@@ -128,29 +128,27 @@ class UtilsParserTest(unittest.TestCase):
         self.assertIsNone(kuflow_file)
 
     def test_parse_kuflow_principal_ok(self):
-        kuflow_principal = parse_kuflow_principal("kuflow-principal:" "id=xxx-ssss-yyyy;" "type=USER;" "name=Homer;")
+        kuflow_principal = parse_kuflow_principal("kuflow-principal:id=xxx-ssss-yyyy;type=USER;name=Homer;")
         self.assertEqual(kuflow_principal.id, "xxx-ssss-yyyy")
         self.assertEqual(kuflow_principal.type, "USER")
         self.assertEqual(kuflow_principal.name, "Homer")
 
     def test_parse_kuflow_principal_ok_with_spaces(self):
-        kuflow_principal = parse_kuflow_principal(
-            "kuflow-principal:" "id=xxx-ssss-yyyy;" "type=USER;" "name=Homer Simpson;"
-        )
+        kuflow_principal = parse_kuflow_principal("kuflow-principal:id=xxx-ssss-yyyy;type=USER;name=Homer Simpson;")
         self.assertEqual(kuflow_principal.id, "xxx-ssss-yyyy")
         self.assertEqual(kuflow_principal.type, "USER")
         self.assertEqual(kuflow_principal.name, "Homer Simpson")
 
     def test_parse_kuflow_principal_ok_with_spaces_encoded(self):
         kuflow_principal = parse_kuflow_principal(
-            "kuflow-principal:" "id=xxx-ssss-yyyy;" "type=USER;" "name=Homer%20Simpson%3B;"
+            "kuflow-principal:id=xxx-ssss-yyyy;type=USER;name=Homer%20Simpson%3B;"
         )
         self.assertEqual(kuflow_principal.id, "xxx-ssss-yyyy")
         self.assertEqual(kuflow_principal.type, "USER")
         self.assertEqual(kuflow_principal.name, "Homer Simpson;")
 
     def test_parse_kuflow_principal_missing_fields(self):
-        kuflow_principal = parse_kuflow_principal("kuflow-principal:" "id=xxx-ssss-yyyy;" "type=USER;")
+        kuflow_principal = parse_kuflow_principal("kuflow-principal:id=xxx-ssss-yyyy;type=USER;")
         self.assertIsNone(kuflow_principal)
 
     def test_parse_kuflow_principal_missing_fieldssss(self):

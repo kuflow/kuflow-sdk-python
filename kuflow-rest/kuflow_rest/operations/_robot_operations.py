@@ -22,7 +22,8 @@
 # SOFTWARE.
 #
 
-from typing import Any, Iterator, List, Optional, Union
+from collections.abc import Iterator
+from typing import Any, Optional, Union
 
 from .. import models as _models
 from .._generated._client import KuFlowRestClient as KuFlowRestClientGenerated
@@ -45,8 +46,8 @@ class RobotOperations:
         self,
         size: int = 25,
         page: int = 0,
-        sort: Optional[Union[str, List[str]]] = None,
-        tenant_id: Optional[Union[str, List[str]]] = None,
+        sort: Optional[Union[str, list[str]]] = None,
+        tenant_id: Optional[Union[str, list[str]]] = None,
         filter_context: Optional[Union[str, _models.RobotFilterContext]] = None,
         **kwargs: Any,
     ) -> _models.PrincipalPage:

@@ -23,7 +23,7 @@
 #
 
 import dataclasses
-from typing import Optional, Set
+from typing import Optional
 
 import temporalio.activity
 import temporalio.common
@@ -64,8 +64,8 @@ class KuFlowTemporalConnection:
         self._kuFlow_worker_information_notifier: Optional[KuFlowWorkerInformationNotifier] = None
         self._client: Optional[Client] = None
         self._worker: Optional[Worker] = None
-        self._workflow_types: Set[str] = set()
-        self._activity_types: Set[str] = set()
+        self._workflow_types: set[str] = set()
+        self._activity_types: set[str] = set()
 
     async def connect(self) -> Client:
         """Connect to a Temporal server"""

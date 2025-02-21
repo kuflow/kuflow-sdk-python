@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 import dataclasses
-from typing import Any, NoReturn, Optional, Type
+from typing import Any, NoReturn, Optional
 
 import temporalio.client
 import temporalio.worker
@@ -48,7 +48,7 @@ class KuFlowEncryptionInterceptor(temporalio.client.Interceptor, temporalio.work
 
     def workflow_interceptor_class(
         self, input: temporalio.worker.WorkflowInterceptorClassInput
-    ) -> Optional[Type[temporalio.worker.WorkflowInboundInterceptor]]:
+    ) -> Optional[type[temporalio.worker.WorkflowInboundInterceptor]]:
         """Implementation of
         :py:meth:`temporalio.worker.Interceptor.workflow_interceptor_class`.
         """

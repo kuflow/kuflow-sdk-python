@@ -22,7 +22,8 @@
 # SOFTWARE.
 #
 
-from typing import Any, Mapping, Sequence
+from collections.abc import Mapping, Sequence
+from typing import Any
 
 import temporalio.api.common.v1
 import temporalio.converter

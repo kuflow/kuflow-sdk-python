@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-from typing import Iterable, List
+from collections.abc import Iterable
 
 import temporalio.api.common.v1
 from temporalio.converter import PayloadCodec
@@ -41,7 +41,7 @@ class KuFlowEncryptionPayloadCodec(PayloadCodec):
 
     async def encode(
         self, payloads: Iterable[temporalio.api.common.v1.Payload]
-    ) -> List[temporalio.api.common.v1.Payload]:
+    ) -> list[temporalio.api.common.v1.Payload]:
         payloads_to_encrypt = list(filter(need_payload_be_encrypted, payloads))
 
         payloads_encrypted = await self.encrypt(payloads_to_encrypt)
@@ -53,7 +53,7 @@ class KuFlowEncryptionPayloadCodec(PayloadCodec):
 
     async def decode(
         self, payloads: Iterable[temporalio.api.common.v1.Payload]
-    ) -> List[temporalio.api.common.v1.Payload]:
+    ) -> list[temporalio.api.common.v1.Payload]:
         payloads_to_decrypt = list(filter(is_payload_encrypted, payloads))
 
         payloads_decrypted = await self.decrypt(payloads_to_decrypt)
@@ -62,7 +62,7 @@ class KuFlowEncryptionPayloadCodec(PayloadCodec):
             payloads_decrypted[i] if is_payload_encrypted(payload) else payload for i, payload in enumerate(payloads)
         ]
 
-    async def encrypt(self, payloads: List[temporalio.api.common.v1.Payload]) -> List[temporalio.api.common.v1.Payload]:
+    async def encrypt(self, payloads: list[temporalio.api.common.v1.Payload]) -> list[temporalio.api.common.v1.Payload]:
         if not payloads:
             return payloads
 
@@ -74,7 +74,7 @@ class KuFlowEncryptionPayloadCodec(PayloadCodec):
 
         return list(map(transform_vault_codec_payload_to_payload, response.payloads))
 
-    async def decrypt(self, payloads: List[temporalio.api.common.v1.Payload]) -> List[temporalio.api.common.v1.Payload]:
+    async def decrypt(self, payloads: list[temporalio.api.common.v1.Payload]) -> list[temporalio.api.common.v1.Payload]:
         if not payloads:
             return payloads
 

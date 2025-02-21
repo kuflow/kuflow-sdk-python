@@ -23,7 +23,7 @@
 #
 
 import json
-from typing import Any, Optional, Type
+from typing import Any, Optional
 
 from temporalio.api.common.v1 import Payload
 from temporalio.converter import (
@@ -57,7 +57,7 @@ class KuFlowComposableEncodingPayloadConverter(EncodingPayloadConverter):
         serialized = self._serialize.body(value, value.__class__.__name__)
         return self._default_json_converter.to_payload(serialized)
 
-    def from_payload(self, payload: Payload, type_hint: Optional[Type] = None) -> Any:
+    def from_payload(self, payload: Payload, type_hint: Optional[type] = None) -> Any:
         if issubclass(type_hint, Model) is False:
             return None
 

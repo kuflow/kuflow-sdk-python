@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-from typing import Any, Optional, Type
+from typing import Any, Optional
 
 import temporalio.api.common.v1
 from temporalio.converter import EncodingPayloadConverter
@@ -68,7 +68,7 @@ class KuFlowEncryptionPayloadConverter(EncodingPayloadConverter):
     def from_payload(
         self,
         payload: temporalio.api.common.v1.Payload,
-        type_hint: Optional[Type] = None,
+        type_hint: Optional[type] = None,
     ) -> Any:
         """See base class."""
         return self.delegate.from_payload(payload, type_hint)

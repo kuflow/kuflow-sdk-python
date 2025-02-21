@@ -25,7 +25,8 @@
 import asyncio
 import datetime
 import logging
-from typing import Mapping, Optional
+from collections.abc import Mapping
+from typing import Optional
 
 from temporalio.client import Client
 

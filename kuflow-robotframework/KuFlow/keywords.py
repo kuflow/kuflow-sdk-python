@@ -25,7 +25,7 @@
 import json
 import logging
 import os
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 from uuid import UUID
 
 import magic
@@ -160,7 +160,7 @@ class Keywords:
         return self._client.process_item.claim_process_item_task(process_item_id)
 
     @keyword()
-    def update_process_item_task_data(self, process_item_id: UUID, value: Dict[str, Any]) -> models.ProcessItem:
+    def update_process_item_task_data(self, process_item_id: UUID, value: dict[str, Any]) -> models.ProcessItem:
         """Save a JSON value data
 
         Allows a JSON to be saved in the process item task.

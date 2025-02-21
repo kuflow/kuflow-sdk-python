@@ -22,7 +22,8 @@
 # SOFTWARE.
 #
 
-from typing import Any, Iterator, List, Optional, Union
+from collections.abc import Iterator
+from typing import Any, Optional, Union
 
 from .. import models as _models
 from .._generated._client import KuFlowRestClient as KuFlowRestClientGenerated
@@ -45,12 +46,12 @@ class ProcessItemOperations:
         self,
         size: int = 25,
         page: int = 0,
-        sort: Optional[Union[str, List[str]]] = None,
-        process_id: Optional[Union[str, List[str]]] = None,
-        type: Optional[List[_models.ProcessItemType]] = None,
-        task_state: Optional[Union[_models.ProcessItemTaskState, List[_models.ProcessItemTaskState]]] = None,
-        process_item_definition_code: Optional[Union[str, List[str]]] = None,
-        tenant_id: Optional[Union[str, List[str]]] = None,
+        sort: Optional[Union[str, list[str]]] = None,
+        process_id: Optional[Union[str, list[str]]] = None,
+        type: Optional[list[_models.ProcessItemType]] = None,
+        task_state: Optional[Union[_models.ProcessItemTaskState, list[_models.ProcessItemTaskState]]] = None,
+        process_item_definition_code: Optional[Union[str, list[str]]] = None,
+        tenant_id: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
     ) -> _models.ProcessItemPage:
         """Find all accessible Process Items.
@@ -241,7 +242,7 @@ class ProcessItemOperations:
         )
 
     def patch_process_item_task_data(
-        self, id: str, json_patch: List[_models.JsonPatchOperation], **kwargs: Any
+        self, id: str, json_patch: list[_models.JsonPatchOperation], **kwargs: Any
     ) -> _models.ProcessItem:
         """Save JSON data.
 

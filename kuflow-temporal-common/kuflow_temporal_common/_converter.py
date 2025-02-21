@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-from typing import Any, Dict, Optional, Type, Union
+from typing import Any, Optional, Union
 
 from temporalio.converter import (
     AdvancedJSONEncoder,
@@ -33,10 +33,10 @@ from temporalio.converter import (
 from kuflow_rest import Deserializer, Model, Serializer
 
 
-temporal_models: Dict[str, type] = {}
+temporal_models: dict[str, type] = {}
 
 
-def register_serializable_models(models: Dict[str, type]):
+def register_serializable_models(models: dict[str, type]):
     global temporal_models
 
     temporal_models_tmp = {k: v for k, v in models.items() if isinstance(v, type)}
@@ -62,7 +62,7 @@ class KuFlowModelJSONTypeConverter(JSONTypeConverter):
         client_models = {k: v for k, v in temporal_models.items() if isinstance(v, type)}
         self._deserialize = Deserializer(client_models)
 
-    def to_typed_value(self, hint: Type, value: Any) -> Union[Optional[Any], _JSONTypeConverterUnhandled]:
+    def to_typed_value(self, hint: type, value: Any) -> Union[Optional[Any], _JSONTypeConverterUnhandled]:
         if issubclass(hint, Model):
             return self._deserialize(hint.__name__, value)
 

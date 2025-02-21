@@ -72,9 +72,12 @@ exclude = [
   "F811",  # Redefinition of unused {name} from line
   "I001",  # Import block is un-sorted or un-formatted
   "UP004", # Class `Model` inherits from `object`
+  "UP006", # Use `dict` instead of `Dict` for type annotation
   "UP009", # UTF-8 encoding declaration is unnecessary
   "UP031", # Use format specifiers instead of percent format
   "UP032", # Use f-string instead of `format` call
+  "UP035", # `typing.Dict` is deprecated, use `dict` instead
+  "UP036", # Version block is outdated for minimum Python version
 ]
 
 [tool.ruff.lint.isort]

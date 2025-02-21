@@ -24,9 +24,10 @@
 
 
 import concurrent.futures
+from collections.abc import Awaitable, Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import timedelta
-from typing import Awaitable, Callable, List, Mapping, Optional, Sequence, Type, Union
+from typing import Callable, Optional, Union
 
 import temporalio.common
 import temporalio.runtime
@@ -85,10 +86,10 @@ class KuFlowConfig:
     installation_id: Optional[str] = None
     """Installation id"""
 
-    robot_ids: Optional[List[str]] = None
+    robot_ids: Optional[list[str]] = None
     """Robot ids"""
 
-    tenant_id: Optional[List[str]] = None
+    tenant_id: Optional[list[str]] = None
     """Tenant ids"""
 
 
@@ -146,7 +147,7 @@ class TemporalWorkerConfig:
     """Set of activity callables decorated with :py:func:`@activity.defn<temporalio.activity.defn>`. Activities may be
     async functions or non-async functions. """
 
-    workflows: Sequence[Type] = field(default_factory=list)
+    workflows: Sequence[type] = field(default_factory=list)
     """Set of workflow classes decorated with :py:func:`@workflow.defn<temporalio.workflow.defn>`."""
 
     activity_executor: Optional[concurrent.futures.Executor] = None
