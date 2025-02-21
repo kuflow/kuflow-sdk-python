@@ -7,10 +7,11 @@
     },
     "scripts": {
       "autorest": "autorest",
-      "generate": "npm run generate:venv-activate && npm run generate:autorest && npm run generate:ruff && npm run generate:workaround",
+      "generate": "npm run generate:venv-activate && npm run generate:autorest && npm run generate:ruff:format && npm run generate:ruff:check && npm run generate:workaround",
       "generate:venv-activate": ". ../../.venv/bin/activate",
       "generate:autorest": "AUTOREST_HOME=$(pwd) autorest --version=3.10.3 readme.md",
-      "generate:ruff": "cd .. && ruff format",
+      "generate:ruff:format": "cd .. && ruff format",
+      "generate:ruff:check": "cd .. && ruff check --fix",
       "generate:workaround": "scripts/fix-discriminators.js"
     }
   }
