@@ -66,13 +66,6 @@ After that, execute a lock in each submodule and in the root module:
 poetry lock
 ```
 
-Or without update dependencies:
-```bash
-`./scripts/poetry_run_on_each.sh lock --no-update`
-
-poetry lock
-```
-
 ### See more
 
 Monorepo based in:
