@@ -541,7 +541,7 @@ class JsonValue(_serialization.Model):
         super().__init__(**kwargs)
         self.valid: Optional[bool] = None
         self.value = value
-        self.errors: Optional[List["_models.JsonValueError"]] = None
+        self.errors: Optional[List[_models.JsonValueError]] = None
 
 
 class JsonValueError(_serialization.Model):

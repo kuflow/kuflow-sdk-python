@@ -26,7 +26,7 @@ from collections.abc import Iterator
 from typing import Any, Optional, Union
 
 from .. import models as _models
-from .._generated._client import KuFlowRestClient as KuFlowRestClientGenerated
+from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
 
 
 class ProcessOperations:

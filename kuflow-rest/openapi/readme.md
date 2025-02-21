@@ -75,6 +75,7 @@ license-header: |
 # generate-test: false
 # generate-sample: false
 # hide-clients: true
+# enable-typespec-namespace: true
 
 use-extension:
   '@autorest/python': '6.28.4'

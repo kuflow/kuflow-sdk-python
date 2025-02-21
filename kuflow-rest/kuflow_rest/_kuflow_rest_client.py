@@ -30,8 +30,8 @@ from typing import Any, Optional
 from azure.core.credentials import AccessToken, TokenCredential
 from azure.core.pipeline.policies import SansIOHTTPPolicy
 
-from ._generated._client import KuFlowRestClient as KuFlowRestClientGenerated
-from ._generated._version import VERSION
+from ._generated import VERSION
+from ._generated import KuFlowRestClient as KuFlowRestClientGenerated
 from .operations import (
     AuthenticationOperations,
     PrincipalOperations,
