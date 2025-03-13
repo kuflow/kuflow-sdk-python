@@ -2712,6 +2712,8 @@ class VaultCodecPayloads(_serialization.Model):
 
     All required parameters must be populated in order to send to server.
 
+    :ivar tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is used.
+    :vartype tenant_id: str
     :ivar payloads: Required.
     :vartype payloads: list[~kuflow.rest.models.VaultCodecPayload]
     """
@@ -2721,15 +2723,22 @@ class VaultCodecPayloads(_serialization.Model):
     }
 
     _attribute_map = {
+        "tenant_id": {"key": "tenantId", "type": "str"},
         "payloads": {"key": "payloads", "type": "[VaultCodecPayload]"},
     }
 
-    def __init__(self, *, payloads: List["_models.VaultCodecPayload"], **kwargs: Any) -> None:
+    def __init__(
+        self, *, payloads: List["_models.VaultCodecPayload"], tenant_id: Optional[str] = None, **kwargs: Any
+    ) -> None:
         """
+        :keyword tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is
+         used.
+        :paramtype tenant_id: str
         :keyword payloads: Required.
         :paramtype payloads: list[~kuflow.rest.models.VaultCodecPayload]
         """
         super().__init__(**kwargs)
+        self.tenant_id = tenant_id
         self.payloads = payloads
 
 

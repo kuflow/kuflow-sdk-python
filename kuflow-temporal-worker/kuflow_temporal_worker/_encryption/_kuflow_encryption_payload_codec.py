@@ -23,6 +23,7 @@
 #
 
 from collections.abc import Iterable
+from typing import Optional
 
 import temporalio.api.common.v1
 from temporalio.converter import PayloadCodec
@@ -34,9 +35,11 @@ from ._kuflow_encryption_instrumentation import METADATA_KUFLOW_ENCODING_ENCRYPT
 
 
 class KuFlowEncryptionPayloadCodec(PayloadCodec):
+    tenant_id: Optional[str]
     rest_client: KuFlowRestClient
 
-    def __init__(self, rest_client: KuFlowRestClient):
+    def __init__(self, rest_client: KuFlowRestClient, tenant_id: Optional[str] = None):
+        self.tenant_id = tenant_id
         self.rest_client = rest_client
 
     async def encode(
@@ -69,7 +72,10 @@ class KuFlowEncryptionPayloadCodec(PayloadCodec):
         request_payloads = list(map(transform_payload_to_vault_codec_payload, payloads))
 
         response = self.rest_client.vault.codec_encode(
-            vault_codec_encode_params=models_rest.VaultCodecPayloads(payloads=request_payloads)
+            vault_codec_encode_params=models_rest.VaultCodecPayloads(
+                tenant_id=self.tenant_id,
+                payloads=request_payloads,
+            )
         )
 
         return list(map(transform_vault_codec_payload_to_payload, response.payloads))
@@ -81,7 +87,10 @@ class KuFlowEncryptionPayloadCodec(PayloadCodec):
         request_payloads = list(map(transform_payload_to_vault_codec_payload, payloads))
 
         response = self.rest_client.vault.codec_decode(
-            vault_codec_decode_params=models_rest.VaultCodecPayloads(payloads=request_payloads)
+            vault_codec_decode_params=models_rest.VaultCodecPayloads(
+                tenant_id=self.tenant_id,
+                payloads=request_payloads,
+            )
         )
 
         return list(map(transform_vault_codec_payload_to_payload, response.payloads))
