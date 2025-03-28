@@ -24,7 +24,7 @@
 
 import os
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Optional
 
 import robot
 from temporalio import activity
@@ -33,7 +33,7 @@ from temporalio.exceptions import ApplicationError
 from kuflow_temporal_common import KuFlowFailureType, auto_heartbeater
 
 
-def _default_variables() -> List[str]:
+def _default_variables() -> list[str]:
     return []
 
 
@@ -64,7 +64,7 @@ class ExecuteRobotRequest:
 
     tests: str
 
-    variables: List[str] = field(default_factory=_default_variables)
+    variables: list[str] = field(default_factory=_default_variables)
 
     options: dict = field(default_factory=_default_additional_options)
 
@@ -88,7 +88,7 @@ class RobotFrameworkActivities:
 
     def __init__(
         self,
-        default_variables: Optional[List[str]] = None,
+        default_variables: Optional[list[str]] = None,
         default_options: Optional[dict] = None,
     ) -> None:
         if default_options is None:
@@ -123,7 +123,7 @@ class RobotFrameworkActivities:
                 type=KuFlowFailureType.ACTIVITIES_FAILURE,
             )
 
-    def _merge_variables(self, variables: List = None, variables_overwrite: List = None):
+    def _merge_variables(self, variables: list = None, variables_overwrite: list = None):
         # Merge two lists of variables, giving priority to those in variables_overwrite
         if variables_overwrite is None:
             variables_overwrite = []

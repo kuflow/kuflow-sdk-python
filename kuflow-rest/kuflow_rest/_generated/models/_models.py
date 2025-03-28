@@ -539,9 +539,9 @@ class JsonValue(_serialization.Model):
         :paramtype value: dict[str, any]
         """
         super().__init__(**kwargs)
-        self.valid = None
+        self.valid: Optional[bool] = None
         self.value = value
-        self.errors = None
+        self.errors: Optional[List[_models.JsonValueError]] = None
 
 
 class JsonValueError(_serialization.Model):
@@ -2568,7 +2568,7 @@ class TenantUser(AbstractAudited):
         self.id = id
         self.metadata = metadata
         self.principal = principal
-        self.tenant_id = None
+        self.tenant_id: Optional[str] = None
 
 
 class TenantUserPage(Page):
@@ -2670,9 +2670,76 @@ class TenantUserPageItem(AbstractAudited):
             last_modified_at=last_modified_at,
             **kwargs,
         )
-        self.id = None
-        self.principal_id = None
-        self.tenant_id = None
+        self.id: Optional[str] = None
+        self.principal_id: Optional[str] = None
+        self.tenant_id: Optional[str] = None
+
+
+class VaultCodecPayload(_serialization.Model):
+    """VaultCodecPayload.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar metadata: Payload data.
+    :vartype metadata: dict[str, bytes]
+    :ivar data: Payload data. Required.
+    :vartype data: bytes
+    """
+
+    _validation = {
+        "data": {"required": True},
+    }
+
+    _attribute_map = {
+        "metadata": {"key": "metadata", "type": "{bytearray}"},
+        "data": {"key": "data", "type": "bytearray"},
+    }
+
+    def __init__(self, *, data: bytes, metadata: Optional[Dict[str, bytes]] = None, **kwargs: Any) -> None:
+        """
+        :keyword metadata: Payload data.
+        :paramtype metadata: dict[str, bytes]
+        :keyword data: Payload data. Required.
+        :paramtype data: bytes
+        """
+        super().__init__(**kwargs)
+        self.metadata = metadata
+        self.data = data
+
+
+class VaultCodecPayloads(_serialization.Model):
+    """VaultCodecPayloads.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is used.
+    :vartype tenant_id: str
+    :ivar payloads: Required.
+    :vartype payloads: list[~kuflow.rest.models.VaultCodecPayload]
+    """
+
+    _validation = {
+        "payloads": {"required": True, "min_items": 1},
+    }
+
+    _attribute_map = {
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "payloads": {"key": "payloads", "type": "[VaultCodecPayload]"},
+    }
+
+    def __init__(
+        self, *, payloads: List["_models.VaultCodecPayload"], tenant_id: Optional[str] = None, **kwargs: Any
+    ) -> None:
+        """
+        :keyword tenant_id: Tenant id. This attribute is required when an OAuth2 authentication is
+         used.
+        :paramtype tenant_id: str
+        :keyword payloads: Required.
+        :paramtype payloads: list[~kuflow.rest.models.VaultCodecPayload]
+        """
+        super().__init__(**kwargs)
+        self.tenant_id = tenant_id
+        self.payloads = payloads
 
 
 class WebhookEvent(_serialization.Model):

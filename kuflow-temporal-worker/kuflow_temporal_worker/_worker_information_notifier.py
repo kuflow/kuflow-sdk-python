@@ -25,7 +25,7 @@
 import asyncio
 import logging
 import socket
-from typing import Any, Dict, Optional, Set
+from typing import Any, Optional
 
 from azure.core.pipeline import PipelineResponse
 from temporalio.client import Client
@@ -51,8 +51,8 @@ class KuFlowWorkerInformationNotifier:
         temporal_config: TemporalConfig,
         temporal_client: Client,
         temporal_worker: Worker,
-        temporal_workflow_types: Optional[Set[str]] = None,
-        temporal_activity_types: Optional[Set[str]] = None,
+        temporal_workflow_types: Optional[set[str]] = None,
+        temporal_activity_types: Optional[set[str]] = None,
         backoff: Optional[KuFlowWorkerInformationNotifierBackoff] = None,
     ):
         if temporal_workflow_types is None:
@@ -67,8 +67,8 @@ class KuFlowWorkerInformationNotifier:
         self._temporal_config = temporal_config
         self._temporal_client = temporal_client
         self._temporal_worker = temporal_worker
-        self._temporal_workflow_types: Set[str] = temporal_workflow_types
-        self._temporal_activity_types: Set[str] = temporal_activity_types
+        self._temporal_workflow_types: set[str] = temporal_workflow_types
+        self._temporal_activity_types: set[str] = temporal_activity_types
         self._backoff = backoff
 
         self._delay_window_in_seconds = 5 * 60  # 5 min
@@ -100,7 +100,7 @@ class KuFlowWorkerInformationNotifier:
         try:
             http_response: Any = {}
 
-            def cls(pipeline_response: PipelineResponse, worker: models.Worker, ignored: Dict[str, Any]):
+            def cls(pipeline_response: PipelineResponse, worker: models.Worker, ignored: dict[str, Any]):
                 nonlocal http_response
 
                 http_response = pipeline_response.http_response

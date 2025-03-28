@@ -68,7 +68,7 @@ class KuFlowActivities:
 
             return models_temporal.PrincipalRetrieveResponse(principal=principal)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_retrieveTenantUser")
     async def retrieve_tenant_user(
@@ -82,7 +82,7 @@ class KuFlowActivities:
 
             return models_temporal.TenantUserRetrieveResponse(tenant_user=tenant_user)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_findProcesses")
     async def find_processes(
@@ -96,7 +96,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcesFindResponse(processes=proces_page)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_retrieveProcess")
     async def retrieve_process(
@@ -110,7 +110,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessRetrieveResponse(process=process)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_updateProcessEntity")
     async def update_process_entity(
@@ -128,7 +128,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessEntityUpdateResponse(process=process)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_patchProcessEntity")
     async def patch_process_entity(
@@ -144,7 +144,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessEntityPatchResponse(process=process)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_updateProcessMetadata")
     async def update_process_metadata(
@@ -162,7 +162,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessMetadataUpdateResponse(process=process)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_patchProcessMetadata")
     async def patch_process_metadata(
@@ -178,7 +178,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessMetadataPatchResponse(process=process)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_changeProcessInitiator")
     async def change_process_initiator(
@@ -198,7 +198,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessInitiatorChangeResponse(process=process)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_findProcessItems")
     async def find_process_items(
@@ -219,7 +219,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemFindResponse(process_items=process_items)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_retrieveProcessItem")
     async def retrieve_process_item(
@@ -233,7 +233,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemRetrieveResponse(process_item=process_item)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_createProcessItem")
     async def create_process_item(
@@ -258,7 +258,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemCreateResponse(process_item=process_item)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_completeProcessItemTask")
     async def complete_process_item_task(
@@ -272,7 +272,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskCompleteResponse(process_item=process_item)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_claimProcessItemTask")
     async def claim_process_item_task(
@@ -286,7 +286,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskClaimResponse(process_item=process_item)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_assignProcessItemTask")
     async def assign_process_item_task(
@@ -304,7 +304,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskAssignResponse(process_item=process_item)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_updateProcessItemTaskData")
     async def update_process_item_task_data(
@@ -322,7 +322,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskDataUpdateResponse(process_item=process_item)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_patchProcessItemTaskData")
     async def patch_process_item_task_data(
@@ -338,7 +338,7 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskDataPatchResponse(process_item=process_item)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904
 
     @activity.defn(name="KuFlow_Engine_appendProcessItemTaskLog")
     async def append_process_item_task_log(
@@ -356,4 +356,4 @@ class KuFlowActivities:
 
             return models_temporal.ProcessItemTaskLogAppendResponse(process_item=process_item)
         except Exception as err:
-            raise create_application_error(err) from err
+            raise create_application_error(err)  # noqa: B904

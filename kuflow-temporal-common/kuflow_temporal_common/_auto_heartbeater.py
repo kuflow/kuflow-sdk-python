@@ -24,9 +24,10 @@
 
 import asyncio
 import logging
+from collections.abc import Awaitable
 from datetime import datetime
 from functools import wraps
-from typing import Any, Awaitable, Callable, TypeVar, cast
+from typing import Any, Callable, TypeVar, cast
 
 from temporalio import activity
 

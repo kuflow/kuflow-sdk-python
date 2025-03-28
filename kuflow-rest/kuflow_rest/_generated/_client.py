@@ -49,6 +49,7 @@ from .operations import (
     RobotOperations,
     TenantOperations,
     TenantUserOperations,
+    VaultOperations,
     WorkerOperations,
 )
 
@@ -110,6 +111,8 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
 
     :ivar authentication: AuthenticationOperations operations
     :vartype authentication: kuflow.rest.operations.AuthenticationOperations
+    :ivar vault: VaultOperations operations
+    :vartype vault: kuflow.rest.operations.VaultOperations
     :ivar principal: PrincipalOperations operations
     :vartype principal: kuflow.rest.operations.PrincipalOperations
     :ivar tenant: TenantOperations operations
@@ -158,6 +161,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
         self._deserialize = Deserializer(client_models)
         self._serialize.client_side_validation = False
         self.authentication = AuthenticationOperations(self._client, self._config, self._serialize, self._deserialize)
+        self.vault = VaultOperations(self._client, self._config, self._serialize, self._deserialize)
         self.principal = PrincipalOperations(self._client, self._config, self._serialize, self._deserialize)
         self.tenant = TenantOperations(self._client, self._config, self._serialize, self._deserialize)
         self.tenant_user = TenantUserOperations(self._client, self._config, self._serialize, self._deserialize)

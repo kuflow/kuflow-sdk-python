@@ -110,9 +110,7 @@ def parse_kuflow_principal(original: str) -> Optional[KuFlowPrincipal]:
 
 def generate_kuflow_principal_string(id: UUID, principal_type: str, name: str) -> str:
     return (
-        f"{PREFIX}{METADATA_ID}={encode(id)};"
-        f"{METADATA_TYPE}={encode(principal_type)};"
-        f"{METADATA_NAME}={encode(name)};"
+        f"{PREFIX}{METADATA_ID}={encode(id)};{METADATA_TYPE}={encode(principal_type)};{METADATA_NAME}={encode(name)};"
     )
 
 

@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-from typing import Any, List, Optional
+from typing import Any, Optional
 
 from kuflow_rest import models as models_rest
 from kuflow_rest._generated import _serialization
@@ -92,7 +92,7 @@ class ProcesFindRequest(_serialization.Model):
     }
 
     def __init__(
-        self, page: Optional[int] = None, size: Optional[int] = None, sorts: Optional[List[str]] = None, **kwargs: Any
+        self, page: Optional[int] = None, size: Optional[int] = None, sorts: Optional[list[str]] = None, **kwargs: Any
     ) -> None:
         """
         Parameters:
@@ -193,7 +193,7 @@ class ProcessEntityPatchRequest(_serialization.Model):
     def __init__(
         self,
         process_id: str,
-        json_patch: List[models_rest.JsonPatchOperation],
+        json_patch: list[models_rest.JsonPatchOperation],
         **kwargs: Any,
     ) -> None:
         """
@@ -265,7 +265,7 @@ class ProcessMetadataPatchRequest(_serialization.Model):
     def __init__(
         self,
         process_id: str,
-        json_patch: List[models_rest.JsonPatchOperation],
+        json_patch: list[models_rest.JsonPatchOperation],
         **kwargs: Any,
     ) -> None:
         """
@@ -346,12 +346,12 @@ class ProcessItemFindRequest(_serialization.Model):
         self,
         page: Optional[int] = None,
         size: Optional[int] = None,
-        sorts: Optional[List[str]] = None,
-        tenant_ids: Optional[List[str]] = None,
-        process_ids: Optional[List[str]] = None,
-        types: Optional[List[models_rest.ProcessItemType]] = None,
-        task_states: Optional[List[models_rest.ProcessItemTaskState]] = None,
-        process_item_definition_codes: Optional[List[str]] = None,
+        sorts: Optional[list[str]] = None,
+        tenant_ids: Optional[list[str]] = None,
+        process_ids: Optional[list[str]] = None,
+        types: Optional[list[models_rest.ProcessItemType]] = None,
+        task_states: Optional[list[models_rest.ProcessItemTaskState]] = None,
+        process_item_definition_codes: Optional[list[str]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -615,7 +615,7 @@ class ProcessItemTaskDataPatchRequest(_serialization.Model):
     def __init__(
         self,
         process_item_id: str,
-        json_patch: List[models_rest.JsonPatchOperation],
+        json_patch: list[models_rest.JsonPatchOperation],
         **kwargs: Any,
     ) -> None:
         """

@@ -40,7 +40,11 @@ def create_application_error(e: Exception) -> ApplicationError:
     if isinstance(e, ApplicationError):
         return e
 
+    error: ApplicationError
     if isinstance(e, HttpResponseError):
-        return ApplicationError("Rest Invocation error", e, type=KuFlowFailureType.ACTIVITIES_REST_FAILURE)
+        error = ApplicationError("Rest Invocation error", e, type=KuFlowFailureType.ACTIVITIES_REST_FAILURE)
+    else:
+        error = ApplicationError("Invocation error", e, type=KuFlowFailureType.ACTIVITIES_FAILURE)
+    error.__cause__ = e
 
-    return ApplicationError("Invocation error", e, type=KuFlowFailureType.ACTIVITIES_FAILURE)
+    return error

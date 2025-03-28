@@ -28,7 +28,7 @@ from .. import models as _models
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
 
 
-class AuthenticationOperations:
+class VaultOperations:
     """
     .. warning::
         **DO NOT** instantiate this class directly.
@@ -41,19 +41,42 @@ class AuthenticationOperations:
     def __init__(self, kuflow_client: KuFlowRestClientGenerated):
         self._kuflow_client = kuflow_client
 
-    def create_authentication(
-        self, authentication_create_params: _models.AuthenticationCreateParams, **kwargs: Any
-    ) -> _models.Authentication:
-        """Create an authentication for the current principal.
+    def codec_encode(
+        self,
+        vault_codec_encode_params: _models.VaultCodecPayloads,
+        **kwargs: Any,
+    ) -> _models.VaultCodecPayloads:
+        """Encode the requested payloads.
 
-        Create an authentication for the current principal.
+        Encode the requested payloads.
 
-        :param authentication_create_params: Authentication to be created. Required.
-        :type authentication_create_params: ~kuflow.rest.models.Authentication or IO
-        :return: Authentication
-        :rtype: ~kuflow.rest.models.Authentication
+        :param vault_codec_encode_params: Payloads to encode. Required.
+        :type vault_codec_encode_params: ~kuflow.rest.models.VaultCodecPayloads
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: VaultCodecPayloads
+        :rtype: ~kuflow.rest.models.VaultCodecPayloads
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.authentication.create_authentication(
-            authentication_create_params=authentication_create_params, **kwargs
-        )
+        return self._kuflow_client.vault.codec_encode(vault_codec_encode_params=vault_codec_encode_params, **kwargs)
+
+    def codec_decode(
+        self,
+        vault_codec_decode_params: _models.VaultCodecPayloads,
+        **kwargs: Any,
+    ) -> _models.VaultCodecPayloads:
+        """Decode the requested payloads.
+
+        Decode the requested payloads.
+
+        :param vault_codec_decode_params: Payloads to decode. Required.
+        :type vault_codec_decode_params: ~kuflow.rest.models.VaultCodecPayloads
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: VaultCodecPayloads
+        :rtype: ~kuflow.rest.models.VaultCodecPayloads
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.vault.codec_decode(vault_codec_decode_params=vault_codec_decode_params, **kwargs)

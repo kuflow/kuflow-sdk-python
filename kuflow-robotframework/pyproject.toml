@@ -16,7 +16,7 @@ requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.9,<4.0"
 kuflow-rest = {path="../kuflow-rest", develop=true}
 robotframework = ">5.0.0"
 python-magic = {version = "^0.4.27", platform = "!=win32"}
