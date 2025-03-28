@@ -174,3 +174,17 @@ class SignalProcessItem(_serialization.Model):
         self.id = id
         self.type = type
         self.payload = payload
+
+
+class SignalUserAction(_serialization.Model):
+    _attribute_map = {
+        "userActionDefinitionCode": {"key": "userActionDefinitionCode", "type": "str"},
+    }
+
+    def __init__(self, userActionDefinitionCode: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            userActionDefinitionCode: Code used in the definition of the user action
+        """
+        super().__init__(**kwargs)
+        self.userActionDefinitionCode = userActionDefinitionCode

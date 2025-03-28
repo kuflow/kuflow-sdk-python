@@ -120,4 +120,4 @@ def encode(value: str) -> str:
     if value is None:
         return ""
 
-    return urllib.parse.quote(value.strip(), safe='').replace("+", "%20")
+    return urllib.parse.quote(value.strip(), safe="").replace("+", "%20")
