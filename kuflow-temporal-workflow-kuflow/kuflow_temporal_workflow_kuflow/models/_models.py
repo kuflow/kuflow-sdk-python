@@ -22,6 +22,7 @@
 # SOFTWARE.
 #
 
+import datetime
 from typing import TYPE_CHECKING, Any, Optional
 
 from kuflow_rest._generated import _serialization
@@ -178,13 +179,16 @@ class SignalProcessItem(_serialization.Model):
 
 class SignalUserAction(_serialization.Model):
     _attribute_map = {
-        "userActionDefinitionCode": {"key": "userActionDefinitionCode", "type": "str"},
+        "user_action_definition_code": {"key": "userActionDefinitionCode", "type": "str"},
+        "request_instant": {"key": "requestInstant", "type": "iso-8601"},
     }
 
-    def __init__(self, userActionDefinitionCode: str, **kwargs: Any) -> None:
+    def __init__(self, user_action_definition_code: str, request_instant: datetime.datetime, **kwargs: Any) -> None:
         """
         Parameters:
-            userActionDefinitionCode: Code used in the definition of the user action
+            user_action_definition_code: Code of the user action definition
+            request_instant: Instant at which the user action was requested
         """
         super().__init__(**kwargs)
-        self.userActionDefinitionCode = userActionDefinitionCode
+        self.user_action_definition_code = user_action_definition_code
+        self.request_instant = request_instant
