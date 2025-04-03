@@ -32,8 +32,8 @@ from ._kuflow_encryption_instrumentation import (
     KuFlowEncryptionState,
     KuFlowEncryptionWrapper,
     add_encryption_encoding,
-    is_encryption_required,
     mark_objects_to_be_encrypted,
+    retrieve_encryption_state,
 )
 
 
@@ -67,7 +67,9 @@ class KuFlowEncryptionActivityInboundInterceptor(temporalio.worker.ActivityInbou
     async def execute_activity(self, input: temporalio.worker.ExecuteActivityInput) -> Any:
         output = await super().execute_activity(input)
 
-        return KuFlowEncryptionWrapper(output) if is_encryption_required(input.headers) else output
+        encryption_state = retrieve_encryption_state(input.headers)
+
+        return KuFlowEncryptionWrapper(encryption_state=encryption_state, value=output)
 
 
 class KuFlowEncryptionWorkflowInboundInterceptor(temporalio.worker.WorkflowInboundInterceptor):
@@ -80,8 +82,7 @@ class KuFlowEncryptionWorkflowInboundInterceptor(temporalio.worker.WorkflowInbou
     def __init__(self, next: temporalio.worker.WorkflowInboundInterceptor) -> None:
         """Initialize a tracing workflow interceptor."""
         super().__init__(next)
-        self.state = KuFlowEncryptionState()
-        print("ENTRA KuFlowEncryptionWorkflowInboundInterceptor", self.state)
+        self.encryption_state = KuFlowEncryptionState(key_id=None)
 
     def init(self, outbound: temporalio.worker.WorkflowOutboundInterceptor) -> None:
         """Implementation of
@@ -93,11 +94,14 @@ class KuFlowEncryptionWorkflowInboundInterceptor(temporalio.worker.WorkflowInbou
         """Implementation of
         :py:meth:`temporalio.worker.WorkflowInboundInterceptor.execute_workflow`.
         """
-        self.state.encryption_required = is_encryption_required(input.headers)
+
+        encryption_state_current = retrieve_encryption_state(input.headers)
+
+        self.encryption_state.merge(encryption_state_current)
 
         output = await super().execute_workflow(input)
 
-        return KuFlowEncryptionWrapper(output) if self.state.encryption_required else output
+        return KuFlowEncryptionWrapper(encryption_state=self.encryption_state, value=output)
 
     async def handle_query(self, input: temporalio.worker.HandleQueryInput) -> Any:
         """Implementation of
@@ -105,7 +109,7 @@ class KuFlowEncryptionWorkflowInboundInterceptor(temporalio.worker.WorkflowInbou
         """
         output = await super().handle_query(input)
 
-        return KuFlowEncryptionWrapper(output) if self.state.encryption_required else output
+        return KuFlowEncryptionWrapper(encryption_state=self.encryption_state, value=output)
 
     async def handle_update_handler(self, input: temporalio.worker.HandleUpdateInput) -> Any:
         """Implementation of
@@ -113,7 +117,7 @@ class KuFlowEncryptionWorkflowInboundInterceptor(temporalio.worker.WorkflowInbou
         """
         output = await super().handle_update_handler(input)
 
-        return KuFlowEncryptionWrapper(output) if self.state.encryption_required else output
+        return KuFlowEncryptionWrapper(encryption_state=self.encryption_state, value=output)
 
 
 class KuFlowEncryptionWorkflowOutboundInterceptor(temporalio.worker.WorkflowOutboundInterceptor):
@@ -129,9 +133,8 @@ class KuFlowEncryptionWorkflowOutboundInterceptor(temporalio.worker.WorkflowOutb
         headers = input.headers
         args = input.args
 
-        if self.root.state.encryption_required:
-            headers = add_encryption_encoding(headers)
-            args = mark_objects_to_be_encrypted(args)
+        headers = add_encryption_encoding(self.root.encryption_state, headers)
+        args = mark_objects_to_be_encrypted(self.root.encryption_state, args)
 
         return super().continue_as_new(dataclasses.replace(input, headers=headers, args=args))
 
@@ -139,9 +142,8 @@ class KuFlowEncryptionWorkflowOutboundInterceptor(temporalio.worker.WorkflowOutb
         headers = input.headers
         args = input.args
 
-        if self.root.state.encryption_required:
-            headers = add_encryption_encoding(headers)
-            args = mark_objects_to_be_encrypted(args)
+        headers = add_encryption_encoding(self.root.encryption_state, headers)
+        args = mark_objects_to_be_encrypted(self.root.encryption_state, args)
 
         await super().signal_child_workflow(dataclasses.replace(input, headers=headers, args=args))
 
@@ -149,9 +151,8 @@ class KuFlowEncryptionWorkflowOutboundInterceptor(temporalio.worker.WorkflowOutb
         headers = input.headers
         args = input.args
 
-        if self.root.state.encryption_required:
-            headers = add_encryption_encoding(headers)
-            args = mark_objects_to_be_encrypted(args)
+        headers = add_encryption_encoding(self.root.encryption_state, headers)
+        args = mark_objects_to_be_encrypted(self.root.encryption_state, args)
 
         await super().signal_external_workflow(dataclasses.replace(input, headers=headers, args=args))
 
@@ -159,9 +160,8 @@ class KuFlowEncryptionWorkflowOutboundInterceptor(temporalio.worker.WorkflowOutb
         headers = input.headers
         args = input.args
 
-        if self.root.state.encryption_required:
-            headers = add_encryption_encoding(headers)
-            args = mark_objects_to_be_encrypted(args)
+        headers = add_encryption_encoding(self.root.encryption_state, headers)
+        args = mark_objects_to_be_encrypted(self.root.encryption_state, args)
 
         return super().start_activity(dataclasses.replace(input, headers=headers, args=args))
 
@@ -171,9 +171,8 @@ class KuFlowEncryptionWorkflowOutboundInterceptor(temporalio.worker.WorkflowOutb
         headers = input.headers
         args = input.args
 
-        if self.root.state.encryption_required:
-            headers = add_encryption_encoding(headers)
-            args = mark_objects_to_be_encrypted(args)
+        headers = add_encryption_encoding(self.root.encryption_state, headers)
+        args = mark_objects_to_be_encrypted(self.root.encryption_state, args)
 
         return await super().start_child_workflow(dataclasses.replace(input, headers=headers, args=args))
 
@@ -183,8 +182,7 @@ class KuFlowEncryptionWorkflowOutboundInterceptor(temporalio.worker.WorkflowOutb
         headers = input.headers
         args = input.args
 
-        if self.root.state.encryption_required:
-            headers = add_encryption_encoding(headers)
-            args = mark_objects_to_be_encrypted(args)
+        headers = add_encryption_encoding(self.root.encryption_state, headers)
+        args = mark_objects_to_be_encrypted(self.root.encryption_state, args)
 
         return super().start_local_activity(dataclasses.replace(input, headers=headers, args=args))

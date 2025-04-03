@@ -28,7 +28,7 @@ from .. import models as _models
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
 
 
-class VaultOperations:
+class KmsOperations:
     """
     .. warning::
         **DO NOT** instantiate this class directly.
@@ -41,42 +41,19 @@ class VaultOperations:
     def __init__(self, kuflow_client: KuFlowRestClientGenerated):
         self._kuflow_client = kuflow_client
 
-    def codec_encode(
+    def retrieve_kms_key(
         self,
-        vault_codec_encode_params: _models.VaultCodecPayloads,
+        id: str,
         **kwargs: Any,
-    ) -> _models.VaultCodecPayloads:
-        """Encode the requested payloads.
+    ) -> _models.KmsKey:
+        """Get the requested key id.
 
-        Encode the requested payloads.
+        Get the requested key id.
 
-        :param vault_codec_encode_params: Payloads to encode. Required.
-        :type vault_codec_encode_params: ~kuflow.rest.models.VaultCodecPayloads
-        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
-         Default value is "application/json".
-        :paramtype content_type: str
-        :return: VaultCodecPayloads
-        :rtype: ~kuflow.rest.models.VaultCodecPayloads
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: KmsKey
+        :rtype: ~kuflow.rest.models.KmsKey
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.vault.codec_encode(vault_codec_encode_params=vault_codec_encode_params, **kwargs)
-
-    def codec_decode(
-        self,
-        vault_codec_decode_params: _models.VaultCodecPayloads,
-        **kwargs: Any,
-    ) -> _models.VaultCodecPayloads:
-        """Decode the requested payloads.
-
-        Decode the requested payloads.
-
-        :param vault_codec_decode_params: Payloads to decode. Required.
-        :type vault_codec_decode_params: ~kuflow.rest.models.VaultCodecPayloads
-        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
-         Default value is "application/json".
-        :paramtype content_type: str
-        :return: VaultCodecPayloads
-        :rtype: ~kuflow.rest.models.VaultCodecPayloads
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        return self._kuflow_client.vault.codec_decode(vault_codec_decode_params=vault_codec_decode_params, **kwargs)
+        return self._kuflow_client.kms.retrieve_kms_key(key_id=id, **kwargs)

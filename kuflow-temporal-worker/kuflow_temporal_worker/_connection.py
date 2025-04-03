@@ -89,7 +89,6 @@ class KuFlowTemporalConnection:
             temporalio.converter.DataConverter.default,
             payload_converter_class=KuFlowConverterClass,
             payload_codec=KuFlowEncryptionPayloadCodec(
-                tenant_id=self._kuflow.tenant_id,
                 rest_client=self._kuflow.rest_client,
             ),
         )

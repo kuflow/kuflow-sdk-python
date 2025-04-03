@@ -19,6 +19,7 @@ build-backend = "poetry.core.masonry.api"
 python = ">=3.9,<4.0"
 kuflow-temporal-common = {path="../kuflow-temporal-common", develop=true}
 temporalio = "~1.10.0"
+cryptography = "^38.0.1"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.11.1"

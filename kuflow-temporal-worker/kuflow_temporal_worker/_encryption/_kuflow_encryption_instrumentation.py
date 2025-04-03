@@ -23,29 +23,56 @@
 #
 
 from collections.abc import Mapping, Sequence
-from typing import Any
+from typing import Any, Optional
 
 import temporalio.api.common.v1
 import temporalio.converter
 
 
-METADATA_KUFLOW_ENCODING_KEY = "x-kuflow-encoding"
-METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME = "binary/encrypted?vendor=KuFlow"
+HEADER_KEY_KUFLOW_ENCODING = "x-kuflow-encoding"
+HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID = "x-kuflow-encoding-encrypted-key-id"
+HEADER_VALUE_KUFLOW_ENCODING_ENCRYPTED = "binary/encrypted?vendor=KuFlow"
+
+METADATA_KEY_ENCODING = "encoding"
+METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID = "encoding-encrypted-key-id"
+METADATA_VALUE_KUFLOW_ENCODING_ENCRYPTED = "binary/encrypted?vendor=KuFlow"
 
 
 class KuFlowEncryptionState:
-    encryption_required = False
+    key_id: Optional[str] = None
+
+    def __init__(self, key_id: Optional[str]) -> None:
+        self.key_id = key_id
+
+    def merge(self, other: Optional["KuFlowEncryptionState"]):
+        if other.key_id is not None:
+            self.key_id = other.key_id
+        else:
+            self.key_id = None
 
 
 class KuFlowEncryptionWrapper:
-    value: bytes
+    encryption_state: KuFlowEncryptionState
 
-    def __init__(self, value: bytes) -> None:
+    value: Any
+
+    def __init__(self, encryption_state: KuFlowEncryptionState, value: Any) -> None:
+        self.encryption_state = encryption_state
         self.value = value
 
 
+def retrieve_encryption_state(headers: Mapping[str, temporalio.api.common.v1.Payload]) -> KuFlowEncryptionState:
+    if not is_encryption_required(headers):
+        return KuFlowEncryptionState(key_id=None)
+
+    key_id_payload = headers.get(HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID)
+    key_id = temporalio.converter.PayloadConverter.default.from_payload(key_id_payload)
+
+    return KuFlowEncryptionState(key_id=key_id)
+
+
 def is_encryption_required(headers: Mapping[str, temporalio.api.common.v1.Payload]) -> bool:
-    header_payload = headers.get(METADATA_KUFLOW_ENCODING_KEY)
+    header_payload = headers.get(HEADER_KEY_KUFLOW_ENCODING)
     if not header_payload:
         return False
 
@@ -53,19 +80,29 @@ def is_encryption_required(headers: Mapping[str, temporalio.api.common.v1.Payloa
     if not value:
         return False
 
-    return value == METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME
+    return value == HEADER_VALUE_KUFLOW_ENCODING_ENCRYPTED
 
 
 def add_encryption_encoding(
+    encryption_state: KuFlowEncryptionState,
     headers: Mapping[str, temporalio.api.common.v1.Payload],
 ) -> Mapping[str, temporalio.api.common.v1.Payload]:
+    if encryption_state.key_id is None:
+        return headers
+
     return {
         **headers,
-        METADATA_KUFLOW_ENCODING_KEY: temporalio.converter.PayloadConverter.default.to_payload(
-            METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME
+        HEADER_KEY_KUFLOW_ENCODING: temporalio.converter.PayloadConverter.default.to_payload(
+            HEADER_VALUE_KUFLOW_ENCODING_ENCRYPTED
+        ),
+        HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID: temporalio.converter.PayloadConverter.default.to_payload(
+            encryption_state.key_id
         ),
     }
 
 
-def mark_objects_to_be_encrypted(args: Sequence[Any]) -> Sequence[Any]:
-    return [KuFlowEncryptionWrapper(arg) for arg in args]
+def mark_objects_to_be_encrypted(encryption_state: KuFlowEncryptionState, args: Sequence[Any]) -> Sequence[Any]:
+    if encryption_state.key_id is None:
+        return args
+
+    return [KuFlowEncryptionWrapper(encryption_state=encryption_state, value=arg) for arg in args]

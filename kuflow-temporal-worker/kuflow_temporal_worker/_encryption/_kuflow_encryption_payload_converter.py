@@ -28,8 +28,8 @@ import temporalio.api.common.v1
 from temporalio.converter import EncodingPayloadConverter
 
 from ._kuflow_encryption_instrumentation import (
-    METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME,
-    METADATA_KUFLOW_ENCODING_KEY,
+    METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID,
+    KuFlowEncryptionState,
     KuFlowEncryptionWrapper,
 )
 
@@ -47,18 +47,18 @@ class KuFlowEncryptionPayloadConverter(EncodingPayloadConverter):
 
     def to_payload(self, value: Any) -> Optional[temporalio.api.common.v1.Payload]:
         """See base class."""
-        need_encryption = False
+        encryption_state: Optional[KuFlowEncryptionState] = None
         if isinstance(value, KuFlowEncryptionWrapper):
+            encryption_state = value.encryption_state
             value = value.value
-            need_encryption = True
 
         payload = self.delegate.to_payload(value)
 
-        if payload is not None and need_encryption:
+        if payload is not None and encryption_state.key_id is not None:
             payload = temporalio.api.common.v1.Payload(
                 metadata={
                     **payload.metadata,
-                    METADATA_KUFLOW_ENCODING_KEY: METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME.encode(),
+                    METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID: encryption_state.key_id.encode(),
                 },
                 data=payload.data,
             )

@@ -37,7 +37,7 @@ if TYPE_CHECKING:
     from ._patch import *  # pylint: disable=unused-wildcard-import
 
 from ._authentication_operations import AuthenticationOperations  # type: ignore
-from ._vault_operations import VaultOperations  # type: ignore
+from ._kms_operations import KmsOperations  # type: ignore
 from ._principal_operations import PrincipalOperations  # type: ignore
 from ._tenant_operations import TenantOperations  # type: ignore
 from ._tenant_user_operations import TenantUserOperations  # type: ignore
@@ -52,7 +52,7 @@ from ._patch import patch_sdk as _patch_sdk
 
 __all__ = [
     "AuthenticationOperations",
-    "VaultOperations",
+    "KmsOperations",
     "PrincipalOperations",
     "TenantOperations",
     "TenantUserOperations",
