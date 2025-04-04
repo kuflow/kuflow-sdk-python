@@ -22,7 +22,8 @@
 # SOFTWARE.
 #
 
-from typing import Any, Iterator, List, Optional, Union
+from collections.abc import Iterator
+from typing import Any, Optional, Union
 
 from .. import models as _models
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
@@ -45,8 +46,8 @@ class ProcessOperations:
         self,
         size: int = 25,
         page: int = 0,
-        sort: Optional[Union[str, List[str]]] = None,
-        tenant_id: Optional[Union[str, List[str]]] = None,
+        sort: Optional[Union[str, list[str]]] = None,
+        tenant_id: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
@@ -227,7 +228,7 @@ class ProcessOperations:
         )
 
     def patch_process_metadata(
-        self, id: str, json_patch: List[_models.JsonPatchOperation], **kwargs: Any
+        self, id: str, json_patch: list[_models.JsonPatchOperation], **kwargs: Any
     ) -> _models.Process:
         """Patch JSON data.
 
@@ -272,7 +273,7 @@ class ProcessOperations:
     def patch_process_entity(
         self,
         id: str,
-        json_patch: List[_models.JsonPatchOperation],
+        json_patch: list[_models.JsonPatchOperation],
         **kwargs: Any,
     ) -> _models.Process:
         """Save JSON data.

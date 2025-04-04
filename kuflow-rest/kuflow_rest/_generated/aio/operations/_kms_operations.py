@@ -30,7 +30,7 @@
 #
 # --------------------------------------------------------------------------
 import sys
-from typing import Any, Callable, Dict, List, Optional, TypeVar
+from typing import Any, Callable, Dict, Optional, TypeVar
 
 from azure.core import AsyncPipelineClient
 from azure.core.exceptions import (
@@ -47,7 +47,7 @@ from azure.core.tracing.decorator_async import distributed_trace_async
 
 from ... import models as _models
 from ..._serialization import Deserializer, Serializer
-from ...operations._tenant_user_operations import build_find_tenant_users_request, build_retrieve_tenant_user_request
+from ...operations._kms_operations import build_retrieve_kms_key_request
 from .._configuration import KuFlowRestClientConfiguration
 
 if sys.version_info >= (3, 9):
@@ -58,14 +58,14 @@ T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
 
-class TenantUserOperations:
+class KmsOperations:
     """
     .. warning::
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
         :class:`~kuflow.rest.aio.KuFlowRestClient`'s
-        :attr:`tenant_user` attribute.
+        :attr:`kms` attribute.
     """
 
     models = _models
@@ -78,42 +78,15 @@ class TenantUserOperations:
         self._deserialize: Deserializer = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
     @distributed_trace_async
-    async def find_tenant_users(
-        self,
-        *,
-        size: int = 25,
-        page: int = 0,
-        sort: Optional[List[str]] = None,
-        group_id: Optional[List[str]] = None,
-        email: Optional[List[str]] = None,
-        tenant_id: Optional[List[str]] = None,
-        **kwargs: Any,
-    ) -> _models.TenantUserPage:
-        """Find all accessible Tenant Users.
+    async def retrieve_kms_key(self, key_id: str, **kwargs: Any) -> _models.KmsKey:
+        """Get the requested key id.
 
-        List all the Tenant Users that have been created and the used credentials has access.
+        Get the requested key id.
 
-        Available sort query values: id, createdAt, lastModifiedAt.
-
-        :keyword size: The number of records returned within a single API call. Default value is 25.
-        :paramtype size: int
-        :keyword page: The page number of the current page in the returned records, 0 is the first
-         page. Default value is 0.
-        :paramtype page: int
-        :keyword sort: Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-
-         Default sort order is ascending. Multiple sort criteria are supported.
-
-         Please refer to the method description for supported properties. Default value is None.
-        :paramtype sort: list[str]
-        :keyword group_id: Filter by group ids. Default value is None.
-        :paramtype group_id: list[str]
-        :keyword email: Filter by email. Default value is None.
-        :paramtype email: list[str]
-        :keyword tenant_id: Filter by tenantId. Default value is None.
-        :paramtype tenant_id: list[str]
-        :return: TenantUserPage
-        :rtype: ~kuflow.rest.models.TenantUserPage
+        :param key_id: The resource ID. Required.
+        :type key_id: str
+        :return: KmsKey
+        :rtype: ~kuflow.rest.models.KmsKey
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -127,15 +100,10 @@ class TenantUserOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.TenantUserPage] = kwargs.pop("cls", None)
+        cls: ClsType[_models.KmsKey] = kwargs.pop("cls", None)
 
-        _request = build_find_tenant_users_request(
-            size=size,
-            page=page,
-            sort=sort,
-            group_id=group_id,
-            email=email,
-            tenant_id=tenant_id,
+        _request = build_retrieve_kms_key_request(
+            key_id=key_id,
             headers=_headers,
             params=_params,
         )
@@ -153,58 +121,7 @@ class TenantUserOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("TenantUserPage", pipeline_response.http_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
-
-        return deserialized  # type: ignore
-
-    @distributed_trace_async
-    async def retrieve_tenant_user(self, id: str, **kwargs: Any) -> _models.TenantUser:
-        """Get a Tenant User by ID.
-
-        Returns the requested TenantUser when has access to do it.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :return: TenantUser
-        :rtype: ~kuflow.rest.models.TenantUser
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        error_map: MutableMapping = {
-            401: ClientAuthenticationError,
-            404: ResourceNotFoundError,
-            409: ResourceExistsError,
-            304: ResourceNotModifiedError,
-        }
-        error_map.update(kwargs.pop("error_map", {}) or {})
-
-        _headers = kwargs.pop("headers", {}) or {}
-        _params = kwargs.pop("params", {}) or {}
-
-        cls: ClsType[_models.TenantUser] = kwargs.pop("cls", None)
-
-        _request = build_retrieve_tenant_user_request(
-            id=id,
-            headers=_headers,
-            params=_params,
-        )
-        _request.url = self._client.format_url(_request.url)
-
-        _stream = False
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            _request, stream=_stream, **kwargs
-        )
-
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
-            raise HttpResponseError(response=response, model=error)
-
-        deserialized = self._deserialize("TenantUser", pipeline_response.http_response)
+        deserialized = self._deserialize("KmsKey", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore

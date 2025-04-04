@@ -22,10 +22,10 @@
 # SOFTWARE.
 #
 
-from typing import Any, List, Optional, Union
+from typing import Any, Optional, Union
 
+from .. import models as _models
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
-from .._generated import models as _models
 
 
 class TenantUserOperations:
@@ -45,10 +45,10 @@ class TenantUserOperations:
         self,
         size: int = 25,
         page: int = 0,
-        sort: Optional[Union[str, List[str]]] = None,
-        group_id: Optional[Union[str, List[str]]] = None,
-        email: Optional[Union[str, List[str]]] = None,
-        tenant_id: Optional[Union[str, List[str]]] = None,
+        sort: Optional[Union[str, list[str]]] = None,
+        group_id: Optional[Union[str, list[str]]] = None,
+        email: Optional[Union[str, list[str]]] = None,
+        tenant_id: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
     ) -> _models.TenantUserPage:
         """Find all accessible Tenant Users.

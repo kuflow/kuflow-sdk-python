@@ -24,8 +24,8 @@
 
 from typing import Any
 
+from .. import models as _models
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
-from .._generated import models as _models
 
 
 class AuthenticationOperations:

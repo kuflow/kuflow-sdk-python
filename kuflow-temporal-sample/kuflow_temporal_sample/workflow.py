@@ -23,7 +23,6 @@
 #
 
 from datetime import timedelta
-from typing import List
 
 from temporalio import workflow
 from temporalio.common import RetryPolicy
@@ -41,7 +40,7 @@ with workflow.unsafe.imports_passed_through():
 @workflow.defn
 class SampleEngineWorkerLoanWorkflow:
     def __init__(self) -> None:
-        self._kuflow_completed_process_item_ids: List[str] = []
+        self._kuflow_completed_process_item_ids: list[str] = []
 
     @workflow.signal(name=models_workflow.KUFLOW_ENGINE_SIGNAL_PROCESS_ITEM)
     async def kuflow_engine_signal_process_item(self, signal: models_workflow.SignalProcessItem) -> None:
@@ -58,7 +57,8 @@ class SampleEngineWorkerLoanWorkflow:
             id=id,
             type=models_rest.ProcessItemType.TASK,
             process_id=request.process_id,
-            task=models_rest.ProcessItemTaskCreateParams(task_definition_code="LOAN_APPLICATION"),
+            process_item_definition_code="LOAN_APPLICATION",
+            task=models_rest.ProcessItemTaskCreateParams(),
         )
 
         # Create Process Item Task

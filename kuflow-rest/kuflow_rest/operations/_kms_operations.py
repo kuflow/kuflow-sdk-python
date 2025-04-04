@@ -22,22 +22,38 @@
 # SOFTWARE.
 #
 
-from ._auto_heartbeater import auto_heartbeater
-from ._converter import (
-    KuFlowModelJSONEncoder,
-    KuFlowModelJSONTypeConverter,
-    register_serializable_models,
-)
-from ._exceptions import KuFlowFailureType, create_application_error
+from typing import Any
+
+from .. import models as _models
+from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
 
 
-__all__ = [
-    "auto_heartbeater",
-    "create_application_error",
-    "KuFlowFailureType",
-    "KuFlowModelJSONEncoder",
-    "KuFlowModelJSONTypeConverter",
-    "register_serializable_models",
-]
+class KmsOperations:
+    """
+    .. warning::
+        **DO NOT** instantiate this class directly.
 
-__version__ = "3.0.1.dev0"
+        Instead, you should access the following operations through
+        :class:`~kuflow.rest.client.KuFlowRestClient`'s
+        :attr:`authentication` attribute.
+    """
+
+    def __init__(self, kuflow_client: KuFlowRestClientGenerated):
+        self._kuflow_client = kuflow_client
+
+    def retrieve_kms_key(
+        self,
+        id: str,
+        **kwargs: Any,
+    ) -> _models.KmsKey:
+        """Get the requested key id.
+
+        Get the requested key id.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: KmsKey
+        :rtype: ~kuflow.rest.models.KmsKey
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.kms.retrieve_kms_key(key_id=id, **kwargs)

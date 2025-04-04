@@ -29,9 +29,8 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 #
 # --------------------------------------------------------------------------
-from io import IOBase
 import sys
-from typing import Any, Callable, Dict, IO, Optional, TypeVar, Union, overload
+from typing import Any, Callable, Dict, Optional, TypeVar
 
 from azure.core import PipelineClient
 from azure.core.exceptions import (
@@ -62,31 +61,33 @@ _SERIALIZER = Serializer()
 _SERIALIZER.client_side_validation = False
 
 
-def build_create_worker_request(**kwargs: Any) -> HttpRequest:
+def build_retrieve_kms_key_request(key_id: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
 
-    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/workers"
+    _url = "/kms/keys/{keyId}"
+    path_format_arguments = {
+        "keyId": _SERIALIZER.url("key_id", key_id, "str"),
+    }
+
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct headers
-    if content_type is not None:
-        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+    return HttpRequest(method="GET", url=_url, headers=_headers, **kwargs)
 
 
-class WorkerOperations:
+class KmsOperations:
     """
     .. warning::
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
         :class:`~kuflow.rest.KuFlowRestClient`'s
-        :attr:`worker` attribute.
+        :attr:`kms` attribute.
     """
 
     models = _models
@@ -98,64 +99,16 @@ class WorkerOperations:
         self._serialize: Serializer = input_args.pop(0) if input_args else kwargs.pop("serializer")
         self._deserialize: Deserializer = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
-    @overload
-    def create_worker(
-        self, worker_create_params: _models.WorkerCreateParams, *, content_type: str = "application/json", **kwargs: Any
-    ) -> _models.Worker:
-        """Create or update a worker.
-
-        Register a worker in KuFlow, this allows the platform to have a catalogue of all registered
-        workers.
-
-        If already exist a worker for the same identity, the worker will be updated.
-
-        :param worker_create_params: Worker to create or update. Required.
-        :type worker_create_params: ~kuflow.rest.models.WorkerCreateParams
-        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
-         Default value is "application/json".
-        :paramtype content_type: str
-        :return: Worker
-        :rtype: ~kuflow.rest.models.Worker
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-
-    @overload
-    def create_worker(
-        self, worker_create_params: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
-    ) -> _models.Worker:
-        """Create or update a worker.
-
-        Register a worker in KuFlow, this allows the platform to have a catalogue of all registered
-        workers.
-
-        If already exist a worker for the same identity, the worker will be updated.
-
-        :param worker_create_params: Worker to create or update. Required.
-        :type worker_create_params: IO[bytes]
-        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
-         Default value is "application/json".
-        :paramtype content_type: str
-        :return: Worker
-        :rtype: ~kuflow.rest.models.Worker
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-
     @distributed_trace
-    def create_worker(
-        self, worker_create_params: Union[_models.WorkerCreateParams, IO[bytes]], **kwargs: Any
-    ) -> _models.Worker:
-        """Create or update a worker.
+    def retrieve_kms_key(self, key_id: str, **kwargs: Any) -> _models.KmsKey:
+        """Get the requested key id.
 
-        Register a worker in KuFlow, this allows the platform to have a catalogue of all registered
-        workers.
+        Get the requested key id.
 
-        If already exist a worker for the same identity, the worker will be updated.
-
-        :param worker_create_params: Worker to create or update. Is either a WorkerCreateParams type or
-         a IO[bytes] type. Required.
-        :type worker_create_params: ~kuflow.rest.models.WorkerCreateParams or IO[bytes]
-        :return: Worker
-        :rtype: ~kuflow.rest.models.Worker
+        :param key_id: The resource ID. Required.
+        :type key_id: str
+        :return: KmsKey
+        :rtype: ~kuflow.rest.models.KmsKey
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -166,24 +119,13 @@ class WorkerOperations:
         }
         error_map.update(kwargs.pop("error_map", {}) or {})
 
-        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Worker] = kwargs.pop("cls", None)
+        cls: ClsType[_models.KmsKey] = kwargs.pop("cls", None)
 
-        content_type = content_type or "application/json"
-        _json = None
-        _content = None
-        if isinstance(worker_create_params, (IOBase, bytes)):
-            _content = worker_create_params
-        else:
-            _json = self._serialize.body(worker_create_params, "WorkerCreateParams")
-
-        _request = build_create_worker_request(
-            content_type=content_type,
-            json=_json,
-            content=_content,
+        _request = build_retrieve_kms_key_request(
+            key_id=key_id,
             headers=_headers,
             params=_params,
         )
@@ -196,12 +138,12 @@ class WorkerOperations:
 
         response = pipeline_response.http_response
 
-        if response.status_code not in [200, 201]:
+        if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Worker", pipeline_response.http_response)
+        deserialized = self._deserialize("KmsKey", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore

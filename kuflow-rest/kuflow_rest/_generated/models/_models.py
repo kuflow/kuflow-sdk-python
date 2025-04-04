@@ -539,9 +539,9 @@ class JsonValue(_serialization.Model):
         :paramtype value: dict[str, any]
         """
         super().__init__(**kwargs)
-        self.valid = None
+        self.valid: Optional[bool] = None
         self.value = value
-        self.errors = None
+        self.errors: Optional[List[_models.JsonValueError]] = None
 
 
 class JsonValueError(_serialization.Model):
@@ -574,6 +574,45 @@ class JsonValueError(_serialization.Model):
         super().__init__(**kwargs)
         self.property_path = property_path
         self.type = type
+
+
+class KmsKey(_serialization.Model):
+    """KmsKey.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Key Id. Required.
+    :vartype id: str
+    :ivar value: Encryption/decryption key. Required.
+    :vartype value: bytes
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "value": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "value": {"key": "value", "type": "bytearray"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        value: bytes,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Key Id. Required.
+        :paramtype id: str
+        :keyword value: Encryption/decryption key. Required.
+        :paramtype value: bytes
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.value = value
 
 
 class Page(_serialization.Model):
@@ -2568,7 +2607,7 @@ class TenantUser(AbstractAudited):
         self.id = id
         self.metadata = metadata
         self.principal = principal
-        self.tenant_id = None
+        self.tenant_id: Optional[str] = None
 
 
 class TenantUserPage(Page):
@@ -2670,9 +2709,9 @@ class TenantUserPageItem(AbstractAudited):
             last_modified_at=last_modified_at,
             **kwargs,
         )
-        self.id = None
-        self.principal_id = None
-        self.tenant_id = None
+        self.id: Optional[str] = None
+        self.principal_id: Optional[str] = None
+        self.tenant_id: Optional[str] = None
 
 
 class WebhookEvent(_serialization.Model):
