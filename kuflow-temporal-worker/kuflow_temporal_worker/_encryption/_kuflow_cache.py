@@ -23,11 +23,14 @@
 #
 
 import asyncio
+import logging
 from collections import defaultdict
 from collections.abc import Awaitable
 from datetime import timedelta
 from typing import Callable, Generic, Optional, TypeVar
 
+
+logger = logging.getLogger(__name__)
 
 V = TypeVar("V")  # Type for the value
 
@@ -78,6 +81,8 @@ class Cache(Generic[V]):
 
             self._put_cache_entry(key, key_value)
 
+            logger.info(f"Loaded key {key} into cache")
+
             return key_value
 
     async def close(self):
@@ -116,3 +121,5 @@ class Cache(Generic[V]):
                     if key in self._cache and self._cache[key].expire_at <= now:
                         del self._cache[key]
                         del self._cache_locks[key]
+
+                        logger.info(f"Removed key {key} from cache")
