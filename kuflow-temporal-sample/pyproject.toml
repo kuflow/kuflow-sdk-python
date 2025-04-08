@@ -1,23 +1,29 @@
-[tool.poetry]
+[project]
 name = "kuflow-temporal-sample"
-version = "3.1.0"
 description = "KuFlow samples"
 license = "MIT"
-authors = ["KuFlow S.L. <kuflow@kuflow.com>"]
-homepage = "https://kuflow.com/"
-documentation = "https://docs.kuflow.com/"
-repository = "https://github.com/kuflow/kuflow-sdk-python"
 readme = "README.md"
-include = ["VERSION", "README.md", "CHANGELOG.md"]
-packages = [{ include = "kuflow_temporal_sample" }]
-classifiers = ["Private :: Do not Upload"]
+authors = [{name = "KuFlow S.L.", email = "kuflow@kuflow.com"}]
+dynamic = ["version", "classifiers", "dependencies"]
+requires-python = '>=3.9,<4.0'
+
+[project.urls]
+homepage = "https://kuflow.com/"
+repository = "https://github.com/kuflow/kuflow-sdk-python"
+documentation = "https://docs.kuflow.com/"
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry]
+version = "3.1.0"
+include = ["VERSION", "README.md", "CHANGELOG.md"]
+packages = [{ include = "kuflow_temporal_sample" }]
+classifiers = ["Private :: Do not Upload"]
+requires-poetry = '>=2.0,<3.0'
+
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
 kuflow-rest = {path="../kuflow-rest", develop=true}
 kuflow-temporal-common = {path="../kuflow-temporal-common", develop=true}
 kuflow-temporal-activity-kuflow = {path="../kuflow-temporal-activity-kuflow", develop=true}
