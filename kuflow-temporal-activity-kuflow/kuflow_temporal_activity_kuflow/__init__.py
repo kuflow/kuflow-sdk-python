@@ -26,4 +26,4 @@ from ._activities import KuFlowActivities
 
 
 __all__ = ["KuFlowActivities"]
-__version__ = "3.1.0"
+__version__ = "3.1.1.dev0"
