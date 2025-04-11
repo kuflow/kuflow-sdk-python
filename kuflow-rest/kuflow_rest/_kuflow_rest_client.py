@@ -34,6 +34,7 @@ from ._generated import VERSION
 from ._generated import KuFlowRestClient as KuFlowRestClientGenerated
 from .operations import (
     AuthenticationOperations,
+    GroupOperations,
     KmsOperations,
     PrincipalOperations,
     ProcessItemOperations,
@@ -236,6 +237,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         self.authentication = AuthenticationOperations(self._kuflow_client)
         self.kms = KmsOperations(self._kuflow_client)
         self.principal = PrincipalOperations(self._kuflow_client)
+        self.group = GroupOperations(self._kuflow_client)
         self.tenant_user = TenantUserOperations(self._kuflow_client)
         self.process = ProcessOperations(self._kuflow_client)
         self.process_item = ProcessItemOperations(self._kuflow_client)
