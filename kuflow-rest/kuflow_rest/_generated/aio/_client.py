@@ -43,6 +43,7 @@ from .._serialization import Deserializer, Serializer
 from ._configuration import KuFlowRestClientConfiguration
 from .operations import (
     AuthenticationOperations,
+    GroupOperations,
     KmsOperations,
     PrincipalOperations,
     ProcessItemOperations,
@@ -115,6 +116,8 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
     :vartype kms: kuflow.rest.aio.operations.KmsOperations
     :ivar principal: PrincipalOperations operations
     :vartype principal: kuflow.rest.aio.operations.PrincipalOperations
+    :ivar group: GroupOperations operations
+    :vartype group: kuflow.rest.aio.operations.GroupOperations
     :ivar tenant: TenantOperations operations
     :vartype tenant: kuflow.rest.aio.operations.TenantOperations
     :ivar tenant_user: TenantUserOperations operations
@@ -163,6 +166,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
         self.authentication = AuthenticationOperations(self._client, self._config, self._serialize, self._deserialize)
         self.kms = KmsOperations(self._client, self._config, self._serialize, self._deserialize)
         self.principal = PrincipalOperations(self._client, self._config, self._serialize, self._deserialize)
+        self.group = GroupOperations(self._client, self._config, self._serialize, self._deserialize)
         self.tenant = TenantOperations(self._client, self._config, self._serialize, self._deserialize)
         self.tenant_user = TenantUserOperations(self._client, self._config, self._serialize, self._deserialize)
         self.process = ProcessOperations(self._client, self._config, self._serialize, self._deserialize)

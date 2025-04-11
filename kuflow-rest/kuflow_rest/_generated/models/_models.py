@@ -451,6 +451,113 @@ class DocumentReference(_serialization.Model):
         self.document_uri = document_uri
 
 
+class Page(_serialization.Model):
+    """Page.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar metadata: Required.
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
+    """
+
+    _validation = {
+        "metadata": {"required": True},
+    }
+
+    _attribute_map = {
+        "metadata": {"key": "metadata", "type": "PageMetadata"},
+    }
+
+    def __init__(self, *, metadata: "_models.PageMetadata", **kwargs: Any) -> None:
+        """
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        """
+        super().__init__(**kwargs)
+        self.metadata = metadata
+
+
+class GroupPage(Page):
+    """GroupPage.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar metadata: Required.
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
+    :ivar content: Required.
+    :vartype content: list[~kuflow.rest.models.GroupPageItem]
+    """
+
+    _validation = {
+        "metadata": {"required": True},
+        "content": {"required": True},
+    }
+
+    _attribute_map = {
+        "metadata": {"key": "metadata", "type": "PageMetadata"},
+        "content": {"key": "content", "type": "[GroupPageItem]"},
+    }
+
+    def __init__(
+        self, *, metadata: "_models.PageMetadata", content: List["_models.GroupPageItem"], **kwargs: Any
+    ) -> None:
+        """
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        :keyword content: Required.
+        :paramtype content: list[~kuflow.rest.models.GroupPageItem]
+        """
+        super().__init__(metadata=metadata, **kwargs)
+        self.content = content
+
+
+class GroupPageItem(_serialization.Model):
+    """GroupPageItem.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Required.
+    :vartype id: str
+    :ivar name: Required.
+    :vartype name: str
+    :ivar tenant_id: Tenant ID. Required.
+    :vartype tenant_id: str
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "name": {"required": True},
+        "tenant_id": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        name: str,
+        tenant_id: str,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword name: Required.
+        :paramtype name: str
+        :keyword tenant_id: Tenant ID. Required.
+        :paramtype tenant_id: str
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.name = name
+        self.tenant_id = tenant_id
+
+
 class JsonPatchOperation(_serialization.Model):
     """JsonPatchOperation.
 
@@ -613,32 +720,6 @@ class KmsKey(_serialization.Model):
         super().__init__(**kwargs)
         self.id = id
         self.value = value
-
-
-class Page(_serialization.Model):
-    """Page.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar metadata: Required.
-    :vartype metadata: ~kuflow.rest.models.PageMetadata
-    """
-
-    _validation = {
-        "metadata": {"required": True},
-    }
-
-    _attribute_map = {
-        "metadata": {"key": "metadata", "type": "PageMetadata"},
-    }
-
-    def __init__(self, *, metadata: "_models.PageMetadata", **kwargs: Any) -> None:
-        """
-        :keyword metadata: Required.
-        :paramtype metadata: ~kuflow.rest.models.PageMetadata
-        """
-        super().__init__(**kwargs)
-        self.metadata = metadata
 
 
 class PageMetadata(_serialization.Model):

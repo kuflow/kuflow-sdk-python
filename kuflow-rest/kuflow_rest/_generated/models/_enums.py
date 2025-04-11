@@ -60,6 +60,15 @@ class PrincipalType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     SYSTEM = "SYSTEM"
 
 
+class GroupType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """PrincipalType."""
+
+    TENANT_OWNER = "TENANT_OWNER"
+    TENANT_ADMINISTRATOR = "TENANT_ADMINISTRATOR"
+    TENANT_USER = "TENANT_USER"
+    OTHERS = "OTHERS"
+
+
 class ProcessItemTaskLogLevel(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """ProcessItemTaskLogLevel."""
 

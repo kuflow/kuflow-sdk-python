@@ -39,6 +39,7 @@ if TYPE_CHECKING:
 from ._authentication_operations import AuthenticationOperations  # type: ignore
 from ._kms_operations import KmsOperations  # type: ignore
 from ._principal_operations import PrincipalOperations  # type: ignore
+from ._group_operations import GroupOperations  # type: ignore
 from ._tenant_operations import TenantOperations  # type: ignore
 from ._tenant_user_operations import TenantUserOperations  # type: ignore
 from ._process_operations import ProcessOperations  # type: ignore
@@ -54,6 +55,7 @@ __all__ = [
     "AuthenticationOperations",
     "KmsOperations",
     "PrincipalOperations",
+    "GroupOperations",
     "TenantOperations",
     "TenantUserOperations",
     "ProcessOperations",
