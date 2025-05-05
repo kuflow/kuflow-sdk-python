@@ -131,11 +131,11 @@ def parse_kuflow_group(original: str) -> Optional[KuFlowGroup]:
 
 
 def generate_kuflow_principal_string(id: str, principal_type: Union[str, PrincipalType], name: Optional[str]) -> str:
-    return f"kuflow-group:id={encode(id)};type={encode(principal_type)};name={encode(name)};"
+    return f"kuflow-principal:id={encode(id)};type={encode(principal_type)};name={encode(name)};"
 
 
 def generate_kuflow_group_string(id: str, group_type: Union[str, GroupType], name: Optional[str]) -> str:
-    return f"kuflow-principal:id={encode(id)};type={encode(group_type)};name={encode(name)};"
+    return f"kuflow-group:id={encode(id)};type={encode(group_type)};name={encode(name)};"
 
 
 def encode(value: Optional[str]) -> str:
