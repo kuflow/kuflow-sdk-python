@@ -26,8 +26,7 @@ import urllib.parse
 from typing import Optional
 from uuid import UUID
 
-from kuflow_rest._generated.models._enums import GroupType
-from kuflow_rest.models._models import KuFlowGroup
+from kuflow_rest.models import GroupType, KuFlowGroup
 
 from ..models import (
     KuFlowFile,
