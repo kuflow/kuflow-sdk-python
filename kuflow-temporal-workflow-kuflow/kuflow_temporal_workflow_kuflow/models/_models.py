@@ -37,15 +37,21 @@ KUFLOW_ENGINE_SIGNAL_PROCESS_ITEM = "KuFlow_Engine_Signal_Process_Item"
 class WorkflowRequest(_serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
+        "request_time": {"key": "requestTime", "type": "iso-8601"},
+        "request_time_zone": {"key": "requestTimeZone", "type": "str"},
     }
 
-    def __init__(self, process_id: str, **kwargs: Any) -> None:
+    def __init__(self, process_id: str, request_time: datetime.datetime, request_time_zone: str, **kwargs: Any) -> None:
         """
         Parameters:
             process_id: Identifier of the related created process
+            request_time: Request time of the related created process
+            request_time_zone: Request time zone of the related created process
         """
         super().__init__(**kwargs)
         self.process_id = process_id
+        self.request_time = request_time
+        self.request_time_zone = request_time_zone
 
 
 class WorkflowResponse(_serialization.Model):
@@ -62,37 +68,49 @@ class WorkflowResponse(_serialization.Model):
         self.message = message
 
 
-class UserActionWorkflowRequest(_serialization.Model):
+class WorkflowUserActionRequest(_serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
+        "user_action_definition_type": {"key": "userActionDefinitionType", "type": "WorkflowUserActionDefinitionType"},
         "user_action_definition_code": {"key": "userActionDefinitionCode", "type": "str"},
         "user_action_id": {"key": "userActionId", "type": "str"},
         "requestor_principal_id": {"key": "requestorPrincipalId", "type": "str"},
+        "request_time": {"key": "requestTime", "type": "iso-8601"},
+        "request_time_zone": {"key": "requestTimeZone", "type": "str"},
     }
 
     def __init__(
         self,
         process_id: str,
+        user_action_definition_type: "_models.WorkflowUserActionDefinitionType",
         user_action_definition_code: str,
         user_action_id: str,
         requestor_principal_id: str,
+        request_time: datetime.datetime,
+        request_time_zone: str,
         **kwargs: Any,
     ) -> None:
         """
         Parameters:
             process_id: Identifier of the related process
+            user_action_definition_type: Type of the user action definition
             user_action_definition_code: Code of the user action definition
             user_action_id: Identifier of the user action
             requestor_principal_id: Identifier of the principal that request the user action
+            request_time: The timestamp when the request was made.
+            request_time_zone: The time zone associated with the request.
         """
         super().__init__(**kwargs)
         self.process_id = process_id
+        self.user_action_definition_type = user_action_definition_type
         self.user_action_definition_code = user_action_definition_code
         self.user_action_id = user_action_id
         self.requestor_principal_id = requestor_principal_id
+        self.request_time = request_time
+        self.request_time_zone = request_time_zone
 
 
-class UserActionWorkflowResponse(_serialization.Model):
+class WorkflowUserActionResponse(_serialization.Model):
     _attribute_map = {
         "message": {"key": "message", "type": "str"},
     }
@@ -106,23 +124,45 @@ class UserActionWorkflowResponse(_serialization.Model):
         self.message = message
 
 
-class RobotWorkflowRequest(_serialization.Model):
+class WorkflowRobotRequest(_serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
-        "task_id": {"key": "taskId", "type": "str"},
+        "process_item_id": {"key": "processItemId", "type": "str"},
+        "robot_id": {"key": "robotId", "type": "str"},
+        "robot_operation": {"key": "robotOperation", "type": "str"},
+        "request_time": {"key": "requestTime", "type": "iso-8601"},
+        "request_time_zone": {"key": "requestTimeZone", "type": "str"},
     }
 
-    def __init__(self, process_id: str, task_id: str, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        process_id: str,
+        process_item_id: str,
+        robot_id: str,
+        robot_operation: str,
+        request_time: datetime.datetime,
+        request_time_zone: str,
+        **kwargs: Any,
+    ) -> None:
         """
         Parameters:
-            process_id: Identifier of the related created process
+            process_id: The unique identifier of a process.
+            process_item_id: The identifier of a specific process item within a workflow.
+            robot_id: The unique identifier of the robot associated with the workflow process item task.
+            robot_operation: The operation to be performed by the robot within the workflow process.
+            request_time: The timestamp when the request was made.
+            request_time_zone: The time zone associated with the request.
         """
         super().__init__(**kwargs)
         self.process_id = process_id
-        self.task_id = task_id
+        self.process_item_id = process_item_id
+        self.robot_id = robot_id
+        self.robot_operation = robot_operation
+        self.request_time = request_time
+        self.request_time_zone = request_time_zone
 
 
-class RobotWorkflowResponse(_serialization.Model):
+class WorkflowRobotResponse(_serialization.Model):
     _attribute_map = {
         "message": {"key": "message", "type": "str"},
     }
@@ -138,43 +178,58 @@ class RobotWorkflowResponse(_serialization.Model):
 
 class SignalProcessItemPayload(_serialization.Model):
     _attribute_map = {
-        "task_definition_code": {"key": "taskDefinitionCode", "type": "str"},
+        "process_item_definition_code": {"key": "processItemDefinitionCode", "type": "str"},
         "data_structure_data_definition_code": {"key": "dataStructureDataDefinitionCode", "type": "str"},
     }
 
     def __init__(
-        self, task_definition_code: Optional[str], data_structure_data_definition_code: Optional[str], **kwargs: Any
+        self,
+        process_item_definition_code: Optional[str],
+        data_structure_data_definition_code: Optional[str],
+        **kwargs: Any,
     ) -> None:
         """
         Parameters:
-            task_definition_code: Task definition code
+            process_item_definition_code: Process Item definition code
             data_structure_data_definition_code: Data structure data definition code
         """
         super().__init__(**kwargs)
-        self.task_definition_code = task_definition_code
+        self.process_item_definition_code = process_item_definition_code
         self.data_structure_data_definition_code = data_structure_data_definition_code
 
 
 class SignalProcessItem(_serialization.Model):
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
-        "type": {"key": "type", "type": "str"},
+        "type": {"key": "type", "type": "SignalProcessItemType"},
         "payload": {"key": "payload", "type": "SignalProcessItemPayload"},
+        "request_time": {"key": "requestTime", "type": "iso-8601"},
+        "request_time_zone": {"key": "requestTimeZone", "type": "str"},
     }
 
     def __init__(
-        self, id: str, type: "_models.SignalProcessItemType", payload: "_models.SignalProcessItemPayload", **kwargs: Any
+        self,
+        id: str,
+        type: "_models.SignalProcessItemType",
+        payload: "_models.SignalProcessItemPayload",
+        request_time: datetime.datetime,
+        request_time_zone: str,
+        **kwargs: Any,
     ) -> None:
         """
         Parameters:
             id: Process item Id
             type: Process item type
             payload: Process item signal payload
+            request_time: The timestamp when the request was made.
+            request_time_zone: The time zone associated with the request.
         """
         super().__init__(**kwargs)
         self.id = id
         self.type = type
         self.payload = payload
+        self.request_time = request_time
+        self.request_time_zone = request_time_zone
 
 
 class SignalUserAction(_serialization.Model):

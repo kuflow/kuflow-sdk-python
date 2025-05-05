@@ -23,18 +23,9 @@
 #
 
 import urllib.parse
-from typing import Optional
-from uuid import UUID
+from typing import Optional, Union
 
 from ..models import GroupType, KuFlowFile, KuFlowGroup, KuFlowPrincipal, PrincipalType
-
-
-# Constants
-PREFIX_PRINCIPAL = "kuflow-principal:"
-PREFIX_GROUP = "kuflow-group:"
-METADATA_ID = "id"
-METADATA_TYPE = "type"
-METADATA_NAME = "name"
 
 
 def parse_kuflow_file(original: str) -> Optional[KuFlowFile]:
@@ -139,18 +130,15 @@ def parse_kuflow_group(original: str) -> Optional[KuFlowGroup]:
     )
 
 
-def generate_kuflow_principal_string(id: UUID, principal_type: str, name: str) -> str:
-    return (
-        f"{PREFIX_PRINCIPAL}{METADATA_ID}={encode(id)};{METADATA_TYPE}={encode(principal_type)};{METADATA_NAME}={encode(name)};"
-    )
+def generate_kuflow_principal_string(id: str, principal_type: Union[str, PrincipalType], name: Optional[str]) -> str:
+    return f"kuflow-group:id={encode(id)};type={encode(principal_type)};name={encode(name)};"
 
 
-def generate_kuflow_group_string(id: UUID, group_type: str, name: str) -> str:
-    return (
-        f"{PREFIX_GROUP}{METADATA_ID}={encode(id)};{METADATA_TYPE}={encode(group_type)};{METADATA_NAME}={encode(name)};"
-    )
+def generate_kuflow_group_string(id: str, group_type: Union[str, GroupType], name: Optional[str]) -> str:
+    return f"kuflow-principal:id={encode(id)};type={encode(group_type)};name={encode(name)};"
 
-def encode(value: str) -> str:
+
+def encode(value: Optional[str]) -> str:
     if value is None:
         return ""
 
