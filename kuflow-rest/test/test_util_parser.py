@@ -24,8 +24,13 @@
 
 import unittest
 
-from kuflow_rest.utils import generate_kuflow_principal_string, parse_kuflow_file, parse_kuflow_principal
-from kuflow_rest.utils._parser import generate_kuflow_group_string, parse_kuflow_group
+from kuflow_rest.utils import (
+    generate_kuflow_group_string,
+    generate_kuflow_principal_string,
+    parse_kuflow_file,
+    parse_kuflow_group,
+    parse_kuflow_principal,
+)
 
 
 class UtilsParserTest(unittest.TestCase):
@@ -175,9 +180,7 @@ class UtilsParserTest(unittest.TestCase):
         self.assertEqual(kuflow_group.name, "Homer Simpson")
 
     def test_parse_kuflow_group_ok_with_spaces_encoded(self):
-        kuflow_group = parse_kuflow_group(
-            "kuflow-group:id=xxx-ssss-yyyy;type=OTHERS;name=Homer%20Simpson%3B;"
-        )
+        kuflow_group = parse_kuflow_group("kuflow-group:id=xxx-ssss-yyyy;type=OTHERS;name=Homer%20Simpson%3B;")
         self.assertEqual(kuflow_group.id, "xxx-ssss-yyyy")
         self.assertEqual(kuflow_group.type, "OTHERS")
         self.assertEqual(kuflow_group.name, "Homer Simpson;")
@@ -195,6 +198,7 @@ class UtilsParserTest(unittest.TestCase):
 
         kuflow_group = generate_kuflow_group_string("id=xxx-ssss-yyyy;", "OTHERS", None)
         self.assertEqual(kuflow_group, "kuflow-group:id=id%3Dxxx-ssss-yyyy%3B;type=OTHERS;name=;")
+
 
 if __name__ == "__main__":
     unittest.main()

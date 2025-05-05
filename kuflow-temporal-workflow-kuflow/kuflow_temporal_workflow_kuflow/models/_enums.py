@@ -30,3 +30,15 @@ class SignalProcessItemType(str, Enum):
 
     TASK = "TASK"
     MESSAGE = "MESSAGE"
+    THREAD = "THREAD"
+
+
+class WorkflowUserActionDefinitionType(str, Enum):
+    """WorkflowUserActionDefinitionType."""
+
+    DOWNLOADABLE = "DOWNLOADABLE"
+    START_RELATED_PROCESS = "START_RELATED_PROCESS"
+    START_WORKFLOW = "START_WORKFLOW"
+    CREATE_TASK = "CREATE_TASK"
+    CREATE_PROCESS_ITEM_MESSAGE = "CREATE_PROCESS_ITEM_MESSAGE"
+    CREATE_PROCESS_ITEM_THREAD = "CREATE_PROCESS_ITEM_THREAD"
