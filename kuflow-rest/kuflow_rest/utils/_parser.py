@@ -26,13 +26,7 @@ import urllib.parse
 from typing import Optional
 from uuid import UUID
 
-from kuflow_rest.models import GroupType, KuFlowGroup
-
-from ..models import (
-    KuFlowFile,
-    KuFlowPrincipal,
-    PrincipalType,
-)
+from ..models import GroupType, KuFlowFile, KuFlowGroup, KuFlowPrincipal, PrincipalType
 
 
 # Constants

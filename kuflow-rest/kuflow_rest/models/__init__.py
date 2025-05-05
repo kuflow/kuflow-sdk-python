@@ -33,6 +33,9 @@ from .._generated.models import (
     DefaultError,
     DefaultErrorInfo,
     DocumentReference,
+    GroupPage,
+    GroupPageItem,
+    GroupType,
     JsonPatchOperation,
     JsonPatchOperationType,
     JsonValue,
@@ -107,6 +110,7 @@ from .._generated.models import __all__ as _all_generated_models
 from ._models import (
     Document,
     KuFlowFile,
+    KuFlowGroup,
     KuFlowPrincipal,
 )
 
