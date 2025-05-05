@@ -123,6 +123,9 @@ __all__ = [
     "DefaultError",
     "DefaultErrorInfo",
     "DocumentReference",
+    "GroupPage",
+    "GroupPageItem",
+    "GroupType",
     "JsonPatchOperation",
     "JsonPatchOperationType",
     "JsonValue",
@@ -195,6 +198,7 @@ __all__ = [
     # From models
     "Document",
     "KuFlowFile",
+    "KuFlowGroup",
     "KuFlowPrincipal",
 ]
 

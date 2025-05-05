@@ -25,6 +25,7 @@
 import unittest
 
 from kuflow_rest.utils import generate_kuflow_principal_string, parse_kuflow_file, parse_kuflow_principal
+from kuflow_rest.utils._parser import generate_kuflow_group_string, parse_kuflow_group
 
 
 class UtilsParserTest(unittest.TestCase):
@@ -151,7 +152,7 @@ class UtilsParserTest(unittest.TestCase):
         kuflow_principal = parse_kuflow_principal("kuflow-principal:id=xxx-ssss-yyyy;type=USER;")
         self.assertIsNone(kuflow_principal)
 
-    def test_parse_kuflow_principal_missing_fieldssss(self):
+    def test_parse_kuflow_principal_from_string(self):
         kuflow_principal = generate_kuflow_principal_string("id=xxx-ssss-yyyy;", "USER", "Homer")
         self.assertEqual(kuflow_principal, "kuflow-principal:id=id%3Dxxx-ssss-yyyy%3B;type=USER;name=Homer;")
 
@@ -161,6 +162,39 @@ class UtilsParserTest(unittest.TestCase):
         kuflow_principal = generate_kuflow_principal_string("id=xxx-ssss-yyyy;", "USER", None)
         self.assertEqual(kuflow_principal, "kuflow-principal:id=id%3Dxxx-ssss-yyyy%3B;type=USER;name=;")
 
+    def test_parse_kuflow_group_ok(self):
+        kuflow_group = parse_kuflow_group("kuflow-group:id=xxx-ssss-yyyy;type=OTHERS;name=Homer;")
+        self.assertEqual(kuflow_group.id, "xxx-ssss-yyyy")
+        self.assertEqual(kuflow_group.type, "OTHERS")
+        self.assertEqual(kuflow_group.name, "Homer")
+
+    def test_parse_kuflow_group_ok_with_spaces(self):
+        kuflow_group = parse_kuflow_group("kuflow-group:id=xxx-ssss-yyyy;type=OTHERS;name=Homer Simpson;")
+        self.assertEqual(kuflow_group.id, "xxx-ssss-yyyy")
+        self.assertEqual(kuflow_group.type, "OTHERS")
+        self.assertEqual(kuflow_group.name, "Homer Simpson")
+
+    def test_parse_kuflow_group_ok_with_spaces_encoded(self):
+        kuflow_group = parse_kuflow_group(
+            "kuflow-group:id=xxx-ssss-yyyy;type=OTHERS;name=Homer%20Simpson%3B;"
+        )
+        self.assertEqual(kuflow_group.id, "xxx-ssss-yyyy")
+        self.assertEqual(kuflow_group.type, "OTHERS")
+        self.assertEqual(kuflow_group.name, "Homer Simpson;")
+
+    def test_parse_kuflow_group_missing_fields(self):
+        kuflow_group = parse_kuflow_group("kuflow-group:id=xxx-ssss-yyyy;type=OTHERS;")
+        self.assertIsNone(kuflow_group)
+
+    def test_parse_kuflow_group_from_string(self):
+        kuflow_group = generate_kuflow_group_string("id=xxx-ssss-yyyy;", "OTHERS", "Homer")
+        self.assertEqual(kuflow_group, "kuflow-group:id=id%3Dxxx-ssss-yyyy%3B;type=OTHERS;name=Homer;")
+
+        kuflow_group = generate_kuflow_group_string("id=xxx-ssss-yyyy;", "TENANT_ADMINISTRATOR", "Homer")
+        self.assertEqual(kuflow_group, "kuflow-group:id=id%3Dxxx-ssss-yyyy%3B;type=TENANT_ADMINISTRATOR;name=Homer;")
+
+        kuflow_group = generate_kuflow_group_string("id=xxx-ssss-yyyy;", "OTHERS", None)
+        self.assertEqual(kuflow_group, "kuflow-group:id=id%3Dxxx-ssss-yyyy%3B;type=OTHERS;name=;")
 
 if __name__ == "__main__":
     unittest.main()

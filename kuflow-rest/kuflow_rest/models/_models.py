@@ -65,6 +65,29 @@ class KuFlowPrincipal:
         return self.original
 
 
+class KuFlowGroup:
+    """JsonFormsGroup
+
+    Group class
+    """
+
+    def __init__(self, original: str, id: str, type: PrincipalType, name: str):
+        """
+        Parameters:
+            id: Group original value, ie: kuflow-group:id=xxx-yyy-zzz;type=OTHERS;name=MyGroup;
+            id: Group id
+            type: Group type
+            name: Group name
+        """
+        self.original = original
+        self.id = id
+        self.type = type
+        self.name = name
+
+    def __str__(self):
+        return self.original
+
+
 class KuFlowFile:
     """KuFlowFile.
 

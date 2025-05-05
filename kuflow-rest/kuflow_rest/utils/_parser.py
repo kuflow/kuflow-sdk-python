@@ -26,6 +26,8 @@ import urllib.parse
 from typing import Optional
 from uuid import UUID
 
+from kuflow_rest.models import GroupType, KuFlowGroup
+
 from ..models import (
     KuFlowFile,
     KuFlowPrincipal,
@@ -34,7 +36,8 @@ from ..models import (
 
 
 # Constants
-PREFIX = "kuflow-principal:"
+PREFIX_PRINCIPAL = "kuflow-principal:"
+PREFIX_GROUP = "kuflow-group:"
 METADATA_ID = "id"
 METADATA_TYPE = "type"
 METADATA_NAME = "name"
@@ -108,11 +111,50 @@ def parse_kuflow_principal(original: str) -> Optional[KuFlowPrincipal]:
     )
 
 
-def generate_kuflow_principal_string(id: UUID, principal_type: str, name: str) -> str:
-    return (
-        f"{PREFIX}{METADATA_ID}={encode(id)};{METADATA_TYPE}={encode(principal_type)};{METADATA_NAME}={encode(name)};"
+def parse_kuflow_group(original: str) -> Optional[KuFlowGroup]:
+    if original is None or not isinstance(original, str) or not original.startswith("kuflow-group:"):
+        return None
+
+    original_transformed = original.replace("kuflow-group:", "")
+
+    key_value_pairs = original_transformed.split(";")
+
+    key_value_map = {}
+    for pair in key_value_pairs:
+        if pair.find("=") is -1:
+            continue
+
+        key, value = pair.split("=")
+        if key is None or value is None:
+            return None
+
+        key_value_map[key] = urllib.parse.unquote(value)
+
+    id: Optional[str] = str(key_value_map["id"]) if "id" in key_value_map else None
+    type: Optional[GroupType] = str(key_value_map["type"]) if "type" in key_value_map else None
+    name: Optional[str] = str(key_value_map["name"]) if "name" in key_value_map else None
+
+    if (id is None) or (type is None) or (name is None):
+        return None
+
+    return KuFlowGroup(
+        original=original,
+        id=id,
+        type=type,
+        name=name,
     )
 
+
+def generate_kuflow_principal_string(id: UUID, principal_type: str, name: str) -> str:
+    return (
+        f"{PREFIX_PRINCIPAL}{METADATA_ID}={encode(id)};{METADATA_TYPE}={encode(principal_type)};{METADATA_NAME}={encode(name)};"
+    )
+
+
+def generate_kuflow_group_string(id: UUID, group_type: str, name: str) -> str:
+    return (
+        f"{PREFIX_GROUP}{METADATA_ID}={encode(id)};{METADATA_TYPE}={encode(group_type)};{METADATA_NAME}={encode(name)};"
+    )
 
 def encode(value: str) -> str:
     if value is None:
