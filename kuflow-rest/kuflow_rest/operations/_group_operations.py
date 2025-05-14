@@ -48,6 +48,7 @@ class GroupOperations:
         sort: Optional[Union[str, list[str]]] = None,
         principal_id: Optional[str] = None,
         tenant_id: Optional[Union[str, list[str]]] = None,
+        group_id: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
     ) -> _models.PrincipalPage:
         """Find all accessible Groups.
@@ -84,6 +85,9 @@ class GroupOperations:
         if tenant_id is not None and isinstance(tenant_id, str):
             tenant_id = [tenant_id]
 
+        if group_id is not None and isinstance(group_id, str):
+            group_id = [group_id]
+
         return self._kuflow_client.group.find_groups(
-            size=size, page=page, sort=sort, tenant_id=tenant_id, principal_id=principal_id, **kwargs
+            size=size, page=page, sort=sort, tenant_id=tenant_id, principal_id=principal_id, group_id=group_id, **kwargs
         )
