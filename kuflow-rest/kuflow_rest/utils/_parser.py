@@ -25,7 +25,7 @@
 import urllib.parse
 from typing import Optional, Union
 
-from ..models import GroupType, KuFlowFile, KuFlowGroup, KuFlowPrincipal, PrincipalType
+from ..models import KuFlowFile, KuFlowGroup, KuFlowPrincipal, PrincipalType
 
 
 def parse_kuflow_file(original: str) -> Optional[KuFlowFile]:
@@ -116,7 +116,7 @@ def parse_kuflow_group(original: str) -> Optional[KuFlowGroup]:
         key_value_map[key] = urllib.parse.unquote(value)
 
     id: Optional[str] = str(key_value_map["id"]) if "id" in key_value_map else None
-    type: Optional[GroupType] = str(key_value_map["type"]) if "type" in key_value_map else None
+    type: Optional[str] = str(key_value_map["type"]) if "type" in key_value_map else None
     name: Optional[str] = str(key_value_map["name"]) if "name" in key_value_map else None
 
     if (id is None) or (type is None) or (name is None):
@@ -134,7 +134,7 @@ def generate_kuflow_principal_string(id: str, principal_type: Union[str, Princip
     return f"kuflow-principal:id={encode(id)};type={encode(principal_type)};name={encode(name)};"
 
 
-def generate_kuflow_group_string(id: str, group_type: Union[str, GroupType], name: Optional[str]) -> str:
+def generate_kuflow_group_string(id: str, group_type: Union[str, str], name: Optional[str]) -> str:
     return f"kuflow-group:id={encode(id)};type={encode(group_type)};name={encode(name)};"
 
 

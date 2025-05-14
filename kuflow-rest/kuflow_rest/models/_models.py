@@ -24,7 +24,7 @@
 
 from typing import IO, Optional
 
-from .._generated.models import GroupType, PrincipalType
+from .._generated.models import PrincipalType
 
 
 class Document:
@@ -71,7 +71,7 @@ class KuFlowGroup:
     Group class
     """
 
-    def __init__(self, original: str, id: str, type: GroupType, name: str):
+    def __init__(self, original: str, id: str, type: str, name: str):
         """
         Parameters:
             id: Group original value, ie: kuflow-group:id=xxx-yyy-zzz;type=OTHERS;name=MyGroup;
