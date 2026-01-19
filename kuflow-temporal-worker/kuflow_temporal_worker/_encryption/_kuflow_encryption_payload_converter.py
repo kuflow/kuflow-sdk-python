@@ -54,7 +54,7 @@ class KuFlowEncryptionPayloadConverter(EncodingPayloadConverter):
 
         payload = self.delegate.to_payload(value)
 
-        if payload is not None and encryption_state.key_id is not None:
+        if payload is not None and encryption_state is not None and encryption_state.key_id is not None:
             payload = temporalio.api.common.v1.Payload(
                 metadata={
                     **payload.metadata,

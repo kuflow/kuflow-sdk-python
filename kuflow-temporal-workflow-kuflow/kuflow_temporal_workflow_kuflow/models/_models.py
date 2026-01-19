@@ -23,6 +23,7 @@
 #
 
 import datetime
+from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Optional
 
 from kuflow_rest._generated import _serialization
@@ -39,19 +40,90 @@ class WorkflowRequest(_serialization.Model):
         "process_id": {"key": "processId", "type": "str"},
         "request_time": {"key": "requestTime", "type": "iso-8601"},
         "request_time_zone": {"key": "requestTimeZone", "type": "str"},
+        "extras": {"key": "extras", "type": "{object}"},
     }
 
-    def __init__(self, process_id: str, request_time: datetime.datetime, request_time_zone: str, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        process_id: str,
+        request_time: datetime.datetime,
+        request_time_zone: str,
+        extras: Optional[dict[str, Any]] = None,
+        **kwargs: Any,
+    ) -> None:
         """
         Parameters:
             process_id: Identifier of the related created process
             request_time: Request time of the related created process
             request_time_zone: Request time zone of the related created process
+            extras: Additional custom data associated with the request
         """
         super().__init__(**kwargs)
         self.process_id = process_id
         self.request_time = request_time
         self.request_time_zone = request_time_zone
+        self._extras: Optional[dict[str, Any]] = None
+        if extras is not None:
+            self.set_extras(extras)
+
+    def get_extras(self) -> MappingProxyType[str, Any]:
+        """
+        Get the extras dictionary as an immutable mapping.
+
+        Returns:
+            An immutable view of the extras dictionary. If no extras are set, returns an empty mapping.
+        """
+        if self._extras is None:
+            return MappingProxyType({})
+        return MappingProxyType(self._extras)
+
+    def set_extras(self, extras: Optional[dict[str, Any]]) -> None:
+        """
+        Set the extras dictionary, replacing any existing extras.
+
+        Parameters:
+            extras: Dictionary of extra values to set. If None or empty, clears existing extras.
+        """
+        if self._extras is None:
+            self._extras = {}
+
+        self._extras.clear()
+
+        if extras is not None and len(extras) > 0:
+            self._extras.update(extras)
+
+    def put_extra_item(self, name: str, value: Any) -> None:
+        """
+        Add or update a single item in the extras dictionary.
+
+        Parameters:
+            name: The key for the extra item (required)
+            value: The value for the extra item (required)
+
+        Raises:
+            ValueError: If name or value is None
+        """
+        if name is None:
+            raise ValueError("'name' is required")
+        if value is None:
+            raise ValueError("'value' is required")
+
+        if self._extras is None:
+            self._extras = {}
+
+        self._extras[name] = value
+
+    def get_extra_item(self, name: str) -> Optional[Any]:
+        """
+        Get a single item from the extras dictionary.
+
+        Parameters:
+            name: The key of the extra item to retrieve
+
+        Returns:
+            The value associated with the given name, or None if not found
+        """
+        return self.get_extras().get(name)
 
 
 class WorkflowResponse(_serialization.Model):
