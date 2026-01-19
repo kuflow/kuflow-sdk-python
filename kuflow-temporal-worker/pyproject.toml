@@ -25,7 +25,7 @@ requires-poetry = '>=2.0,<3.0'
 [tool.poetry.dependencies]
 kuflow-temporal-common = {path="../kuflow-temporal-common", develop=true}
 temporalio = "~1.10.0"
-cryptography = "^38.0.1"
+cryptography = ">=38.0.1"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.11.1"
