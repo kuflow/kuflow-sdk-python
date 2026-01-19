@@ -22,7 +22,6 @@
 # SOFTWARE.
 #
 
-from enum import Enum
 from typing import Any, Optional, Union
 
 from temporalio.converter import (
