@@ -251,7 +251,7 @@ class KuFlowActivities:
                 owner_email=request.owner_email,
                 process_item_definition_code=request.process_item_definition_code,
                 task=request.task,
-                metadata=request.message,
+                message=request.message,
             )
 
             process_item = self._kuflow_client.process_item.create_process_item(process_item_create_params=params)
