@@ -425,7 +425,7 @@ six = "*"
 
 [[package]]
 name = "kuflow-rest"
-version = "3.2.1.dev0"
+version = "3.2.1"
 description = "Client for KuFlow Rest Api"
 optional = false
 python-versions = ">=3.9,<4.0"
@@ -443,7 +443,7 @@ url = "../kuflow-rest"
 
 [[package]]
 name = "kuflow-temporal-activity-kuflow"
-version = "3.2.1.dev0"
+version = "3.2.1"
 description = "KuFlow SDK :: Temporal.io activities to interact with KuFlow"
 optional = false
 python-versions = ">=3.9,<4.0"
@@ -460,7 +460,7 @@ url = "../kuflow-temporal-activity-kuflow"
 
 [[package]]
 name = "kuflow-temporal-common"
-version = "3.2.1.dev0"
+version = "3.2.1"
 description = "KuFlow utilities to use Temporal.io"
 optional = false
 python-versions = ">=3.9,<4.0"
@@ -478,7 +478,7 @@ url = "../kuflow-temporal-common"
 
 [[package]]
 name = "kuflow-temporal-worker"
-version = "3.2.1.dev0"
+version = "3.2.1"
 description = "KuFlow utilities to use Temporal.io"
 optional = false
 python-versions = ">=3.9,<4.0"
@@ -497,7 +497,7 @@ url = "../kuflow-temporal-worker"
 
 [[package]]
 name = "kuflow-temporal-workflow-kuflow"
-version = "3.2.1.dev0"
+version = "3.2.1"
 description = "KuFlow SDK :: Temporal.io workflow utilities to interact with KuFlow"
 optional = false
 python-versions = ">=3.9,<4.0"

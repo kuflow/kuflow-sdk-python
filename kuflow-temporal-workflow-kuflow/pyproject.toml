@@ -17,7 +17,7 @@ requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-version = "3.2.1.dev0"
+version = "3.2.1"
 include = ["VERSION", "README.md", "CHANGELOG.md"]
 packages = [{ include = "kuflow_temporal_workflow_kuflow" }]
 requires-poetry = '>=2.0,<3.0'
