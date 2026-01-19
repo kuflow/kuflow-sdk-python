@@ -139,4 +139,3 @@ class TestEncoderOnly:
         assert result == f'"{enum_val.value}"'
 
     pass  # Keep class with at least one statement
-

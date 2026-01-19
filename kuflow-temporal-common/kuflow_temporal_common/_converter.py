@@ -52,7 +52,6 @@ class KuFlowModelJSONEncoder(AdvancedJSONEncoder):
         self._serialize = Serializer(client_models)
 
     def default(self, value: Any) -> Any:
-
         if isinstance(value, Model):
             return self._serialize.body(value, value.__class__.__name__)
 
@@ -67,7 +66,6 @@ class KuFlowModelJSONTypeConverter(JSONTypeConverter):
     def to_typed_value(self, hint: type, value: Any) -> Union[Optional[Any], _JSONTypeConverterUnhandled]:
         if isinstance(hint, type) and issubclass(hint, Model):
             return self._deserialize(hint.__name__, value)
-
 
         # Means: continue with defaults one. See: temporalio#converter.py#value_to_type
         return JSONTypeConverter.Unhandled
