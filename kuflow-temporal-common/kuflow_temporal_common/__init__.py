@@ -40,4 +40,4 @@ __all__ = [
     "register_serializable_models",
 ]
 
-__version__ = "3.2.2"
+__version__ = "3.2.3.dev0"
