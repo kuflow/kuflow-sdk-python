@@ -427,7 +427,7 @@ class ProcessItemCreateRequest(_serialization.Model):
         "owner_email": {"key": "ownerEmail", "type": "str"},
         "process_item_definition_code": {"key": "processItemDefinitionCode", "type": "str"},
         "task": {"key": "task", "type": "ProcessItemTaskCreateParams"},
-        "message": {"key": "task", "type": "ProcessItemMessageCreateParams"},
+        "message": {"key": "message", "type": "ProcessItemMessageCreateParams"},
     }
 
     def __init__(
