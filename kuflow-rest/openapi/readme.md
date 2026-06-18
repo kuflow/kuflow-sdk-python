@@ -39,6 +39,7 @@ no-namespace-folders: true
 combine-operation-files: false
 models-mode: msrest
 black: false
+emit-cross-language-definition-file: false
 
 license-header: |
 
@@ -77,7 +78,7 @@ license-header: |
 # enable-typespec-namespace: true
 
 use-extension:
-  '@autorest/python': '6.28.4'
+  '@autorest/python': '6.50.3'
 
 modelerfour:
   seal-single-value-enum-by-default: false

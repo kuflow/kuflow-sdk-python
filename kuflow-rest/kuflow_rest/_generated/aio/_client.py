@@ -39,7 +39,7 @@ from azure.core.pipeline import policies
 from azure.core.rest import AsyncHttpResponse, HttpRequest
 
 from .. import models as _models
-from .._serialization import Deserializer, Serializer
+from .._utils.serialization import Deserializer, Serializer
 from ._configuration import KuFlowRestClientConfiguration
 from .operations import (
     AuthenticationOperations,
@@ -143,6 +143,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
         self, credential: "AsyncTokenCredential", *, endpoint: str = "https://api.kuflow.com/v2024-06-14", **kwargs: Any
     ) -> None:
         self._config = KuFlowRestClientConfiguration(credential=credential, **kwargs)
+
         _policies = kwargs.pop("policies", None)
         if _policies is None:
             _policies = [

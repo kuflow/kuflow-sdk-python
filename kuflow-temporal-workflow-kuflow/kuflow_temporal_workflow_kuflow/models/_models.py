@@ -26,7 +26,7 @@ import datetime
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Optional
 
-from kuflow_rest._generated import _serialization
+from kuflow_rest._generated._utils import serialization
 
 
 if TYPE_CHECKING:
@@ -35,7 +35,7 @@ if TYPE_CHECKING:
 KUFLOW_ENGINE_SIGNAL_PROCESS_ITEM = "KuFlow_Engine_Signal_Process_Item"
 
 
-class WorkflowRequest(_serialization.Model):
+class WorkflowRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
         "request_time": {"key": "requestTime", "type": "iso-8601"},
@@ -126,7 +126,7 @@ class WorkflowRequest(_serialization.Model):
         return self.get_extras().get(name)
 
 
-class WorkflowResponse(_serialization.Model):
+class WorkflowResponse(serialization.Model):
     _attribute_map = {
         "message": {"key": "message", "type": "str"},
     }
@@ -140,7 +140,7 @@ class WorkflowResponse(_serialization.Model):
         self.message = message
 
 
-class WorkflowUserActionRequest(_serialization.Model):
+class WorkflowUserActionRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
         "user_action_definition_type": {"key": "userActionDefinitionType", "type": "WorkflowUserActionDefinitionType"},
@@ -182,7 +182,7 @@ class WorkflowUserActionRequest(_serialization.Model):
         self.request_time_zone = request_time_zone
 
 
-class WorkflowUserActionResponse(_serialization.Model):
+class WorkflowUserActionResponse(serialization.Model):
     _attribute_map = {
         "message": {"key": "message", "type": "str"},
     }
@@ -196,7 +196,7 @@ class WorkflowUserActionResponse(_serialization.Model):
         self.message = message
 
 
-class WorkflowRobotRequest(_serialization.Model):
+class WorkflowRobotRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
         "process_item_id": {"key": "processItemId", "type": "str"},
@@ -234,7 +234,7 @@ class WorkflowRobotRequest(_serialization.Model):
         self.request_time_zone = request_time_zone
 
 
-class WorkflowRobotResponse(_serialization.Model):
+class WorkflowRobotResponse(serialization.Model):
     _attribute_map = {
         "message": {"key": "message", "type": "str"},
     }
@@ -248,7 +248,7 @@ class WorkflowRobotResponse(_serialization.Model):
         self.message = message
 
 
-class SignalProcessItemPayload(_serialization.Model):
+class SignalProcessItemPayload(serialization.Model):
     _attribute_map = {
         "process_item_definition_code": {"key": "processItemDefinitionCode", "type": "str"},
         "data_structure_data_definition_code": {"key": "dataStructureDataDefinitionCode", "type": "str"},
@@ -270,7 +270,7 @@ class SignalProcessItemPayload(_serialization.Model):
         self.data_structure_data_definition_code = data_structure_data_definition_code
 
 
-class SignalProcessItem(_serialization.Model):
+class SignalProcessItem(serialization.Model):
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
         "type": {"key": "type", "type": "SignalProcessItemType"},
@@ -304,7 +304,7 @@ class SignalProcessItem(_serialization.Model):
         self.request_time_zone = request_time_zone
 
 
-class SignalUserAction(_serialization.Model):
+class SignalUserAction(serialization.Model):
     _attribute_map = {
         "user_action_definition_code": {"key": "userActionDefinitionCode", "type": "str"},
         "request_instant": {"key": "requestInstant", "type": "iso-8601"},
@@ -321,7 +321,7 @@ class SignalUserAction(_serialization.Model):
         self.request_instant = request_instant
 
 
-class WorkflowBusinessArtifactActionRequest(_serialization.Model):
+class WorkflowBusinessArtifactActionRequest(serialization.Model):
     _attribute_map = {
         "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
         "business_artifact_action_definition_type": {
@@ -366,7 +366,7 @@ class WorkflowBusinessArtifactActionRequest(_serialization.Model):
         self.request_time_zone = request_time_zone
 
 
-class WorkflowBusinessArtifactActionResponseDownloadable(_serialization.Model):
+class WorkflowBusinessArtifactActionResponseDownloadable(serialization.Model):
     _attribute_map = {
         "document_uri": {"key": "documentUri", "type": "str"},
     }
@@ -380,7 +380,7 @@ class WorkflowBusinessArtifactActionResponseDownloadable(_serialization.Model):
         self.document_uri = document_uri
 
 
-class WorkflowBusinessArtifactActionResponse(_serialization.Model):
+class WorkflowBusinessArtifactActionResponse(serialization.Model):
     _attribute_map = {
         "message": {"key": "message", "type": "str"},
         "downloadable": {"key": "downloadable", "type": "WorkflowBusinessArtifactActionResponseDownloadable"},

@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-from ._generated._serialization import Deserializer, Model, Serializer
+from ._generated._utils.serialization import Deserializer, Model, Serializer
 from ._kuflow_rest_client import KuBotTokenCredential, KuFlowRestClient
 
 

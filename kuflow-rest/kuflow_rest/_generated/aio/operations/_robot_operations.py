@@ -29,8 +29,8 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 #
 # --------------------------------------------------------------------------
-import sys
-from typing import Any, AsyncIterator, Callable, Dict, List, Optional, TypeVar, Union
+from collections.abc import MutableMapping
+from typing import Any, AsyncIterator, Callable, Optional, TypeVar, Union
 
 from azure.core import AsyncPipelineClient
 from azure.core.exceptions import (
@@ -48,7 +48,7 @@ from azure.core.rest import AsyncHttpResponse, HttpRequest
 from azure.core.tracing.decorator_async import distributed_trace_async
 
 from ... import models as _models
-from ..._serialization import Deserializer, Serializer
+from ..._utils.serialization import Deserializer, Serializer
 from ...operations._robot_operations import (
     build_download_robot_asset_request,
     build_download_robot_source_code_request,
@@ -57,12 +57,8 @@ from ...operations._robot_operations import (
 )
 from .._configuration import KuFlowRestClientConfiguration
 
-if sys.version_info >= (3, 9):
-    from collections.abc import MutableMapping
-else:
-    from typing import MutableMapping  # type: ignore
 T = TypeVar("T")
-ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
+ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, dict[str, Any]], Any]]
 
 
 class RobotOperations:
@@ -90,8 +86,8 @@ class RobotOperations:
         *,
         size: int = 25,
         page: int = 0,
-        sort: Optional[List[str]] = None,
-        tenant_id: Optional[List[str]] = None,
+        sort: Optional[list[str]] = None,
+        tenant_id: Optional[list[str]] = None,
         filter_context: Optional[Union[str, _models.RobotFilterContext]] = None,
         **kwargs: Any,
     ) -> _models.RobotPage:
@@ -154,7 +150,10 @@ class RobotOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("RobotPage", pipeline_response.http_response)
@@ -205,7 +204,10 @@ class RobotOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Robot", pipeline_response.http_response)
@@ -247,6 +249,7 @@ class RobotOperations:
         )
         _request.url = self._client.format_url(_request.url)
 
+        _decompress = kwargs.pop("decompress", True)
         _stream = True
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
             _request, stream=_stream, **kwargs
@@ -260,10 +263,13 @@ class RobotOperations:
             except (StreamConsumedError, StreamClosedError):
                 pass
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = response.iter_bytes()
+        deserialized = response.iter_bytes() if _decompress else response.iter_raw()
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -326,6 +332,7 @@ class RobotOperations:
         )
         _request.url = self._client.format_url(_request.url)
 
+        _decompress = kwargs.pop("decompress", True)
         _stream = True
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
             _request, stream=_stream, **kwargs
@@ -339,10 +346,13 @@ class RobotOperations:
             except (StreamConsumedError, StreamClosedError):
                 pass
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = response.iter_bytes()
+        deserialized = response.iter_bytes() if _decompress else response.iter_raw()
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
