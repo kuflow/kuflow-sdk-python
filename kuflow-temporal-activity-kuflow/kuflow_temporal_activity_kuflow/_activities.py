@@ -53,7 +53,21 @@ class KuFlowActivities:
             self.assign_process_item_task,
             self.update_process_item_task_data,
             self.patch_process_item_task_data,
+            self.update_process_item_task_context_data,
             self.append_process_item_task_log,
+            self.retrieve_process_item_ai_assistance,
+            self.generate_process_item_ai_assistance,
+            self.cancel_process_items,
+            self.find_business_artifacts,
+            self.create_business_artifact,
+            self.retrieve_business_artifact,
+            self.delete_business_artifact,
+            self.update_business_artifact,
+            self.patch_business_artifact,
+            self.create_business_artifact_action,
+            self.retrieve_business_artifact_action,
+            self.cancel_business_artifact_action,
+            self.prepare_business_artifact_create_artifact,
         ]
 
     @activity.defn(name="KuFlow_Engine_retrievePrincipal")
@@ -87,14 +101,14 @@ class KuFlowActivities:
     @activity.defn(name="KuFlow_Engine_findProcesses")
     async def find_processes(
         self,
-        request: models_temporal.ProcesFindRequest,
-    ) -> models_temporal.ProcesFindResponse:
+        request: models_temporal.ProcessFindRequest,
+    ) -> models_temporal.ProcessFindResponse:
         try:
             # Get all non-None properties of the object to avoid overwrite defaults
             non_none_props = {k: v for k, v in vars(request).items() if v is not None}
             proces_page = self._kuflow_client.process.find_processes(**non_none_props)
 
-            return models_temporal.ProcesFindResponse(processes=proces_page)
+            return models_temporal.ProcessFindResponse(processes=proces_page)
         except Exception as err:
             raise create_application_error(err)  # noqa: B904
 
@@ -214,6 +228,8 @@ class KuFlowActivities:
                 type=request.types,
                 task_state=request.task_states,
                 process_item_definition_code=request.process_item_definition_codes,
+                process_definition_id=request.process_definition_ids,
+                process_definition_code=request.process_definition_codes,
                 tenant_id=request.tenant_ids,
             )
 
@@ -355,5 +371,273 @@ class KuFlowActivities:
             )
 
             return models_temporal.ProcessItemTaskLogAppendResponse(process_item=process_item)
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_updateProcessItemTaskContextData")
+    async def update_process_item_task_context_data(
+        self,
+        request: models_temporal.ProcessItemTaskContextDataUpdateRequest,
+    ) -> models_temporal.ProcessItemTaskContextDataUpdateResponse:
+        try:
+            validation.validate_process_item_task_context_data_update_request(request)
+
+            params = models_rest.ProcessItemTaskContextDataUpdateParams(data=request.data)
+
+            process_item = self._kuflow_client.process_item.update_process_item_task_context_data(
+                id=request.process_item_id, process_item_task_context_data_update_params=params
+            )
+
+            return models_temporal.ProcessItemTaskContextDataUpdateResponse(process_item=process_item)
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_retrieveProcessItemAiAssistance")
+    async def retrieve_process_item_ai_assistance(
+        self,
+        request: models_temporal.ProcessItemAiAssistanceRetrieveRequest,
+    ) -> models_temporal.ProcessItemAiAssistanceRetrieveResponse:
+        try:
+            validation.validate_process_item_ai_assistance_retrieve_request(request)
+
+            process_item_ai_assistance = self._kuflow_client.process_item.retrieve_process_item_ai_assistance(
+                id=request.process_item_id
+            )
+
+            return models_temporal.ProcessItemAiAssistanceRetrieveResponse(
+                process_item_ai_assistance=process_item_ai_assistance
+            )
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_generateProcessItemAiAssistance")
+    async def generate_process_item_ai_assistance(
+        self,
+        request: models_temporal.ProcessItemAiAssistanceGenerateRequest,
+    ) -> models_temporal.ProcessItemAiAssistanceGenerateResponse:
+        try:
+            validation.validate_process_item_ai_assistance_generate_request(request)
+
+            params = models_rest.ProcessItemAiAssistanceGenerateParams(request_id=request.request_id)
+
+            process_item_ai_assistance = self._kuflow_client.process_item.generate_process_item_ai_assistance(
+                id=request.process_item_id, process_item_ai_assistance_generate_params=params
+            )
+
+            return models_temporal.ProcessItemAiAssistanceGenerateResponse(
+                process_item_ai_assistance=process_item_ai_assistance
+            )
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_cancelProcessItems")
+    async def cancel_process_items(
+        self,
+        request: models_temporal.ProcessItemsCancelRequest,
+    ) -> models_temporal.ProcessItemsCancelResponse:
+        try:
+            validation.validate_process_items_cancel_request(request)
+
+            process = self._kuflow_client.process.cancel_process_items(
+                id=request.process_id, process_item_id=request.process_item_ids
+            )
+
+            return models_temporal.ProcessItemsCancelResponse(process=process)
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_findBusinessArtifacts")
+    async def find_business_artifacts(
+        self,
+        request: models_temporal.BusinessArtifactFindRequest,
+    ) -> models_temporal.BusinessArtifactFindResponse:
+        try:
+            business_artifacts = self._kuflow_client.business_artifact.find_business_artifacts(
+                size=request.size,
+                page=request.page,
+                sort=request.sorts,
+                tenant_id=request.tenant_ids,
+                business_artifact_definition_id=request.business_artifact_definition_ids,
+                business_artifact_definition_code=request.business_artifact_definition_codes,
+                value=request.values,
+            )
+
+            return models_temporal.BusinessArtifactFindResponse(business_artifacts=business_artifacts)
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_createBusinessArtifact")
+    async def create_business_artifact(
+        self,
+        request: models_temporal.BusinessArtifactCreateRequest,
+    ) -> models_temporal.BusinessArtifactCreateResponse:
+        try:
+            validation.validate_business_artifact_create_request(request)
+
+            params = models_rest.BusinessArtifactCreateParams(
+                id=request.id,
+                business_artifact_definition_id=request.business_artifact_definition_id,
+                tenant_id=request.tenant_id,
+                business_artifact_definition_code=request.business_artifact_definition_code,
+                data=request.data,
+            )
+
+            business_artifact = self._kuflow_client.business_artifact.create_business_artifact(
+                business_artifact_create_params=params
+            )
+
+            return models_temporal.BusinessArtifactCreateResponse(business_artifact=business_artifact)
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_retrieveBusinessArtifact")
+    async def retrieve_business_artifact(
+        self,
+        request: models_temporal.BusinessArtifactRetrieveRequest,
+    ) -> models_temporal.BusinessArtifactRetrieveResponse:
+        try:
+            validation.validate_business_artifact_retrieve_request(request)
+
+            business_artifact = self._kuflow_client.business_artifact.retrieve_business_artifact(
+                id=request.business_artifact_id
+            )
+
+            return models_temporal.BusinessArtifactRetrieveResponse(business_artifact=business_artifact)
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_deleteBusinessArtifact")
+    async def delete_business_artifact(
+        self,
+        request: models_temporal.BusinessArtifactDeleteRequest,
+    ) -> models_temporal.BusinessArtifactDeleteResponse:
+        try:
+            validation.validate_business_artifact_delete_request(request)
+
+            self._kuflow_client.business_artifact.delete_business_artifact(id=request.business_artifact_id)
+
+            return models_temporal.BusinessArtifactDeleteResponse()
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_updateBusinessArtifact")
+    async def update_business_artifact(
+        self,
+        request: models_temporal.BusinessArtifactUpdateRequest,
+    ) -> models_temporal.BusinessArtifactUpdateResponse:
+        try:
+            validation.validate_business_artifact_update_request(request)
+
+            params = models_rest.BusinessArtifactDataUpdateParams(data=request.data)
+
+            business_artifact = self._kuflow_client.business_artifact.update_business_artifact_data(
+                id=request.business_artifact_id, business_artifact_data_update_params=params
+            )
+
+            return models_temporal.BusinessArtifactUpdateResponse(business_artifact=business_artifact)
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_patchBusinessArtifact")
+    async def patch_business_artifact(
+        self,
+        request: models_temporal.BusinessArtifactPatchRequest,
+    ) -> models_temporal.BusinessArtifactPatchResponse:
+        try:
+            validation.validate_business_artifact_patch_request(request)
+
+            business_artifact = self._kuflow_client.business_artifact.patch_business_artifact_data(
+                id=request.business_artifact_id, json_patch=request.json_patch
+            )
+
+            return models_temporal.BusinessArtifactPatchResponse(business_artifact=business_artifact)
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_createBusinessArtifactAction")
+    async def create_business_artifact_action(
+        self,
+        request: models_temporal.BusinessArtifactActionCreateRequest,
+    ) -> models_temporal.BusinessArtifactActionCreateResponse:
+        try:
+            validation.validate_business_artifact_action_create_request(request)
+
+            params = models_rest.BusinessArtifactActionCreateParams(
+                business_artifact_action_definition_code=request.business_artifact_action_definition_code,
+                id=request.id,
+                start_workflow=request.start_workflow,
+                downloadable=request.downloadable,
+                start_process=request.start_process,
+                create_artifact=request.create_artifact,
+            )
+
+            business_artifact_action = self._kuflow_client.business_artifact.create_business_artifact_action(
+                id=request.business_artifact_id, business_artifact_action_create_params=params
+            )
+
+            return models_temporal.BusinessArtifactActionCreateResponse(
+                business_artifact_action=business_artifact_action
+            )
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_retrieveBusinessArtifactAction")
+    async def retrieve_business_artifact_action(
+        self,
+        request: models_temporal.BusinessArtifactActionRetrieveRequest,
+    ) -> models_temporal.BusinessArtifactActionRetrieveResponse:
+        try:
+            validation.validate_business_artifact_action_retrieve_request(request)
+
+            business_artifact_action = self._kuflow_client.business_artifact.retrieve_business_artifact_action(
+                id=request.business_artifact_id, action_id=request.business_artifact_action_id
+            )
+
+            return models_temporal.BusinessArtifactActionRetrieveResponse(
+                business_artifact_action=business_artifact_action
+            )
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_cancelBusinessArtifactAction")
+    async def cancel_business_artifact_action(
+        self,
+        request: models_temporal.BusinessArtifactActionCancelRequest,
+    ) -> models_temporal.BusinessArtifactActionCancelResponse:
+        try:
+            validation.validate_business_artifact_action_cancel_request(request)
+
+            business_artifact_action = self._kuflow_client.business_artifact.cancel_business_artifact_action(
+                id=request.business_artifact_id, action_id=request.business_artifact_action_id
+            )
+
+            return models_temporal.BusinessArtifactActionCancelResponse(
+                business_artifact_action=business_artifact_action
+            )
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_prepareBusinessArtifactCreateArtifact")
+    async def prepare_business_artifact_create_artifact(
+        self,
+        request: models_temporal.BusinessArtifactCreateArtifactPrepareRequest,
+    ) -> models_temporal.BusinessArtifactCreateArtifactPrepareResponse:
+        try:
+            validation.validate_business_artifact_create_artifact_prepare_request(request)
+
+            params = models_rest.BusinessArtifactCreateArtifactPrepareParams(
+                business_artifact_action_definition_code=request.business_artifact_action_definition_code
+            )
+
+            business_artifact_create_artifact_prepare = (
+                self._kuflow_client.business_artifact.prepare_business_artifact_create_artifact(
+                    id=request.business_artifact_id,
+                    business_artifact_create_artifact_prepare_params=params,
+                )
+            )
+
+            return models_temporal.BusinessArtifactCreateArtifactPrepareResponse(
+                business_artifact_create_artifact_prepare=business_artifact_create_artifact_prepare
+            )
         except Exception as err:
             raise create_application_error(err)  # noqa: B904

@@ -68,6 +68,7 @@ def build_find_principals_request(
     sort: Optional[List[str]] = None,
     type: Optional[Union[str, _models.PrincipalType]] = None,
     group_id: Optional[List[str]] = None,
+    group_code: Optional[List[str]] = None,
     tenant_id: Optional[List[str]] = None,
     **kwargs: Any,
 ) -> HttpRequest:
@@ -90,6 +91,8 @@ def build_find_principals_request(
         _params["type"] = _SERIALIZER.query("type", type, "str")
     if group_id is not None:
         _params["groupId"] = [_SERIALIZER.query("group_id", q, "str") if q is not None else "" for q in group_id]
+    if group_code is not None:
+        _params["groupCode"] = [_SERIALIZER.query("group_code", q, "str") if q is not None else "" for q in group_code]
     if tenant_id is not None:
         _params["tenantId"] = [_SERIALIZER.query("tenant_id", q, "str") if q is not None else "" for q in tenant_id]
 
@@ -146,6 +149,7 @@ class PrincipalOperations:
         sort: Optional[List[str]] = None,
         type: Optional[Union[str, _models.PrincipalType]] = None,
         group_id: Optional[List[str]] = None,
+        group_code: Optional[List[str]] = None,
         tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> _models.PrincipalPage:
@@ -171,6 +175,8 @@ class PrincipalOperations:
         :paramtype type: str or ~kuflow.rest.models.PrincipalType
         :keyword group_id: Filter by group ids. Default value is None.
         :paramtype group_id: list[str]
+        :keyword group_code: Filter by group codes. Default value is None.
+        :paramtype group_code: list[str]
         :keyword tenant_id: Filter by tenantId. Default value is None.
         :paramtype tenant_id: list[str]
         :return: PrincipalPage
@@ -196,6 +202,7 @@ class PrincipalOperations:
             sort=sort,
             type=type,
             group_id=group_id,
+            group_code=group_code,
             tenant_id=tenant_id,
             headers=_headers,
             params=_params,

@@ -51,21 +51,19 @@ from azure.core.utils import case_insensitive_dict
 
 from ... import models as _models
 from ..._serialization import Deserializer, Serializer
-from ...operations._process_operations import (
-    build_cancel_process_items_request,
-    build_cancel_process_request,
-    build_change_process_initiator_request,
-    build_complete_process_request,
-    build_create_process_request,
-    build_download_process_document_request,
-    build_find_processes_request,
-    build_patch_process_entity_request,
-    build_patch_process_metadata_request,
-    build_retrieve_process_request,
-    build_update_process_entity_request,
-    build_update_process_metadata_request,
-    build_upload_process_document_request,
-    build_upload_process_user_action_document_request,
+from ...operations._business_artifact_operations import (
+    build_cancel_business_artifact_action_request,
+    build_create_business_artifact_action_request,
+    build_create_business_artifact_request,
+    build_delete_business_artifact_request,
+    build_download_business_artifact_document_request,
+    build_find_business_artifacts_request,
+    build_patch_business_artifact_data_request,
+    build_prepare_business_artifact_create_artifact_request,
+    build_retrieve_business_artifact_action_request,
+    build_retrieve_business_artifact_request,
+    build_update_business_artifact_data_request,
+    build_upload_business_artifact_document_request,
 )
 from .._configuration import KuFlowRestClientConfiguration
 
@@ -77,14 +75,14 @@ T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
 
-class ProcessOperations:
+class BusinessArtifactOperations:
     """
     .. warning::
         **DO NOT** instantiate this class directly.
 
         Instead, you should access the following operations through
         :class:`~kuflow.rest.aio.KuFlowRestClient`'s
-        :attr:`process` attribute.
+        :attr:`business_artifact` attribute.
     """
 
     models = _models
@@ -97,20 +95,21 @@ class ProcessOperations:
         self._deserialize: Deserializer = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
     @distributed_trace_async
-    async def find_processes(
+    async def find_business_artifacts(
         self,
         *,
         size: int = 25,
         page: int = 0,
         sort: Optional[List[str]] = None,
         tenant_id: Optional[List[str]] = None,
-        process_definition_id: Optional[List[str]] = None,
-        process_definition_code: Optional[List[str]] = None,
+        business_artifact_definition_id: Optional[List[str]] = None,
+        business_artifact_definition_code: Optional[List[str]] = None,
+        value: Optional[List[str]] = None,
         **kwargs: Any,
-    ) -> _models.ProcessPage:
-        """Find all accessible Processes.
+    ) -> _models.BusinessArtifactPage:
+        """Find all accessible Business Artifacts.
 
-        List all the Processes that have been created and the credentials has access.
+        List all the Business Artifacts that have been created and the credentials has access.
 
         Available sort query values: id, createdAt, lastModifiedAt.
 
@@ -127,12 +126,20 @@ class ProcessOperations:
         :paramtype sort: list[str]
         :keyword tenant_id: Filter by tenantId. Default value is None.
         :paramtype tenant_id: list[str]
-        :keyword process_definition_id: Filter by process definition ids. Default value is None.
-        :paramtype process_definition_id: list[str]
-        :keyword process_definition_code: Filter by process definition codes. Default value is None.
-        :paramtype process_definition_code: list[str]
-        :return: ProcessPage
-        :rtype: ~kuflow.rest.models.ProcessPage
+        :keyword business_artifact_definition_id: Filter by an array of business artifact definition
+         ids. Default value is None.
+        :paramtype business_artifact_definition_id: list[str]
+        :keyword business_artifact_definition_code: Filter by an array of business artifact definition
+         codes. Default value is None.
+        :paramtype business_artifact_definition_code: list[str]
+        :keyword value: Filter by indexed field values. Each value is an expression with the format
+         ``fieldCode operation value1 value2...`` (space-separated).
+
+         Supported operations: ``eq``\\ , ``le``\\ , ``ge``\\ , ``between``\\ , ``contains``\\ ,
+         ``in``. Default value is None.
+        :paramtype value: list[str]
+        :return: BusinessArtifactPage
+        :rtype: ~kuflow.rest.models.BusinessArtifactPage
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -146,15 +153,16 @@ class ProcessOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.ProcessPage] = kwargs.pop("cls", None)
+        cls: ClsType[_models.BusinessArtifactPage] = kwargs.pop("cls", None)
 
-        _request = build_find_processes_request(
+        _request = build_find_business_artifacts_request(
             size=size,
             page=page,
             sort=sort,
             tenant_id=tenant_id,
-            process_definition_id=process_definition_id,
-            process_definition_code=process_definition_code,
+            business_artifact_definition_id=business_artifact_definition_id,
+            business_artifact_definition_code=business_artifact_definition_code,
+            value=value,
             headers=_headers,
             params=_params,
         )
@@ -172,7 +180,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("ProcessPage", pipeline_response.http_response)
+        deserialized = self._deserialize("BusinessArtifactPage", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -180,67 +188,65 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @overload
-    async def create_process(
+    async def create_business_artifact(
         self,
-        process_create_params: _models.ProcessCreateParams,
+        business_artifact_create_params: _models.BusinessArtifactCreateParams,
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.Process:
-        """Create a new process.
+    ) -> _models.BusinessArtifact:
+        """Create a new Business Artifact.
 
-        Creates a process. This option has direct correspondence to the action of starting a process in
-        the Kuflow GUI.
+        Creates a Business Artifact.
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process_create_params: Process to create. Required.
-        :type process_create_params: ~kuflow.rest.models.ProcessCreateParams
+        :param business_artifact_create_params: Business Artifact to create. Required.
+        :type business_artifact_create_params: ~kuflow.rest.models.BusinessArtifactCreateParams
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def create_process(
-        self, process_create_params: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
-    ) -> _models.Process:
-        """Create a new process.
+    async def create_business_artifact(
+        self, business_artifact_create_params: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
+    ) -> _models.BusinessArtifact:
+        """Create a new Business Artifact.
 
-        Creates a process. This option has direct correspondence to the action of starting a process in
-        the Kuflow GUI.
+        Creates a Business Artifact.
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process_create_params: Process to create. Required.
-        :type process_create_params: IO[bytes]
+        :param business_artifact_create_params: Business Artifact to create. Required.
+        :type business_artifact_create_params: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @distributed_trace_async
-    async def create_process(
-        self, process_create_params: Union[_models.ProcessCreateParams, IO[bytes]], **kwargs: Any
-    ) -> _models.Process:
-        """Create a new process.
+    async def create_business_artifact(
+        self, business_artifact_create_params: Union[_models.BusinessArtifactCreateParams, IO[bytes]], **kwargs: Any
+    ) -> _models.BusinessArtifact:
+        """Create a new Business Artifact.
 
-        Creates a process. This option has direct correspondence to the action of starting a process in
-        the Kuflow GUI.
+        Creates a Business Artifact.
 
         If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
-        :param process_create_params: Process to create. Is either a ProcessCreateParams type or a
-         IO[bytes] type. Required.
-        :type process_create_params: ~kuflow.rest.models.ProcessCreateParams or IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :param business_artifact_create_params: Business Artifact to create. Is either a
+         BusinessArtifactCreateParams type or a IO[bytes] type. Required.
+        :type business_artifact_create_params: ~kuflow.rest.models.BusinessArtifactCreateParams or
+         IO[bytes]
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -255,17 +261,17 @@ class ProcessOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.BusinessArtifact] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(process_create_params, (IOBase, bytes)):
-            _content = process_create_params
+        if isinstance(business_artifact_create_params, (IOBase, bytes)):
+            _content = business_artifact_create_params
         else:
-            _json = self._serialize.body(process_create_params, "ProcessCreateParams")
+            _json = self._serialize.body(business_artifact_create_params, "BusinessArtifactCreateParams")
 
-        _request = build_create_process_request(
+        _request = build_create_business_artifact_request(
             content_type=content_type,
             json=_json,
             content=_content,
@@ -286,7 +292,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("BusinessArtifact", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -294,15 +300,15 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace_async
-    async def retrieve_process(self, id: str, **kwargs: Any) -> _models.Process:
-        """Get a Process by ID.
+    async def retrieve_business_artifact(self, id: str, **kwargs: Any) -> _models.BusinessArtifact:
+        """Get a Business Artifact by ID.
 
-        Returns the requested Process when has access to do it.
+        Returns the requested Business Artifact when has access to do it.
 
         :param id: The resource ID. Required.
         :type id: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -316,9 +322,9 @@ class ProcessOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.BusinessArtifact] = kwargs.pop("cls", None)
 
-        _request = build_retrieve_process_request(
+        _request = build_retrieve_business_artifact_request(
             id=id,
             headers=_headers,
             params=_params,
@@ -337,7 +343,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("BusinessArtifact", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -345,17 +351,15 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace_async
-    async def complete_process(self, id: str, **kwargs: Any) -> _models.Process:
-        """Complete a Process.
+    async def delete_business_artifact(self, id: str, **kwargs: Any) -> None:
+        """Delete a Business Artifact by ID.
 
-        Complete a Process. The state of Process is set to 'completed'.
-
-        If you are already in this state, no action is taken.
+        Deletes the requested Business Artifact.
 
         :param id: The resource ID. Required.
         :type id: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: None
+        :rtype: None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -369,9 +373,9 @@ class ProcessOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[None] = kwargs.pop("cls", None)
 
-        _request = build_complete_process_request(
+        _request = build_delete_business_artifact_request(
             id=id,
             headers=_headers,
             params=_params,
@@ -385,219 +389,90 @@ class ProcessOperations:
 
         response = pipeline_response.http_response
 
-        if response.status_code not in [200]:
+        if response.status_code not in [204]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
-
         if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
-
-        return deserialized  # type: ignore
-
-    @distributed_trace_async
-    async def cancel_process(self, id: str, **kwargs: Any) -> _models.Process:
-        """Cancel a Process.
-
-        Cancel a Process. The Process state is set to 'cancelled'.
-
-        All the active process items will be marked as cancelled too.
-
-        If you are already in this state, no action is taken.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        error_map: MutableMapping = {
-            401: ClientAuthenticationError,
-            404: ResourceNotFoundError,
-            409: ResourceExistsError,
-            304: ResourceNotModifiedError,
-        }
-        error_map.update(kwargs.pop("error_map", {}) or {})
-
-        _headers = kwargs.pop("headers", {}) or {}
-        _params = kwargs.pop("params", {}) or {}
-
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
-
-        _request = build_cancel_process_request(
-            id=id,
-            headers=_headers,
-            params=_params,
-        )
-        _request.url = self._client.format_url(_request.url)
-
-        _stream = False
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            _request, stream=_stream, **kwargs
-        )
-
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
-            raise HttpResponseError(response=response, model=error)
-
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
-
-        return deserialized  # type: ignore
-
-    @distributed_trace_async
-    async def cancel_process_items(
-        self, id: str, *, process_item_id: Optional[List[str]] = None, **kwargs: Any
-    ) -> _models.Process:
-        """Cancel Process Items.
-
-        Cancel Process Items in a Process.
-
-        When processItemId query parameters are provided, only those specific
-        process items are cancelled. When omitted, all active process items
-        in the process are cancelled.
-
-        For task process items, tasks in a cancellable state (ready, claimed)
-        are set to 'cancelled'. Already cancelled tasks are treated as a no-op.
-        The Process itself is not affected.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :keyword process_item_id: Optional list of process item IDs to cancel. If omitted, all active
-         process items are cancelled. Default value is None.
-        :paramtype process_item_id: list[str]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        error_map: MutableMapping = {
-            401: ClientAuthenticationError,
-            404: ResourceNotFoundError,
-            409: ResourceExistsError,
-            304: ResourceNotModifiedError,
-        }
-        error_map.update(kwargs.pop("error_map", {}) or {})
-
-        _headers = kwargs.pop("headers", {}) or {}
-        _params = kwargs.pop("params", {}) or {}
-
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
-
-        _request = build_cancel_process_items_request(
-            id=id,
-            process_item_id=process_item_id,
-            headers=_headers,
-            params=_params,
-        )
-        _request.url = self._client.format_url(_request.url)
-
-        _stream = False
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            _request, stream=_stream, **kwargs
-        )
-
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
-            raise HttpResponseError(response=response, model=error)
-
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
-
-        return deserialized  # type: ignore
+            return cls(pipeline_response, None, {})  # type: ignore
 
     @overload
-    async def change_process_initiator(
+    async def update_business_artifact_data(
         self,
         id: str,
-        process_change_initiator_params: _models.ProcessChangeInitiatorParams,
+        business_artifact_data_update_params: _models.BusinessArtifactDataUpdateParams,
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.Process:
-        """Change process initiator.
+    ) -> _models.BusinessArtifact:
+        """Save JSON data.
 
-        Change the current initiator of a process.
-
-        Allows you to choose a user (by email or principal identifier) or an application (principal
-        identifier).
-        Only one option will be necessary.
+        Allow to save a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json is marked as invalid.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_change_initiator_params: Params to change the process initiator. Required.
-        :type process_change_initiator_params: ~kuflow.rest.models.ProcessChangeInitiatorParams
+        :param business_artifact_data_update_params: Params used to update the JSON value. Required.
+        :type business_artifact_data_update_params:
+         ~kuflow.rest.models.BusinessArtifactDataUpdateParams
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def change_process_initiator(
+    async def update_business_artifact_data(
         self,
         id: str,
-        process_change_initiator_params: IO[bytes],
+        business_artifact_data_update_params: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.Process:
-        """Change process initiator.
+    ) -> _models.BusinessArtifact:
+        """Save JSON data.
 
-        Change the current initiator of a process.
-
-        Allows you to choose a user (by email or principal identifier) or an application (principal
-        identifier).
-        Only one option will be necessary.
+        Allow to save a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json is marked as invalid.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_change_initiator_params: Params to change the process initiator. Required.
-        :type process_change_initiator_params: IO[bytes]
+        :param business_artifact_data_update_params: Params used to update the JSON value. Required.
+        :type business_artifact_data_update_params: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @distributed_trace_async
-    async def change_process_initiator(
+    async def update_business_artifact_data(
         self,
         id: str,
-        process_change_initiator_params: Union[_models.ProcessChangeInitiatorParams, IO[bytes]],
+        business_artifact_data_update_params: Union[_models.BusinessArtifactDataUpdateParams, IO[bytes]],
         **kwargs: Any,
-    ) -> _models.Process:
-        """Change process initiator.
+    ) -> _models.BusinessArtifact:
+        """Save JSON data.
 
-        Change the current initiator of a process.
-
-        Allows you to choose a user (by email or principal identifier) or an application (principal
-        identifier).
-        Only one option will be necessary.
+        Allow to save a JSON data validating that the data follow the related schema. If the data is
+        invalid, then
+        the json is marked as invalid.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_change_initiator_params: Params to change the process initiator. Is either a
-         ProcessChangeInitiatorParams type or a IO[bytes] type. Required.
-        :type process_change_initiator_params: ~kuflow.rest.models.ProcessChangeInitiatorParams or
-         IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :param business_artifact_data_update_params: Params used to update the JSON value. Is either a
+         BusinessArtifactDataUpdateParams type or a IO[bytes] type. Required.
+        :type business_artifact_data_update_params:
+         ~kuflow.rest.models.BusinessArtifactDataUpdateParams or IO[bytes]
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -612,17 +487,17 @@ class ProcessOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.BusinessArtifact] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(process_change_initiator_params, (IOBase, bytes)):
-            _content = process_change_initiator_params
+        if isinstance(business_artifact_data_update_params, (IOBase, bytes)):
+            _content = business_artifact_data_update_params
         else:
-            _json = self._serialize.body(process_change_initiator_params, "ProcessChangeInitiatorParams")
+            _json = self._serialize.body(business_artifact_data_update_params, "BusinessArtifactDataUpdateParams")
 
-        _request = build_change_process_initiator_request(
+        _request = build_update_business_artifact_data_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -644,85 +519,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
-
-        return deserialized  # type: ignore
-
-    @distributed_trace_async
-    async def upload_process_user_action_document(
-        self,
-        id: str,
-        file: IO[bytes],
-        *,
-        file_content_type: str,
-        file_name: str,
-        user_action_value_id: str,
-        **kwargs: Any,
-    ) -> Optional[_models.Process]:
-        """Upload and save a document in a user action.
-
-        Allow saving a user action document uploading the content.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param file: Document to save. Required.
-        :type file: IO[bytes]
-        :keyword file_content_type: Document content type. Required.
-        :paramtype file_content_type: str
-        :keyword file_name: Document name. Required.
-        :paramtype file_name: str
-        :keyword user_action_value_id: User action value ID related to de document. Required.
-        :paramtype user_action_value_id: str
-        :return: Process or None
-        :rtype: ~kuflow.rest.models.Process or None
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        error_map: MutableMapping = {
-            401: ClientAuthenticationError,
-            404: ResourceNotFoundError,
-            409: ResourceExistsError,
-            304: ResourceNotModifiedError,
-        }
-        error_map.update(kwargs.pop("error_map", {}) or {})
-
-        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
-        _params = kwargs.pop("params", {}) or {}
-
-        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/octet-stream"))
-        cls: ClsType[Optional[_models.Process]] = kwargs.pop("cls", None)
-
-        _content = file
-
-        _request = build_upload_process_user_action_document_request(
-            id=id,
-            file_content_type=file_content_type,
-            file_name=file_name,
-            user_action_value_id=user_action_value_id,
-            content_type=content_type,
-            content=_content,
-            headers=_headers,
-            params=_params,
-        )
-        _request.url = self._client.format_url(_request.url)
-
-        _stream = False
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            _request, stream=_stream, **kwargs
-        )
-
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200, 304]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
-            raise HttpResponseError(response=response, model=error)
-
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("BusinessArtifact", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -730,136 +527,14 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @overload
-    async def update_process_metadata(
-        self,
-        id: str,
-        process_metadata_update_params: _models.ProcessMetadataUpdateParams,
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
-    ) -> _models.Process:
-        """Save process metadata.
-
-        Save process metadata.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param process_metadata_update_params: Params to save the metadata data. Required.
-        :type process_metadata_update_params: ~kuflow.rest.models.ProcessMetadataUpdateParams
-        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
-         Default value is "application/json".
-        :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-
-    @overload
-    async def update_process_metadata(
-        self,
-        id: str,
-        process_metadata_update_params: IO[bytes],
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any,
-    ) -> _models.Process:
-        """Save process metadata.
-
-        Save process metadata.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param process_metadata_update_params: Params to save the metadata data. Required.
-        :type process_metadata_update_params: IO[bytes]
-        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
-         Default value is "application/json".
-        :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-
-    @distributed_trace_async
-    async def update_process_metadata(
-        self,
-        id: str,
-        process_metadata_update_params: Union[_models.ProcessMetadataUpdateParams, IO[bytes]],
-        **kwargs: Any,
-    ) -> _models.Process:
-        """Save process metadata.
-
-        Save process metadata.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param process_metadata_update_params: Params to save the metadata data. Is either a
-         ProcessMetadataUpdateParams type or a IO[bytes] type. Required.
-        :type process_metadata_update_params: ~kuflow.rest.models.ProcessMetadataUpdateParams or
-         IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        error_map: MutableMapping = {
-            401: ClientAuthenticationError,
-            404: ResourceNotFoundError,
-            409: ResourceExistsError,
-            304: ResourceNotModifiedError,
-        }
-        error_map.update(kwargs.pop("error_map", {}) or {})
-
-        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
-        _params = kwargs.pop("params", {}) or {}
-
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
-
-        content_type = content_type or "application/json"
-        _json = None
-        _content = None
-        if isinstance(process_metadata_update_params, (IOBase, bytes)):
-            _content = process_metadata_update_params
-        else:
-            _json = self._serialize.body(process_metadata_update_params, "ProcessMetadataUpdateParams")
-
-        _request = build_update_process_metadata_request(
-            id=id,
-            content_type=content_type,
-            json=_json,
-            content=_content,
-            headers=_headers,
-            params=_params,
-        )
-        _request.url = self._client.format_url(_request.url)
-
-        _stream = False
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            _request, stream=_stream, **kwargs
-        )
-
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
-            raise HttpResponseError(response=response, model=error)
-
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
-
-        return deserialized  # type: ignore
-
-    @overload
-    async def patch_process_metadata(
+    async def patch_business_artifact_data(
         self,
         id: str,
         json_patch: List[_models.JsonPatchOperation],
         *,
         content_type: str = "application/json-patch+json",
         **kwargs: Any,
-    ) -> _models.Process:
+    ) -> _models.BusinessArtifact:
         """Patch JSON data.
 
         Allow to patch a JSON data validating that the data follow the related schema. If the data is
@@ -873,15 +548,15 @@ class ProcessOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json-patch+json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def patch_process_metadata(
+    async def patch_business_artifact_data(
         self, id: str, json_patch: IO[bytes], *, content_type: str = "application/json-patch+json", **kwargs: Any
-    ) -> _models.Process:
+    ) -> _models.BusinessArtifact:
         """Patch JSON data.
 
         Allow to patch a JSON data validating that the data follow the related schema. If the data is
@@ -895,15 +570,15 @@ class ProcessOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json-patch+json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @distributed_trace_async
-    async def patch_process_metadata(
+    async def patch_business_artifact_data(
         self, id: str, json_patch: Union[List[_models.JsonPatchOperation], IO[bytes]], **kwargs: Any
-    ) -> _models.Process:
+    ) -> _models.BusinessArtifact:
         """Patch JSON data.
 
         Allow to patch a JSON data validating that the data follow the related schema. If the data is
@@ -915,8 +590,8 @@ class ProcessOperations:
         :param json_patch: Params to save the JSON value. Is either a [JsonPatchOperation] type or a
          IO[bytes] type. Required.
         :type json_patch: list[~kuflow.rest.models.JsonPatchOperation] or IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -931,7 +606,7 @@ class ProcessOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.BusinessArtifact] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json-patch+json"
         _json = None
@@ -941,7 +616,7 @@ class ProcessOperations:
         else:
             _json = self._serialize.body(json_patch, "[JsonPatchOperation]")
 
-        _request = build_patch_process_metadata_request(
+        _request = build_patch_business_artifact_data_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -963,7 +638,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("BusinessArtifact", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -971,71 +646,110 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @overload
-    async def update_process_entity(
+    async def create_business_artifact_action(
         self,
         id: str,
-        process_entity_update_params: _models.ProcessEntityUpdateParams,
+        business_artifact_action_create_params: _models.BusinessArtifactActionCreateParams,
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.Process:
-        """Save JSON data.
+    ) -> _models.BusinessArtifactAction:
+        """Invoke a Business Artifact action.
 
-        Allow to save a JSON validating that the data follow the related schema. If the data is
-        invalid, then
-        the json form is marked as invalid.
+        Invoke an action on a Business Artifact.
+
+        Whether the call returns synchronously or asynchronously depends on the action type:
+
+
+        * ``START_WORKFLOW``\\ , ``DOWNLOADABLE``\\ : dispatched to a background worker. The
+          response returns immediately with ``status=REQUESTED``. Poll
+          ``retrieveBusinessArtifactAction`` for the final state.
+        * ``START_PROCESS``\\ , ``CREATE_BUSINESS_ARTIFACT``\\ : completed synchronously. The
+          response returns with ``status=COMPLETED`` (or an error status).
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_entity_update_params: Params to save the JSON value. Required.
-        :type process_entity_update_params: ~kuflow.rest.models.ProcessEntityUpdateParams
+        :param business_artifact_action_create_params: Params identifying the action to invoke.
+         Required.
+        :type business_artifact_action_create_params:
+         ~kuflow.rest.models.BusinessArtifactActionCreateParams
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifactAction
+        :rtype: ~kuflow.rest.models.BusinessArtifactAction
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def update_process_entity(
-        self, id: str, process_entity_update_params: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
-    ) -> _models.Process:
-        """Save JSON data.
+    async def create_business_artifact_action(
+        self,
+        id: str,
+        business_artifact_action_create_params: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactAction:
+        """Invoke a Business Artifact action.
 
-        Allow to save a JSON validating that the data follow the related schema. If the data is
-        invalid, then
-        the json form is marked as invalid.
+        Invoke an action on a Business Artifact.
+
+        Whether the call returns synchronously or asynchronously depends on the action type:
+
+
+        * ``START_WORKFLOW``\\ , ``DOWNLOADABLE``\\ : dispatched to a background worker. The
+          response returns immediately with ``status=REQUESTED``. Poll
+          ``retrieveBusinessArtifactAction`` for the final state.
+        * ``START_PROCESS``\\ , ``CREATE_BUSINESS_ARTIFACT``\\ : completed synchronously. The
+          response returns with ``status=COMPLETED`` (or an error status).
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_entity_update_params: Params to save the JSON value. Required.
-        :type process_entity_update_params: IO[bytes]
+        :param business_artifact_action_create_params: Params identifying the action to invoke.
+         Required.
+        :type business_artifact_action_create_params: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifactAction
+        :rtype: ~kuflow.rest.models.BusinessArtifactAction
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @distributed_trace_async
-    async def update_process_entity(
-        self, id: str, process_entity_update_params: Union[_models.ProcessEntityUpdateParams, IO[bytes]], **kwargs: Any
-    ) -> _models.Process:
-        """Save JSON data.
+    async def create_business_artifact_action(
+        self,
+        id: str,
+        business_artifact_action_create_params: Union[_models.BusinessArtifactActionCreateParams, IO[bytes]],
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactAction:
+        """Invoke a Business Artifact action.
 
-        Allow to save a JSON validating that the data follow the related schema. If the data is
-        invalid, then
-        the json form is marked as invalid.
+        Invoke an action on a Business Artifact.
+
+        Whether the call returns synchronously or asynchronously depends on the action type:
+
+
+        * ``START_WORKFLOW``\\ , ``DOWNLOADABLE``\\ : dispatched to a background worker. The
+          response returns immediately with ``status=REQUESTED``. Poll
+          ``retrieveBusinessArtifactAction`` for the final state.
+        * ``START_PROCESS``\\ , ``CREATE_BUSINESS_ARTIFACT``\\ : completed synchronously. The
+          response returns with ``status=COMPLETED`` (or an error status).
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param process_entity_update_params: Params to save the JSON value. Is either a
-         ProcessEntityUpdateParams type or a IO[bytes] type. Required.
-        :type process_entity_update_params: ~kuflow.rest.models.ProcessEntityUpdateParams or IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :param business_artifact_action_create_params: Params identifying the action to invoke. Is
+         either a BusinessArtifactActionCreateParams type or a IO[bytes] type. Required.
+        :type business_artifact_action_create_params:
+         ~kuflow.rest.models.BusinessArtifactActionCreateParams or IO[bytes]
+        :return: BusinessArtifactAction
+        :rtype: ~kuflow.rest.models.BusinessArtifactAction
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -1050,21 +764,77 @@ class ProcessOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.BusinessArtifactAction] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(process_entity_update_params, (IOBase, bytes)):
-            _content = process_entity_update_params
+        if isinstance(business_artifact_action_create_params, (IOBase, bytes)):
+            _content = business_artifact_action_create_params
         else:
-            _json = self._serialize.body(process_entity_update_params, "ProcessEntityUpdateParams")
+            _json = self._serialize.body(business_artifact_action_create_params, "BusinessArtifactActionCreateParams")
 
-        _request = build_update_process_entity_request(
+        _request = build_create_business_artifact_action_request(
             id=id,
             content_type=content_type,
             json=_json,
             content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200, 201]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("BusinessArtifactAction", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace_async
+    async def retrieve_business_artifact_action(
+        self, id: str, action_id: str, **kwargs: Any
+    ) -> _models.BusinessArtifactAction:
+        """Get a Business Artifact action by ID.
+
+        Returns a Business Artifact action by its ID.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param action_id: The Business Artifact action ID. Required.
+        :type action_id: str
+        :return: BusinessArtifactAction
+        :rtype: ~kuflow.rest.models.BusinessArtifactAction
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.BusinessArtifactAction] = kwargs.pop("cls", None)
+
+        _request = build_retrieve_business_artifact_action_request(
+            id=id,
+            action_id=action_id,
             headers=_headers,
             params=_params,
         )
@@ -1082,7 +852,67 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("BusinessArtifactAction", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace_async
+    async def cancel_business_artifact_action(
+        self, id: str, action_id: str, **kwargs: Any
+    ) -> _models.BusinessArtifactAction:
+        """Cancel a Business Artifact action.
+
+        Cancel a Business Artifact action.
+
+        Only meaningful for asynchronous actions still in ``REQUESTED`` state. The
+        action's status is set to ``CANCELED``. If the action is already in a
+        terminal state, no transition occurs.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param action_id: The Business Artifact action ID. Required.
+        :type action_id: str
+        :return: BusinessArtifactAction
+        :rtype: ~kuflow.rest.models.BusinessArtifactAction
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.BusinessArtifactAction] = kwargs.pop("cls", None)
+
+        _request = build_cancel_business_artifact_action_request(
+            id=id,
+            action_id=action_id,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("BusinessArtifactAction", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -1090,71 +920,95 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @overload
-    async def patch_process_entity(
+    async def prepare_business_artifact_create_artifact(  # pylint: disable=name-too-long
         self,
         id: str,
-        json_patch: List[_models.JsonPatchOperation],
+        business_artifact_create_artifact_prepare_params: _models.BusinessArtifactCreateArtifactPrepareParams,
         *,
-        content_type: str = "application/json-patch+json",
+        content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.Process:
-        """Patch JSON data.
+    ) -> _models.BusinessArtifactCreateArtifactPrepare:
+        """Prepare the data for a CREATE_BUSINESS_ARTIFACT action.
 
-        Allow to patch a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
+        Compute the pre-filled value that a ``CREATE_BUSINESS_ARTIFACT`` action would produce
+        for this Business Artifact, without invoking the action or persisting any state.
+
+        Use it to populate a form that the user can review and edit. Once the user submits,
+        the filled value is sent back via ``createBusinessArtifactAction`` (in the
+        ``createArtifact.value`` field).
 
         :param id: The resource ID. Required.
         :type id: str
-        :param json_patch: Params to save the JSON value. Required.
-        :type json_patch: list[~kuflow.rest.models.JsonPatchOperation]
+        :param business_artifact_create_artifact_prepare_params: Params identifying the
+         CREATE_BUSINESS_ARTIFACT action to prepare. Required.
+        :type business_artifact_create_artifact_prepare_params:
+         ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepareParams
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
-         Default value is "application/json-patch+json".
+         Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifactCreateArtifactPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepare
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    async def patch_process_entity(
-        self, id: str, json_patch: IO[bytes], *, content_type: str = "application/json-patch+json", **kwargs: Any
-    ) -> _models.Process:
-        """Patch JSON data.
+    async def prepare_business_artifact_create_artifact(  # pylint: disable=name-too-long
+        self,
+        id: str,
+        business_artifact_create_artifact_prepare_params: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactCreateArtifactPrepare:
+        """Prepare the data for a CREATE_BUSINESS_ARTIFACT action.
 
-        Allow to patch a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
+        Compute the pre-filled value that a ``CREATE_BUSINESS_ARTIFACT`` action would produce
+        for this Business Artifact, without invoking the action or persisting any state.
+
+        Use it to populate a form that the user can review and edit. Once the user submits,
+        the filled value is sent back via ``createBusinessArtifactAction`` (in the
+        ``createArtifact.value`` field).
 
         :param id: The resource ID. Required.
         :type id: str
-        :param json_patch: Params to save the JSON value. Required.
-        :type json_patch: IO[bytes]
+        :param business_artifact_create_artifact_prepare_params: Params identifying the
+         CREATE_BUSINESS_ARTIFACT action to prepare. Required.
+        :type business_artifact_create_artifact_prepare_params: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
-         Default value is "application/json-patch+json".
+         Default value is "application/json".
         :paramtype content_type: str
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :return: BusinessArtifactCreateArtifactPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepare
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @distributed_trace_async
-    async def patch_process_entity(
-        self, id: str, json_patch: Union[List[_models.JsonPatchOperation], IO[bytes]], **kwargs: Any
-    ) -> _models.Process:
-        """Patch JSON data.
+    async def prepare_business_artifact_create_artifact(  # pylint: disable=name-too-long
+        self,
+        id: str,
+        business_artifact_create_artifact_prepare_params: Union[
+            _models.BusinessArtifactCreateArtifactPrepareParams, IO[bytes]
+        ],
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactCreateArtifactPrepare:
+        """Prepare the data for a CREATE_BUSINESS_ARTIFACT action.
 
-        Allow to patch a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
+        Compute the pre-filled value that a ``CREATE_BUSINESS_ARTIFACT`` action would produce
+        for this Business Artifact, without invoking the action or persisting any state.
+
+        Use it to populate a form that the user can review and edit. Once the user submits,
+        the filled value is sent back via ``createBusinessArtifactAction`` (in the
+        ``createArtifact.value`` field).
 
         :param id: The resource ID. Required.
         :type id: str
-        :param json_patch: Params to save the JSON value. Is either a [JsonPatchOperation] type or a
-         IO[bytes] type. Required.
-        :type json_patch: list[~kuflow.rest.models.JsonPatchOperation] or IO[bytes]
-        :return: Process
-        :rtype: ~kuflow.rest.models.Process
+        :param business_artifact_create_artifact_prepare_params: Params identifying the
+         CREATE_BUSINESS_ARTIFACT action to prepare. Is either a
+         BusinessArtifactCreateArtifactPrepareParams type or a IO[bytes] type. Required.
+        :type business_artifact_create_artifact_prepare_params:
+         ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepareParams or IO[bytes]
+        :return: BusinessArtifactCreateArtifactPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepare
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -1169,17 +1023,19 @@ class ProcessOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.Process] = kwargs.pop("cls", None)
+        cls: ClsType[_models.BusinessArtifactCreateArtifactPrepare] = kwargs.pop("cls", None)
 
-        content_type = content_type or "application/json-patch+json"
+        content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(json_patch, (IOBase, bytes)):
-            _content = json_patch
+        if isinstance(business_artifact_create_artifact_prepare_params, (IOBase, bytes)):
+            _content = business_artifact_create_artifact_prepare_params
         else:
-            _json = self._serialize.body(json_patch, "[JsonPatchOperation]")
+            _json = self._serialize.body(
+                business_artifact_create_artifact_prepare_params, "BusinessArtifactCreateArtifactPrepareParams"
+            )
 
-        _request = build_patch_process_entity_request(
+        _request = build_prepare_business_artifact_create_artifact_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -1201,7 +1057,7 @@ class ProcessOperations:
             error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("Process", pipeline_response.http_response)
+        deserialized = self._deserialize("BusinessArtifactCreateArtifactPrepare", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -1209,18 +1065,20 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace_async
-    async def upload_process_document(
+    async def upload_business_artifact_document(
         self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, **kwargs: Any
     ) -> _models.DocumentReference:
-        """Upload a temporal document into the process that later on must be linked with a process domain
-        resource.
+        """Upload a temporal document into the business artifact that later on must be linked with a
+        business
+        artifact domain resource.
 
-        Upload a temporal document into the process that later on must be linked with a process domain
-        resource.
+        Upload a temporal document into the business artifact that later on must be linked with a
+        business artifact
+        domain resource.
 
-        Documents uploaded with this API will be deleted after 24 hours as long as they have not been
+        Documents uploaded with this API will be deleted after 2 hours as long as they have not been
         linked to a
-        process or process item..
+        business artifact.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -1250,7 +1108,7 @@ class ProcessOperations:
 
         _content = file
 
-        _request = build_upload_process_document_request(
+        _request = build_upload_business_artifact_document_request(
             id=id,
             file_content_type=file_content_type,
             file_name=file_name,
@@ -1281,7 +1139,9 @@ class ProcessOperations:
         return deserialized  # type: ignore
 
     @distributed_trace_async
-    async def download_process_document(self, id: str, *, document_uri: str, **kwargs: Any) -> AsyncIterator[bytes]:
+    async def download_business_artifact_document(
+        self, id: str, *, document_uri: str, **kwargs: Any
+    ) -> AsyncIterator[bytes]:
         """Download document.
 
         Given a document uri download a document.
@@ -1307,7 +1167,7 @@ class ProcessOperations:
 
         cls: ClsType[AsyncIterator[bytes]] = kwargs.pop("cls", None)
 
-        _request = build_download_process_document_request(
+        _request = build_download_business_artifact_document_request(
             id=id,
             document_uri=document_uri,
             headers=_headers,

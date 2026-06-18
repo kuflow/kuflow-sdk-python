@@ -312,6 +312,899 @@ class AuthenticationEngineToken(_serialization.Model):
         self.expired_at = expired_at
 
 
+class BusinessArtifact(AbstractAudited):
+    """BusinessArtifact.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Business Artifact ID. Required.
+    :vartype id: str
+    :ivar tenant_id: Tenant ID. Required.
+    :vartype tenant_id: str
+    :ivar business_artifact_definition_ref: Required.
+    :vartype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+    :ivar data: Json value.
+    :vartype data: ~kuflow.rest.models.JsonValue
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "tenant_id": {"required": True},
+        "business_artifact_definition_ref": {"required": True},
+    }
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "business_artifact_definition_ref": {
+            "key": "businessArtifactDefinitionRef",
+            "type": "BusinessArtifactDefinitionRef",
+        },
+        "data": {"key": "data", "type": "JsonValue"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        tenant_id: str,
+        business_artifact_definition_ref: "_models.BusinessArtifactDefinitionRef",
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        data: Optional["_models.JsonValue"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Business Artifact ID. Required.
+        :paramtype id: str
+        :keyword tenant_id: Tenant ID. Required.
+        :paramtype tenant_id: str
+        :keyword business_artifact_definition_ref: Required.
+        :paramtype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+        :keyword data: Json value.
+        :paramtype data: ~kuflow.rest.models.JsonValue
+        """
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.tenant_id = tenant_id
+        self.business_artifact_definition_ref = business_artifact_definition_ref
+        self.data = data
+
+
+class BusinessArtifactAction(AbstractAudited):
+    """A Business Artifact action invocation. The populated sub-field
+    (\\ ``startWorkflow``\\ , ``startProcess``\\ , ``downloadable``\\ , ``createArtifact``\\ ) is
+    dictated by ``type``.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Required.
+    :vartype id: str
+    :ivar type: Type of a Business Artifact action. Required. Known values are: "START_WORKFLOW",
+     "START_PROCESS", "DOWNLOADABLE", and "CREATE_BUSINESS_ARTIFACT".
+    :vartype type: str or ~kuflow.rest.models.BusinessArtifactActionType
+    :ivar status: Status of a Business Artifact action. Required. Known values are: "REQUESTED",
+     "COMPLETED", "CANCELED", and "ERROR".
+    :vartype status: str or ~kuflow.rest.models.BusinessArtifactActionStatus
+    :ivar business_artifact_action_definition_ref: Required.
+    :vartype business_artifact_action_definition_ref:
+     ~kuflow.rest.models.BusinessArtifactActionDefinitionRef
+    :ivar start_workflow: Action details for actions of type START_WORKFLOW.
+    :vartype start_workflow: ~kuflow.rest.models.BusinessArtifactActionStartWorkflow
+    :ivar start_process: Action details for actions of type START_PROCESS. Actions of this
+     type complete synchronously, so all fields are present in the invoke
+     response.
+    :vartype start_process: ~kuflow.rest.models.BusinessArtifactActionStartProcess
+    :ivar downloadable: Action details for actions of type DOWNLOADABLE.
+    :vartype downloadable: ~kuflow.rest.models.BusinessArtifactActionDownloadable
+    :ivar create_artifact: Action details for actions of type CREATE_BUSINESS_ARTIFACT.
+     Actions of this type complete synchronously, so the populated value and
+     the created Business Artifact ID are present in the invoke response.
+    :vartype create_artifact: ~kuflow.rest.models.BusinessArtifactActionCreateArtifact
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "type": {"required": True},
+        "status": {"required": True},
+        "business_artifact_action_definition_ref": {"required": True},
+    }
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "status": {"key": "status", "type": "str"},
+        "business_artifact_action_definition_ref": {
+            "key": "businessArtifactActionDefinitionRef",
+            "type": "BusinessArtifactActionDefinitionRef",
+        },
+        "start_workflow": {"key": "startWorkflow", "type": "BusinessArtifactActionStartWorkflow"},
+        "start_process": {"key": "startProcess", "type": "BusinessArtifactActionStartProcess"},
+        "downloadable": {"key": "downloadable", "type": "BusinessArtifactActionDownloadable"},
+        "create_artifact": {"key": "createArtifact", "type": "BusinessArtifactActionCreateArtifact"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        type: Union[str, "_models.BusinessArtifactActionType"],
+        status: Union[str, "_models.BusinessArtifactActionStatus"],
+        business_artifact_action_definition_ref: "_models.BusinessArtifactActionDefinitionRef",
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        start_workflow: Optional["_models.BusinessArtifactActionStartWorkflow"] = None,
+        start_process: Optional["_models.BusinessArtifactActionStartProcess"] = None,
+        downloadable: Optional["_models.BusinessArtifactActionDownloadable"] = None,
+        create_artifact: Optional["_models.BusinessArtifactActionCreateArtifact"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword type: Type of a Business Artifact action. Required. Known values are:
+         "START_WORKFLOW", "START_PROCESS", "DOWNLOADABLE", and "CREATE_BUSINESS_ARTIFACT".
+        :paramtype type: str or ~kuflow.rest.models.BusinessArtifactActionType
+        :keyword status: Status of a Business Artifact action. Required. Known values are: "REQUESTED",
+         "COMPLETED", "CANCELED", and "ERROR".
+        :paramtype status: str or ~kuflow.rest.models.BusinessArtifactActionStatus
+        :keyword business_artifact_action_definition_ref: Required.
+        :paramtype business_artifact_action_definition_ref:
+         ~kuflow.rest.models.BusinessArtifactActionDefinitionRef
+        :keyword start_workflow: Action details for actions of type START_WORKFLOW.
+        :paramtype start_workflow: ~kuflow.rest.models.BusinessArtifactActionStartWorkflow
+        :keyword start_process: Action details for actions of type START_PROCESS. Actions of this
+         type complete synchronously, so all fields are present in the invoke
+         response.
+        :paramtype start_process: ~kuflow.rest.models.BusinessArtifactActionStartProcess
+        :keyword downloadable: Action details for actions of type DOWNLOADABLE.
+        :paramtype downloadable: ~kuflow.rest.models.BusinessArtifactActionDownloadable
+        :keyword create_artifact: Action details for actions of type CREATE_BUSINESS_ARTIFACT.
+         Actions of this type complete synchronously, so the populated value and
+         the created Business Artifact ID are present in the invoke response.
+        :paramtype create_artifact: ~kuflow.rest.models.BusinessArtifactActionCreateArtifact
+        """
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.type = type
+        self.status = status
+        self.business_artifact_action_definition_ref = business_artifact_action_definition_ref
+        self.start_workflow = start_workflow
+        self.start_process = start_process
+        self.downloadable = downloadable
+        self.create_artifact = create_artifact
+
+
+class BusinessArtifactActionCreateArtifact(_serialization.Model):
+    """Action details for actions of type CREATE_BUSINESS_ARTIFACT.
+    Actions of this type complete synchronously, so the populated value and
+    the created Business Artifact ID are present in the invoke response.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar business_artifact_definition_ref: Required.
+    :vartype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+    :ivar business_artifact_id: ID of the Business Artifact created by this action. Only present
+     when status is COMPLETED.
+    :vartype business_artifact_id: str
+    :ivar value: Form value applied to the new Business Artifact.
+    :vartype value: dict[str, any]
+    """
+
+    _validation = {
+        "business_artifact_definition_ref": {"required": True},
+    }
+
+    _attribute_map = {
+        "business_artifact_definition_ref": {
+            "key": "businessArtifactDefinitionRef",
+            "type": "BusinessArtifactDefinitionRef",
+        },
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+        "value": {"key": "value", "type": "{object}"},
+    }
+
+    def __init__(
+        self,
+        *,
+        business_artifact_definition_ref: "_models.BusinessArtifactDefinitionRef",
+        business_artifact_id: Optional[str] = None,
+        value: Optional[Dict[str, Any]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword business_artifact_definition_ref: Required.
+        :paramtype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+        :keyword business_artifact_id: ID of the Business Artifact created by this action. Only present
+         when status is COMPLETED.
+        :paramtype business_artifact_id: str
+        :keyword value: Form value applied to the new Business Artifact.
+        :paramtype value: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_definition_ref = business_artifact_definition_ref
+        self.business_artifact_id = business_artifact_id
+        self.value = value
+
+
+class BusinessArtifactActionCreateParams(_serialization.Model):
+    """Params to invoke an action on a Business Artifact. The populated
+    sub-field (\\ ``startWorkflow``\\ , ``downloadable``\\ , ``startProcess``\\ ,
+    ``createArtifact``\\ ) must match the type of the action identified by
+    ``businessArtifactActionDefinitionCode``.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id:
+    :vartype id: str
+    :ivar business_artifact_action_definition_code: Required.
+    :vartype business_artifact_action_definition_code: str
+    :ivar start_workflow: Params for invoking an action of type START_WORKFLOW.
+    :vartype start_workflow: ~kuflow.rest.models.BusinessArtifactActionCreateParamsStartWorkflow
+    :ivar downloadable: Params for invoking an action of type DOWNLOADABLE.
+    :vartype downloadable: ~kuflow.rest.models.BusinessArtifactActionCreateParamsDownloadable
+    :ivar start_process: Params for invoking an action of type START_PROCESS.
+    :vartype start_process: ~kuflow.rest.models.BusinessArtifactActionCreateParamsStartProcess
+    :ivar create_artifact: Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The
+     ``value`` is
+     the (potentially user-edited) form previously obtained via the
+     ``prepareBusinessArtifactCreateArtifact`` operation.
+    :vartype create_artifact: ~kuflow.rest.models.BusinessArtifactActionCreateParamsCreateArtifact
+    """
+
+    _validation = {
+        "business_artifact_action_definition_code": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "business_artifact_action_definition_code": {"key": "businessArtifactActionDefinitionCode", "type": "str"},
+        "start_workflow": {"key": "startWorkflow", "type": "BusinessArtifactActionCreateParamsStartWorkflow"},
+        "downloadable": {"key": "downloadable", "type": "BusinessArtifactActionCreateParamsDownloadable"},
+        "start_process": {"key": "startProcess", "type": "BusinessArtifactActionCreateParamsStartProcess"},
+        "create_artifact": {"key": "createArtifact", "type": "BusinessArtifactActionCreateParamsCreateArtifact"},
+    }
+
+    def __init__(
+        self,
+        *,
+        business_artifact_action_definition_code: str,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        start_workflow: Optional["_models.BusinessArtifactActionCreateParamsStartWorkflow"] = None,
+        downloadable: Optional["_models.BusinessArtifactActionCreateParamsDownloadable"] = None,
+        start_process: Optional["_models.BusinessArtifactActionCreateParamsStartProcess"] = None,
+        create_artifact: Optional["_models.BusinessArtifactActionCreateParamsCreateArtifact"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id:
+        :paramtype id: str
+        :keyword business_artifact_action_definition_code: Required.
+        :paramtype business_artifact_action_definition_code: str
+        :keyword start_workflow: Params for invoking an action of type START_WORKFLOW.
+        :paramtype start_workflow: ~kuflow.rest.models.BusinessArtifactActionCreateParamsStartWorkflow
+        :keyword downloadable: Params for invoking an action of type DOWNLOADABLE.
+        :paramtype downloadable: ~kuflow.rest.models.BusinessArtifactActionCreateParamsDownloadable
+        :keyword start_process: Params for invoking an action of type START_PROCESS.
+        :paramtype start_process: ~kuflow.rest.models.BusinessArtifactActionCreateParamsStartProcess
+        :keyword create_artifact: Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The
+         ``value`` is
+         the (potentially user-edited) form previously obtained via the
+         ``prepareBusinessArtifactCreateArtifact`` operation.
+        :paramtype create_artifact:
+         ~kuflow.rest.models.BusinessArtifactActionCreateParamsCreateArtifact
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.business_artifact_action_definition_code = business_artifact_action_definition_code
+        self.start_workflow = start_workflow
+        self.downloadable = downloadable
+        self.start_process = start_process
+        self.create_artifact = create_artifact
+
+
+class BusinessArtifactActionCreateParamsCreateArtifact(_serialization.Model):  # pylint: disable=name-too-long
+    """Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The ``value`` is
+    the (potentially user-edited) form previously obtained via the
+    ``prepareBusinessArtifactCreateArtifact`` operation.
+
+    :ivar value: Form value to be applied to the new Business Artifact.
+    :vartype value: dict[str, any]
+    """
+
+    _attribute_map = {
+        "value": {"key": "value", "type": "{object}"},
+    }
+
+    def __init__(self, *, value: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+        """
+        :keyword value: Form value to be applied to the new Business Artifact.
+        :paramtype value: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.value = value
+
+
+class BusinessArtifactActionCreateParamsDownloadable(_serialization.Model):  # pylint: disable=name-too-long
+    """Params for invoking an action of type DOWNLOADABLE.
+
+    :ivar input: Input passed to the workflow that produces the downloadable. Validated against the
+     action's input schema.
+    :vartype input: dict[str, any]
+    """
+
+    _attribute_map = {
+        "input": {"key": "input", "type": "{object}"},
+    }
+
+    def __init__(self, *, input: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+        """
+        :keyword input: Input passed to the workflow that produces the downloadable. Validated against
+         the action's input schema.
+        :paramtype input: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.input = input
+
+
+class BusinessArtifactActionCreateParamsStartProcess(_serialization.Model):  # pylint: disable=name-too-long
+    """Params for invoking an action of type START_PROCESS.
+
+    :ivar metadata: Metadata applied to the process created by this action.
+    :vartype metadata: dict[str, any]
+    """
+
+    _attribute_map = {
+        "metadata": {"key": "metadata", "type": "{object}"},
+    }
+
+    def __init__(self, *, metadata: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+        """
+        :keyword metadata: Metadata applied to the process created by this action.
+        :paramtype metadata: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.metadata = metadata
+
+
+class BusinessArtifactActionCreateParamsStartWorkflow(_serialization.Model):  # pylint: disable=name-too-long
+    """Params for invoking an action of type START_WORKFLOW.
+
+    :ivar input: Input passed to the workflow. Validated against the action's input schema.
+    :vartype input: dict[str, any]
+    """
+
+    _attribute_map = {
+        "input": {"key": "input", "type": "{object}"},
+    }
+
+    def __init__(self, *, input: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+        """
+        :keyword input: Input passed to the workflow. Validated against the action's input schema.
+        :paramtype input: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.input = input
+
+
+class BusinessArtifactActionDefinitionRef(_serialization.Model):
+    """BusinessArtifactActionDefinitionRef.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Required.
+    :vartype id: str
+    :ivar code: Required.
+    :vartype code: str
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "code": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "code": {"key": "code", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        code: str,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword code: Required.
+        :paramtype code: str
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.code = code
+
+
+class BusinessArtifactActionDownloadable(_serialization.Model):
+    """Action details for actions of type DOWNLOADABLE.
+
+    :ivar input: Json value.
+    :vartype input: ~kuflow.rest.models.JsonValue
+    :ivar document_uri: URI of the generated document. Only present when status is COMPLETED.
+    :vartype document_uri: str
+    :ivar document_expired: Whether the generated document has expired. Only present when status is
+     COMPLETED.
+    :vartype document_expired: bool
+    """
+
+    _attribute_map = {
+        "input": {"key": "input", "type": "JsonValue"},
+        "document_uri": {"key": "documentUri", "type": "str"},
+        "document_expired": {"key": "documentExpired", "type": "bool"},
+    }
+
+    def __init__(
+        self,
+        *,
+        input: Optional["_models.JsonValue"] = None,
+        document_uri: Optional[str] = None,
+        document_expired: Optional[bool] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword input: Json value.
+        :paramtype input: ~kuflow.rest.models.JsonValue
+        :keyword document_uri: URI of the generated document. Only present when status is COMPLETED.
+        :paramtype document_uri: str
+        :keyword document_expired: Whether the generated document has expired. Only present when status
+         is COMPLETED.
+        :paramtype document_expired: bool
+        """
+        super().__init__(**kwargs)
+        self.input = input
+        self.document_uri = document_uri
+        self.document_expired = document_expired
+
+
+class BusinessArtifactActionStartProcess(_serialization.Model):
+    """Action details for actions of type START_PROCESS. Actions of this
+    type complete synchronously, so all fields are present in the invoke
+    response.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar process_definition_id: ID of the Process Definition that was instantiated. Required.
+    :vartype process_definition_id: str
+    :ivar process_id: ID of the Process created by this action. Required.
+    :vartype process_id: str
+    """
+
+    _validation = {
+        "process_definition_id": {"required": True},
+        "process_id": {"required": True},
+    }
+
+    _attribute_map = {
+        "process_definition_id": {"key": "processDefinitionId", "type": "str"},
+        "process_id": {"key": "processId", "type": "str"},
+    }
+
+    def __init__(self, *, process_definition_id: str, process_id: str, **kwargs: Any) -> None:
+        """
+        :keyword process_definition_id: ID of the Process Definition that was instantiated. Required.
+        :paramtype process_definition_id: str
+        :keyword process_id: ID of the Process created by this action. Required.
+        :paramtype process_id: str
+        """
+        super().__init__(**kwargs)
+        self.process_definition_id = process_definition_id
+        self.process_id = process_id
+
+
+class BusinessArtifactActionStartWorkflow(_serialization.Model):
+    """Action details for actions of type START_WORKFLOW.
+
+    :ivar input: Json value.
+    :vartype input: ~kuflow.rest.models.JsonValue
+    """
+
+    _attribute_map = {
+        "input": {"key": "input", "type": "JsonValue"},
+    }
+
+    def __init__(self, *, input: Optional["_models.JsonValue"] = None, **kwargs: Any) -> None:
+        """
+        :keyword input: Json value.
+        :paramtype input: ~kuflow.rest.models.JsonValue
+        """
+        super().__init__(**kwargs)
+        self.input = input
+
+
+class BusinessArtifactCreateArtifactPrepare(_serialization.Model):
+    """Pre-filled value for a CREATE_BUSINESS_ARTIFACT action. Returned by the
+    prepare operation; nothing is persisted on the server.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar business_artifact_definition_ref: Required.
+    :vartype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+    :ivar value: Pre-filled form value computed from the action definition.
+    :vartype value: dict[str, any]
+    """
+
+    _validation = {
+        "business_artifact_definition_ref": {"required": True},
+    }
+
+    _attribute_map = {
+        "business_artifact_definition_ref": {
+            "key": "businessArtifactDefinitionRef",
+            "type": "BusinessArtifactDefinitionRef",
+        },
+        "value": {"key": "value", "type": "{object}"},
+    }
+
+    def __init__(
+        self,
+        *,
+        business_artifact_definition_ref: "_models.BusinessArtifactDefinitionRef",
+        value: Optional[Dict[str, Any]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword business_artifact_definition_ref: Required.
+        :paramtype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+        :keyword value: Pre-filled form value computed from the action definition.
+        :paramtype value: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_definition_ref = business_artifact_definition_ref
+        self.value = value
+
+
+class BusinessArtifactCreateArtifactPrepareParams(_serialization.Model):  # pylint: disable=name-too-long
+    """Params identifying a CREATE_BUSINESS_ARTIFACT action to prepare.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar business_artifact_action_definition_code: Required.
+    :vartype business_artifact_action_definition_code: str
+    """
+
+    _validation = {
+        "business_artifact_action_definition_code": {"required": True},
+    }
+
+    _attribute_map = {
+        "business_artifact_action_definition_code": {"key": "businessArtifactActionDefinitionCode", "type": "str"},
+    }
+
+    def __init__(self, *, business_artifact_action_definition_code: str, **kwargs: Any) -> None:
+        """
+        :keyword business_artifact_action_definition_code: Required.
+        :paramtype business_artifact_action_definition_code: str
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_action_definition_code = business_artifact_action_definition_code
+
+
+class BusinessArtifactCreateParams(_serialization.Model):
+    """Params to create a Business Artifact. Either ``businessArtifactDefinitionId`` or
+    ``businessArtifactDefinitionCode`` (with ``tenantId``\\ ) must be provided.
+
+    :ivar id:
+    :vartype id: str
+    :ivar business_artifact_definition_id:
+    :vartype business_artifact_definition_id: str
+    :ivar tenant_id:
+    :vartype tenant_id: str
+    :ivar business_artifact_definition_code:
+    :vartype business_artifact_definition_code: str
+    :ivar data: Json value.
+    :vartype data: ~kuflow.rest.models.JsonValue
+    """
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "business_artifact_definition_id": {"key": "businessArtifactDefinitionId", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "business_artifact_definition_code": {"key": "businessArtifactDefinitionCode", "type": "str"},
+        "data": {"key": "data", "type": "JsonValue"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        business_artifact_definition_id: Optional[str] = None,
+        tenant_id: Optional[str] = None,
+        business_artifact_definition_code: Optional[str] = None,
+        data: Optional["_models.JsonValue"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id:
+        :paramtype id: str
+        :keyword business_artifact_definition_id:
+        :paramtype business_artifact_definition_id: str
+        :keyword tenant_id:
+        :paramtype tenant_id: str
+        :keyword business_artifact_definition_code:
+        :paramtype business_artifact_definition_code: str
+        :keyword data: Json value.
+        :paramtype data: ~kuflow.rest.models.JsonValue
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.business_artifact_definition_id = business_artifact_definition_id
+        self.tenant_id = tenant_id
+        self.business_artifact_definition_code = business_artifact_definition_code
+        self.data = data
+
+
+class BusinessArtifactDataUpdateParams(_serialization.Model):
+    """BusinessArtifactDataUpdateParams.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar data: Json value. Required.
+    :vartype data: ~kuflow.rest.models.JsonValue
+    """
+
+    _validation = {
+        "data": {"required": True},
+    }
+
+    _attribute_map = {
+        "data": {"key": "data", "type": "JsonValue"},
+    }
+
+    def __init__(self, *, data: "_models.JsonValue", **kwargs: Any) -> None:
+        """
+        :keyword data: Json value. Required.
+        :paramtype data: ~kuflow.rest.models.JsonValue
+        """
+        super().__init__(**kwargs)
+        self.data = data
+
+
+class BusinessArtifactDefinitionRef(_serialization.Model):
+    """BusinessArtifactDefinitionRef.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Required.
+    :vartype id: str
+    :ivar code: Required.
+    :vartype code: str
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "code": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "code": {"key": "code", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        code: str,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword code: Required.
+        :paramtype code: str
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.code = code
+
+
+class Page(_serialization.Model):
+    """Page.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar metadata: Required.
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
+    """
+
+    _validation = {
+        "metadata": {"required": True},
+    }
+
+    _attribute_map = {
+        "metadata": {"key": "metadata", "type": "PageMetadata"},
+    }
+
+    def __init__(self, *, metadata: "_models.PageMetadata", **kwargs: Any) -> None:
+        """
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        """
+        super().__init__(**kwargs)
+        self.metadata = metadata
+
+
+class BusinessArtifactPage(Page):
+    """BusinessArtifactPage.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar metadata: Required.
+    :vartype metadata: ~kuflow.rest.models.PageMetadata
+    :ivar content: Required.
+    :vartype content: list[~kuflow.rest.models.BusinessArtifactPageItem]
+    """
+
+    _validation = {
+        "metadata": {"required": True},
+        "content": {"required": True},
+    }
+
+    _attribute_map = {
+        "metadata": {"key": "metadata", "type": "PageMetadata"},
+        "content": {"key": "content", "type": "[BusinessArtifactPageItem]"},
+    }
+
+    def __init__(
+        self, *, metadata: "_models.PageMetadata", content: List["_models.BusinessArtifactPageItem"], **kwargs: Any
+    ) -> None:
+        """
+        :keyword metadata: Required.
+        :paramtype metadata: ~kuflow.rest.models.PageMetadata
+        :keyword content: Required.
+        :paramtype content: list[~kuflow.rest.models.BusinessArtifactPageItem]
+        """
+        super().__init__(metadata=metadata, **kwargs)
+        self.content = content
+
+
+class BusinessArtifactPageItem(AbstractAudited):
+    """BusinessArtifactPageItem.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Business Artifact ID. Required.
+    :vartype id: str
+    :ivar tenant_id: Tenant ID. Required.
+    :vartype tenant_id: str
+    :ivar business_artifact_definition_ref: Required.
+    :vartype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "tenant_id": {"required": True},
+        "business_artifact_definition_ref": {"required": True},
+    }
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "business_artifact_definition_ref": {
+            "key": "businessArtifactDefinitionRef",
+            "type": "BusinessArtifactDefinitionRef",
+        },
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        tenant_id: str,
+        business_artifact_definition_ref: "_models.BusinessArtifactDefinitionRef",
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Business Artifact ID. Required.
+        :paramtype id: str
+        :keyword tenant_id: Tenant ID. Required.
+        :paramtype tenant_id: str
+        :keyword business_artifact_definition_ref: Required.
+        :paramtype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+        """
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.tenant_id = tenant_id
+        self.business_artifact_definition_ref = business_artifact_definition_ref
+
+
 class DefaultError(_serialization.Model):
     """Default error.
 
@@ -451,32 +1344,6 @@ class DocumentReference(_serialization.Model):
         self.document_uri = document_uri
 
 
-class Page(_serialization.Model):
-    """Page.
-
-    All required parameters must be populated in order to send to server.
-
-    :ivar metadata: Required.
-    :vartype metadata: ~kuflow.rest.models.PageMetadata
-    """
-
-    _validation = {
-        "metadata": {"required": True},
-    }
-
-    _attribute_map = {
-        "metadata": {"key": "metadata", "type": "PageMetadata"},
-    }
-
-    def __init__(self, *, metadata: "_models.PageMetadata", **kwargs: Any) -> None:
-        """
-        :keyword metadata: Required.
-        :paramtype metadata: ~kuflow.rest.models.PageMetadata
-        """
-        super().__init__(**kwargs)
-        self.metadata = metadata
-
-
 class GroupPage(Page):
     """GroupPage.
 
@@ -520,6 +1387,8 @@ class GroupPageItem(_serialization.Model):
     :vartype id: str
     :ivar name: Required.
     :vartype name: str
+    :ivar code: Required.
+    :vartype code: str
     :ivar tenant_id: Tenant ID. Required.
     :vartype tenant_id: str
     """
@@ -527,12 +1396,14 @@ class GroupPageItem(_serialization.Model):
     _validation = {
         "id": {"required": True},
         "name": {"required": True},
+        "code": {"required": True},
         "tenant_id": {"required": True},
     }
 
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
         "name": {"key": "name", "type": "str"},
+        "code": {"key": "code", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
     }
 
@@ -541,6 +1412,7 @@ class GroupPageItem(_serialization.Model):
         *,
         id: str,  # pylint: disable=redefined-builtin
         name: str,
+        code: str,
         tenant_id: str,
         **kwargs: Any,
     ) -> None:
@@ -549,12 +1421,15 @@ class GroupPageItem(_serialization.Model):
         :paramtype id: str
         :keyword name: Required.
         :paramtype name: str
+        :keyword code: Required.
+        :paramtype code: str
         :keyword tenant_id: Tenant ID. Required.
         :paramtype tenant_id: str
         """
         super().__init__(**kwargs)
         self.id = id
         self.name = name
+        self.code = code
         self.tenant_id = tenant_id
 
 
@@ -1095,14 +1970,17 @@ class ProcessChangeInitiatorParams(_serialization.Model):
 
 
 class ProcessCreateParams(_serialization.Model):
-    """ProcessCreateParams.
-
-    All required parameters must be populated in order to send to server.
+    """Params to create a Process. Either ``processDefinitionId`` or
+    ``processDefinitionCode`` (with ``tenantId``\\ ) must be provided.
 
     :ivar id:
     :vartype id: str
-    :ivar process_definition_id: Required.
+    :ivar process_definition_id:
     :vartype process_definition_id: str
+    :ivar tenant_id:
+    :vartype tenant_id: str
+    :ivar process_definition_code:
+    :vartype process_definition_code: str
     :ivar metadata: Json value.
     :vartype metadata: ~kuflow.rest.models.JsonValue
     :ivar initiator_id:
@@ -1111,13 +1989,11 @@ class ProcessCreateParams(_serialization.Model):
     :vartype initiator_email: str
     """
 
-    _validation = {
-        "process_definition_id": {"required": True},
-    }
-
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
         "process_definition_id": {"key": "processDefinitionId", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "process_definition_code": {"key": "processDefinitionCode", "type": "str"},
         "metadata": {"key": "metadata", "type": "JsonValue"},
         "initiator_id": {"key": "initiatorId", "type": "str"},
         "initiator_email": {"key": "initiatorEmail", "type": "str"},
@@ -1126,8 +2002,10 @@ class ProcessCreateParams(_serialization.Model):
     def __init__(
         self,
         *,
-        process_definition_id: str,
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        process_definition_id: Optional[str] = None,
+        tenant_id: Optional[str] = None,
+        process_definition_code: Optional[str] = None,
         metadata: Optional["_models.JsonValue"] = None,
         initiator_id: Optional[str] = None,
         initiator_email: Optional[str] = None,
@@ -1136,8 +2014,12 @@ class ProcessCreateParams(_serialization.Model):
         """
         :keyword id:
         :paramtype id: str
-        :keyword process_definition_id: Required.
+        :keyword process_definition_id:
         :paramtype process_definition_id: str
+        :keyword tenant_id:
+        :paramtype tenant_id: str
+        :keyword process_definition_code:
+        :paramtype process_definition_code: str
         :keyword metadata: Json value.
         :paramtype metadata: ~kuflow.rest.models.JsonValue
         :keyword initiator_id:
@@ -1148,6 +2030,8 @@ class ProcessCreateParams(_serialization.Model):
         super().__init__(**kwargs)
         self.id = id
         self.process_definition_id = process_definition_id
+        self.tenant_id = tenant_id
+        self.process_definition_code = process_definition_code
         self.metadata = metadata
         self.initiator_id = initiator_id
         self.initiator_email = initiator_email
@@ -1162,16 +2046,20 @@ class ProcessDefinitionRef(_serialization.Model):
     :vartype id: str
     :ivar version: Required.
     :vartype version: str
+    :ivar code: Required.
+    :vartype code: str
     """
 
     _validation = {
         "id": {"required": True},
         "version": {"required": True},
+        "code": {"required": True},
     }
 
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
         "version": {"key": "version", "type": "str"},
+        "code": {"key": "code", "type": "str"},
     }
 
     def __init__(
@@ -1179,6 +2067,7 @@ class ProcessDefinitionRef(_serialization.Model):
         *,
         id: str,  # pylint: disable=redefined-builtin
         version: str,
+        code: str,
         **kwargs: Any,
     ) -> None:
         """
@@ -1186,10 +2075,13 @@ class ProcessDefinitionRef(_serialization.Model):
         :paramtype id: str
         :keyword version: Required.
         :paramtype version: str
+        :keyword code: Required.
+        :paramtype code: str
         """
         super().__init__(**kwargs)
         self.id = id
         self.version = version
+        self.code = code
 
 
 class ProcessEntityUpdateParams(_serialization.Model):
@@ -1328,6 +2220,155 @@ class ProcessItem(AbstractAudited):
         self.process_item_definition_ref = process_item_definition_ref
         self.task = task
         self.message = message
+
+
+class ProcessItemAiAssistance(_serialization.Model):
+    """Status of the latest AI assistance run for a process item.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar request_id: Client-supplied UUID identifying the logical AI assistance attempt this run
+     represents. Required.
+    :vartype request_id: str
+    :ivar state: State of an AI assistance run. Required. Known values are: "PENDING", "COMPLETED",
+     and "FAILED".
+    :vartype state: str or ~kuflow.rest.models.ProcessItemAiAssistanceState
+    :ivar embedding_pending: Number of document embeddings still queued. Only present when state is
+     PENDING.
+    :vartype embedding_pending: int
+    :ivar embedding_processing: Number of document embeddings actively processing. Only present
+     when state is PENDING.
+    :vartype embedding_processing: int
+    :ivar retry_after_seconds: Suggested number of seconds to wait before polling again. Only
+     present when state is PENDING.
+    :vartype retry_after_seconds: int
+    :ivar model: The AI model used for the assistance. Only present when state is COMPLETED.
+    :vartype model: str
+    :ivar finish_reason: The reason the AI model stopped generating. Only present when state is
+     COMPLETED.
+    :vartype finish_reason: str
+    :ivar error_code: Error code. Only present when state is FAILED.
+    :vartype error_code: str
+    :ivar error_message: Human-readable error description. Only present when state is FAILED.
+    :vartype error_message: str
+    :ivar started_at: When this run was started. Required.
+    :vartype started_at: ~datetime.datetime
+    :ivar finished_at: When this run finished (COMPLETED or FAILED). Absent while PENDING.
+    :vartype finished_at: ~datetime.datetime
+    """
+
+    _validation = {
+        "request_id": {"required": True},
+        "state": {"required": True},
+        "started_at": {"required": True},
+    }
+
+    _attribute_map = {
+        "request_id": {"key": "requestId", "type": "str"},
+        "state": {"key": "state", "type": "str"},
+        "embedding_pending": {"key": "embeddingPending", "type": "int"},
+        "embedding_processing": {"key": "embeddingProcessing", "type": "int"},
+        "retry_after_seconds": {"key": "retryAfterSeconds", "type": "int"},
+        "model": {"key": "model", "type": "str"},
+        "finish_reason": {"key": "finishReason", "type": "str"},
+        "error_code": {"key": "errorCode", "type": "str"},
+        "error_message": {"key": "errorMessage", "type": "str"},
+        "started_at": {"key": "startedAt", "type": "iso-8601"},
+        "finished_at": {"key": "finishedAt", "type": "iso-8601"},
+    }
+
+    def __init__(
+        self,
+        *,
+        request_id: str,
+        state: Union[str, "_models.ProcessItemAiAssistanceState"],
+        started_at: datetime.datetime,
+        embedding_pending: Optional[int] = None,
+        embedding_processing: Optional[int] = None,
+        retry_after_seconds: Optional[int] = None,
+        model: Optional[str] = None,
+        finish_reason: Optional[str] = None,
+        error_code: Optional[str] = None,
+        error_message: Optional[str] = None,
+        finished_at: Optional[datetime.datetime] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword request_id: Client-supplied UUID identifying the logical AI assistance attempt this
+         run represents. Required.
+        :paramtype request_id: str
+        :keyword state: State of an AI assistance run. Required. Known values are: "PENDING",
+         "COMPLETED", and "FAILED".
+        :paramtype state: str or ~kuflow.rest.models.ProcessItemAiAssistanceState
+        :keyword embedding_pending: Number of document embeddings still queued. Only present when state
+         is PENDING.
+        :paramtype embedding_pending: int
+        :keyword embedding_processing: Number of document embeddings actively processing. Only present
+         when state is PENDING.
+        :paramtype embedding_processing: int
+        :keyword retry_after_seconds: Suggested number of seconds to wait before polling again. Only
+         present when state is PENDING.
+        :paramtype retry_after_seconds: int
+        :keyword model: The AI model used for the assistance. Only present when state is COMPLETED.
+        :paramtype model: str
+        :keyword finish_reason: The reason the AI model stopped generating. Only present when state is
+         COMPLETED.
+        :paramtype finish_reason: str
+        :keyword error_code: Error code. Only present when state is FAILED.
+        :paramtype error_code: str
+        :keyword error_message: Human-readable error description. Only present when state is FAILED.
+        :paramtype error_message: str
+        :keyword started_at: When this run was started. Required.
+        :paramtype started_at: ~datetime.datetime
+        :keyword finished_at: When this run finished (COMPLETED or FAILED). Absent while PENDING.
+        :paramtype finished_at: ~datetime.datetime
+        """
+        super().__init__(**kwargs)
+        self.request_id = request_id
+        self.state = state
+        self.embedding_pending = embedding_pending
+        self.embedding_processing = embedding_processing
+        self.retry_after_seconds = retry_after_seconds
+        self.model = model
+        self.finish_reason = finish_reason
+        self.error_code = error_code
+        self.error_message = error_message
+        self.started_at = started_at
+        self.finished_at = finished_at
+
+
+class ProcessItemAiAssistanceGenerateParams(_serialization.Model):
+    """Params identifying a logical AI assistance attempt for a process item.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar request_id: Client-supplied UUID identifying this logical AI assistance attempt. Use the
+     same
+     ``requestId`` to poll an in-flight or completed run. Use a new ``requestId`` to start a
+     fresh run once the previous one has reached a final state. While a run is PENDING,
+     calling this endpoint with a different ``requestId`` is rejected with 409. Required.
+    :vartype request_id: str
+    """
+
+    _validation = {
+        "request_id": {"required": True},
+    }
+
+    _attribute_map = {
+        "request_id": {"key": "requestId", "type": "str"},
+    }
+
+    def __init__(self, *, request_id: str, **kwargs: Any) -> None:
+        """
+        :keyword request_id: Client-supplied UUID identifying this logical AI assistance attempt. Use
+         the same
+         ``requestId`` to poll an in-flight or completed run. Use a new ``requestId`` to start a
+         fresh run once the previous one has reached a final state. While a run is PENDING,
+         calling this endpoint with a different ``requestId`` is rejected with 409. Required.
+        :paramtype request_id: str
+        """
+        super().__init__(**kwargs)
+        self.request_id = request_id
 
 
 class ProcessItemCreateParams(_serialization.Model):
@@ -1727,6 +2768,8 @@ class ProcessItemTask(_serialization.Model):
     :vartype state: str or ~kuflow.rest.models.ProcessItemTaskState
     :ivar data: Json value.
     :vartype data: ~kuflow.rest.models.JsonValue
+    :ivar context_data: Json value.
+    :vartype context_data: ~kuflow.rest.models.JsonValue
     :ivar logs:
     :vartype logs: list[~kuflow.rest.models.ProcessItemTaskLog]
     """
@@ -1738,6 +2781,7 @@ class ProcessItemTask(_serialization.Model):
     _attribute_map = {
         "state": {"key": "state", "type": "str"},
         "data": {"key": "data", "type": "JsonValue"},
+        "context_data": {"key": "contextData", "type": "JsonValue"},
         "logs": {"key": "logs", "type": "[ProcessItemTaskLog]"},
     }
 
@@ -1746,6 +2790,7 @@ class ProcessItemTask(_serialization.Model):
         *,
         state: Union[str, "_models.ProcessItemTaskState"],
         data: Optional["_models.JsonValue"] = None,
+        context_data: Optional["_models.JsonValue"] = None,
         logs: Optional[List["_models.ProcessItemTaskLog"]] = None,
         **kwargs: Any,
     ) -> None:
@@ -1755,12 +2800,15 @@ class ProcessItemTask(_serialization.Model):
         :paramtype state: str or ~kuflow.rest.models.ProcessItemTaskState
         :keyword data: Json value.
         :paramtype data: ~kuflow.rest.models.JsonValue
+        :keyword context_data: Json value.
+        :paramtype context_data: ~kuflow.rest.models.JsonValue
         :keyword logs:
         :paramtype logs: list[~kuflow.rest.models.ProcessItemTaskLog]
         """
         super().__init__(**kwargs)
         self.state = state
         self.data = data
+        self.context_data = context_data
         self.logs = logs
 
 
@@ -1823,24 +2871,62 @@ class ProcessItemTaskAssignParams(_serialization.Model):
         self.owner_email = owner_email
 
 
-class ProcessItemTaskCreateParams(_serialization.Model):
-    """ProcessItemTaskCreateParams.
+class ProcessItemTaskContextDataUpdateParams(_serialization.Model):
+    """ProcessItemTaskContextDataUpdateParams.
 
-    :ivar data: Json value.
+    All required parameters must be populated in order to send to server.
+
+    :ivar data: Json value. Required.
     :vartype data: ~kuflow.rest.models.JsonValue
     """
+
+    _validation = {
+        "data": {"required": True},
+    }
 
     _attribute_map = {
         "data": {"key": "data", "type": "JsonValue"},
     }
 
-    def __init__(self, *, data: Optional["_models.JsonValue"] = None, **kwargs: Any) -> None:
+    def __init__(self, *, data: "_models.JsonValue", **kwargs: Any) -> None:
         """
-        :keyword data: Json value.
+        :keyword data: Json value. Required.
         :paramtype data: ~kuflow.rest.models.JsonValue
         """
         super().__init__(**kwargs)
         self.data = data
+
+
+class ProcessItemTaskCreateParams(_serialization.Model):
+    """ProcessItemTaskCreateParams.
+
+    :ivar data: Json value.
+    :vartype data: ~kuflow.rest.models.JsonValue
+    :ivar context_data: Json value.
+    :vartype context_data: ~kuflow.rest.models.JsonValue
+    """
+
+    _attribute_map = {
+        "data": {"key": "data", "type": "JsonValue"},
+        "context_data": {"key": "contextData", "type": "JsonValue"},
+    }
+
+    def __init__(
+        self,
+        *,
+        data: Optional["_models.JsonValue"] = None,
+        context_data: Optional["_models.JsonValue"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword data: Json value.
+        :paramtype data: ~kuflow.rest.models.JsonValue
+        :keyword context_data: Json value.
+        :paramtype context_data: ~kuflow.rest.models.JsonValue
+        """
+        super().__init__(**kwargs)
+        self.data = data
+        self.context_data = context_data
 
 
 class ProcessItemTaskDataUpdateParams(_serialization.Model):

@@ -11,9 +11,8 @@ This is the AutoRest configuration file for KuFlow.
 To build the SDK for KuFlow, simply do the following in this folder:
 
 ```bash
-$> poetry shell
-$> npm ci
-$> npm run generate
+$> pnpm install
+$> pnpm run generate
 ```
 
 ---
@@ -28,7 +27,7 @@ python: true
 title: KuFlow
 override-client-name: KuFlowRestClient
 
-input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/d6efa3962ce82bcfd96c97647a62f60f21633b23/specs/api.kuflow.com/v2024-06-14/openapi.yaml
+input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/1542e1681535b248430589fefbd16abf349f334b/specs/api.kuflow.com/v2024-06-14/openapi.yaml
 output-folder: ../kuflow_rest/_generated
 
 openapi-type: data-plane

@@ -1,0 +1,5 @@
+[tools]
+python = "3.13.2"
+poetry = "2.2.1"
+nodejs = "24.15.0"
+pnpm = "11.7.0"

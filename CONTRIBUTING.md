@@ -6,7 +6,7 @@ This doc is intended for contributors to `kuflow-sdk-python` repository. See als
 
 Main tools:
 
-- Python 3.8+
+- Python 3.9+
 - Poetry
 - ruff (code formatter, linter)
 - PyTest

@@ -3,15 +3,15 @@
     "version": "0.0.1",
     "private": true,
     "devDependencies": {
-      "autorest": "3.7.1"
+      "autorest": "3.8.0"
     },
     "scripts": {
       "autorest": "autorest",
-      "generate": "npm run generate:venv-activate && npm run generate:autorest && npm run generate:ruff:format && npm run generate:ruff:check && npm run generate:workaround",
-      "generate:venv-activate": ". ../../.venv/bin/activate",
-      "generate:autorest": "AUTOREST_HOME=$(pwd) autorest --version=3.10.3 readme.md",
-      "generate:ruff:format": "cd .. && ruff format",
-      "generate:ruff:check": "cd .. && ruff check --fix",
+      "generate": "pnpm run generate:check-python && pnpm run generate:autorest && pnpm run generate:ruff:format && pnpm run generate:ruff:check && pnpm run generate:workaround",
+      "generate:check-python": "AUTOREST_PYTHON_EXE=${AUTOREST_PYTHON_EXE:-/usr/bin/python3} scripts/check-python.sh",
+      "generate:autorest": "AUTOREST_HOME=$(pwd) AUTOREST_PYTHON_EXE=${AUTOREST_PYTHON_EXE:-/usr/bin/python3} autorest --version=3.10.9 readme.md",
+      "generate:ruff:format": "cd .. && ../.venv/bin/ruff format",
+      "generate:ruff:check": "cd .. && ../.venv/bin/ruff check --fix",
       "generate:workaround": "scripts/fix-discriminators.js"
     }
   }

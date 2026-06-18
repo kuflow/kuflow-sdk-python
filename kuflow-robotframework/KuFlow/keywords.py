@@ -225,7 +225,7 @@ class Keywords:
         content_type = magic.from_file(path, mime=True)
 
         file = models.Document(
-            file_mame=file_name,
+            file_name=file_name,
             content_type=content_type,
             file_content=file,
         )

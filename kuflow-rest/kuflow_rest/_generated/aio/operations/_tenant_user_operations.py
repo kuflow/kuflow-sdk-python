@@ -85,6 +85,7 @@ class TenantUserOperations:
         page: int = 0,
         sort: Optional[List[str]] = None,
         group_id: Optional[List[str]] = None,
+        group_code: Optional[List[str]] = None,
         email: Optional[List[str]] = None,
         tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
@@ -108,6 +109,8 @@ class TenantUserOperations:
         :paramtype sort: list[str]
         :keyword group_id: Filter by group ids. Default value is None.
         :paramtype group_id: list[str]
+        :keyword group_code: Filter by group codes. Default value is None.
+        :paramtype group_code: list[str]
         :keyword email: Filter by email. Default value is None.
         :paramtype email: list[str]
         :keyword tenant_id: Filter by tenantId. Default value is None.
@@ -134,6 +137,7 @@ class TenantUserOperations:
             page=page,
             sort=sort,
             group_id=group_id,
+            group_code=group_code,
             email=email,
             tenant_id=tenant_id,
             headers=_headers,

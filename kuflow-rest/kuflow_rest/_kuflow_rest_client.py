@@ -34,6 +34,7 @@ from ._generated import VERSION
 from ._generated import KuFlowRestClient as KuFlowRestClientGenerated
 from .operations import (
     AuthenticationOperations,
+    BusinessArtifactOperations,
     GroupOperations,
     KmsOperations,
     PrincipalOperations,
@@ -175,6 +176,8 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
 
     :ivar authentication: AuthenticationOperations operations
     :type authentication: kuflow.rest.client.operations.AuthenticationOperations
+    :ivar business_artifact: BusinessArtifactOperations operations
+    :type business_artifact: kuflow.rest.client.operations.BusinessArtifactOperations
     :ivar vault: VaultOperations operations
     :type vault: kuflow.rest.client.operations.VaultOperations
     :ivar principal: PrincipalOperations operations
@@ -235,6 +238,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword
         )
 
         self.authentication = AuthenticationOperations(self._kuflow_client)
+        self.business_artifact = BusinessArtifactOperations(self._kuflow_client)
         self.kms = KmsOperations(self._kuflow_client)
         self.principal = PrincipalOperations(self._kuflow_client)
         self.group = GroupOperations(self._kuflow_client)

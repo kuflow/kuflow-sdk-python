@@ -290,3 +290,194 @@ def validate_process_item_task_log_append_request(
             type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
             non_retryable=True,
         )
+
+
+def validate_process_item_task_context_data_update_request(
+    request: models_temporal.ProcessItemTaskContextDataUpdateRequest,
+) -> None:
+    if not request.process_item_id:
+        raise ApplicationError(
+            "'process_item_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+        )
+
+    if not request.data:
+        raise ApplicationError(
+            "'data' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_process_item_ai_assistance_generate_request(
+    request: models_temporal.ProcessItemAiAssistanceGenerateRequest,
+) -> None:
+    if not request.process_item_id:
+        raise ApplicationError(
+            "'process_item_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+        )
+
+    if not request.request_id:
+        raise ApplicationError(
+            "'request_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_process_item_ai_assistance_retrieve_request(
+    request: models_temporal.ProcessItemAiAssistanceRetrieveRequest,
+) -> None:
+    if not request.process_item_id:
+        raise ApplicationError(
+            "'process_item_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+        )
+
+
+def validate_process_items_cancel_request(
+    request: models_temporal.ProcessItemsCancelRequest,
+) -> None:
+    if not request.process_id:
+        raise ApplicationError(
+            "'process_id' is required", type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE, non_retryable=True
+        )
+
+
+def validate_business_artifact_create_request(
+    request: models_temporal.BusinessArtifactCreateRequest,
+) -> None:
+    if not request.business_artifact_definition_id and not request.business_artifact_definition_code:
+        raise ApplicationError(
+            "'business_artifact_definition_id' or 'business_artifact_definition_code' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_retrieve_request(
+    request: models_temporal.BusinessArtifactRetrieveRequest,
+) -> None:
+    if not request.business_artifact_id:
+        raise ApplicationError(
+            "'business_artifact_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_delete_request(
+    request: models_temporal.BusinessArtifactDeleteRequest,
+) -> None:
+    if not request.business_artifact_id:
+        raise ApplicationError(
+            "'business_artifact_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_update_request(
+    request: models_temporal.BusinessArtifactUpdateRequest,
+) -> None:
+    if not request.business_artifact_id:
+        raise ApplicationError(
+            "'business_artifact_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.data:
+        raise ApplicationError(
+            "'data' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_patch_request(
+    request: models_temporal.BusinessArtifactPatchRequest,
+) -> None:
+    if not request.business_artifact_id:
+        raise ApplicationError(
+            "'business_artifact_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.json_patch:
+        raise ApplicationError(
+            "'json_patch' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_action_create_request(
+    request: models_temporal.BusinessArtifactActionCreateRequest,
+) -> None:
+    if not request.business_artifact_id:
+        raise ApplicationError(
+            "'business_artifact_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.business_artifact_action_definition_code:
+        raise ApplicationError(
+            "'business_artifact_action_definition_code' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_action_retrieve_request(
+    request: models_temporal.BusinessArtifactActionRetrieveRequest,
+) -> None:
+    if not request.business_artifact_id:
+        raise ApplicationError(
+            "'business_artifact_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.business_artifact_action_id:
+        raise ApplicationError(
+            "'business_artifact_action_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_action_cancel_request(
+    request: models_temporal.BusinessArtifactActionCancelRequest,
+) -> None:
+    if not request.business_artifact_id:
+        raise ApplicationError(
+            "'business_artifact_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.business_artifact_action_id:
+        raise ApplicationError(
+            "'business_artifact_action_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_create_artifact_prepare_request(
+    request: models_temporal.BusinessArtifactCreateArtifactPrepareRequest,
+) -> None:
+    if not request.business_artifact_id:
+        raise ApplicationError(
+            "'business_artifact_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.business_artifact_action_definition_code:
+        raise ApplicationError(
+            "'business_artifact_action_definition_code' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )

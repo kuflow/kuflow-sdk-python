@@ -319,3 +319,84 @@ class SignalUserAction(_serialization.Model):
         super().__init__(**kwargs)
         self.user_action_definition_code = user_action_definition_code
         self.request_instant = request_instant
+
+
+class WorkflowBusinessArtifactActionRequest(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+        "business_artifact_action_definition_type": {
+            "key": "businessArtifactActionDefinitionType",
+            "type": "WorkflowBusinessArtifactActionDefinitionType",
+        },
+        "business_artifact_action_definition_code": {"key": "businessArtifactActionDefinitionCode", "type": "str"},
+        "business_artifact_action_value_id": {"key": "businessArtifactActionValueId", "type": "str"},
+        "requestor_principal_id": {"key": "requestorPrincipalId", "type": "str"},
+        "request_time": {"key": "requestTime", "type": "iso-8601"},
+        "request_time_zone": {"key": "requestTimeZone", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        business_artifact_id: str,
+        business_artifact_action_definition_type: "_models.WorkflowBusinessArtifactActionDefinitionType",
+        business_artifact_action_definition_code: str,
+        business_artifact_action_value_id: str,
+        requestor_principal_id: str,
+        request_time: datetime.datetime,
+        request_time_zone: str,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            business_artifact_id: Identifier of the related business artifact
+            business_artifact_action_definition_type: Type of the business artifact action definition
+            business_artifact_action_definition_code: Code of the business artifact action definition
+            business_artifact_action_value_id: Identifier of the business artifact action
+            requestor_principal_id: Identifier of the principal that request the business artifact action
+            request_time: The timestamp when the request was made.
+            request_time_zone: The time zone associated with the request.
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_id = business_artifact_id
+        self.business_artifact_action_definition_type = business_artifact_action_definition_type
+        self.business_artifact_action_definition_code = business_artifact_action_definition_code
+        self.business_artifact_action_value_id = business_artifact_action_value_id
+        self.requestor_principal_id = requestor_principal_id
+        self.request_time = request_time
+        self.request_time_zone = request_time_zone
+
+
+class WorkflowBusinessArtifactActionResponseDownloadable(_serialization.Model):
+    _attribute_map = {
+        "document_uri": {"key": "documentUri", "type": "str"},
+    }
+
+    def __init__(self, document_uri: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            document_uri: URI of the document previously uploaded via the public endpoint
+        """
+        super().__init__(**kwargs)
+        self.document_uri = document_uri
+
+
+class WorkflowBusinessArtifactActionResponse(_serialization.Model):
+    _attribute_map = {
+        "message": {"key": "message", "type": "str"},
+        "downloadable": {"key": "downloadable", "type": "WorkflowBusinessArtifactActionResponseDownloadable"},
+    }
+
+    def __init__(
+        self,
+        message: Optional[str] = None,
+        downloadable: Optional["_models.WorkflowBusinessArtifactActionResponseDownloadable"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            message: Optional human-readable response message
+            downloadable: Type-specific response, populated only for DOWNLOADABLE action type
+        """
+        super().__init__(**kwargs)
+        self.message = message
+        self.downloadable = downloadable

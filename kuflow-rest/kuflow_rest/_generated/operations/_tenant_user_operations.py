@@ -67,6 +67,7 @@ def build_find_tenant_users_request(
     page: int = 0,
     sort: Optional[List[str]] = None,
     group_id: Optional[List[str]] = None,
+    group_code: Optional[List[str]] = None,
     email: Optional[List[str]] = None,
     tenant_id: Optional[List[str]] = None,
     **kwargs: Any,
@@ -88,6 +89,8 @@ def build_find_tenant_users_request(
         _params["sort"] = [_SERIALIZER.query("sort", q, "str") if q is not None else "" for q in sort]
     if group_id is not None:
         _params["groupId"] = [_SERIALIZER.query("group_id", q, "str") if q is not None else "" for q in group_id]
+    if group_code is not None:
+        _params["groupCode"] = [_SERIALIZER.query("group_code", q, "str") if q is not None else "" for q in group_code]
     if email is not None:
         _params["email"] = [_SERIALIZER.query("email", q, "str") if q is not None else "" for q in email]
     if tenant_id is not None:
@@ -145,6 +148,7 @@ class TenantUserOperations:
         page: int = 0,
         sort: Optional[List[str]] = None,
         group_id: Optional[List[str]] = None,
+        group_code: Optional[List[str]] = None,
         email: Optional[List[str]] = None,
         tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
@@ -168,6 +172,8 @@ class TenantUserOperations:
         :paramtype sort: list[str]
         :keyword group_id: Filter by group ids. Default value is None.
         :paramtype group_id: list[str]
+        :keyword group_code: Filter by group codes. Default value is None.
+        :paramtype group_code: list[str]
         :keyword email: Filter by email. Default value is None.
         :paramtype email: list[str]
         :keyword tenant_id: Filter by tenantId. Default value is None.
@@ -194,6 +200,7 @@ class TenantUserOperations:
             page=page,
             sort=sort,
             group_id=group_id,
+            group_code=group_code,
             email=email,
             tenant_id=tenant_id,
             headers=_headers,

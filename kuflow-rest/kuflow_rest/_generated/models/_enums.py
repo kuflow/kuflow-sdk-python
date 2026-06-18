@@ -41,6 +41,24 @@ class AuthenticationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     ENGINE_CERTIFICATE = "ENGINE_CERTIFICATE"
 
 
+class BusinessArtifactActionStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Status of a Business Artifact action."""
+
+    REQUESTED = "REQUESTED"
+    COMPLETED = "COMPLETED"
+    CANCELED = "CANCELED"
+    ERROR = "ERROR"
+
+
+class BusinessArtifactActionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Type of a Business Artifact action."""
+
+    START_WORKFLOW = "START_WORKFLOW"
+    START_PROCESS = "START_PROCESS"
+    DOWNLOADABLE = "DOWNLOADABLE"
+    CREATE_BUSINESS_ARTIFACT = "CREATE_BUSINESS_ARTIFACT"
+
+
 class JsonPatchOperationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """The operation to perform."""
 
@@ -58,6 +76,14 @@ class PrincipalType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     USER = "USER"
     APPLICATION = "APPLICATION"
     SYSTEM = "SYSTEM"
+
+
+class ProcessItemAiAssistanceState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """State of an AI assistance run."""
+
+    PENDING = "PENDING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
 
 
 class ProcessItemTaskLogLevel(str, Enum, metaclass=CaseInsensitiveEnumMeta):

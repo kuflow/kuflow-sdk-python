@@ -30,14 +30,14 @@ from .._generated.models import PrincipalType
 class Document:
     """File document."""
 
-    def __init__(self, file_mame: str, content_type: str, file_content: IO) -> None:
+    def __init__(self, file_name: str, content_type: str, file_content: IO) -> None:
         """
         Parameters:
-            file_mame: File name
+            file_name: File name
             content_type: File content type
             file_content: File content.
         """
-        self.file_mame = file_mame
+        self.file_name = file_name
         self.content_type = content_type
         self.file_content = file_content
 
