@@ -48,6 +48,7 @@ class PrincipalOperations:
         sort: Optional[Union[str, list[str]]] = None,
         type: Optional[_models.PrincipalType] = None,
         group_id: Optional[Union[str, list[str]]] = None,
+        group_code: Optional[Union[str, list[str]]] = None,
         tenant_id: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
     ) -> _models.PrincipalPage:
@@ -71,6 +72,8 @@ class PrincipalOperations:
         :type type: Optional[_models.PrincipalType]
         :keyword group_id: Filter principals that exists in one of group ids. Default value is None.
         :type group_id: Optional[Union[str, List[str]]]
+        :keyword group_code: Filter principals that exists in one of group codes. Default value is None.
+        :type group_code: Optional[Union[str, List[str]]]
         :keyword tenant_id: Filter principals that exists in one of tenant ids. Default value is None.
         :type tenant_id: Optional[Union[str, List[str]]]
         :return: PrincipalPage
@@ -83,11 +86,21 @@ class PrincipalOperations:
         if group_id is not None and isinstance(group_id, str):
             group_id = [group_id]
 
+        if group_code is not None and isinstance(group_code, str):
+            group_code = [group_code]
+
         if tenant_id is not None and isinstance(tenant_id, str):
             tenant_id = [tenant_id]
 
         return self._kuflow_client.principal.find_principals(
-            size=size, page=page, sort=sort, type=type, group_id=group_id, tenant_id=tenant_id, **kwargs
+            size=size,
+            page=page,
+            sort=sort,
+            type=type,
+            group_id=group_id,
+            group_code=group_code,
+            tenant_id=tenant_id,
+            **kwargs,
         )
 
     def retrieve_principal(self, id: str, **kwargs: Any) -> _models.Principal:

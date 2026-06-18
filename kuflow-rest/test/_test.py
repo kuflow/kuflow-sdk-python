@@ -106,7 +106,7 @@ def main() -> int:
     client.process_item.claim_process_item_task(process_item_id)
 
     file = models.Document(
-        file_mame="bugs-bunny.png",
+        file_name="bugs-bunny.png",
         content_type="image/png",
         file_content=open("etc/sample/data/samples_01.jpg", "rb"),
     )

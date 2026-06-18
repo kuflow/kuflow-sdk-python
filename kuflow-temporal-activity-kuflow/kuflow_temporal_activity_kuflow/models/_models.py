@@ -84,7 +84,7 @@ class TenantUserRetrieveResponse(_serialization.Model):
         self.tenant_user = tenant_user
 
 
-class ProcesFindRequest(_serialization.Model):
+class ProcessFindRequest(_serialization.Model):
     _attribute_map = {
         "page": {"key": "page", "type": "int"},
         "size": {"key": "size", "type": "int"},
@@ -106,7 +106,7 @@ class ProcesFindRequest(_serialization.Model):
         self.sorts = sorts
 
 
-class ProcesFindResponse(_serialization.Model):
+class ProcessFindResponse(_serialization.Model):
     _attribute_map = {
         "processes": {"key": "processes", "type": "ProcessPage"},
     }
@@ -337,9 +337,11 @@ class ProcessItemFindRequest(_serialization.Model):
         "sorts": {"key": "sorts", "type": "[str]"},
         "tenant_ids": {"key": "tenantIds", "type": "[str]"},
         "process_ids": {"key": "processIds", "type": "[str]"},
-        "types": {"key": "processIds", "type": "[ProcessItemType]"},
+        "types": {"key": "types", "type": "[ProcessItemType]"},
         "task_states": {"key": "taskStates", "type": "[ProcessItemTaskState]"},
         "process_item_definition_codes": {"key": "processItemDefinitionCodes", "type": "[str]"},
+        "process_definition_ids": {"key": "processDefinitionIds", "type": "[str]"},
+        "process_definition_codes": {"key": "processDefinitionCodes", "type": "[str]"},
     }
 
     def __init__(
@@ -352,6 +354,8 @@ class ProcessItemFindRequest(_serialization.Model):
         types: Optional[list[models_rest.ProcessItemType]] = None,
         task_states: Optional[list[models_rest.ProcessItemTaskState]] = None,
         process_item_definition_codes: Optional[list[str]] = None,
+        process_definition_ids: Optional[list[str]] = None,
+        process_definition_codes: Optional[list[str]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -364,6 +368,8 @@ class ProcessItemFindRequest(_serialization.Model):
             types: Filter process items by the types
             task_states: Filter process items by the task states
             process_item_definition_codes: Filter process items by the process item definition codes
+            process_definition_ids: Filter process items by the process definition identifiers
+            process_definition_codes: Filter process items by the process definition codes
         """
         super().__init__(**kwargs)
         self.page = page
@@ -374,6 +380,8 @@ class ProcessItemFindRequest(_serialization.Model):
         self.types = types
         self.task_states = task_states
         self.process_item_definition_codes = process_item_definition_codes
+        self.process_definition_ids = process_definition_ids
+        self.process_definition_codes = process_definition_codes
 
 
 class ProcessItemFindResponse(_serialization.Model):
@@ -676,3 +684,507 @@ class ProcessItemTaskLogAppendResponse(_serialization.Model):
         """
         super().__init__(**kwargs)
         self.process_item = process_item
+
+
+class ProcessItemTaskContextDataUpdateRequest(_serialization.Model):
+    _attribute_map = {
+        "process_item_id": {"key": "processItemId", "type": "str"},
+        "data": {"key": "data", "type": "JsonValue"},
+    }
+
+    def __init__(
+        self,
+        process_item_id: str,
+        data: models_rest.JsonValue,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            process_item_id: Task to update
+            data: Json value. Required.
+        """
+        super().__init__(**kwargs)
+        self.process_item_id = process_item_id
+        self.data = data
+
+
+class ProcessItemTaskContextDataUpdateResponse(_serialization.Model):
+    _attribute_map = {
+        "process_item": {"key": "processItem", "type": "ProcessItem"},
+    }
+
+    def __init__(self, process_item: models_rest.ProcessItem, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_item: Process Item updated
+        """
+        super().__init__(**kwargs)
+        self.process_item = process_item
+
+
+class ProcessItemAiAssistanceGenerateRequest(_serialization.Model):
+    _attribute_map = {
+        "process_item_id": {"key": "processItemId", "type": "str"},
+        "request_id": {"key": "requestId", "type": "str"},
+    }
+
+    def __init__(self, process_item_id: str, request_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_item_id: Process Item to generate AI assistance for
+            request_id: Client-supplied identifier (UUID) that makes the call idempotent
+        """
+        super().__init__(**kwargs)
+        self.process_item_id = process_item_id
+        self.request_id = request_id
+
+
+class ProcessItemAiAssistanceGenerateResponse(_serialization.Model):
+    _attribute_map = {
+        "process_item_ai_assistance": {"key": "processItemAiAssistance", "type": "ProcessItemAiAssistance"},
+    }
+
+    def __init__(self, process_item_ai_assistance: models_rest.ProcessItemAiAssistance, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_item_ai_assistance: Current state of the AI assistance run
+        """
+        super().__init__(**kwargs)
+        self.process_item_ai_assistance = process_item_ai_assistance
+
+
+class ProcessItemAiAssistanceRetrieveRequest(_serialization.Model):
+    _attribute_map = {
+        "process_item_id": {"key": "processItemId", "type": "str"},
+    }
+
+    def __init__(self, process_item_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_item_id: Process Item to retrieve AI assistance for
+        """
+        super().__init__(**kwargs)
+        self.process_item_id = process_item_id
+
+
+class ProcessItemAiAssistanceRetrieveResponse(_serialization.Model):
+    _attribute_map = {
+        "process_item_ai_assistance": {"key": "processItemAiAssistance", "type": "ProcessItemAiAssistance"},
+    }
+
+    def __init__(self, process_item_ai_assistance: models_rest.ProcessItemAiAssistance, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_item_ai_assistance: Latest persisted AI assistance run
+        """
+        super().__init__(**kwargs)
+        self.process_item_ai_assistance = process_item_ai_assistance
+
+
+class ProcessItemsCancelRequest(_serialization.Model):
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "process_item_ids": {"key": "processItemIds", "type": "[str]"},
+    }
+
+    def __init__(self, process_id: str, process_item_ids: Optional[list[str]] = None, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_id: Process whose items are going to be cancelled
+            process_item_ids: Optional list of process item IDs to cancel. If omitted, all active
+                              process items are cancelled.
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.process_item_ids = process_item_ids
+
+
+class ProcessItemsCancelResponse(_serialization.Model):
+    _attribute_map = {
+        "process": {"key": "process", "type": "Process"},
+    }
+
+    def __init__(self, process: models_rest.Process, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process: Process updated
+        """
+        super().__init__(**kwargs)
+        self.process = process
+
+
+class BusinessArtifactFindRequest(_serialization.Model):
+    _attribute_map = {
+        "page": {"key": "page", "type": "int"},
+        "size": {"key": "size", "type": "int"},
+        "sorts": {"key": "sorts", "type": "[str]"},
+        "tenant_ids": {"key": "tenantIds", "type": "[str]"},
+        "business_artifact_definition_ids": {"key": "businessArtifactDefinitionIds", "type": "[str]"},
+        "business_artifact_definition_codes": {"key": "businessArtifactDefinitionCodes", "type": "[str]"},
+        "values": {"key": "values", "type": "[str]"},
+    }
+
+    def __init__(
+        self,
+        page: Optional[int] = None,
+        size: Optional[int] = None,
+        sorts: Optional[list[str]] = None,
+        tenant_ids: Optional[list[str]] = None,
+        business_artifact_definition_ids: Optional[list[str]] = None,
+        business_artifact_definition_codes: Optional[list[str]] = None,
+        values: Optional[list[str]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            page: Page requested, 0-index
+            size: Page size
+            sorts: Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
+            tenant_ids: Filter business artifacts by tenant identifiers
+            business_artifact_definition_ids: Filter by an array of business artifact definition ids
+            business_artifact_definition_codes: Filter by an array of business artifact definition codes
+            values: Filter by an array of values
+        """
+        super().__init__(**kwargs)
+        self.page = page
+        self.size = size
+        self.sorts = sorts
+        self.tenant_ids = tenant_ids
+        self.business_artifact_definition_ids = business_artifact_definition_ids
+        self.business_artifact_definition_codes = business_artifact_definition_codes
+        self.values = values
+
+
+class BusinessArtifactFindResponse(_serialization.Model):
+    _attribute_map = {
+        "business_artifacts": {"key": "businessArtifacts", "type": "BusinessArtifactPage"},
+    }
+
+    def __init__(self, business_artifacts: models_rest.BusinessArtifactPage, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifacts: Business Artifact page that match the requested criteria
+        """
+        super().__init__(**kwargs)
+        self.business_artifacts = business_artifacts
+
+
+class BusinessArtifactCreateRequest(_serialization.Model):
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "business_artifact_definition_id": {"key": "businessArtifactDefinitionId", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "business_artifact_definition_code": {"key": "businessArtifactDefinitionCode", "type": "str"},
+        "data": {"key": "data", "type": "JsonValue"},
+    }
+
+    def __init__(
+        self,
+        id: Optional[str] = None,
+        business_artifact_definition_id: Optional[str] = None,
+        tenant_id: Optional[str] = None,
+        business_artifact_definition_code: Optional[str] = None,
+        data: Optional[models_rest.JsonValue] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            id: Business Artifact id. Set it to make the call idempotent
+            business_artifact_definition_id: Business artifact definition id. Only one of
+                                             business_artifact_definition_id or
+                                             business_artifact_definition_code is allowed
+            tenant_id: Tenant id
+            business_artifact_definition_code: Business artifact definition code. Only one of
+                                               business_artifact_definition_id or
+                                               business_artifact_definition_code is allowed
+            data: Json value
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.business_artifact_definition_id = business_artifact_definition_id
+        self.tenant_id = tenant_id
+        self.business_artifact_definition_code = business_artifact_definition_code
+        self.data = data
+
+
+class BusinessArtifactCreateResponse(_serialization.Model):
+    _attribute_map = {
+        "business_artifact": {"key": "businessArtifact", "type": "BusinessArtifact"},
+    }
+
+    def __init__(self, business_artifact: models_rest.BusinessArtifact, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact: Business Artifact created
+        """
+        super().__init__(**kwargs)
+        self.business_artifact = business_artifact
+
+
+class BusinessArtifactRetrieveRequest(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+    }
+
+    def __init__(self, business_artifact_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_id: Business Artifact identifier to retrieve
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_id = business_artifact_id
+
+
+class BusinessArtifactRetrieveResponse(_serialization.Model):
+    _attribute_map = {
+        "business_artifact": {"key": "businessArtifact", "type": "BusinessArtifact"},
+    }
+
+    def __init__(self, business_artifact: models_rest.BusinessArtifact, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact: Business Artifact data
+        """
+        super().__init__(**kwargs)
+        self.business_artifact = business_artifact
+
+
+class BusinessArtifactDeleteRequest(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+    }
+
+    def __init__(self, business_artifact_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_id: Business Artifact identifier to delete
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_id = business_artifact_id
+
+
+class BusinessArtifactDeleteResponse(_serialization.Model):
+    _attribute_map: dict[str, Any] = {}
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+
+
+class BusinessArtifactUpdateRequest(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+        "data": {"key": "data", "type": "JsonValue"},
+    }
+
+    def __init__(self, business_artifact_id: str, data: models_rest.JsonValue, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_id: Business Artifact identifier to update
+            data: Json value. Required.
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_id = business_artifact_id
+        self.data = data
+
+
+class BusinessArtifactUpdateResponse(_serialization.Model):
+    _attribute_map = {
+        "business_artifact": {"key": "businessArtifact", "type": "BusinessArtifact"},
+    }
+
+    def __init__(self, business_artifact: models_rest.BusinessArtifact, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact: Business Artifact updated
+        """
+        super().__init__(**kwargs)
+        self.business_artifact = business_artifact
+
+
+class BusinessArtifactPatchRequest(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+        "json_patch": {"key": "jsonPatch", "type": "[JsonPatchOperation]"},
+    }
+
+    def __init__(
+        self, business_artifact_id: str, json_patch: list[models_rest.JsonPatchOperation], **kwargs: Any
+    ) -> None:
+        """
+        Parameters:
+            business_artifact_id: Business Artifact identifier to update
+            json_patch: Params to patch business artifact data
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_id = business_artifact_id
+        self.json_patch = json_patch
+
+
+class BusinessArtifactPatchResponse(_serialization.Model):
+    _attribute_map = {
+        "business_artifact": {"key": "businessArtifact", "type": "BusinessArtifact"},
+    }
+
+    def __init__(self, business_artifact: models_rest.BusinessArtifact, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact: Business Artifact updated
+        """
+        super().__init__(**kwargs)
+        self.business_artifact = business_artifact
+
+
+class BusinessArtifactActionCreateRequest(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+        "id": {"key": "id", "type": "str"},
+        "business_artifact_action_definition_code": {"key": "businessArtifactActionDefinitionCode", "type": "str"},
+        "start_workflow": {"key": "startWorkflow", "type": "BusinessArtifactActionCreateParamsStartWorkflow"},
+        "downloadable": {"key": "downloadable", "type": "BusinessArtifactActionCreateParamsDownloadable"},
+        "start_process": {"key": "startProcess", "type": "BusinessArtifactActionCreateParamsStartProcess"},
+        "create_artifact": {"key": "createArtifact", "type": "BusinessArtifactActionCreateParamsCreateArtifact"},
+    }
+
+    def __init__(
+        self,
+        business_artifact_id: str,
+        business_artifact_action_definition_code: str,
+        id: Optional[str] = None,
+        start_workflow: Optional[models_rest.BusinessArtifactActionCreateParamsStartWorkflow] = None,
+        downloadable: Optional[models_rest.BusinessArtifactActionCreateParamsDownloadable] = None,
+        start_process: Optional[models_rest.BusinessArtifactActionCreateParamsStartProcess] = None,
+        create_artifact: Optional[models_rest.BusinessArtifactActionCreateParamsCreateArtifact] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            business_artifact_id: Business Artifact on which invoke the action
+            business_artifact_action_definition_code: Business artifact action definition code
+            id: Business Artifact action id. Set it to make the call idempotent
+            start_workflow: Params for a START_WORKFLOW action
+            downloadable: Params for a DOWNLOADABLE action
+            start_process: Params for a START_PROCESS action
+            create_artifact: Params for a CREATE_BUSINESS_ARTIFACT action
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_id = business_artifact_id
+        self.business_artifact_action_definition_code = business_artifact_action_definition_code
+        self.id = id
+        self.start_workflow = start_workflow
+        self.downloadable = downloadable
+        self.start_process = start_process
+        self.create_artifact = create_artifact
+
+
+class BusinessArtifactActionCreateResponse(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_action": {"key": "businessArtifactAction", "type": "BusinessArtifactAction"},
+    }
+
+    def __init__(self, business_artifact_action: models_rest.BusinessArtifactAction, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_action: Business Artifact action invoked
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_action = business_artifact_action
+
+
+class BusinessArtifactActionRetrieveRequest(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+        "business_artifact_action_id": {"key": "businessArtifactActionId", "type": "str"},
+    }
+
+    def __init__(self, business_artifact_id: str, business_artifact_action_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_id: Business Artifact identifier
+            business_artifact_action_id: Business Artifact action identifier to retrieve
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_id = business_artifact_id
+        self.business_artifact_action_id = business_artifact_action_id
+
+
+class BusinessArtifactActionRetrieveResponse(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_action": {"key": "businessArtifactAction", "type": "BusinessArtifactAction"},
+    }
+
+    def __init__(self, business_artifact_action: models_rest.BusinessArtifactAction, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_action: Business Artifact action data
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_action = business_artifact_action
+
+
+class BusinessArtifactActionCancelRequest(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+        "business_artifact_action_id": {"key": "businessArtifactActionId", "type": "str"},
+    }
+
+    def __init__(self, business_artifact_id: str, business_artifact_action_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_id: Business Artifact identifier
+            business_artifact_action_id: Business Artifact action identifier to cancel
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_id = business_artifact_id
+        self.business_artifact_action_id = business_artifact_action_id
+
+
+class BusinessArtifactActionCancelResponse(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_action": {"key": "businessArtifactAction", "type": "BusinessArtifactAction"},
+    }
+
+    def __init__(self, business_artifact_action: models_rest.BusinessArtifactAction, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_action: Business Artifact action cancelled
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_action = business_artifact_action
+
+
+class BusinessArtifactCreateArtifactPrepareRequest(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+        "business_artifact_action_definition_code": {"key": "businessArtifactActionDefinitionCode", "type": "str"},
+    }
+
+    def __init__(self, business_artifact_id: str, business_artifact_action_definition_code: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_id: Business Artifact identifier
+            business_artifact_action_definition_code: CREATE_BUSINESS_ARTIFACT action definition code to prepare
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_id = business_artifact_id
+        self.business_artifact_action_definition_code = business_artifact_action_definition_code
+
+
+class BusinessArtifactCreateArtifactPrepareResponse(_serialization.Model):
+    _attribute_map = {
+        "business_artifact_create_artifact_prepare": {
+            "key": "businessArtifactCreateArtifactPrepare",
+            "type": "BusinessArtifactCreateArtifactPrepare",
+        },
+    }
+
+    def __init__(
+        self,
+        business_artifact_create_artifact_prepare: models_rest.BusinessArtifactCreateArtifactPrepare,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            business_artifact_create_artifact_prepare: Prepared data for the CREATE_BUSINESS_ARTIFACT action
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_create_artifact_prepare = business_artifact_create_artifact_prepare

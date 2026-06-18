@@ -48,6 +48,8 @@ class ProcessOperations:
         page: int = 0,
         sort: Optional[Union[str, list[str]]] = None,
         tenant_id: Optional[Union[str, list[str]]] = None,
+        process_definition_id: Optional[Union[str, list[str]]] = None,
+        process_definition_code: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
@@ -69,6 +71,10 @@ class ProcessOperations:
         :type sort: Optional[Union[str, List[str]]]
         :keyword tenant_id: Filter processes that exists in one of tenant ids. Default value is None.
         :type tenant_id: Optional[Union[str, List[str]]]
+        :keyword process_definition_id: Filter by an array of process definition ids. Default value is None.
+        :type process_definition_id: Optional[Union[str, List[str]]]
+        :keyword process_definition_code: Filter by an array of process definition codes. Default value is None.
+        :type process_definition_code: Optional[Union[str, List[str]]]
         :return: ProcessPage
         :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -79,8 +85,20 @@ class ProcessOperations:
         if tenant_id is not None and isinstance(tenant_id, str):
             tenant_id = [tenant_id]
 
+        if process_definition_id is not None and isinstance(process_definition_id, str):
+            process_definition_id = [process_definition_id]
+
+        if process_definition_code is not None and isinstance(process_definition_code, str):
+            process_definition_code = [process_definition_code]
+
         return self._kuflow_client.process.find_processes(
-            size=size, page=page, sort=sort, tenant_id=tenant_id, **kwargs
+            size=size,
+            page=page,
+            sort=sort,
+            tenant_id=tenant_id,
+            process_definition_id=process_definition_id,
+            process_definition_code=process_definition_code,
+            **kwargs,
         )
 
     def create_process(self, process_create_params: _models.ProcessCreateParams, **kwargs: Any) -> _models.Process:
@@ -153,6 +171,33 @@ class ProcessOperations:
         """
         return self._kuflow_client.process.cancel_process(id=id, **kwargs)
 
+    def cancel_process_items(
+        self, id: str, process_item_id: Optional[Union[str, list[str]]] = None, **kwargs: Any
+    ) -> _models.Process:
+        """Cancel Process Items.
+
+        Cancel Process Items in a Process.
+
+        When ``process_item_id`` is provided, only those specific process items are cancelled. When
+        omitted, all active process items in the process are cancelled.
+
+        For task process items, tasks in a cancellable state (ready, claimed) are set to 'cancelled'.
+        Already cancelled tasks are treated as a no-op. The Process itself is not affected.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_id: Optional list of process item IDs to cancel. If omitted, all active
+                                process items are cancelled. Default value is None.
+        :type process_item_id: Optional[Union[str, List[str]]]
+        :return: Process
+        :rtype: ~kuflow.rest.models.Process
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        if process_item_id is not None and isinstance(process_item_id, str):
+            process_item_id = [process_item_id]
+
+        return self._kuflow_client.process.cancel_process_items(id=id, process_item_id=process_item_id, **kwargs)
+
     def change_process_initiator(
         self, id: str, process_change_initiator_params: _models.ProcessChangeInitiatorParams, **kwargs: Any
     ) -> _models.Process:
@@ -203,7 +248,7 @@ class ProcessOperations:
             id=id,
             file=file.file_content,
             file_content_type=file.content_type,
-            file_name=file.file_mame,
+            file_name=file.file_name,
             user_action_value_id=user_action_value_id,
             **kwargs,
         )
@@ -313,9 +358,9 @@ class ProcessOperations:
         """
         return self._kuflow_client.process.upload_process_document(
             id=id,
-            document=document.file_content,
+            file=document.file_content,
             file_content_type=document.content_type,
-            file_name=document.file_mame,
+            file_name=document.file_name,
             **kwargs,
         )
 

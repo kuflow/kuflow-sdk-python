@@ -31,7 +31,13 @@ from uuid import UUID
 import pytest
 from temporalio.converter import JSONPlainPayloadConverter
 
-from kuflow_temporal_common._converter import KuFlowModelJSONEncoder, KuFlowModelJSONTypeConverter
+from kuflow_rest import Model
+from kuflow_rest import models as models_rest
+from kuflow_temporal_common._converter import (
+    KuFlowModelJSONEncoder,
+    KuFlowModelJSONTypeConverter,
+    register_serializable_models,
+)
 
 
 class SampleEnum(StrEnum):
@@ -139,3 +145,58 @@ class TestEncoderOnly:
         assert result == f'"{enum_val.value}"'
 
     pass  # Keep class with at least one statement
+
+
+class TestKuFlowModelRoundTrip:
+    """Regression test: a real KuFlow REST Model must survive the Temporal round-trip.
+
+    This guards against the serialization module being re-exported from a stale/duplicate
+    location (e.g. AutoRest relocating `_serialization` to `_utils/serialization`), which
+    would make ``isinstance(value, Model)`` False for every KuFlow model and silently break
+    payload conversion across the workflow/activity boundary.
+    """
+
+    @pytest.fixture(autouse=True)
+    def _register_models(self):
+        # Models must be registered before the converter is constructed (it captures them in __init__).
+        register_serializable_models(models_rest.__dict__)
+
+    @pytest.fixture
+    def converter(self):
+        return JSONPlainPayloadConverter(
+            encoder=KuFlowModelJSONEncoder,
+            custom_type_converters=[KuFlowModelJSONTypeConverter()],
+        )
+
+    def test_kuflow_model_is_recognized(self):
+        """The public Model class must be the one KuFlow REST models actually subclass."""
+        process = self._build_process()
+
+        assert isinstance(process, Model)
+
+    def test_process_model_roundtrip(self, converter):
+        """A Process must serialize and deserialize back to an equivalent Process."""
+        original = self._build_process()
+
+        payload = converter.to_payload(original)
+        result = converter.from_payload(payload, models_rest.Process)
+
+        assert isinstance(result, models_rest.Process)
+        assert str(result.id) == str(original.id)
+        assert str(result.tenant_id) == str(original.tenant_id)
+        assert str(result.state) == str(original.state)
+        assert str(result.process_definition_ref.id) == str(original.process_definition_ref.id)
+
+    @staticmethod
+    def _build_process() -> "models_rest.Process":
+        process_definition_ref = models_rest.ProcessDefinitionRef(
+            id=UUID("12345678-1234-5678-1234-567812345678"),
+            version=UUID("87654321-4321-8765-4321-876543218765"),
+            code="PROCESS_DEFINITION_CODE",
+        )
+        return models_rest.Process(
+            id=UUID("11111111-1111-1111-1111-111111111111"),
+            tenant_id=UUID("22222222-2222-2222-2222-222222222222"),
+            process_definition_ref=process_definition_ref,
+            state="RUNNING",
+        )

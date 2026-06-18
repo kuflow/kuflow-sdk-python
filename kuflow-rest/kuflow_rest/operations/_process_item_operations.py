@@ -51,6 +51,8 @@ class ProcessItemOperations:
         type: Optional[list[_models.ProcessItemType]] = None,
         task_state: Optional[Union[_models.ProcessItemTaskState, list[_models.ProcessItemTaskState]]] = None,
         process_item_definition_code: Optional[Union[str, list[str]]] = None,
+        process_definition_id: Optional[Union[str, list[str]]] = None,
+        process_definition_code: Optional[Union[str, list[str]]] = None,
         tenant_id: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
     ) -> _models.ProcessItemPage:
@@ -79,6 +81,10 @@ class ProcessItemOperations:
         :keyword process_item_definition_code: Filter by an array of process item definition codes.
                                                Default value is None.
         :type process_item_definition_code: list[str]
+        :keyword process_definition_id: Filter by an array of process definition ids. Default value is None.
+        :type process_definition_id: list[str]
+        :keyword process_definition_code: Filter by an array of process definition codes. Default value is None.
+        :type process_definition_code: list[str]
         :keyword tenant_id: Filter process items that exists in one of tenant ids. Default value is None.
         :type tenant_id: Optional[Union[str, List[str]]]
         :return: ProcessItemPage
@@ -100,6 +106,12 @@ class ProcessItemOperations:
         if process_item_definition_code is not None and isinstance(process_item_definition_code, str):
             process_item_definition_code = [process_item_definition_code]
 
+        if process_definition_id is not None and isinstance(process_definition_id, str):
+            process_definition_id = [process_definition_id]
+
+        if process_definition_code is not None and isinstance(process_definition_code, str):
+            process_definition_code = [process_definition_code]
+
         if tenant_id is not None and isinstance(tenant_id, str):
             tenant_id = [tenant_id]
 
@@ -111,6 +123,8 @@ class ProcessItemOperations:
             type=type,
             task_state=task_state,
             process_item_definition_code=process_item_definition_code,
+            process_definition_id=process_definition_id,
+            process_definition_code=process_definition_code,
             tenant_id=tenant_id,
             **kwargs,
         )
@@ -259,6 +273,71 @@ class ProcessItemOperations:
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self._kuflow_client.process_item.patch_process_item_task_data(id=id, json_patch=json_patch, **kwargs)
+
+    def update_process_item_task_context_data(
+        self,
+        id: str,
+        process_item_task_context_data_update_params: _models.ProcessItemTaskContextDataUpdateParams,
+        **kwargs: Any,
+    ) -> _models.ProcessItem:
+        """Save JSON context data.
+
+        Allow to save a JSON context data validating that the data follow the related schema. If the
+        data is invalid, then the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_task_context_data_update_params: Params used to update the JSON context data value.
+                                                             Required.
+        :type process_item_task_context_data_update_params:
+         ~kuflow.rest.models.ProcessItemTaskContextDataUpdateParams
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process_item.update_process_item_task_context_data(
+            id=id, process_item_task_context_data_update_params=process_item_task_context_data_update_params, **kwargs
+        )
+
+    def retrieve_process_item_ai_assistance(self, id: str, **kwargs: Any) -> _models.ProcessItemAiAssistance:
+        """Retrieve AI assistance for a process item.
+
+        Return the latest persisted AI assistance run for a process item, if any.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: ProcessItemAiAssistance
+        :rtype: ~kuflow.rest.models.ProcessItemAiAssistance
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process_item.retrieve_process_item_ai_assistance(id=id, **kwargs)
+
+    def generate_process_item_ai_assistance(
+        self,
+        id: str,
+        process_item_ai_assistance_generate_params: _models.ProcessItemAiAssistanceGenerateParams,
+        **kwargs: Any,
+    ) -> _models.ProcessItemAiAssistance:
+        """Trigger or poll AI assistance for a process item.
+
+        Trigger an asynchronous AI assistance run for a process item and return its current state,
+        identified by a client-supplied ``requestId`` (UUID). The ``requestId`` makes the call
+        idempotent and lets a client launch successive AI assistance attempts on the same process
+        item - one at a time.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_ai_assistance_generate_params: Params identifying this AI assistance attempt.
+                                                           Required.
+        :type process_item_ai_assistance_generate_params:
+         ~kuflow.rest.models.ProcessItemAiAssistanceGenerateParams
+        :return: ProcessItemAiAssistance
+        :rtype: ~kuflow.rest.models.ProcessItemAiAssistance
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process_item.generate_process_item_ai_assistance(
+            id=id, process_item_ai_assistance_generate_params=process_item_ai_assistance_generate_params, **kwargs
+        )
 
     def download_process_item_task_data_webforms_as_document(
         self, id: str, property_path: str, **kwargs: Any

@@ -42,3 +42,11 @@ class WorkflowUserActionDefinitionType(str, Enum):
     CREATE_TASK = "CREATE_TASK"
     CREATE_PROCESS_ITEM_MESSAGE = "CREATE_PROCESS_ITEM_MESSAGE"
     CREATE_PROCESS_ITEM_THREAD = "CREATE_PROCESS_ITEM_THREAD"
+
+
+class WorkflowBusinessArtifactActionDefinitionType(str, Enum):
+    """WorkflowBusinessArtifactActionDefinitionType."""
+
+    DOWNLOADABLE = "DOWNLOADABLE"
+    START_PROCESS = "START_PROCESS"
+    START_WORKFLOW = "START_WORKFLOW"

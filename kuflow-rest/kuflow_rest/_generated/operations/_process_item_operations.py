@@ -73,6 +73,8 @@ def build_find_process_items_request(
     type: Optional[List[Union[str, _models.ProcessItemType]]] = None,
     task_state: Optional[List[Union[str, _models.ProcessItemTaskState]]] = None,
     process_item_definition_code: Optional[List[str]] = None,
+    process_definition_id: Optional[List[str]] = None,
+    process_definition_code: Optional[List[str]] = None,
     tenant_id: Optional[List[str]] = None,
     **kwargs: Any,
 ) -> HttpRequest:
@@ -101,6 +103,15 @@ def build_find_process_items_request(
         _params["processItemDefinitionCode"] = [
             _SERIALIZER.query("process_item_definition_code", q, "str") if q is not None else ""
             for q in process_item_definition_code
+        ]
+    if process_definition_id is not None:
+        _params["processDefinitionId"] = [
+            _SERIALIZER.query("process_definition_id", q, "str") if q is not None else "" for q in process_definition_id
+        ]
+    if process_definition_code is not None:
+        _params["processDefinitionCode"] = [
+            _SERIALIZER.query("process_definition_code", q, "str") if q is not None else ""
+            for q in process_definition_code
         ]
     if tenant_id is not None:
         _params["tenantId"] = [_SERIALIZER.query("tenant_id", q, "str") if q is not None else "" for q in tenant_id]
@@ -145,6 +156,51 @@ def build_retrieve_process_item_request(id: str, **kwargs: Any) -> HttpRequest:
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
     return HttpRequest(method="GET", url=_url, headers=_headers, **kwargs)
+
+
+def build_retrieve_process_item_ai_assistance_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/process-items/{id}/~actions/ai-assistance"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
+
+    # Construct headers
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="GET", url=_url, headers=_headers, **kwargs)
+
+
+def build_generate_process_item_ai_assistance_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/process-items/{id}/~actions/ai-assistance"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
 def build_claim_process_item_task_request(id: str, **kwargs: Any) -> HttpRequest:
@@ -279,6 +335,30 @@ def build_patch_process_item_task_data_request(  # pylint: disable=name-too-long
     return HttpRequest(method="PATCH", url=_url, headers=_headers, **kwargs)
 
 
+def build_update_process_item_task_context_data_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/process-items/{id}/task/context-data"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="PUT", url=_url, headers=_headers, **kwargs)
+
+
 def build_download_process_item_task_data_webforms_as_document_request(  # pylint: disable=name-too-long
     id: str, *, property_path: str, **kwargs: Any
 ) -> HttpRequest:
@@ -334,6 +414,8 @@ class ProcessItemOperations:
         type: Optional[List[Union[str, _models.ProcessItemType]]] = None,
         task_state: Optional[List[Union[str, _models.ProcessItemTaskState]]] = None,
         process_item_definition_code: Optional[List[str]] = None,
+        process_definition_id: Optional[List[str]] = None,
+        process_definition_code: Optional[List[str]] = None,
         tenant_id: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> _models.ProcessItemPage:
@@ -364,6 +446,10 @@ class ProcessItemOperations:
         :keyword process_item_definition_code: Filter by an array of task definition codes. Default
          value is None.
         :paramtype process_item_definition_code: list[str]
+        :keyword process_definition_id: Filter by process definition ids. Default value is None.
+        :paramtype process_definition_id: list[str]
+        :keyword process_definition_code: Filter by process definition codes. Default value is None.
+        :paramtype process_definition_code: list[str]
         :keyword tenant_id: Filter by tenantId. Default value is None.
         :paramtype tenant_id: list[str]
         :return: ProcessItemPage
@@ -391,6 +477,8 @@ class ProcessItemOperations:
             type=type,
             task_state=task_state,
             process_item_definition_code=process_item_definition_code,
+            process_definition_id=process_definition_id,
+            process_definition_code=process_definition_code,
             tenant_id=tenant_id,
             headers=_headers,
             params=_params,
@@ -590,6 +678,238 @@ class ProcessItemOperations:
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("ProcessItem", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace
+    def retrieve_process_item_ai_assistance(self, id: str, **kwargs: Any) -> _models.ProcessItemAiAssistance:
+        """Get the current AI assistance run status for a process item.
+
+        Return the status of the latest AI assistance run for the given process item.
+
+        Poll this endpoint after triggering ``generateProcessItemAiAssistance`` to determine when
+        the run has finished. Returns 404 when no run has ever been triggered for the process item.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: ProcessItemAiAssistance
+        :rtype: ~kuflow.rest.models.ProcessItemAiAssistance
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.ProcessItemAiAssistance] = kwargs.pop("cls", None)
+
+        _request = build_retrieve_process_item_ai_assistance_request(
+            id=id,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("ProcessItemAiAssistance", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @overload
+    def generate_process_item_ai_assistance(
+        self,
+        id: str,
+        process_item_ai_assistance_generate_params: _models.ProcessItemAiAssistanceGenerateParams,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.ProcessItemAiAssistance:
+        """Trigger or poll AI assistance for a process item.
+
+        Trigger an asynchronous AI assistance run for a process item and return its current state,
+        identified
+        by a client-supplied ``requestId`` (UUID). The ``requestId`` makes the call idempotent and lets
+        a
+        client launch successive AI assistance attempts on the same process item — one at a time.
+
+        Behavior given the latest persisted run (if any) for the process item:
+
+
+        * No prior run → schedules a new run and returns the initial PENDING state (202).
+        * The stored ``requestId`` matches the incoming one → returns the current state of that run
+          without scheduling a new one (200). Use this to poll your own attempt.
+        * The stored ``requestId`` differs and the run is in a final state (COMPLETED or FAILED) →
+          schedules a new run on the same record, replacing the previous result (202).
+        * The stored ``requestId`` differs and the run is still PENDING → rejected with 409, since
+          another AI assistance attempt is already in progress on this process item.
+
+        The AI prompt configuration comes from the process item definition.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_ai_assistance_generate_params: Params identifying this AI assistance
+         attempt. Required.
+        :type process_item_ai_assistance_generate_params:
+         ~kuflow.rest.models.ProcessItemAiAssistanceGenerateParams
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: ProcessItemAiAssistance
+        :rtype: ~kuflow.rest.models.ProcessItemAiAssistance
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @overload
+    def generate_process_item_ai_assistance(
+        self,
+        id: str,
+        process_item_ai_assistance_generate_params: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.ProcessItemAiAssistance:
+        """Trigger or poll AI assistance for a process item.
+
+        Trigger an asynchronous AI assistance run for a process item and return its current state,
+        identified
+        by a client-supplied ``requestId`` (UUID). The ``requestId`` makes the call idempotent and lets
+        a
+        client launch successive AI assistance attempts on the same process item — one at a time.
+
+        Behavior given the latest persisted run (if any) for the process item:
+
+
+        * No prior run → schedules a new run and returns the initial PENDING state (202).
+        * The stored ``requestId`` matches the incoming one → returns the current state of that run
+          without scheduling a new one (200). Use this to poll your own attempt.
+        * The stored ``requestId`` differs and the run is in a final state (COMPLETED or FAILED) →
+          schedules a new run on the same record, replacing the previous result (202).
+        * The stored ``requestId`` differs and the run is still PENDING → rejected with 409, since
+          another AI assistance attempt is already in progress on this process item.
+
+        The AI prompt configuration comes from the process item definition.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_ai_assistance_generate_params: Params identifying this AI assistance
+         attempt. Required.
+        :type process_item_ai_assistance_generate_params: IO[bytes]
+        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: ProcessItemAiAssistance
+        :rtype: ~kuflow.rest.models.ProcessItemAiAssistance
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @distributed_trace
+    def generate_process_item_ai_assistance(
+        self,
+        id: str,
+        process_item_ai_assistance_generate_params: Union[_models.ProcessItemAiAssistanceGenerateParams, IO[bytes]],
+        **kwargs: Any,
+    ) -> _models.ProcessItemAiAssistance:
+        """Trigger or poll AI assistance for a process item.
+
+        Trigger an asynchronous AI assistance run for a process item and return its current state,
+        identified
+        by a client-supplied ``requestId`` (UUID). The ``requestId`` makes the call idempotent and lets
+        a
+        client launch successive AI assistance attempts on the same process item — one at a time.
+
+        Behavior given the latest persisted run (if any) for the process item:
+
+
+        * No prior run → schedules a new run and returns the initial PENDING state (202).
+        * The stored ``requestId`` matches the incoming one → returns the current state of that run
+          without scheduling a new one (200). Use this to poll your own attempt.
+        * The stored ``requestId`` differs and the run is in a final state (COMPLETED or FAILED) →
+          schedules a new run on the same record, replacing the previous result (202).
+        * The stored ``requestId`` differs and the run is still PENDING → rejected with 409, since
+          another AI assistance attempt is already in progress on this process item.
+
+        The AI prompt configuration comes from the process item definition.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_ai_assistance_generate_params: Params identifying this AI assistance
+         attempt. Is either a ProcessItemAiAssistanceGenerateParams type or a IO[bytes] type. Required.
+        :type process_item_ai_assistance_generate_params:
+         ~kuflow.rest.models.ProcessItemAiAssistanceGenerateParams or IO[bytes]
+        :return: ProcessItemAiAssistance
+        :rtype: ~kuflow.rest.models.ProcessItemAiAssistance
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        cls: ClsType[_models.ProcessItemAiAssistance] = kwargs.pop("cls", None)
+
+        content_type = content_type or "application/json"
+        _json = None
+        _content = None
+        if isinstance(process_item_ai_assistance_generate_params, (IOBase, bytes)):
+            _content = process_item_ai_assistance_generate_params
+        else:
+            _json = self._serialize.body(
+                process_item_ai_assistance_generate_params, "ProcessItemAiAssistanceGenerateParams"
+            )
+
+        _request = build_generate_process_item_ai_assistance_request(
+            id=id,
+            content_type=content_type,
+            json=_json,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200, 202]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("ProcessItemAiAssistance", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -1167,6 +1487,140 @@ class ProcessItemOperations:
             _json = self._serialize.body(json_patch, "[JsonPatchOperation]")
 
         _request = build_patch_process_item_task_data_request(
+            id=id,
+            content_type=content_type,
+            json=_json,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("ProcessItem", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @overload
+    def update_process_item_task_context_data(
+        self,
+        id: str,
+        process_item_task_context_data_update_params: _models.ProcessItemTaskContextDataUpdateParams,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.ProcessItem:
+        """Save JSON context data.
+
+        Allow to save a JSON context data validating that the data follow the related schema. If the
+        data is invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_task_context_data_update_params: Params used to update the JSON context
+         data value. Required.
+        :type process_item_task_context_data_update_params:
+         ~kuflow.rest.models.ProcessItemTaskContextDataUpdateParams
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @overload
+    def update_process_item_task_context_data(
+        self,
+        id: str,
+        process_item_task_context_data_update_params: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.ProcessItem:
+        """Save JSON context data.
+
+        Allow to save a JSON context data validating that the data follow the related schema. If the
+        data is invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_task_context_data_update_params: Params used to update the JSON context
+         data value. Required.
+        :type process_item_task_context_data_update_params: IO[bytes]
+        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @distributed_trace
+    def update_process_item_task_context_data(
+        self,
+        id: str,
+        process_item_task_context_data_update_params: Union[_models.ProcessItemTaskContextDataUpdateParams, IO[bytes]],
+        **kwargs: Any,
+    ) -> _models.ProcessItem:
+        """Save JSON context data.
+
+        Allow to save a JSON context data validating that the data follow the related schema. If the
+        data is invalid, then
+        the json form is marked as invalid.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_item_task_context_data_update_params: Params used to update the JSON context
+         data value. Is either a ProcessItemTaskContextDataUpdateParams type or a IO[bytes] type.
+         Required.
+        :type process_item_task_context_data_update_params:
+         ~kuflow.rest.models.ProcessItemTaskContextDataUpdateParams or IO[bytes]
+        :return: ProcessItem
+        :rtype: ~kuflow.rest.models.ProcessItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        cls: ClsType[_models.ProcessItem] = kwargs.pop("cls", None)
+
+        content_type = content_type or "application/json"
+        _json = None
+        _content = None
+        if isinstance(process_item_task_context_data_update_params, (IOBase, bytes)):
+            _content = process_item_task_context_data_update_params
+        else:
+            _json = self._serialize.body(
+                process_item_task_context_data_update_params, "ProcessItemTaskContextDataUpdateParams"
+            )
+
+        _request = build_update_process_item_task_context_data_request(
             id=id,
             content_type=content_type,
             json=_json,

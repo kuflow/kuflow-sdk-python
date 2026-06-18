@@ -87,6 +87,7 @@ class GroupOperations:
         tenant_id: Optional[List[str]] = None,
         principal_id: Optional[str] = None,
         group_id: Optional[List[str]] = None,
+        group_code: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> _models.GroupPage:
         """Find all accessible Groups.
@@ -112,6 +113,8 @@ class GroupOperations:
         :paramtype principal_id: str
         :keyword group_id: Filter by group ids. Default value is None.
         :paramtype group_id: list[str]
+        :keyword group_code: Filter by group codes. Default value is None.
+        :paramtype group_code: list[str]
         :return: GroupPage
         :rtype: ~kuflow.rest.models.GroupPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -136,6 +139,7 @@ class GroupOperations:
             tenant_id=tenant_id,
             principal_id=principal_id,
             group_id=group_id,
+            group_code=group_code,
             headers=_headers,
             params=_params,
         )

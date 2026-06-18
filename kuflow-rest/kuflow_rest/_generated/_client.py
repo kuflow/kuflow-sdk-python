@@ -43,6 +43,7 @@ from ._configuration import KuFlowRestClientConfiguration
 from ._serialization import Deserializer, Serializer
 from .operations import (
     AuthenticationOperations,
+    BusinessArtifactOperations,
     GroupOperations,
     KmsOperations,
     PrincipalOperations,
@@ -126,6 +127,8 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
     :vartype process: kuflow.rest.operations.ProcessOperations
     :ivar process_item: ProcessItemOperations operations
     :vartype process_item: kuflow.rest.operations.ProcessItemOperations
+    :ivar business_artifact: BusinessArtifactOperations operations
+    :vartype business_artifact: kuflow.rest.operations.BusinessArtifactOperations
     :ivar worker: WorkerOperations operations
     :vartype worker: kuflow.rest.operations.WorkerOperations
     :ivar robot: RobotOperations operations
@@ -171,6 +174,9 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
         self.tenant_user = TenantUserOperations(self._client, self._config, self._serialize, self._deserialize)
         self.process = ProcessOperations(self._client, self._config, self._serialize, self._deserialize)
         self.process_item = ProcessItemOperations(self._client, self._config, self._serialize, self._deserialize)
+        self.business_artifact = BusinessArtifactOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
         self.worker = WorkerOperations(self._client, self._config, self._serialize, self._deserialize)
         self.robot = RobotOperations(self._client, self._config, self._serialize, self._deserialize)
 

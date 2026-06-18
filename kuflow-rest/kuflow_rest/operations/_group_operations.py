@@ -49,6 +49,7 @@ class GroupOperations:
         principal_id: Optional[str] = None,
         tenant_id: Optional[Union[str, list[str]]] = None,
         group_id: Optional[Union[str, list[str]]] = None,
+        group_code: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
     ) -> _models.PrincipalPage:
         """Find all accessible Groups.
@@ -72,6 +73,10 @@ class GroupOperations:
         :paramtype tenant_id: list[str]
         :keyword principal_id: Filter by principalId. Default value is None.
         :paramtype principal_id: str
+        :keyword group_id: Filter by an array of group ids. Default value is None.
+        :paramtype group_id: list[str]
+        :keyword group_code: Filter by an array of group codes. Default value is None.
+        :paramtype group_code: list[str]
         :return: GroupPage
         :rtype: ~kuflow.rest.models.GroupPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -88,6 +93,16 @@ class GroupOperations:
         if group_id is not None and isinstance(group_id, str):
             group_id = [group_id]
 
+        if group_code is not None and isinstance(group_code, str):
+            group_code = [group_code]
+
         return self._kuflow_client.group.find_groups(
-            size=size, page=page, sort=sort, tenant_id=tenant_id, principal_id=principal_id, group_id=group_id, **kwargs
+            size=size,
+            page=page,
+            sort=sort,
+            tenant_id=tenant_id,
+            principal_id=principal_id,
+            group_id=group_id,
+            group_code=group_code,
+            **kwargs,
         )

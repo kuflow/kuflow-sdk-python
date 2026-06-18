@@ -35,7 +35,7 @@ class TenantUserOperations:
 
         Instead, you should access the following operations through
         :class:`~kuflow.rest.client.KuFlowRestClient`'s
-        :attr:`principal` attribute.
+        :attr:`tenant_user` attribute.
     """
 
     def __init__(self, kuflow_client: KuFlowRestClientGenerated):
@@ -47,6 +47,7 @@ class TenantUserOperations:
         page: int = 0,
         sort: Optional[Union[str, list[str]]] = None,
         group_id: Optional[Union[str, list[str]]] = None,
+        group_code: Optional[Union[str, list[str]]] = None,
         email: Optional[Union[str, list[str]]] = None,
         tenant_id: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
@@ -71,6 +72,9 @@ class TenantUserOperations:
         :keyword group_id: Filter tenant users that exists in one of the group ids. Default value is
          None.
         :type group_id: list[str]
+        :keyword group_code: Filter tenant users that exists in one of the group codes. Default value is
+         None.
+        :type group_code: list[str]
         :keyword email: Filter tenant users that have one of the emails. Default value is None.
         :type email: list[str]
         :return: TenantUserPage
@@ -83,6 +87,9 @@ class TenantUserOperations:
         if group_id is not None and isinstance(group_id, str):
             group_id = [group_id]
 
+        if group_code is not None and isinstance(group_code, str):
+            group_code = [group_code]
+
         if email is not None and isinstance(email, str):
             email = [email]
 
@@ -94,6 +101,7 @@ class TenantUserOperations:
             page=page,
             sort=sort,
             group_id=group_id,
+            group_code=group_code,
             email=email,
             tenant_id=tenant_id,
             **kwargs,

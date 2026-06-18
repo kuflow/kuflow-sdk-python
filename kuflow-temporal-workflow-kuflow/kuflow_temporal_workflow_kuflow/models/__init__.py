@@ -22,12 +22,19 @@
 # SOFTWARE.
 #
 
-from ._enums import SignalProcessItemType, WorkflowUserActionDefinitionType
+from ._enums import (
+    SignalProcessItemType,
+    WorkflowBusinessArtifactActionDefinitionType,
+    WorkflowUserActionDefinitionType,
+)
 from ._models import (
     KUFLOW_ENGINE_SIGNAL_PROCESS_ITEM,
     SignalProcessItem,
     SignalProcessItemPayload,
     SignalUserAction,
+    WorkflowBusinessArtifactActionRequest,
+    WorkflowBusinessArtifactActionResponse,
+    WorkflowBusinessArtifactActionResponseDownloadable,
     WorkflowRequest,
     WorkflowResponse,
     WorkflowRobotRequest,
@@ -43,6 +50,10 @@ __all__ = [
     "SignalProcessItemPayload",
     "SignalProcessItemType",
     "SignalUserAction",
+    "WorkflowBusinessArtifactActionDefinitionType",
+    "WorkflowBusinessArtifactActionRequest",
+    "WorkflowBusinessArtifactActionResponse",
+    "WorkflowBusinessArtifactActionResponseDownloadable",
     "WorkflowRequest",
     "WorkflowResponse",
     "WorkflowRobotRequest",

@@ -69,6 +69,7 @@ def build_find_groups_request(
     tenant_id: Optional[List[str]] = None,
     principal_id: Optional[str] = None,
     group_id: Optional[List[str]] = None,
+    group_code: Optional[List[str]] = None,
     **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -92,6 +93,8 @@ def build_find_groups_request(
         _params["principalId"] = _SERIALIZER.query("principal_id", principal_id, "str")
     if group_id is not None:
         _params["groupId"] = [_SERIALIZER.query("group_id", q, "str") if q is not None else "" for q in group_id]
+    if group_code is not None:
+        _params["groupCode"] = [_SERIALIZER.query("group_code", q, "str") if q is not None else "" for q in group_code]
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -128,6 +131,7 @@ class GroupOperations:
         tenant_id: Optional[List[str]] = None,
         principal_id: Optional[str] = None,
         group_id: Optional[List[str]] = None,
+        group_code: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> _models.GroupPage:
         """Find all accessible Groups.
@@ -153,6 +157,8 @@ class GroupOperations:
         :paramtype principal_id: str
         :keyword group_id: Filter by group ids. Default value is None.
         :paramtype group_id: list[str]
+        :keyword group_code: Filter by group codes. Default value is None.
+        :paramtype group_code: list[str]
         :return: GroupPage
         :rtype: ~kuflow.rest.models.GroupPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -177,6 +183,7 @@ class GroupOperations:
             tenant_id=tenant_id,
             principal_id=principal_id,
             group_id=group_id,
+            group_code=group_code,
             headers=_headers,
             params=_params,
         )
