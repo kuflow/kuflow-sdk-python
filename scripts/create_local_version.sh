@@ -6,7 +6,7 @@
 # Dev version follow the patter: X.X.X.devX
 
 ########################################
-VERSION=3.2.3.dev0
+VERSION=3.3.0
 ########################################
 
 
