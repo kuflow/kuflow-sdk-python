@@ -25,10 +25,10 @@
 from typing import Any, Optional
 
 from kuflow_rest import models as models_rest
-from kuflow_rest._generated import _serialization
+from kuflow_rest._generated._utils import serialization
 
 
-class PrincipalRetrieveRequest(_serialization.Model):
+class PrincipalRetrieveRequest(serialization.Model):
     _attribute_map = {
         "principal_id": {"key": "principalId", "type": "str"},
     }
@@ -42,7 +42,7 @@ class PrincipalRetrieveRequest(_serialization.Model):
         self.principal_id = principal_id
 
 
-class PrincipalRetrieveResponse(_serialization.Model):
+class PrincipalRetrieveResponse(serialization.Model):
     _attribute_map = {
         "principal": {"key": "principal", "type": "Principal"},
     }
@@ -56,7 +56,7 @@ class PrincipalRetrieveResponse(_serialization.Model):
         self.principal = principal
 
 
-class TenantUserRetrieveRequest(_serialization.Model):
+class TenantUserRetrieveRequest(serialization.Model):
     _attribute_map = {
         "tenant_user_id": {"key": "tenantUserId", "type": "str"},
     }
@@ -70,7 +70,7 @@ class TenantUserRetrieveRequest(_serialization.Model):
         self.tenant_user_id = tenant_user_id
 
 
-class TenantUserRetrieveResponse(_serialization.Model):
+class TenantUserRetrieveResponse(serialization.Model):
     _attribute_map = {
         "tenant_user": {"key": "tenantUser", "type": "Principal"},
     }
@@ -84,7 +84,7 @@ class TenantUserRetrieveResponse(_serialization.Model):
         self.tenant_user = tenant_user
 
 
-class ProcessFindRequest(_serialization.Model):
+class ProcessFindRequest(serialization.Model):
     _attribute_map = {
         "page": {"key": "page", "type": "int"},
         "size": {"key": "size", "type": "int"},
@@ -106,7 +106,7 @@ class ProcessFindRequest(_serialization.Model):
         self.sorts = sorts
 
 
-class ProcessFindResponse(_serialization.Model):
+class ProcessFindResponse(serialization.Model):
     _attribute_map = {
         "processes": {"key": "processes", "type": "ProcessPage"},
     }
@@ -120,7 +120,7 @@ class ProcessFindResponse(_serialization.Model):
         self.processes = processes
 
 
-class ProcessRetrieveRequest(_serialization.Model):
+class ProcessRetrieveRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
     }
@@ -134,7 +134,7 @@ class ProcessRetrieveRequest(_serialization.Model):
         self.process_id = process_id
 
 
-class ProcessRetrieveResponse(_serialization.Model):
+class ProcessRetrieveResponse(serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -148,7 +148,7 @@ class ProcessRetrieveResponse(_serialization.Model):
         self.process = process
 
 
-class ProcessEntityUpdateRequest(_serialization.Model):
+class ProcessEntityUpdateRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
         "entity": {"key": "entity", "type": "JsonValue"},
@@ -170,7 +170,7 @@ class ProcessEntityUpdateRequest(_serialization.Model):
         self.entity = entity
 
 
-class ProcessEntityUpdateResponse(_serialization.Model):
+class ProcessEntityUpdateResponse(serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -184,7 +184,7 @@ class ProcessEntityUpdateResponse(_serialization.Model):
         self.process = process
 
 
-class ProcessEntityPatchRequest(_serialization.Model):
+class ProcessEntityPatchRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
         "json_patch": {"key": "jsonPatch", "type": "[JsonPatchOperation]"},
@@ -206,7 +206,7 @@ class ProcessEntityPatchRequest(_serialization.Model):
         self.json_patch = json_patch
 
 
-class ProcessEntityPatchResponse(_serialization.Model):
+class ProcessEntityPatchResponse(serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -220,7 +220,7 @@ class ProcessEntityPatchResponse(_serialization.Model):
         self.process = process
 
 
-class ProcessMetadataUpdateRequest(_serialization.Model):
+class ProcessMetadataUpdateRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
         "metadata": {"key": "metadata", "type": "JsonValue"},
@@ -242,7 +242,7 @@ class ProcessMetadataUpdateRequest(_serialization.Model):
         self.metadata = metadata
 
 
-class ProcessMetadataUpdateResponse(_serialization.Model):
+class ProcessMetadataUpdateResponse(serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -256,7 +256,7 @@ class ProcessMetadataUpdateResponse(_serialization.Model):
         self.process = process
 
 
-class ProcessMetadataPatchRequest(_serialization.Model):
+class ProcessMetadataPatchRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
         "json_patch": {"key": "params", "type": "[JsonPatchOperation]"},
@@ -278,7 +278,7 @@ class ProcessMetadataPatchRequest(_serialization.Model):
         self.json_patch = json_patch
 
 
-class ProcessMetadataPatchResponse(_serialization.Model):
+class ProcessMetadataPatchResponse(serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -292,7 +292,7 @@ class ProcessMetadataPatchResponse(_serialization.Model):
         self.process = process
 
 
-class ProcessInitiatorChangeRequest(_serialization.Model):
+class ProcessInitiatorChangeRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
         "initiator_id": {"key": "initiatorId", "type": "str"},
@@ -316,7 +316,7 @@ class ProcessInitiatorChangeRequest(_serialization.Model):
         self.initiator_email = initiator_email
 
 
-class ProcessInitiatorChangeResponse(_serialization.Model):
+class ProcessInitiatorChangeResponse(serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -330,7 +330,7 @@ class ProcessInitiatorChangeResponse(_serialization.Model):
         self.process = process
 
 
-class ProcessItemFindRequest(_serialization.Model):
+class ProcessItemFindRequest(serialization.Model):
     _attribute_map = {
         "page": {"key": "page", "type": "int"},
         "size": {"key": "size", "type": "int"},
@@ -384,7 +384,7 @@ class ProcessItemFindRequest(_serialization.Model):
         self.process_definition_codes = process_definition_codes
 
 
-class ProcessItemFindResponse(_serialization.Model):
+class ProcessItemFindResponse(serialization.Model):
     _attribute_map = {
         "process_items": {"key": "processItems", "type": "ProcessItemPage"},
     }
@@ -398,7 +398,7 @@ class ProcessItemFindResponse(_serialization.Model):
         self.process_items = process_items
 
 
-class ProcessItemRetrieveRequest(_serialization.Model):
+class ProcessItemRetrieveRequest(serialization.Model):
     _attribute_map = {
         "process_item_id": {"key": "processItemId", "type": "str"},
     }
@@ -412,7 +412,7 @@ class ProcessItemRetrieveRequest(_serialization.Model):
         self.process_item_id = process_item_id
 
 
-class ProcessItemRetrieveResponse(_serialization.Model):
+class ProcessItemRetrieveResponse(serialization.Model):
     _attribute_map = {
         "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
@@ -426,7 +426,7 @@ class ProcessItemRetrieveResponse(_serialization.Model):
         self.process_item = process_item
 
 
-class ProcessItemCreateRequest(_serialization.Model):
+class ProcessItemCreateRequest(serialization.Model):
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
         "type": {"key": "type", "type": "ProcessItemType"},
@@ -472,7 +472,7 @@ class ProcessItemCreateRequest(_serialization.Model):
         self.message = message
 
 
-class ProcessItemCreateResponse(_serialization.Model):
+class ProcessItemCreateResponse(serialization.Model):
     _attribute_map = {
         "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
@@ -486,7 +486,7 @@ class ProcessItemCreateResponse(_serialization.Model):
         self.process_item = process_item
 
 
-class ProcessItemTaskCompleteRequest(_serialization.Model):
+class ProcessItemTaskCompleteRequest(serialization.Model):
     _attribute_map = {
         "process_item_id": {"key": "processItemId", "type": "str"},
     }
@@ -500,7 +500,7 @@ class ProcessItemTaskCompleteRequest(_serialization.Model):
         self.process_item_id = process_item_id
 
 
-class ProcessItemTaskCompleteResponse(_serialization.Model):
+class ProcessItemTaskCompleteResponse(serialization.Model):
     _attribute_map = {
         "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
@@ -514,7 +514,7 @@ class ProcessItemTaskCompleteResponse(_serialization.Model):
         self.process_item = process_item
 
 
-class ProcessItemTaskClaimRequest(_serialization.Model):
+class ProcessItemTaskClaimRequest(serialization.Model):
     _attribute_map = {
         "process_item_id": {"key": "processItemId", "type": "str"},
     }
@@ -528,7 +528,7 @@ class ProcessItemTaskClaimRequest(_serialization.Model):
         self.process_item_id = process_item_id
 
 
-class ProcessItemTaskClaimResponse(_serialization.Model):
+class ProcessItemTaskClaimResponse(serialization.Model):
     _attribute_map = {
         "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
@@ -542,7 +542,7 @@ class ProcessItemTaskClaimResponse(_serialization.Model):
         self.process_item = process_item
 
 
-class ProcessItemTaskAssignRequest(_serialization.Model):
+class ProcessItemTaskAssignRequest(serialization.Model):
     _attribute_map = {
         "process_item_id": {"key": "processItemId", "type": "str"},
         "owner_email": {"key": "ownerEmail", "type": "str"},
@@ -564,7 +564,7 @@ class ProcessItemTaskAssignRequest(_serialization.Model):
         self.owner_id = owner_id
 
 
-class ProcessItemTaskAssignResponse(_serialization.Model):
+class ProcessItemTaskAssignResponse(serialization.Model):
     _attribute_map = {
         "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
@@ -578,7 +578,7 @@ class ProcessItemTaskAssignResponse(_serialization.Model):
         self.process_item = process_item
 
 
-class ProcessItemTaskDataUpdateRequest(_serialization.Model):
+class ProcessItemTaskDataUpdateRequest(serialization.Model):
     _attribute_map = {
         "process_item_id": {"key": "processItemId", "type": "str"},
         "data": {"key": "data", "type": "JsonValue"},
@@ -600,7 +600,7 @@ class ProcessItemTaskDataUpdateRequest(_serialization.Model):
         self.data = data
 
 
-class ProcessItemTaskDataUpdateResponse(_serialization.Model):
+class ProcessItemTaskDataUpdateResponse(serialization.Model):
     _attribute_map = {
         "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
@@ -614,7 +614,7 @@ class ProcessItemTaskDataUpdateResponse(_serialization.Model):
         self.process_item = process_item
 
 
-class ProcessItemTaskDataPatchRequest(_serialization.Model):
+class ProcessItemTaskDataPatchRequest(serialization.Model):
     _attribute_map = {
         "process_item_id": {"key": "processItemId", "type": "str"},
         "json_patch": {"key": "jsonPatch", "type": "[JsonPatchOperation]"},
@@ -636,7 +636,7 @@ class ProcessItemTaskDataPatchRequest(_serialization.Model):
         self.json_patch = json_patch
 
 
-class ProcessItemTaskDataPatchResponse(_serialization.Model):
+class ProcessItemTaskDataPatchResponse(serialization.Model):
     _attribute_map = {
         "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
@@ -650,7 +650,7 @@ class ProcessItemTaskDataPatchResponse(_serialization.Model):
         self.process_item = process_item
 
 
-class ProcessItemTaskLogAppendRequest(_serialization.Model):
+class ProcessItemTaskLogAppendRequest(serialization.Model):
     _attribute_map = {
         "process_item_id": {"key": "processItemId", "type": "str"},
         "message": {"key": "message", "type": "str"},
@@ -672,7 +672,7 @@ class ProcessItemTaskLogAppendRequest(_serialization.Model):
         self.level = level
 
 
-class ProcessItemTaskLogAppendResponse(_serialization.Model):
+class ProcessItemTaskLogAppendResponse(serialization.Model):
     _attribute_map = {
         "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
@@ -686,7 +686,7 @@ class ProcessItemTaskLogAppendResponse(_serialization.Model):
         self.process_item = process_item
 
 
-class ProcessItemTaskContextDataUpdateRequest(_serialization.Model):
+class ProcessItemTaskContextDataUpdateRequest(serialization.Model):
     _attribute_map = {
         "process_item_id": {"key": "processItemId", "type": "str"},
         "data": {"key": "data", "type": "JsonValue"},
@@ -708,7 +708,7 @@ class ProcessItemTaskContextDataUpdateRequest(_serialization.Model):
         self.data = data
 
 
-class ProcessItemTaskContextDataUpdateResponse(_serialization.Model):
+class ProcessItemTaskContextDataUpdateResponse(serialization.Model):
     _attribute_map = {
         "process_item": {"key": "processItem", "type": "ProcessItem"},
     }
@@ -722,7 +722,7 @@ class ProcessItemTaskContextDataUpdateResponse(_serialization.Model):
         self.process_item = process_item
 
 
-class ProcessItemAiAssistanceGenerateRequest(_serialization.Model):
+class ProcessItemAiAssistanceGenerateRequest(serialization.Model):
     _attribute_map = {
         "process_item_id": {"key": "processItemId", "type": "str"},
         "request_id": {"key": "requestId", "type": "str"},
@@ -739,7 +739,7 @@ class ProcessItemAiAssistanceGenerateRequest(_serialization.Model):
         self.request_id = request_id
 
 
-class ProcessItemAiAssistanceGenerateResponse(_serialization.Model):
+class ProcessItemAiAssistanceGenerateResponse(serialization.Model):
     _attribute_map = {
         "process_item_ai_assistance": {"key": "processItemAiAssistance", "type": "ProcessItemAiAssistance"},
     }
@@ -753,7 +753,7 @@ class ProcessItemAiAssistanceGenerateResponse(_serialization.Model):
         self.process_item_ai_assistance = process_item_ai_assistance
 
 
-class ProcessItemAiAssistanceRetrieveRequest(_serialization.Model):
+class ProcessItemAiAssistanceRetrieveRequest(serialization.Model):
     _attribute_map = {
         "process_item_id": {"key": "processItemId", "type": "str"},
     }
@@ -767,7 +767,7 @@ class ProcessItemAiAssistanceRetrieveRequest(_serialization.Model):
         self.process_item_id = process_item_id
 
 
-class ProcessItemAiAssistanceRetrieveResponse(_serialization.Model):
+class ProcessItemAiAssistanceRetrieveResponse(serialization.Model):
     _attribute_map = {
         "process_item_ai_assistance": {"key": "processItemAiAssistance", "type": "ProcessItemAiAssistance"},
     }
@@ -781,7 +781,7 @@ class ProcessItemAiAssistanceRetrieveResponse(_serialization.Model):
         self.process_item_ai_assistance = process_item_ai_assistance
 
 
-class ProcessItemsCancelRequest(_serialization.Model):
+class ProcessItemsCancelRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
         "process_item_ids": {"key": "processItemIds", "type": "[str]"},
@@ -799,7 +799,7 @@ class ProcessItemsCancelRequest(_serialization.Model):
         self.process_item_ids = process_item_ids
 
 
-class ProcessItemsCancelResponse(_serialization.Model):
+class ProcessItemsCancelResponse(serialization.Model):
     _attribute_map = {
         "process": {"key": "process", "type": "Process"},
     }
@@ -813,7 +813,7 @@ class ProcessItemsCancelResponse(_serialization.Model):
         self.process = process
 
 
-class BusinessArtifactFindRequest(_serialization.Model):
+class BusinessArtifactFindRequest(serialization.Model):
     _attribute_map = {
         "page": {"key": "page", "type": "int"},
         "size": {"key": "size", "type": "int"},
@@ -855,7 +855,7 @@ class BusinessArtifactFindRequest(_serialization.Model):
         self.values = values
 
 
-class BusinessArtifactFindResponse(_serialization.Model):
+class BusinessArtifactFindResponse(serialization.Model):
     _attribute_map = {
         "business_artifacts": {"key": "businessArtifacts", "type": "BusinessArtifactPage"},
     }
@@ -869,7 +869,7 @@ class BusinessArtifactFindResponse(_serialization.Model):
         self.business_artifacts = business_artifacts
 
 
-class BusinessArtifactCreateRequest(_serialization.Model):
+class BusinessArtifactCreateRequest(serialization.Model):
     _attribute_map = {
         "id": {"key": "id", "type": "str"},
         "business_artifact_definition_id": {"key": "businessArtifactDefinitionId", "type": "str"},
@@ -907,7 +907,7 @@ class BusinessArtifactCreateRequest(_serialization.Model):
         self.data = data
 
 
-class BusinessArtifactCreateResponse(_serialization.Model):
+class BusinessArtifactCreateResponse(serialization.Model):
     _attribute_map = {
         "business_artifact": {"key": "businessArtifact", "type": "BusinessArtifact"},
     }
@@ -921,7 +921,7 @@ class BusinessArtifactCreateResponse(_serialization.Model):
         self.business_artifact = business_artifact
 
 
-class BusinessArtifactRetrieveRequest(_serialization.Model):
+class BusinessArtifactRetrieveRequest(serialization.Model):
     _attribute_map = {
         "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
     }
@@ -935,7 +935,7 @@ class BusinessArtifactRetrieveRequest(_serialization.Model):
         self.business_artifact_id = business_artifact_id
 
 
-class BusinessArtifactRetrieveResponse(_serialization.Model):
+class BusinessArtifactRetrieveResponse(serialization.Model):
     _attribute_map = {
         "business_artifact": {"key": "businessArtifact", "type": "BusinessArtifact"},
     }
@@ -949,7 +949,7 @@ class BusinessArtifactRetrieveResponse(_serialization.Model):
         self.business_artifact = business_artifact
 
 
-class BusinessArtifactDeleteRequest(_serialization.Model):
+class BusinessArtifactDeleteRequest(serialization.Model):
     _attribute_map = {
         "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
     }
@@ -963,14 +963,14 @@ class BusinessArtifactDeleteRequest(_serialization.Model):
         self.business_artifact_id = business_artifact_id
 
 
-class BusinessArtifactDeleteResponse(_serialization.Model):
+class BusinessArtifactDeleteResponse(serialization.Model):
     _attribute_map: dict[str, Any] = {}
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
 
-class BusinessArtifactUpdateRequest(_serialization.Model):
+class BusinessArtifactUpdateRequest(serialization.Model):
     _attribute_map = {
         "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
         "data": {"key": "data", "type": "JsonValue"},
@@ -987,7 +987,7 @@ class BusinessArtifactUpdateRequest(_serialization.Model):
         self.data = data
 
 
-class BusinessArtifactUpdateResponse(_serialization.Model):
+class BusinessArtifactUpdateResponse(serialization.Model):
     _attribute_map = {
         "business_artifact": {"key": "businessArtifact", "type": "BusinessArtifact"},
     }
@@ -1001,7 +1001,7 @@ class BusinessArtifactUpdateResponse(_serialization.Model):
         self.business_artifact = business_artifact
 
 
-class BusinessArtifactPatchRequest(_serialization.Model):
+class BusinessArtifactPatchRequest(serialization.Model):
     _attribute_map = {
         "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
         "json_patch": {"key": "jsonPatch", "type": "[JsonPatchOperation]"},
@@ -1020,7 +1020,7 @@ class BusinessArtifactPatchRequest(_serialization.Model):
         self.json_patch = json_patch
 
 
-class BusinessArtifactPatchResponse(_serialization.Model):
+class BusinessArtifactPatchResponse(serialization.Model):
     _attribute_map = {
         "business_artifact": {"key": "businessArtifact", "type": "BusinessArtifact"},
     }
@@ -1034,7 +1034,7 @@ class BusinessArtifactPatchResponse(_serialization.Model):
         self.business_artifact = business_artifact
 
 
-class BusinessArtifactActionCreateRequest(_serialization.Model):
+class BusinessArtifactActionCreateRequest(serialization.Model):
     _attribute_map = {
         "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
         "id": {"key": "id", "type": "str"},
@@ -1076,7 +1076,7 @@ class BusinessArtifactActionCreateRequest(_serialization.Model):
         self.create_artifact = create_artifact
 
 
-class BusinessArtifactActionCreateResponse(_serialization.Model):
+class BusinessArtifactActionCreateResponse(serialization.Model):
     _attribute_map = {
         "business_artifact_action": {"key": "businessArtifactAction", "type": "BusinessArtifactAction"},
     }
@@ -1090,7 +1090,7 @@ class BusinessArtifactActionCreateResponse(_serialization.Model):
         self.business_artifact_action = business_artifact_action
 
 
-class BusinessArtifactActionRetrieveRequest(_serialization.Model):
+class BusinessArtifactActionRetrieveRequest(serialization.Model):
     _attribute_map = {
         "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
         "business_artifact_action_id": {"key": "businessArtifactActionId", "type": "str"},
@@ -1107,7 +1107,7 @@ class BusinessArtifactActionRetrieveRequest(_serialization.Model):
         self.business_artifact_action_id = business_artifact_action_id
 
 
-class BusinessArtifactActionRetrieveResponse(_serialization.Model):
+class BusinessArtifactActionRetrieveResponse(serialization.Model):
     _attribute_map = {
         "business_artifact_action": {"key": "businessArtifactAction", "type": "BusinessArtifactAction"},
     }
@@ -1121,7 +1121,7 @@ class BusinessArtifactActionRetrieveResponse(_serialization.Model):
         self.business_artifact_action = business_artifact_action
 
 
-class BusinessArtifactActionCancelRequest(_serialization.Model):
+class BusinessArtifactActionCancelRequest(serialization.Model):
     _attribute_map = {
         "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
         "business_artifact_action_id": {"key": "businessArtifactActionId", "type": "str"},
@@ -1138,7 +1138,7 @@ class BusinessArtifactActionCancelRequest(_serialization.Model):
         self.business_artifact_action_id = business_artifact_action_id
 
 
-class BusinessArtifactActionCancelResponse(_serialization.Model):
+class BusinessArtifactActionCancelResponse(serialization.Model):
     _attribute_map = {
         "business_artifact_action": {"key": "businessArtifactAction", "type": "BusinessArtifactAction"},
     }
@@ -1152,7 +1152,7 @@ class BusinessArtifactActionCancelResponse(_serialization.Model):
         self.business_artifact_action = business_artifact_action
 
 
-class BusinessArtifactCreateArtifactPrepareRequest(_serialization.Model):
+class BusinessArtifactCreateArtifactPrepareRequest(serialization.Model):
     _attribute_map = {
         "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
         "business_artifact_action_definition_code": {"key": "businessArtifactActionDefinitionCode", "type": "str"},
@@ -1169,7 +1169,7 @@ class BusinessArtifactCreateArtifactPrepareRequest(_serialization.Model):
         self.business_artifact_action_definition_code = business_artifact_action_definition_code
 
 
-class BusinessArtifactCreateArtifactPrepareResponse(_serialization.Model):
+class BusinessArtifactCreateArtifactPrepareResponse(serialization.Model):
     _attribute_map = {
         "business_artifact_create_artifact_prepare": {
             "key": "businessArtifactCreateArtifactPrepare",

@@ -29,9 +29,9 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 #
 # --------------------------------------------------------------------------
+from collections.abc import MutableMapping
 from io import IOBase
-import sys
-from typing import Any, Callable, Dict, IO, Iterator, List, Optional, TypeVar, Union, overload
+from typing import Any, Callable, IO, Iterator, Optional, TypeVar, Union, overload
 
 from azure.core import PipelineClient
 from azure.core.exceptions import (
@@ -51,14 +51,10 @@ from azure.core.utils import case_insensitive_dict
 
 from .. import models as _models
 from .._configuration import KuFlowRestClientConfiguration
-from .._serialization import Deserializer, Serializer
+from .._utils.serialization import Deserializer, Serializer
 
-if sys.version_info >= (3, 9):
-    from collections.abc import MutableMapping
-else:
-    from typing import MutableMapping  # type: ignore
 T = TypeVar("T")
-ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
+ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, dict[str, Any]], Any]]
 
 _SERIALIZER = Serializer()
 _SERIALIZER.client_side_validation = False
@@ -68,11 +64,11 @@ def build_find_business_artifacts_request(
     *,
     size: int = 25,
     page: int = 0,
-    sort: Optional[List[str]] = None,
-    tenant_id: Optional[List[str]] = None,
-    business_artifact_definition_id: Optional[List[str]] = None,
-    business_artifact_definition_code: Optional[List[str]] = None,
-    value: Optional[List[str]] = None,
+    sort: Optional[list[str]] = None,
+    tenant_id: Optional[list[str]] = None,
+    business_artifact_definition_id: Optional[list[str]] = None,
+    business_artifact_definition_code: Optional[list[str]] = None,
+    value: Optional[list[str]] = None,
     **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -377,7 +373,7 @@ class BusinessArtifactOperations:
 
     models = _models
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         input_args = list(args)
         self._client: PipelineClient = input_args.pop(0) if input_args else kwargs.pop("client")
         self._config: KuFlowRestClientConfiguration = input_args.pop(0) if input_args else kwargs.pop("config")
@@ -390,11 +386,11 @@ class BusinessArtifactOperations:
         *,
         size: int = 25,
         page: int = 0,
-        sort: Optional[List[str]] = None,
-        tenant_id: Optional[List[str]] = None,
-        business_artifact_definition_id: Optional[List[str]] = None,
-        business_artifact_definition_code: Optional[List[str]] = None,
-        value: Optional[List[str]] = None,
+        sort: Optional[list[str]] = None,
+        tenant_id: Optional[list[str]] = None,
+        business_artifact_definition_id: Optional[list[str]] = None,
+        business_artifact_definition_code: Optional[list[str]] = None,
+        value: Optional[list[str]] = None,
         **kwargs: Any,
     ) -> _models.BusinessArtifactPage:
         """Find all accessible Business Artifacts.
@@ -467,7 +463,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("BusinessArtifactPage", pipeline_response.http_response)
@@ -579,7 +578,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [200, 201]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("BusinessArtifact", pipeline_response.http_response)
@@ -630,7 +632,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("BusinessArtifact", pipeline_response.http_response)
@@ -683,7 +688,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [204]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         if cls:
@@ -701,8 +709,7 @@ class BusinessArtifactOperations:
         """Save JSON data.
 
         Allow to save a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
+        invalid, then the json is marked as invalid.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -729,8 +736,7 @@ class BusinessArtifactOperations:
         """Save JSON data.
 
         Allow to save a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
+        invalid, then the json is marked as invalid.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -754,8 +760,7 @@ class BusinessArtifactOperations:
         """Save JSON data.
 
         Allow to save a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
+        invalid, then the json is marked as invalid.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -808,7 +813,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("BusinessArtifact", pipeline_response.http_response)
@@ -822,7 +830,7 @@ class BusinessArtifactOperations:
     def patch_business_artifact_data(
         self,
         id: str,
-        json_patch: List[_models.JsonPatchOperation],
+        json_patch: list[_models.JsonPatchOperation],
         *,
         content_type: str = "application/json-patch+json",
         **kwargs: Any,
@@ -830,8 +838,7 @@ class BusinessArtifactOperations:
         """Patch JSON data.
 
         Allow to patch a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
+        invalid, then the json is marked as invalid.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -852,8 +859,7 @@ class BusinessArtifactOperations:
         """Patch JSON data.
 
         Allow to patch a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
+        invalid, then the json is marked as invalid.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -869,13 +875,12 @@ class BusinessArtifactOperations:
 
     @distributed_trace
     def patch_business_artifact_data(
-        self, id: str, json_patch: Union[List[_models.JsonPatchOperation], IO[bytes]], **kwargs: Any
+        self, id: str, json_patch: Union[list[_models.JsonPatchOperation], IO[bytes]], **kwargs: Any
     ) -> _models.BusinessArtifact:
         """Patch JSON data.
 
         Allow to patch a JSON data validating that the data follow the related schema. If the data is
-        invalid, then
-        the json is marked as invalid.
+        invalid, then the json is marked as invalid.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -927,7 +932,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("BusinessArtifact", pipeline_response.http_response)
@@ -1085,7 +1093,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [200, 201]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("BusinessArtifactAction", pipeline_response.http_response)
@@ -1141,7 +1152,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("BusinessArtifactAction", pipeline_response.http_response)
@@ -1199,7 +1213,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("BusinessArtifactAction", pipeline_response.http_response)
@@ -1344,7 +1361,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("BusinessArtifactCreateArtifactPrepare", pipeline_response.http_response)
@@ -1359,8 +1379,7 @@ class BusinessArtifactOperations:
         self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, **kwargs: Any
     ) -> _models.DocumentReference:
         """Upload a temporal document into the business artifact that later on must be linked with a
-        business
-        artifact domain resource.
+        business artifact domain resource.
 
         Upload a temporal document into the business artifact that later on must be linked with a
         business artifact
@@ -1418,7 +1437,10 @@ class BusinessArtifactOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("DocumentReference", pipeline_response.http_response)
@@ -1463,6 +1485,7 @@ class BusinessArtifactOperations:
         )
         _request.url = self._client.format_url(_request.url)
 
+        _decompress = kwargs.pop("decompress", True)
         _stream = True
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
             _request, stream=_stream, **kwargs
@@ -1476,10 +1499,13 @@ class BusinessArtifactOperations:
             except (StreamConsumedError, StreamClosedError):
                 pass
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(_models.DefaultError, pipeline_response)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = response.iter_bytes()
+        deserialized = response.iter_bytes() if _decompress else response.iter_raw()
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore

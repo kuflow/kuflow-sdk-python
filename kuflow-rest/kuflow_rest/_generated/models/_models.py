@@ -31,9 +31,9 @@
 # --------------------------------------------------------------------------
 
 import datetime
-from typing import Any, Dict, List, Optional, TYPE_CHECKING, Union
+from typing import Any, Optional, TYPE_CHECKING, Union
 
-from .. import _serialization
+from .._utils import serialization as _serialization
 
 if TYPE_CHECKING:
     from .. import models as _models
@@ -400,9 +400,8 @@ class BusinessArtifact(AbstractAudited):
 
 
 class BusinessArtifactAction(AbstractAudited):
-    """A Business Artifact action invocation. The populated sub-field
-    (\\ ``startWorkflow``\\ , ``startProcess``\\ , ``downloadable``\\ , ``createArtifact``\\ ) is
-    dictated by ``type``.
+    """A Business Artifact action invocation. The populated sub-field (\\ ``startWorkflow``\\ ,
+    ``startProcess``\\ , ``downloadable``\\ , ``createArtifact``\\ ) is dictated by ``type``.
 
     All required parameters must be populated in order to send to server.
 
@@ -427,15 +426,14 @@ class BusinessArtifactAction(AbstractAudited):
      ~kuflow.rest.models.BusinessArtifactActionDefinitionRef
     :ivar start_workflow: Action details for actions of type START_WORKFLOW.
     :vartype start_workflow: ~kuflow.rest.models.BusinessArtifactActionStartWorkflow
-    :ivar start_process: Action details for actions of type START_PROCESS. Actions of this
-     type complete synchronously, so all fields are present in the invoke
-     response.
+    :ivar start_process: Action details for actions of type START_PROCESS. Actions of this type
+     complete synchronously, so all fields are present in the invoke response.
     :vartype start_process: ~kuflow.rest.models.BusinessArtifactActionStartProcess
     :ivar downloadable: Action details for actions of type DOWNLOADABLE.
     :vartype downloadable: ~kuflow.rest.models.BusinessArtifactActionDownloadable
-    :ivar create_artifact: Action details for actions of type CREATE_BUSINESS_ARTIFACT.
-     Actions of this type complete synchronously, so the populated value and
-     the created Business Artifact ID are present in the invoke response.
+    :ivar create_artifact: Action details for actions of type CREATE_BUSINESS_ARTIFACT. Actions of
+     this type complete synchronously, so the populated value and the created Business Artifact ID
+     are present in the invoke response.
     :vartype create_artifact: ~kuflow.rest.models.BusinessArtifactActionCreateArtifact
     """
 
@@ -503,15 +501,14 @@ class BusinessArtifactAction(AbstractAudited):
          ~kuflow.rest.models.BusinessArtifactActionDefinitionRef
         :keyword start_workflow: Action details for actions of type START_WORKFLOW.
         :paramtype start_workflow: ~kuflow.rest.models.BusinessArtifactActionStartWorkflow
-        :keyword start_process: Action details for actions of type START_PROCESS. Actions of this
-         type complete synchronously, so all fields are present in the invoke
-         response.
+        :keyword start_process: Action details for actions of type START_PROCESS. Actions of this type
+         complete synchronously, so all fields are present in the invoke response.
         :paramtype start_process: ~kuflow.rest.models.BusinessArtifactActionStartProcess
         :keyword downloadable: Action details for actions of type DOWNLOADABLE.
         :paramtype downloadable: ~kuflow.rest.models.BusinessArtifactActionDownloadable
-        :keyword create_artifact: Action details for actions of type CREATE_BUSINESS_ARTIFACT.
-         Actions of this type complete synchronously, so the populated value and
-         the created Business Artifact ID are present in the invoke response.
+        :keyword create_artifact: Action details for actions of type CREATE_BUSINESS_ARTIFACT. Actions
+         of this type complete synchronously, so the populated value and the created Business Artifact
+         ID are present in the invoke response.
         :paramtype create_artifact: ~kuflow.rest.models.BusinessArtifactActionCreateArtifact
         """
         super().__init__(
@@ -532,9 +529,9 @@ class BusinessArtifactAction(AbstractAudited):
 
 
 class BusinessArtifactActionCreateArtifact(_serialization.Model):
-    """Action details for actions of type CREATE_BUSINESS_ARTIFACT.
-    Actions of this type complete synchronously, so the populated value and
-    the created Business Artifact ID are present in the invoke response.
+    """Action details for actions of type CREATE_BUSINESS_ARTIFACT. Actions of this type complete
+    synchronously, so the populated value and the created Business Artifact ID are present in the
+    invoke response.
 
     All required parameters must be populated in order to send to server.
 
@@ -565,7 +562,7 @@ class BusinessArtifactActionCreateArtifact(_serialization.Model):
         *,
         business_artifact_definition_ref: "_models.BusinessArtifactDefinitionRef",
         business_artifact_id: Optional[str] = None,
-        value: Optional[Dict[str, Any]] = None,
+        value: Optional[dict[str, Any]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -584,10 +581,9 @@ class BusinessArtifactActionCreateArtifact(_serialization.Model):
 
 
 class BusinessArtifactActionCreateParams(_serialization.Model):
-    """Params to invoke an action on a Business Artifact. The populated
-    sub-field (\\ ``startWorkflow``\\ , ``downloadable``\\ , ``startProcess``\\ ,
-    ``createArtifact``\\ ) must match the type of the action identified by
-    ``businessArtifactActionDefinitionCode``.
+    """Params to invoke an action on a Business Artifact. The populated sub-field (\\
+    ``startWorkflow``\\ , ``downloadable``\\ , ``startProcess``\\ , ``createArtifact``\\ ) must
+    match the type of the action identified by ``businessArtifactActionDefinitionCode``.
 
     All required parameters must be populated in order to send to server.
 
@@ -602,8 +598,7 @@ class BusinessArtifactActionCreateParams(_serialization.Model):
     :ivar start_process: Params for invoking an action of type START_PROCESS.
     :vartype start_process: ~kuflow.rest.models.BusinessArtifactActionCreateParamsStartProcess
     :ivar create_artifact: Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The
-     ``value`` is
-     the (potentially user-edited) form previously obtained via the
+     ``value`` is the (potentially user-edited) form previously obtained via the
      ``prepareBusinessArtifactCreateArtifact`` operation.
     :vartype create_artifact: ~kuflow.rest.models.BusinessArtifactActionCreateParamsCreateArtifact
     """
@@ -644,8 +639,7 @@ class BusinessArtifactActionCreateParams(_serialization.Model):
         :keyword start_process: Params for invoking an action of type START_PROCESS.
         :paramtype start_process: ~kuflow.rest.models.BusinessArtifactActionCreateParamsStartProcess
         :keyword create_artifact: Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The
-         ``value`` is
-         the (potentially user-edited) form previously obtained via the
+         ``value`` is the (potentially user-edited) form previously obtained via the
          ``prepareBusinessArtifactCreateArtifact`` operation.
         :paramtype create_artifact:
          ~kuflow.rest.models.BusinessArtifactActionCreateParamsCreateArtifact
@@ -660,8 +654,8 @@ class BusinessArtifactActionCreateParams(_serialization.Model):
 
 
 class BusinessArtifactActionCreateParamsCreateArtifact(_serialization.Model):  # pylint: disable=name-too-long
-    """Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The ``value`` is
-    the (potentially user-edited) form previously obtained via the
+    """Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The ``value`` is the
+    (potentially user-edited) form previously obtained via the
     ``prepareBusinessArtifactCreateArtifact`` operation.
 
     :ivar value: Form value to be applied to the new Business Artifact.
@@ -672,7 +666,7 @@ class BusinessArtifactActionCreateParamsCreateArtifact(_serialization.Model):  #
         "value": {"key": "value", "type": "{object}"},
     }
 
-    def __init__(self, *, value: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+    def __init__(self, *, value: Optional[dict[str, Any]] = None, **kwargs: Any) -> None:
         """
         :keyword value: Form value to be applied to the new Business Artifact.
         :paramtype value: dict[str, any]
@@ -693,7 +687,7 @@ class BusinessArtifactActionCreateParamsDownloadable(_serialization.Model):  # p
         "input": {"key": "input", "type": "{object}"},
     }
 
-    def __init__(self, *, input: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+    def __init__(self, *, input: Optional[dict[str, Any]] = None, **kwargs: Any) -> None:
         """
         :keyword input: Input passed to the workflow that produces the downloadable. Validated against
          the action's input schema.
@@ -714,7 +708,7 @@ class BusinessArtifactActionCreateParamsStartProcess(_serialization.Model):  # p
         "metadata": {"key": "metadata", "type": "{object}"},
     }
 
-    def __init__(self, *, metadata: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+    def __init__(self, *, metadata: Optional[dict[str, Any]] = None, **kwargs: Any) -> None:
         """
         :keyword metadata: Metadata applied to the process created by this action.
         :paramtype metadata: dict[str, any]
@@ -734,7 +728,7 @@ class BusinessArtifactActionCreateParamsStartWorkflow(_serialization.Model):  # 
         "input": {"key": "input", "type": "{object}"},
     }
 
-    def __init__(self, *, input: Optional[Dict[str, Any]] = None, **kwargs: Any) -> None:
+    def __init__(self, *, input: Optional[dict[str, Any]] = None, **kwargs: Any) -> None:
         """
         :keyword input: Input passed to the workflow. Validated against the action's input schema.
         :paramtype input: dict[str, any]
@@ -824,9 +818,8 @@ class BusinessArtifactActionDownloadable(_serialization.Model):
 
 
 class BusinessArtifactActionStartProcess(_serialization.Model):
-    """Action details for actions of type START_PROCESS. Actions of this
-    type complete synchronously, so all fields are present in the invoke
-    response.
+    """Action details for actions of type START_PROCESS. Actions of this type complete synchronously,
+    so all fields are present in the invoke response.
 
     All required parameters must be populated in order to send to server.
 
@@ -879,8 +872,8 @@ class BusinessArtifactActionStartWorkflow(_serialization.Model):
 
 
 class BusinessArtifactCreateArtifactPrepare(_serialization.Model):
-    """Pre-filled value for a CREATE_BUSINESS_ARTIFACT action. Returned by the
-    prepare operation; nothing is persisted on the server.
+    """Pre-filled value for a CREATE_BUSINESS_ARTIFACT action. Returned by the prepare operation;
+    nothing is persisted on the server.
 
     All required parameters must be populated in order to send to server.
 
@@ -906,7 +899,7 @@ class BusinessArtifactCreateArtifactPrepare(_serialization.Model):
         self,
         *,
         business_artifact_definition_ref: "_models.BusinessArtifactDefinitionRef",
-        value: Optional[Dict[str, Any]] = None,
+        value: Optional[dict[str, Any]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -1113,7 +1106,7 @@ class BusinessArtifactPage(Page):
     }
 
     def __init__(
-        self, *, metadata: "_models.PageMetadata", content: List["_models.BusinessArtifactPageItem"], **kwargs: Any
+        self, *, metadata: "_models.PageMetadata", content: list["_models.BusinessArtifactPageItem"], **kwargs: Any
     ) -> None:
         """
         :keyword metadata: Required.
@@ -1239,7 +1232,7 @@ class DefaultError(_serialization.Model):
         timestamp: datetime.datetime,
         status: int,
         message: str,
-        errors: Optional[List["_models.DefaultErrorInfo"]] = None,
+        errors: Optional[list["_models.DefaultErrorInfo"]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -1366,7 +1359,7 @@ class GroupPage(Page):
     }
 
     def __init__(
-        self, *, metadata: "_models.PageMetadata", content: List["_models.GroupPageItem"], **kwargs: Any
+        self, *, metadata: "_models.PageMetadata", content: list["_models.GroupPageItem"], **kwargs: Any
     ) -> None:
         """
         :keyword metadata: Required.
@@ -1515,7 +1508,7 @@ class JsonValue(_serialization.Model):
         "errors": {"key": "errors", "type": "[JsonValueError]"},
     }
 
-    def __init__(self, *, value: Dict[str, Any], **kwargs: Any) -> None:
+    def __init__(self, *, value: dict[str, Any], **kwargs: Any) -> None:
         """
         :keyword value: json value filled that complain with the related json schema. Required.
         :paramtype value: dict[str, any]
@@ -1523,7 +1516,7 @@ class JsonValue(_serialization.Model):
         super().__init__(**kwargs)
         self.valid: Optional[bool] = None
         self.value = value
-        self.errors: Optional[List[_models.JsonValueError]] = None
+        self.errors: Optional[list[_models.JsonValueError]] = None
 
 
 class JsonValueError(_serialization.Model):
@@ -1744,7 +1737,7 @@ class PrincipalPage(Page):
     }
 
     def __init__(
-        self, *, metadata: "_models.PageMetadata", content: List["_models.PrincipalPageItem"], **kwargs: Any
+        self, *, metadata: "_models.PageMetadata", content: list["_models.PrincipalPageItem"], **kwargs: Any
     ) -> None:
         """
         :keyword metadata: Required.
@@ -1970,8 +1963,8 @@ class ProcessChangeInitiatorParams(_serialization.Model):
 
 
 class ProcessCreateParams(_serialization.Model):
-    """Params to create a Process. Either ``processDefinitionId`` or
-    ``processDefinitionCode`` (with ``tenantId``\\ ) must be provided.
+    """Params to create a Process. Either ``processDefinitionId`` or ``processDefinitionCode`` (with
+    ``tenantId``\\ ) must be provided.
 
     :ivar id:
     :vartype id: str
@@ -2343,10 +2336,9 @@ class ProcessItemAiAssistanceGenerateParams(_serialization.Model):
     All required parameters must be populated in order to send to server.
 
     :ivar request_id: Client-supplied UUID identifying this logical AI assistance attempt. Use the
-     same
-     ``requestId`` to poll an in-flight or completed run. Use a new ``requestId`` to start a
-     fresh run once the previous one has reached a final state. While a run is PENDING,
-     calling this endpoint with a different ``requestId`` is rejected with 409. Required.
+     same ``requestId`` to poll an in-flight or completed run. Use a new ``requestId`` to start a
+     fresh run once the previous one has reached a final state. While a run is PENDING, calling this
+     endpoint with a different ``requestId`` is rejected with 409. Required.
     :vartype request_id: str
     """
 
@@ -2361,10 +2353,9 @@ class ProcessItemAiAssistanceGenerateParams(_serialization.Model):
     def __init__(self, *, request_id: str, **kwargs: Any) -> None:
         """
         :keyword request_id: Client-supplied UUID identifying this logical AI assistance attempt. Use
-         the same
-         ``requestId`` to poll an in-flight or completed run. Use a new ``requestId`` to start a
-         fresh run once the previous one has reached a final state. While a run is PENDING,
-         calling this endpoint with a different ``requestId`` is rejected with 409. Required.
+         the same ``requestId`` to poll an in-flight or completed run. Use a new ``requestId`` to start
+         a fresh run once the previous one has reached a final state. While a run is PENDING, calling
+         this endpoint with a different ``requestId`` is rejected with 409. Required.
         :paramtype request_id: str
         """
         super().__init__(**kwargs)
@@ -2633,7 +2624,7 @@ class ProcessItemPage(Page):
     }
 
     def __init__(
-        self, *, metadata: "_models.PageMetadata", content: List["_models.ProcessItemPageItem"], **kwargs: Any
+        self, *, metadata: "_models.PageMetadata", content: list["_models.ProcessItemPageItem"], **kwargs: Any
     ) -> None:
         """
         :keyword metadata: Required.
@@ -2791,7 +2782,7 @@ class ProcessItemTask(_serialization.Model):
         state: Union[str, "_models.ProcessItemTaskState"],
         data: Optional["_models.JsonValue"] = None,
         context_data: Optional["_models.JsonValue"] = None,
-        logs: Optional[List["_models.ProcessItemTaskLog"]] = None,
+        logs: Optional[list["_models.ProcessItemTaskLog"]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -3086,7 +3077,7 @@ class ProcessPage(Page):
     }
 
     def __init__(
-        self, *, metadata: "_models.PageMetadata", content: List["_models.ProcessPageItem"], **kwargs: Any
+        self, *, metadata: "_models.PageMetadata", content: list["_models.ProcessPageItem"], **kwargs: Any
     ) -> None:
         """
         :keyword metadata: Required.
@@ -3207,7 +3198,7 @@ class ProcessRelated(_serialization.Model):
     }
 
     def __init__(
-        self, *, incoming: Optional[List[str]] = None, outcoming: Optional[List[str]] = None, **kwargs: Any
+        self, *, incoming: Optional[list[str]] = None, outcoming: Optional[list[str]] = None, **kwargs: Any
     ) -> None:
         """
         :keyword incoming: Processes whose relationship target is the current process.
@@ -3290,7 +3281,7 @@ class Robot(AbstractAudited):
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
         description: Optional[str] = None,
-        environment_variables: Optional[Dict[str, str]] = None,
+        environment_variables: Optional[dict[str, str]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -3358,7 +3349,7 @@ class RobotPage(Page):
     }
 
     def __init__(
-        self, *, metadata: "_models.PageMetadata", content: List["_models.RobotPageItem"], **kwargs: Any
+        self, *, metadata: "_models.PageMetadata", content: list["_models.RobotPageItem"], **kwargs: Any
     ) -> None:
         """
         :keyword metadata: Required.
@@ -3643,7 +3634,7 @@ class TenantPage(Page):
     }
 
     def __init__(
-        self, *, metadata: "_models.PageMetadata", content: List["_models.TenantPageItem"], **kwargs: Any
+        self, *, metadata: "_models.PageMetadata", content: list["_models.TenantPageItem"], **kwargs: Any
     ) -> None:
         """
         :keyword metadata: Required.
@@ -3799,7 +3790,7 @@ class TenantUserPage(Page):
     }
 
     def __init__(
-        self, *, metadata: "_models.PageMetadata", content: List["_models.TenantUserPageItem"], **kwargs: Any
+        self, *, metadata: "_models.PageMetadata", content: list["_models.TenantUserPageItem"], **kwargs: Any
     ) -> None:
         """
         :keyword metadata: Required.
@@ -4452,10 +4443,10 @@ class Worker(AbstractAudited):
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
-        workflow_types: Optional[List[str]] = None,
-        activity_types: Optional[List[str]] = None,
+        workflow_types: Optional[list[str]] = None,
+        activity_types: Optional[list[str]] = None,
         installation_id: Optional[str] = None,
-        robot_ids: Optional[List[str]] = None,
+        robot_ids: Optional[list[str]] = None,
         tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
@@ -4559,10 +4550,10 @@ class WorkerCreateParams(_serialization.Model):
         task_queue: str,
         hostname: str,
         ip: str,
-        workflow_types: Optional[List[str]] = None,
-        activity_types: Optional[List[str]] = None,
+        workflow_types: Optional[list[str]] = None,
+        activity_types: Optional[list[str]] = None,
         installation_id: Optional[str] = None,
-        robot_ids: Optional[List[str]] = None,
+        robot_ids: Optional[list[str]] = None,
         tenant_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
