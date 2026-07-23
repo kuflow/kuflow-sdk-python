@@ -702,19 +702,31 @@ class BusinessArtifactActionCreateParamsStartProcess(_serialization.Model):  # p
 
     :ivar metadata: Metadata applied to the process created by this action.
     :vartype metadata: dict[str, any]
+    :ivar entity: Entity data applied to the process created by this action. Validated against the
+     process definition entity schema; validation errors are recorded on the process entity value.
+     Ignored if empty or if the process definition has no entity structure.
+    :vartype entity: dict[str, any]
     """
 
     _attribute_map = {
         "metadata": {"key": "metadata", "type": "{object}"},
+        "entity": {"key": "entity", "type": "{object}"},
     }
 
-    def __init__(self, *, metadata: Optional[dict[str, Any]] = None, **kwargs: Any) -> None:
+    def __init__(
+        self, *, metadata: Optional[dict[str, Any]] = None, entity: Optional[dict[str, Any]] = None, **kwargs: Any
+    ) -> None:
         """
         :keyword metadata: Metadata applied to the process created by this action.
         :paramtype metadata: dict[str, any]
+        :keyword entity: Entity data applied to the process created by this action. Validated against
+         the process definition entity schema; validation errors are recorded on the process entity
+         value. Ignored if empty or if the process definition has no entity structure.
+        :paramtype entity: dict[str, any]
         """
         super().__init__(**kwargs)
         self.metadata = metadata
+        self.entity = entity
 
 
 class BusinessArtifactActionCreateParamsStartWorkflow(_serialization.Model):  # pylint: disable=name-too-long
@@ -1976,10 +1988,15 @@ class ProcessCreateParams(_serialization.Model):
     :vartype process_definition_code: str
     :ivar metadata: Json value.
     :vartype metadata: ~kuflow.rest.models.JsonValue
+    :ivar entity: Json value.
+    :vartype entity: ~kuflow.rest.models.JsonValue
     :ivar initiator_id:
     :vartype initiator_id: str
     :ivar initiator_email:
     :vartype initiator_email: str
+    :ivar related_process_id: Optional id of another process to which the created process is
+     related. Surfaced on read as ``Process.processRelated.outcoming``.
+    :vartype related_process_id: str
     """
 
     _attribute_map = {
@@ -1988,8 +2005,10 @@ class ProcessCreateParams(_serialization.Model):
         "tenant_id": {"key": "tenantId", "type": "str"},
         "process_definition_code": {"key": "processDefinitionCode", "type": "str"},
         "metadata": {"key": "metadata", "type": "JsonValue"},
+        "entity": {"key": "entity", "type": "JsonValue"},
         "initiator_id": {"key": "initiatorId", "type": "str"},
         "initiator_email": {"key": "initiatorEmail", "type": "str"},
+        "related_process_id": {"key": "relatedProcessId", "type": "str"},
     }
 
     def __init__(
@@ -2000,8 +2019,10 @@ class ProcessCreateParams(_serialization.Model):
         tenant_id: Optional[str] = None,
         process_definition_code: Optional[str] = None,
         metadata: Optional["_models.JsonValue"] = None,
+        entity: Optional["_models.JsonValue"] = None,
         initiator_id: Optional[str] = None,
         initiator_email: Optional[str] = None,
+        related_process_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -2015,10 +2036,15 @@ class ProcessCreateParams(_serialization.Model):
         :paramtype process_definition_code: str
         :keyword metadata: Json value.
         :paramtype metadata: ~kuflow.rest.models.JsonValue
+        :keyword entity: Json value.
+        :paramtype entity: ~kuflow.rest.models.JsonValue
         :keyword initiator_id:
         :paramtype initiator_id: str
         :keyword initiator_email:
         :paramtype initiator_email: str
+        :keyword related_process_id: Optional id of another process to which the created process is
+         related. Surfaced on read as ``Process.processRelated.outcoming``.
+        :paramtype related_process_id: str
         """
         super().__init__(**kwargs)
         self.id = id
@@ -2026,8 +2052,10 @@ class ProcessCreateParams(_serialization.Model):
         self.tenant_id = tenant_id
         self.process_definition_code = process_definition_code
         self.metadata = metadata
+        self.entity = entity
         self.initiator_id = initiator_id
         self.initiator_email = initiator_email
+        self.related_process_id = related_process_id
 
 
 class ProcessDefinitionRef(_serialization.Model):

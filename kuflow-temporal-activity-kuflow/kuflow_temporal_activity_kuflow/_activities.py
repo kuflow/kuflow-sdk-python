@@ -104,9 +104,15 @@ class KuFlowActivities:
         request: models_temporal.ProcessFindRequest,
     ) -> models_temporal.ProcessFindResponse:
         try:
-            # Get all non-None properties of the object to avoid overwrite defaults
-            non_none_props = {k: v for k, v in vars(request).items() if v is not None}
-            proces_page = self._kuflow_client.process.find_processes(**non_none_props)
+            proces_page = self._kuflow_client.process.find_processes(
+                size=request.size,
+                page=request.page,
+                sort=request.sorts,
+                tenant_id=request.tenant_ids,
+                process_definition_id=request.process_definition_ids,
+                process_definition_code=request.process_definition_codes,
+                metadata=request.metadata,
+            )
 
             return models_temporal.ProcessFindResponse(processes=proces_page)
         except Exception as err:

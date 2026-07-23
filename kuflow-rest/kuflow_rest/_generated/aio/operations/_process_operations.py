@@ -102,6 +102,7 @@ class ProcessOperations:
         tenant_id: Optional[list[str]] = None,
         process_definition_id: Optional[list[str]] = None,
         process_definition_code: Optional[list[str]] = None,
+        metadata: Optional[list[str]] = None,
         **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
@@ -127,6 +128,16 @@ class ProcessOperations:
         :paramtype process_definition_id: list[str]
         :keyword process_definition_code: Filter by process definition codes. Default value is None.
         :paramtype process_definition_code: list[str]
+        :keyword metadata: Filter by process metadata field values. Each value is an expression with
+         the format
+         ``fieldCode operation value1 value2...`` (space-separated).
+
+         Supported operations: ``eq``\\ , ``le``\\ , ``ge``\\ , ``between``\\ , ``contains``\\ ,
+         ``in``.
+
+         Filtering by metadata requires specifying exactly one ``processDefinitionId`` or
+         ``processDefinitionCode``. Default value is None.
+        :paramtype metadata: list[str]
         :return: ProcessPage
         :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -151,6 +162,7 @@ class ProcessOperations:
             tenant_id=tenant_id,
             process_definition_id=process_definition_id,
             process_definition_code=process_definition_code,
+            metadata=metadata,
             headers=_headers,
             params=_params,
         )
