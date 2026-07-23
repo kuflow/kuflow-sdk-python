@@ -29,9 +29,11 @@ from ._parser import (
     parse_kuflow_group,
     parse_kuflow_principal,
 )
+from ._search_criteria import encode_filter_expression
 
 
 __all__ = [
+    "encode_filter_expression",
     "generate_kuflow_group_string",
     "generate_kuflow_principal_string",
     "parse_kuflow_file",

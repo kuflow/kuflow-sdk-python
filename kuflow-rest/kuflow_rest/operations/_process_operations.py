@@ -50,6 +50,7 @@ class ProcessOperations:
         tenant_id: Optional[Union[str, list[str]]] = None,
         process_definition_id: Optional[Union[str, list[str]]] = None,
         process_definition_code: Optional[Union[str, list[str]]] = None,
+        metadata: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
@@ -75,6 +76,16 @@ class ProcessOperations:
         :type process_definition_id: Optional[Union[str, List[str]]]
         :keyword process_definition_code: Filter by an array of process definition codes. Default value is None.
         :type process_definition_code: Optional[Union[str, List[str]]]
+        :keyword metadata: Filter by process metadata field values. Each value is an expression with
+                           the format ``fieldCode operation value1 value2...`` (space-separated).
+
+                           Supported operations: eq, le, ge, between, contains, in.
+
+                           Filtering by metadata requires specifying exactly one ``process_definition_id``
+                           or ``process_definition_code``. Use
+                           :func:`~kuflow.rest.utils.encode_filter_expression` to build each expression.
+                           Default value is None.
+        :type metadata: Optional[Union[str, List[str]]]
         :return: ProcessPage
         :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -91,6 +102,9 @@ class ProcessOperations:
         if process_definition_code is not None and isinstance(process_definition_code, str):
             process_definition_code = [process_definition_code]
 
+        if metadata is not None and isinstance(metadata, str):
+            metadata = [metadata]
+
         return self._kuflow_client.process.find_processes(
             size=size,
             page=page,
@@ -98,6 +112,7 @@ class ProcessOperations:
             tenant_id=tenant_id,
             process_definition_id=process_definition_id,
             process_definition_code=process_definition_code,
+            metadata=metadata,
             **kwargs,
         )
 

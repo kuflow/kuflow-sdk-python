@@ -89,21 +89,45 @@ class ProcessFindRequest(serialization.Model):
         "page": {"key": "page", "type": "int"},
         "size": {"key": "size", "type": "int"},
         "sorts": {"key": "sorts", "type": "[str]"},
+        "tenant_ids": {"key": "tenantIds", "type": "[str]"},
+        "process_definition_ids": {"key": "processDefinitionIds", "type": "[str]"},
+        "process_definition_codes": {"key": "processDefinitionCodes", "type": "[str]"},
+        "metadata": {"key": "metadata", "type": "[str]"},
     }
 
     def __init__(
-        self, page: Optional[int] = None, size: Optional[int] = None, sorts: Optional[list[str]] = None, **kwargs: Any
+        self,
+        page: Optional[int] = None,
+        size: Optional[int] = None,
+        sorts: Optional[list[str]] = None,
+        tenant_ids: Optional[list[str]] = None,
+        process_definition_ids: Optional[list[str]] = None,
+        process_definition_codes: Optional[list[str]] = None,
+        metadata: Optional[list[str]] = None,
+        **kwargs: Any,
     ) -> None:
         """
         Parameters:
             page: Page requested, 0-index
             size: Page size
             sorts: Sorting criteria in the format: property{,asc|desc}. Example: name,desc
+            tenant_ids: Filter processes that exists in one of tenant ids
+            process_definition_ids: Filter by an array of process definition ids
+            process_definition_codes: Filter by an array of process definition codes
+            metadata: Filter by process metadata field values. Each value is an expression with the
+                format "fieldCode operation value1 value2..." (space-separated). Supported operations:
+                eq, le, ge, between, contains, in. Filtering by metadata requires specifying exactly
+                one process_definition_id or process_definition_code. Use
+                kuflow_rest.utils.encode_filter_expression to build each expression.
         """
         super().__init__(**kwargs)
         self.page = page
         self.size = size
         self.sorts = sorts
+        self.tenant_ids = tenant_ids
+        self.process_definition_ids = process_definition_ids
+        self.process_definition_codes = process_definition_codes
+        self.metadata = metadata
 
 
 class ProcessFindResponse(serialization.Model):
