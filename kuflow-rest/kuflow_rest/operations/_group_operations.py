@@ -46,12 +46,12 @@ class GroupOperations:
         size: int = 25,
         page: int = 0,
         sort: Optional[Union[str, list[str]]] = None,
-        principal_id: Optional[str] = None,
         tenant_id: Optional[Union[str, list[str]]] = None,
+        principal_id: Optional[str] = None,
         group_id: Optional[Union[str, list[str]]] = None,
         group_code: Optional[Union[str, list[str]]] = None,
         **kwargs: Any,
-    ) -> _models.PrincipalPage:
+    ) -> _models.GroupPage:
         """Find all accessible Groups.
 
         List all the Groups that have been created and the used credentials has access.
@@ -83,9 +83,6 @@ class GroupOperations:
         """
         if sort is not None and isinstance(sort, str):
             sort = [sort]
-
-        if principal_id is not None and isinstance(principal_id, str):
-            principal_id = [principal_id]
 
         if tenant_id is not None and isinstance(tenant_id, str):
             tenant_id = [tenant_id]

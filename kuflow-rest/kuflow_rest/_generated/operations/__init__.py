@@ -45,6 +45,7 @@ from ._tenant_user_operations import TenantUserOperations  # type: ignore
 from ._process_operations import ProcessOperations  # type: ignore
 from ._process_item_operations import ProcessItemOperations  # type: ignore
 from ._business_artifact_operations import BusinessArtifactOperations  # type: ignore
+from ._document_operations import DocumentOperations  # type: ignore
 from ._worker_operations import WorkerOperations  # type: ignore
 from ._robot_operations import RobotOperations  # type: ignore
 
@@ -62,6 +63,7 @@ __all__ = [
     "ProcessOperations",
     "ProcessItemOperations",
     "BusinessArtifactOperations",
+    "DocumentOperations",
     "WorkerOperations",
     "RobotOperations",
 ]

@@ -69,6 +69,7 @@ def build_find_business_artifacts_request(
     business_artifact_definition_id: Optional[list[str]] = None,
     business_artifact_definition_code: Optional[list[str]] = None,
     value: Optional[list[str]] = None,
+    deleted: Optional[Union[str, _models.DeletedQueryParam]] = None,
     **kwargs: Any,
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -105,6 +106,8 @@ def build_find_business_artifacts_request(
             else ""
             for q in value
         ]
+    if deleted is not None:
+        _params["deleted"] = _SERIALIZER.query("deleted", deleted, "str")
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -165,6 +168,25 @@ def build_delete_business_artifact_request(id: str, **kwargs: Any) -> HttpReques
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
     return HttpRequest(method="DELETE", url=_url, headers=_headers, **kwargs)
+
+
+def build_restore_business_artifact_request(id: str, **kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/business-artifacts/{id}/~actions/restore"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
+
+    # Construct headers
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
 def build_update_business_artifact_data_request(  # pylint: disable=name-too-long
@@ -283,7 +305,7 @@ def build_cancel_business_artifact_action_request(  # pylint: disable=name-too-l
     return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
 
 
-def build_prepare_business_artifact_create_artifact_request(  # pylint: disable=name-too-long
+def build_prepare_business_artifact_action_create_artifact_request(  # pylint: disable=name-too-long
     id: str, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -293,6 +315,30 @@ def build_prepare_business_artifact_create_artifact_request(  # pylint: disable=
 
     # Construct URL
     _url = "/business-artifacts/{id}/~actions/prepare-create-artifact"
+    path_format_arguments = {
+        "id": _SERIALIZER.url("id", id, "str"),
+    }
+
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
+
+    # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="POST", url=_url, headers=_headers, **kwargs)
+
+
+def build_prepare_business_artifact_action_start_process_request(  # pylint: disable=name-too-long
+    id: str, **kwargs: Any
+) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/business-artifacts/{id}/~actions/prepare-start-process"
     path_format_arguments = {
         "id": _SERIALIZER.url("id", id, "str"),
     }
@@ -391,6 +437,7 @@ class BusinessArtifactOperations:
         business_artifact_definition_id: Optional[list[str]] = None,
         business_artifact_definition_code: Optional[list[str]] = None,
         value: Optional[list[str]] = None,
+        deleted: Optional[Union[str, _models.DeletedQueryParam]] = None,
         **kwargs: Any,
     ) -> _models.BusinessArtifactPage:
         """Find all accessible Business Artifacts.
@@ -424,6 +471,18 @@ class BusinessArtifactOperations:
          Supported operations: ``eq``\\ , ``le``\\ , ``ge``\\ , ``between``\\ , ``contains``\\ ,
          ``in``. Default value is None.
         :paramtype value: list[str]
+        :keyword deleted: Soft-deleted Business Artifacts filtering mode; when omitted, ``EXCLUDE``
+         applies. With ``INCLUDE`` or ``ONLY``\\ ,
+         deleted Business Artifacts are returned with their ``deletedAt`` and ``deletedBy`` fields set.
+         They are only
+         returned when the request identifies exactly one Business Artifact Definition — by exactly one
+         ``businessArtifactDefinitionId``\\ , or by exactly one ``businessArtifactDefinitionCode``
+         together with exactly one
+         ``tenantId`` (codes are unique per tenant) — and the credentials can archive or supervise its
+         Business
+         Artifacts; otherwise they are silently left out. Known values are: "EXCLUDE", "INCLUDE", and
+         "ONLY". Default value is None.
+        :paramtype deleted: str or ~kuflow.rest.models.DeletedQueryParam
         :return: BusinessArtifactPage
         :rtype: ~kuflow.rest.models.BusinessArtifactPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -449,6 +508,7 @@ class BusinessArtifactOperations:
             business_artifact_definition_id=business_artifact_definition_id,
             business_artifact_definition_code=business_artifact_definition_code,
             value=value,
+            deleted=deleted,
             headers=_headers,
             params=_params,
         )
@@ -651,7 +711,8 @@ class BusinessArtifactOperations:
     ) -> None:
         """Delete a Business Artifact by ID.
 
-        Deletes the requested Business Artifact.
+        Deletes the requested Business Artifact. The deletion is soft: the Business Artifact can be
+        brought back with the ``restoreBusinessArtifact`` operation.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -696,6 +757,61 @@ class BusinessArtifactOperations:
 
         if cls:
             return cls(pipeline_response, None, {})  # type: ignore
+
+    @distributed_trace
+    def restore_business_artifact(self, id: str, **kwargs: Any) -> _models.BusinessArtifact:
+        """Restore a deleted Business Artifact by ID.
+
+        Restore a previously deleted Business Artifact, the undo of the ``deleteBusinessArtifact``
+        operation. If the Business Artifact is not deleted, no action is taken.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.BusinessArtifact] = kwargs.pop("cls", None)
+
+        _request = build_restore_business_artifact_request(
+            id=id,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("BusinessArtifact", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
 
     @overload
     def update_business_artifact_data(
@@ -1227,14 +1343,14 @@ class BusinessArtifactOperations:
         return deserialized  # type: ignore
 
     @overload
-    def prepare_business_artifact_create_artifact(  # pylint: disable=name-too-long
+    def prepare_business_artifact_action_create_artifact(  # pylint: disable=name-too-long
         self,
         id: str,
-        business_artifact_create_artifact_prepare_params: _models.BusinessArtifactCreateArtifactPrepareParams,
+        business_artifact_action_create_artifact_prepare_params: _models.BusinessArtifactActionCreateArtifactPrepareParams,
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.BusinessArtifactCreateArtifactPrepare:
+    ) -> _models.BusinessArtifactActionCreateArtifactPrepare:
         """Prepare the data for a CREATE_BUSINESS_ARTIFACT action.
 
         Compute the pre-filled value that a ``CREATE_BUSINESS_ARTIFACT`` action would produce
@@ -1246,27 +1362,27 @@ class BusinessArtifactOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param business_artifact_create_artifact_prepare_params: Params identifying the
+        :param business_artifact_action_create_artifact_prepare_params: Params identifying the
          CREATE_BUSINESS_ARTIFACT action to prepare. Required.
-        :type business_artifact_create_artifact_prepare_params:
-         ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepareParams
+        :type business_artifact_action_create_artifact_prepare_params:
+         ~kuflow.rest.models.BusinessArtifactActionCreateArtifactPrepareParams
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: BusinessArtifactCreateArtifactPrepare
-        :rtype: ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepare
+        :return: BusinessArtifactActionCreateArtifactPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactActionCreateArtifactPrepare
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @overload
-    def prepare_business_artifact_create_artifact(  # pylint: disable=name-too-long
+    def prepare_business_artifact_action_create_artifact(  # pylint: disable=name-too-long
         self,
         id: str,
-        business_artifact_create_artifact_prepare_params: IO[bytes],
+        business_artifact_action_create_artifact_prepare_params: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any,
-    ) -> _models.BusinessArtifactCreateArtifactPrepare:
+    ) -> _models.BusinessArtifactActionCreateArtifactPrepare:
         """Prepare the data for a CREATE_BUSINESS_ARTIFACT action.
 
         Compute the pre-filled value that a ``CREATE_BUSINESS_ARTIFACT`` action would produce
@@ -1278,26 +1394,26 @@ class BusinessArtifactOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param business_artifact_create_artifact_prepare_params: Params identifying the
+        :param business_artifact_action_create_artifact_prepare_params: Params identifying the
          CREATE_BUSINESS_ARTIFACT action to prepare. Required.
-        :type business_artifact_create_artifact_prepare_params: IO[bytes]
+        :type business_artifact_action_create_artifact_prepare_params: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :return: BusinessArtifactCreateArtifactPrepare
-        :rtype: ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepare
+        :return: BusinessArtifactActionCreateArtifactPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactActionCreateArtifactPrepare
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
     @distributed_trace
-    def prepare_business_artifact_create_artifact(  # pylint: disable=name-too-long
+    def prepare_business_artifact_action_create_artifact(  # pylint: disable=name-too-long
         self,
         id: str,
-        business_artifact_create_artifact_prepare_params: Union[
-            _models.BusinessArtifactCreateArtifactPrepareParams, IO[bytes]
+        business_artifact_action_create_artifact_prepare_params: Union[
+            _models.BusinessArtifactActionCreateArtifactPrepareParams, IO[bytes]
         ],
         **kwargs: Any,
-    ) -> _models.BusinessArtifactCreateArtifactPrepare:
+    ) -> _models.BusinessArtifactActionCreateArtifactPrepare:
         """Prepare the data for a CREATE_BUSINESS_ARTIFACT action.
 
         Compute the pre-filled value that a ``CREATE_BUSINESS_ARTIFACT`` action would produce
@@ -1309,13 +1425,13 @@ class BusinessArtifactOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param business_artifact_create_artifact_prepare_params: Params identifying the
+        :param business_artifact_action_create_artifact_prepare_params: Params identifying the
          CREATE_BUSINESS_ARTIFACT action to prepare. Is either a
-         BusinessArtifactCreateArtifactPrepareParams type or a IO[bytes] type. Required.
-        :type business_artifact_create_artifact_prepare_params:
-         ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepareParams or IO[bytes]
-        :return: BusinessArtifactCreateArtifactPrepare
-        :rtype: ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepare
+         BusinessArtifactActionCreateArtifactPrepareParams type or a IO[bytes] type. Required.
+        :type business_artifact_action_create_artifact_prepare_params:
+         ~kuflow.rest.models.BusinessArtifactActionCreateArtifactPrepareParams or IO[bytes]
+        :return: BusinessArtifactActionCreateArtifactPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactActionCreateArtifactPrepare
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -1330,19 +1446,20 @@ class BusinessArtifactOperations:
         _params = kwargs.pop("params", {}) or {}
 
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
-        cls: ClsType[_models.BusinessArtifactCreateArtifactPrepare] = kwargs.pop("cls", None)
+        cls: ClsType[_models.BusinessArtifactActionCreateArtifactPrepare] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(business_artifact_create_artifact_prepare_params, (IOBase, bytes)):
-            _content = business_artifact_create_artifact_prepare_params
+        if isinstance(business_artifact_action_create_artifact_prepare_params, (IOBase, bytes)):
+            _content = business_artifact_action_create_artifact_prepare_params
         else:
             _json = self._serialize.body(
-                business_artifact_create_artifact_prepare_params, "BusinessArtifactCreateArtifactPrepareParams"
+                business_artifact_action_create_artifact_prepare_params,
+                "BusinessArtifactActionCreateArtifactPrepareParams",
             )
 
-        _request = build_prepare_business_artifact_create_artifact_request(
+        _request = build_prepare_business_artifact_action_create_artifact_request(
             id=id,
             content_type=content_type,
             json=_json,
@@ -1367,7 +1484,155 @@ class BusinessArtifactOperations:
             )
             raise HttpResponseError(response=response, model=error)
 
-        deserialized = self._deserialize("BusinessArtifactCreateArtifactPrepare", pipeline_response.http_response)
+        deserialized = self._deserialize("BusinessArtifactActionCreateArtifactPrepare", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @overload
+    def prepare_business_artifact_action_start_process(  # pylint: disable=name-too-long
+        self,
+        id: str,
+        business_artifact_action_start_process_prepare_params: _models.BusinessArtifactActionStartProcessPrepareParams,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactActionStartProcessPrepare:
+        """Prepare the metadata for a START_PROCESS action.
+
+        Compute the pre-filled metadata that a ``START_PROCESS`` action would apply to the
+        process it creates, without invoking the action or persisting any state.
+
+        Use it to populate a form that the user can review and edit. Once the user submits,
+        the filled metadata is sent back via ``createBusinessArtifactAction`` (in the
+        ``startProcess.metadata`` field).
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param business_artifact_action_start_process_prepare_params: Params identifying the
+         START_PROCESS action to prepare. Required.
+        :type business_artifact_action_start_process_prepare_params:
+         ~kuflow.rest.models.BusinessArtifactActionStartProcessPrepareParams
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: BusinessArtifactActionStartProcessPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactActionStartProcessPrepare
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @overload
+    def prepare_business_artifact_action_start_process(  # pylint: disable=name-too-long
+        self,
+        id: str,
+        business_artifact_action_start_process_prepare_params: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactActionStartProcessPrepare:
+        """Prepare the metadata for a START_PROCESS action.
+
+        Compute the pre-filled metadata that a ``START_PROCESS`` action would apply to the
+        process it creates, without invoking the action or persisting any state.
+
+        Use it to populate a form that the user can review and edit. Once the user submits,
+        the filled metadata is sent back via ``createBusinessArtifactAction`` (in the
+        ``startProcess.metadata`` field).
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param business_artifact_action_start_process_prepare_params: Params identifying the
+         START_PROCESS action to prepare. Required.
+        :type business_artifact_action_start_process_prepare_params: IO[bytes]
+        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: BusinessArtifactActionStartProcessPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactActionStartProcessPrepare
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @distributed_trace
+    def prepare_business_artifact_action_start_process(  # pylint: disable=name-too-long
+        self,
+        id: str,
+        business_artifact_action_start_process_prepare_params: Union[
+            _models.BusinessArtifactActionStartProcessPrepareParams, IO[bytes]
+        ],
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactActionStartProcessPrepare:
+        """Prepare the metadata for a START_PROCESS action.
+
+        Compute the pre-filled metadata that a ``START_PROCESS`` action would apply to the
+        process it creates, without invoking the action or persisting any state.
+
+        Use it to populate a form that the user can review and edit. Once the user submits,
+        the filled metadata is sent back via ``createBusinessArtifactAction`` (in the
+        ``startProcess.metadata`` field).
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param business_artifact_action_start_process_prepare_params: Params identifying the
+         START_PROCESS action to prepare. Is either a BusinessArtifactActionStartProcessPrepareParams
+         type or a IO[bytes] type. Required.
+        :type business_artifact_action_start_process_prepare_params:
+         ~kuflow.rest.models.BusinessArtifactActionStartProcessPrepareParams or IO[bytes]
+        :return: BusinessArtifactActionStartProcessPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactActionStartProcessPrepare
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        cls: ClsType[_models.BusinessArtifactActionStartProcessPrepare] = kwargs.pop("cls", None)
+
+        content_type = content_type or "application/json"
+        _json = None
+        _content = None
+        if isinstance(business_artifact_action_start_process_prepare_params, (IOBase, bytes)):
+            _content = business_artifact_action_start_process_prepare_params
+        else:
+            _json = self._serialize.body(
+                business_artifact_action_start_process_prepare_params, "BusinessArtifactActionStartProcessPrepareParams"
+            )
+
+        _request = build_prepare_business_artifact_action_start_process_request(
+            id=id,
+            content_type=content_type,
+            json=_json,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("BusinessArtifactActionStartProcessPrepare", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -1388,6 +1653,10 @@ class BusinessArtifactOperations:
         Documents uploaded with this API will be deleted after 2 hours as long as they have not been
         linked to a
         business artifact.
+
+        **Deprecated:** use the ``uploadDocument`` operation with
+        ``targetUri=ku:business-artifact/{businessArtifactId}``
+        instead.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -1455,6 +1724,9 @@ class BusinessArtifactOperations:
         """Download document.
 
         Given a document uri download a document.
+
+        **Deprecated:** use the ``downloadDocument`` operation instead; it resolves any document the
+        credentials can read without requiring the owning Business Artifact in the path.
 
         :param id: The resource ID. Required.
         :type id: str

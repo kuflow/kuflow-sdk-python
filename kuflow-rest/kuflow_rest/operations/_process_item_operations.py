@@ -54,6 +54,7 @@ class ProcessItemOperations:
         process_definition_id: Optional[Union[str, list[str]]] = None,
         process_definition_code: Optional[Union[str, list[str]]] = None,
         tenant_id: Optional[Union[str, list[str]]] = None,
+        deleted: Optional[Union[str, _models.DeletedQueryParam]] = None,
         **kwargs: Any,
     ) -> _models.ProcessItemPage:
         """Find all accessible Process Items.
@@ -87,6 +88,15 @@ class ProcessItemOperations:
         :type process_definition_code: list[str]
         :keyword tenant_id: Filter process items that exists in one of tenant ids. Default value is None.
         :type tenant_id: Optional[Union[str, List[str]]]
+        :keyword deleted: Deleted Process Items filtering mode; when omitted, ``EXCLUDE`` applies. The Process
+                          Items of a deleted Process are deleted with it. With ``INCLUDE`` or ``ONLY``, deleted
+                          Process Items are returned with their ``deleted_at`` and ``deleted_by`` fields set. They
+                          are only returned when the request identifies exactly one Process Definition (exactly one
+                          ``process_definition_id``, or exactly one ``process_definition_code`` together with
+                          exactly one ``tenant_id``) and the credentials can delete any Process of that definition;
+                          otherwise they are silently left out.
+                          Default value is None.
+        :type deleted: Optional[Union[str, ~kuflow.rest.models.DeletedQueryParam]]
         :return: ProcessItemPage
         :rtype: ~kuflow.rest.models.ProcessItemPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -126,6 +136,7 @@ class ProcessItemOperations:
             process_definition_id=process_definition_id,
             process_definition_code=process_definition_code,
             tenant_id=tenant_id,
+            deleted=deleted,
             **kwargs,
         )
 
@@ -157,7 +168,8 @@ class ProcessItemOperations:
     def retrieve_process_item(self, id: str, **kwargs: Any) -> _models.ProcessItem:
         """Get a process item given it ID.
 
-        Allow to get a process item by ID.
+        Allow to get a process item by ID. A deleted Process Item (the ones of a deleted Process) is returned too,
+        with its ``deleted_at`` and ``deleted_by`` fields set.
 
         :param id: The resource ID. Required.
         :type id: str

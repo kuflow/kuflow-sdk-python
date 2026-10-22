@@ -57,6 +57,17 @@ def validate_retrieve_process_request(
         )
 
 
+def validate_process_delete_request(
+    request: models_temporal.ProcessDeleteRequest,
+) -> None:
+    if not request.process_id:
+        raise ApplicationError(
+            "'process_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
 def validate_process_entity_update_request(
     request: models_temporal.ProcessEntityUpdateRequest,
 ) -> None:
@@ -137,6 +148,60 @@ def validate_process_initiator_change_request(
         )
 
 
+def validate_process_action_create_request(
+    request: models_temporal.ProcessActionCreateRequest,
+) -> None:
+    if not request.process_id:
+        raise ApplicationError(
+            "'process_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.process_action_definition_code:
+        raise ApplicationError(
+            "'process_action_definition_code' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_process_action_retrieve_request(
+    request: models_temporal.ProcessActionRetrieveRequest,
+) -> None:
+    if not request.process_id:
+        raise ApplicationError(
+            "'process_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.process_action_id:
+        raise ApplicationError(
+            "'process_action_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_process_action_cancel_request(
+    request: models_temporal.ProcessActionCancelRequest,
+) -> None:
+    if not request.process_id:
+        raise ApplicationError(
+            "'process_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.process_action_id:
+        raise ApplicationError(
+            "'process_action_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
 def validate_process_item_retrieve_request(
     request: models_temporal.ProcessItemRetrieveRequest,
 ) -> None:
@@ -198,6 +263,13 @@ def validate_process_item_create_request(
         if not request.process_item_definition_code:
             raise ApplicationError(
                 "'processItemDefinitionCode' is required for thread items",
+                type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+                non_retryable=True,
+            )
+
+        if request.process_item_thread_id:
+            raise ApplicationError(
+                "'process_item_thread_id' is not allowed for thread items, threads cannot be nested",
                 type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
                 non_retryable=True,
             )
@@ -465,8 +537,26 @@ def validate_business_artifact_action_cancel_request(
         )
 
 
-def validate_business_artifact_create_artifact_prepare_request(
-    request: models_temporal.BusinessArtifactCreateArtifactPrepareRequest,
+def validate_business_artifact_action_create_artifact_prepare_request(
+    request: models_temporal.BusinessArtifactActionCreateArtifactPrepareRequest,
+) -> None:
+    if not request.business_artifact_id:
+        raise ApplicationError(
+            "'business_artifact_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.business_artifact_action_definition_code:
+        raise ApplicationError(
+            "'business_artifact_action_definition_code' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_action_start_process_prepare_request(
+    request: models_temporal.BusinessArtifactActionStartProcessPrepareRequest,
 ) -> None:
     if not request.business_artifact_id:
         raise ApplicationError(

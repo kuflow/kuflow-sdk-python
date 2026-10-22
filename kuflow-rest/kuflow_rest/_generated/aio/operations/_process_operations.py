@@ -52,20 +52,23 @@ from azure.core.utils import case_insensitive_dict
 from ... import models as _models
 from ..._utils.serialization import Deserializer, Serializer
 from ...operations._process_operations import (
+    build_cancel_process_action_request,
     build_cancel_process_items_request,
     build_cancel_process_request,
     build_change_process_initiator_request,
     build_complete_process_request,
+    build_create_process_action_request,
     build_create_process_request,
+    build_delete_process_request,
     build_download_process_document_request,
     build_find_processes_request,
     build_patch_process_entity_request,
     build_patch_process_metadata_request,
+    build_retrieve_process_action_request,
     build_retrieve_process_request,
     build_update_process_entity_request,
     build_update_process_metadata_request,
     build_upload_process_document_request,
-    build_upload_process_user_action_document_request,
 )
 from .._configuration import KuFlowRestClientConfiguration
 
@@ -102,7 +105,11 @@ class ProcessOperations:
         tenant_id: Optional[list[str]] = None,
         process_definition_id: Optional[list[str]] = None,
         process_definition_code: Optional[list[str]] = None,
+        state: Optional[list[Union[str, _models.ProcessState]]] = None,
+        initiator_id: Optional[list[str]] = None,
+        initiator_email: Optional[list[str]] = None,
         metadata: Optional[list[str]] = None,
+        deleted: Optional[Union[str, _models.DeletedQueryParam]] = None,
         **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
@@ -128,6 +135,13 @@ class ProcessOperations:
         :paramtype process_definition_id: list[str]
         :keyword process_definition_code: Filter by process definition codes. Default value is None.
         :paramtype process_definition_code: list[str]
+        :keyword state: Filter by an array of process states. Default value is None.
+        :paramtype state: list[str or ~kuflow.rest.models.ProcessState]
+        :keyword initiator_id: Filter by an array of initiator ids, Principal ID. Default value is
+         None.
+        :paramtype initiator_id: list[str]
+        :keyword initiator_email: Filter by an array of initiator emails. Default value is None.
+        :paramtype initiator_email: list[str]
         :keyword metadata: Filter by process metadata field values. Each value is an expression with
          the format
          ``fieldCode operation value1 value2...`` (space-separated).
@@ -138,6 +152,17 @@ class ProcessOperations:
          Filtering by metadata requires specifying exactly one ``processDefinitionId`` or
          ``processDefinitionCode``. Default value is None.
         :paramtype metadata: list[str]
+        :keyword deleted: Deleted Processes filtering mode; when omitted, ``EXCLUDE`` applies. With
+         ``INCLUDE`` or ``ONLY``\\ , deleted
+         Processes are returned with their ``deletedAt`` and ``deletedBy`` fields set. They are only
+         returned when the
+         request identifies exactly one Process Definition — by exactly one ``processDefinitionId``\\ ,
+         or by exactly one
+         ``processDefinitionCode`` together with exactly one ``tenantId`` (codes are unique per tenant)
+         — and the
+         credentials can delete any Process of that definition; otherwise they are silently left out.
+         Known values are: "EXCLUDE", "INCLUDE", and "ONLY". Default value is None.
+        :paramtype deleted: str or ~kuflow.rest.models.DeletedQueryParam
         :return: ProcessPage
         :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -162,7 +187,11 @@ class ProcessOperations:
             tenant_id=tenant_id,
             process_definition_id=process_definition_id,
             process_definition_code=process_definition_code,
+            state=state,
+            initiator_id=initiator_id,
+            initiator_email=initiator_email,
             metadata=metadata,
+            deleted=deleted,
             headers=_headers,
             params=_params,
         )
@@ -311,7 +340,8 @@ class ProcessOperations:
     async def retrieve_process(self, id: str, **kwargs: Any) -> _models.Process:
         """Get a Process by ID.
 
-        Returns the requested Process when has access to do it.
+        Returns the requested Process when has access to do it. A deleted Process is returned too, with
+        its ``deletedAt`` and ``deletedBy`` fields set.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -355,6 +385,349 @@ class ProcessOperations:
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Process", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace_async
+    async def delete_process(self, id: str, **kwargs: Any) -> None:
+        """Delete a Process by ID.
+
+        Deletes the requested Process, and its Process Items with it. Only a finished Process (\\
+        ``COMPLETED`` or ``CANCELLED``\\ ) with nothing in progress, neither tasks still to be done nor
+        workflows of its actions still running, can be deleted; otherwise it answers conflict. The
+        deletion is soft: the Process is still returned by id and with ``deleted=INCLUDE|ONLY``\\ ,
+        with its ``deletedAt`` and ``deletedBy`` fields set, but it cannot be restored. Deleting a
+        Process that is already deleted does nothing.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: None
+        :rtype: None
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[None] = kwargs.pop("cls", None)
+
+        _request = build_delete_process_request(
+            id=id,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [204]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
+            raise HttpResponseError(response=response, model=error)
+
+        if cls:
+            return cls(pipeline_response, None, {})  # type: ignore
+
+    @overload
+    async def create_process_action(
+        self,
+        id: str,
+        process_action_create_params: _models.ProcessActionCreateParams,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.ProcessAction:
+        """Invoke a Process action.
+
+        Invoke an action on a Process.
+
+        Whether the call returns synchronously or asynchronously depends on the action type:
+
+
+        * ``START_WORKFLOW``\\ , ``DOWNLOADABLE``\\ : dispatched to a background worker. The
+          response returns immediately with ``status=REQUESTED``. Poll
+          ``retrieveProcessAction`` for the final state.
+        * ``START_RELATED_PROCESS``\\ , ``CREATE_TASK``\\ , ``CREATE_PROCESS_ITEM_MESSAGE``\\ ,
+          ``CREATE_PROCESS_ITEM_THREAD``\\ , ``SEND_WORKFLOW_SIGNAL``\\ : completed synchronously.
+          The response returns with ``status=COMPLETED`` (or an error status).
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
+
+        Actions of type ``SEND_WORKFLOW_SIGNAL`` whose definition declares an input form accept a
+        ``sendWorkflowSignal.input`` payload: it is validated against the definition schema,
+        persisted on the action and delivered inside the workflow signal. The input is not part
+        of the idempotency key — replaying the same ``id`` with a different input returns the
+        original action untouched.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_action_create_params: Params identifying the action to invoke. Required.
+        :type process_action_create_params: ~kuflow.rest.models.ProcessActionCreateParams
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: ProcessAction
+        :rtype: ~kuflow.rest.models.ProcessAction
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @overload
+    async def create_process_action(
+        self, id: str, process_action_create_params: IO[bytes], *, content_type: str = "application/json", **kwargs: Any
+    ) -> _models.ProcessAction:
+        """Invoke a Process action.
+
+        Invoke an action on a Process.
+
+        Whether the call returns synchronously or asynchronously depends on the action type:
+
+
+        * ``START_WORKFLOW``\\ , ``DOWNLOADABLE``\\ : dispatched to a background worker. The
+          response returns immediately with ``status=REQUESTED``. Poll
+          ``retrieveProcessAction`` for the final state.
+        * ``START_RELATED_PROCESS``\\ , ``CREATE_TASK``\\ , ``CREATE_PROCESS_ITEM_MESSAGE``\\ ,
+          ``CREATE_PROCESS_ITEM_THREAD``\\ , ``SEND_WORKFLOW_SIGNAL``\\ : completed synchronously.
+          The response returns with ``status=COMPLETED`` (or an error status).
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
+
+        Actions of type ``SEND_WORKFLOW_SIGNAL`` whose definition declares an input form accept a
+        ``sendWorkflowSignal.input`` payload: it is validated against the definition schema,
+        persisted on the action and delivered inside the workflow signal. The input is not part
+        of the idempotency key — replaying the same ``id`` with a different input returns the
+        original action untouched.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_action_create_params: Params identifying the action to invoke. Required.
+        :type process_action_create_params: IO[bytes]
+        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: ProcessAction
+        :rtype: ~kuflow.rest.models.ProcessAction
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @distributed_trace_async
+    async def create_process_action(
+        self, id: str, process_action_create_params: Union[_models.ProcessActionCreateParams, IO[bytes]], **kwargs: Any
+    ) -> _models.ProcessAction:
+        """Invoke a Process action.
+
+        Invoke an action on a Process.
+
+        Whether the call returns synchronously or asynchronously depends on the action type:
+
+
+        * ``START_WORKFLOW``\\ , ``DOWNLOADABLE``\\ : dispatched to a background worker. The
+          response returns immediately with ``status=REQUESTED``. Poll
+          ``retrieveProcessAction`` for the final state.
+        * ``START_RELATED_PROCESS``\\ , ``CREATE_TASK``\\ , ``CREATE_PROCESS_ITEM_MESSAGE``\\ ,
+          ``CREATE_PROCESS_ITEM_THREAD``\\ , ``SEND_WORKFLOW_SIGNAL``\\ : completed synchronously.
+          The response returns with ``status=COMPLETED`` (or an error status).
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
+
+        Actions of type ``SEND_WORKFLOW_SIGNAL`` whose definition declares an input form accept a
+        ``sendWorkflowSignal.input`` payload: it is validated against the definition schema,
+        persisted on the action and delivered inside the workflow signal. The input is not part
+        of the idempotency key — replaying the same ``id`` with a different input returns the
+        original action untouched.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param process_action_create_params: Params identifying the action to invoke. Is either a
+         ProcessActionCreateParams type or a IO[bytes] type. Required.
+        :type process_action_create_params: ~kuflow.rest.models.ProcessActionCreateParams or IO[bytes]
+        :return: ProcessAction
+        :rtype: ~kuflow.rest.models.ProcessAction
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        cls: ClsType[_models.ProcessAction] = kwargs.pop("cls", None)
+
+        content_type = content_type or "application/json"
+        _json = None
+        _content = None
+        if isinstance(process_action_create_params, (IOBase, bytes)):
+            _content = process_action_create_params
+        else:
+            _json = self._serialize.body(process_action_create_params, "ProcessActionCreateParams")
+
+        _request = build_create_process_action_request(
+            id=id,
+            content_type=content_type,
+            json=_json,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200, 201]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("ProcessAction", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace_async
+    async def retrieve_process_action(self, id: str, action_id: str, **kwargs: Any) -> _models.ProcessAction:
+        """Get a Process action by ID.
+
+        Returns a Process action by its ID.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param action_id: The Process action ID. Required.
+        :type action_id: str
+        :return: ProcessAction
+        :rtype: ~kuflow.rest.models.ProcessAction
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.ProcessAction] = kwargs.pop("cls", None)
+
+        _request = build_retrieve_process_action_request(
+            id=id,
+            action_id=action_id,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("ProcessAction", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace_async
+    async def cancel_process_action(self, id: str, action_id: str, **kwargs: Any) -> _models.ProcessAction:
+        """Cancel a Process action.
+
+        Cancel a Process action.
+
+        Only meaningful for asynchronous actions still in ``REQUESTED`` state. The
+        action's status is set to ``CANCELED``. If the action is already in a
+        terminal state, no transition occurs.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param action_id: The Process action ID. Required.
+        :type action_id: str
+        :return: ProcessAction
+        :rtype: ~kuflow.rest.models.ProcessAction
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.ProcessAction] = kwargs.pop("cls", None)
+
+        _request = build_cancel_process_action_request(
+            id=id,
+            action_id=action_id,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("ProcessAction", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -674,87 +1047,6 @@ class ProcessOperations:
             raise HttpResponseError(response=response, model=error)
 
         deserialized = self._deserialize("Process", pipeline_response.http_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
-
-        return deserialized  # type: ignore
-
-    @distributed_trace_async
-    async def upload_process_user_action_document(
-        self,
-        id: str,
-        file: IO[bytes],
-        *,
-        file_content_type: str,
-        file_name: str,
-        user_action_value_id: str,
-        **kwargs: Any,
-    ) -> Optional[_models.Process]:
-        """Upload and save a document in a user action.
-
-        Allow saving a user action document uploading the content.
-
-        :param id: The resource ID. Required.
-        :type id: str
-        :param file: Document to save. Required.
-        :type file: IO[bytes]
-        :keyword file_content_type: Document content type. Required.
-        :paramtype file_content_type: str
-        :keyword file_name: Document name. Required.
-        :paramtype file_name: str
-        :keyword user_action_value_id: User action value ID related to de document. Required.
-        :paramtype user_action_value_id: str
-        :return: Process or None
-        :rtype: ~kuflow.rest.models.Process or None
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        error_map: MutableMapping = {
-            401: ClientAuthenticationError,
-            404: ResourceNotFoundError,
-            409: ResourceExistsError,
-            304: ResourceNotModifiedError,
-        }
-        error_map.update(kwargs.pop("error_map", {}) or {})
-
-        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
-        _params = kwargs.pop("params", {}) or {}
-
-        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/octet-stream"))
-        cls: ClsType[Optional[_models.Process]] = kwargs.pop("cls", None)
-
-        _content = file
-
-        _request = build_upload_process_user_action_document_request(
-            id=id,
-            file_content_type=file_content_type,
-            file_name=file_name,
-            user_action_value_id=user_action_value_id,
-            content_type=content_type,
-            content=_content,
-            headers=_headers,
-            params=_params,
-        )
-        _request.url = self._client.format_url(_request.url)
-
-        _stream = False
-        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            _request, stream=_stream, **kwargs
-        )
-
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200, 304]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize.failsafe_deserialize(
-                _models.DefaultError,
-                pipeline_response,
-            )
-            raise HttpResponseError(response=response, model=error)
-
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize("Process", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore
@@ -1253,9 +1545,12 @@ class ProcessOperations:
         Upload a temporal document into the process that later on must be linked with a process domain
         resource.
 
-        Documents uploaded with this API will be deleted after 24 hours as long as they have not been
+        Documents uploaded with this API will be deleted after 2 hours as long as they have not been
         linked to a
-        process or process item..
+        process or process item.
+
+        **Deprecated:** use the ``uploadDocument`` operation with ``targetUri=ku:process/{processId}``
+        instead.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -1323,6 +1618,9 @@ class ProcessOperations:
         """Download document.
 
         Given a document uri download a document.
+
+        **Deprecated:** use the ``downloadDocument`` operation instead; it resolves any document the
+        credentials can read without requiring the owning Process in the path.
 
         :param id: The resource ID. Required.
         :type id: str

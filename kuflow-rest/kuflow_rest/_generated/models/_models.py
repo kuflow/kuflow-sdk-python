@@ -85,6 +85,68 @@ class AbstractAudited(_serialization.Model):
         self.last_modified_at = last_modified_at
 
 
+class AbstractDeleted(AbstractAudited):
+    """AbstractDeleted.
+
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar deleted_by: Who deleted this model, present only when it is deleted.
+    :vartype deleted_by: str
+    :ivar deleted_at: When this model was deleted, present only when it is deleted.
+    :vartype deleted_at: ~datetime.datetime
+    """
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "deleted_by": {"key": "deletedBy", "type": "str"},
+        "deleted_at": {"key": "deletedAt", "type": "iso-8601"},
+    }
+
+    def __init__(
+        self,
+        *,
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        deleted_by: Optional[str] = None,
+        deleted_at: Optional[datetime.datetime] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword deleted_by: Who deleted this model, present only when it is deleted.
+        :paramtype deleted_by: str
+        :keyword deleted_at: When this model was deleted, present only when it is deleted.
+        :paramtype deleted_at: ~datetime.datetime
+        """
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.deleted_by = deleted_by
+        self.deleted_at = deleted_at
+
+
 class Authentication(AbstractAudited):
     """Authentication.
 
@@ -312,7 +374,7 @@ class AuthenticationEngineToken(_serialization.Model):
         self.expired_at = expired_at
 
 
-class BusinessArtifact(AbstractAudited):
+class BusinessArtifact(AbstractDeleted):
     """BusinessArtifact.
 
     All required parameters must be populated in order to send to server.
@@ -325,8 +387,15 @@ class BusinessArtifact(AbstractAudited):
     :vartype last_modified_by: str
     :ivar last_modified_at: When this model type was last updated.
     :vartype last_modified_at: ~datetime.datetime
+    :ivar deleted_by: Who deleted this model, present only when it is deleted.
+    :vartype deleted_by: str
+    :ivar deleted_at: When this model was deleted, present only when it is deleted.
+    :vartype deleted_at: ~datetime.datetime
     :ivar id: Business Artifact ID. Required.
     :vartype id: str
+    :ivar uri: Business Artifact resource URI, e.g. usable as ``targetUri`` of the
+     ``uploadDocument`` operation. Format ``ku:business-artifact/{id}``.
+    :vartype uri: str
     :ivar tenant_id: Tenant ID. Required.
     :vartype tenant_id: str
     :ivar business_artifact_definition_ref: Required.
@@ -346,7 +415,10 @@ class BusinessArtifact(AbstractAudited):
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "deleted_by": {"key": "deletedBy", "type": "str"},
+        "deleted_at": {"key": "deletedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
+        "uri": {"key": "uri", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
         "business_artifact_definition_ref": {
             "key": "businessArtifactDefinitionRef",
@@ -365,6 +437,9 @@ class BusinessArtifact(AbstractAudited):
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
+        deleted_by: Optional[str] = None,
+        deleted_at: Optional[datetime.datetime] = None,
+        uri: Optional[str] = None,
         data: Optional["_models.JsonValue"] = None,
         **kwargs: Any,
     ) -> None:
@@ -377,8 +452,15 @@ class BusinessArtifact(AbstractAudited):
         :paramtype last_modified_by: str
         :keyword last_modified_at: When this model type was last updated.
         :paramtype last_modified_at: ~datetime.datetime
+        :keyword deleted_by: Who deleted this model, present only when it is deleted.
+        :paramtype deleted_by: str
+        :keyword deleted_at: When this model was deleted, present only when it is deleted.
+        :paramtype deleted_at: ~datetime.datetime
         :keyword id: Business Artifact ID. Required.
         :paramtype id: str
+        :keyword uri: Business Artifact resource URI, e.g. usable as ``targetUri`` of the
+         ``uploadDocument`` operation. Format ``ku:business-artifact/{id}``.
+        :paramtype uri: str
         :keyword tenant_id: Tenant ID. Required.
         :paramtype tenant_id: str
         :keyword business_artifact_definition_ref: Required.
@@ -391,9 +473,12 @@ class BusinessArtifact(AbstractAudited):
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
+            deleted_by=deleted_by,
+            deleted_at=deleted_at,
             **kwargs,
         )
         self.id = id
+        self.uri = uri
         self.tenant_id = tenant_id
         self.business_artifact_definition_ref = business_artifact_definition_ref
         self.data = data
@@ -580,6 +665,74 @@ class BusinessArtifactActionCreateArtifact(_serialization.Model):
         self.value = value
 
 
+class BusinessArtifactActionCreateArtifactPrepare(_serialization.Model):  # pylint: disable=name-too-long
+    """Pre-filled value for a CREATE_BUSINESS_ARTIFACT action. Returned by the prepare operation;
+    nothing is persisted on the server.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar business_artifact_definition_ref: Required.
+    :vartype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+    :ivar value: Pre-filled form value computed from the action definition.
+    :vartype value: dict[str, any]
+    """
+
+    _validation = {
+        "business_artifact_definition_ref": {"required": True},
+    }
+
+    _attribute_map = {
+        "business_artifact_definition_ref": {
+            "key": "businessArtifactDefinitionRef",
+            "type": "BusinessArtifactDefinitionRef",
+        },
+        "value": {"key": "value", "type": "{object}"},
+    }
+
+    def __init__(
+        self,
+        *,
+        business_artifact_definition_ref: "_models.BusinessArtifactDefinitionRef",
+        value: Optional[dict[str, Any]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword business_artifact_definition_ref: Required.
+        :paramtype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+        :keyword value: Pre-filled form value computed from the action definition.
+        :paramtype value: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_definition_ref = business_artifact_definition_ref
+        self.value = value
+
+
+class BusinessArtifactActionCreateArtifactPrepareParams(_serialization.Model):  # pylint: disable=name-too-long
+    """Params identifying a CREATE_BUSINESS_ARTIFACT action to prepare.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar business_artifact_action_definition_code: Required.
+    :vartype business_artifact_action_definition_code: str
+    """
+
+    _validation = {
+        "business_artifact_action_definition_code": {"required": True},
+    }
+
+    _attribute_map = {
+        "business_artifact_action_definition_code": {"key": "businessArtifactActionDefinitionCode", "type": "str"},
+    }
+
+    def __init__(self, *, business_artifact_action_definition_code: str, **kwargs: Any) -> None:
+        """
+        :keyword business_artifact_action_definition_code: Required.
+        :paramtype business_artifact_action_definition_code: str
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_action_definition_code = business_artifact_action_definition_code
+
+
 class BusinessArtifactActionCreateParams(_serialization.Model):
     """Params to invoke an action on a Business Artifact. The populated sub-field (\\
     ``startWorkflow``\\ , ``downloadable``\\ , ``startProcess``\\ , ``createArtifact``\\ ) must
@@ -599,7 +752,7 @@ class BusinessArtifactActionCreateParams(_serialization.Model):
     :vartype start_process: ~kuflow.rest.models.BusinessArtifactActionCreateParamsStartProcess
     :ivar create_artifact: Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The
      ``value`` is the (potentially user-edited) form previously obtained via the
-     ``prepareBusinessArtifactCreateArtifact`` operation.
+     ``prepareBusinessArtifactActionCreateArtifact`` operation.
     :vartype create_artifact: ~kuflow.rest.models.BusinessArtifactActionCreateParamsCreateArtifact
     """
 
@@ -640,7 +793,7 @@ class BusinessArtifactActionCreateParams(_serialization.Model):
         :paramtype start_process: ~kuflow.rest.models.BusinessArtifactActionCreateParamsStartProcess
         :keyword create_artifact: Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The
          ``value`` is the (potentially user-edited) form previously obtained via the
-         ``prepareBusinessArtifactCreateArtifact`` operation.
+         ``prepareBusinessArtifactActionCreateArtifact`` operation.
         :paramtype create_artifact:
          ~kuflow.rest.models.BusinessArtifactActionCreateParamsCreateArtifact
         """
@@ -656,7 +809,7 @@ class BusinessArtifactActionCreateParams(_serialization.Model):
 class BusinessArtifactActionCreateParamsCreateArtifact(_serialization.Model):  # pylint: disable=name-too-long
     """Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The ``value`` is the
     (potentially user-edited) form previously obtained via the
-    ``prepareBusinessArtifactCreateArtifact`` operation.
+    ``prepareBusinessArtifactActionCreateArtifact`` operation.
 
     :ivar value: Form value to be applied to the new Business Artifact.
     :vartype value: dict[str, any]
@@ -700,7 +853,9 @@ class BusinessArtifactActionCreateParamsDownloadable(_serialization.Model):  # p
 class BusinessArtifactActionCreateParamsStartProcess(_serialization.Model):  # pylint: disable=name-too-long
     """Params for invoking an action of type START_PROCESS.
 
-    :ivar metadata: Metadata applied to the process created by this action.
+    :ivar metadata: Metadata applied to the process created by this action. If empty or omitted,
+     the action's metadata expression (if any) is evaluated against this Business Artifact and its
+     result is applied instead. A non-empty value is applied as provided, with no merging.
     :vartype metadata: dict[str, any]
     :ivar entity: Entity data applied to the process created by this action. Validated against the
      process definition entity schema; validation errors are recorded on the process entity value.
@@ -717,7 +872,9 @@ class BusinessArtifactActionCreateParamsStartProcess(_serialization.Model):  # p
         self, *, metadata: Optional[dict[str, Any]] = None, entity: Optional[dict[str, Any]] = None, **kwargs: Any
     ) -> None:
         """
-        :keyword metadata: Metadata applied to the process created by this action.
+        :keyword metadata: Metadata applied to the process created by this action. If empty or omitted,
+         the action's metadata expression (if any) is evaluated against this Business Artifact and its
+         result is applied instead. A non-empty value is applied as provided, with no merging.
         :paramtype metadata: dict[str, any]
         :keyword entity: Entity data applied to the process created by this action. Validated against
          the process definition entity schema; validation errors are recorded on the process entity
@@ -863,70 +1020,41 @@ class BusinessArtifactActionStartProcess(_serialization.Model):
         self.process_id = process_id
 
 
-class BusinessArtifactActionStartWorkflow(_serialization.Model):
-    """Action details for actions of type START_WORKFLOW.
-
-    :ivar input: Json value.
-    :vartype input: ~kuflow.rest.models.JsonValue
-    """
-
-    _attribute_map = {
-        "input": {"key": "input", "type": "JsonValue"},
-    }
-
-    def __init__(self, *, input: Optional["_models.JsonValue"] = None, **kwargs: Any) -> None:
-        """
-        :keyword input: Json value.
-        :paramtype input: ~kuflow.rest.models.JsonValue
-        """
-        super().__init__(**kwargs)
-        self.input = input
-
-
-class BusinessArtifactCreateArtifactPrepare(_serialization.Model):
-    """Pre-filled value for a CREATE_BUSINESS_ARTIFACT action. Returned by the prepare operation;
-    nothing is persisted on the server.
+class BusinessArtifactActionStartProcessPrepare(_serialization.Model):  # pylint: disable=name-too-long
+    """Pre-filled metadata for a START_PROCESS action. Returned by the prepare operation; nothing is
+    persisted on the server.
 
     All required parameters must be populated in order to send to server.
 
-    :ivar business_artifact_definition_ref: Required.
-    :vartype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
-    :ivar value: Pre-filled form value computed from the action definition.
-    :vartype value: dict[str, any]
+    :ivar process_definition_id: Process Definition the action will start. Required.
+    :vartype process_definition_id: str
+    :ivar metadata: Pre-filled process metadata computed from the action definition.
+    :vartype metadata: dict[str, any]
     """
 
     _validation = {
-        "business_artifact_definition_ref": {"required": True},
+        "process_definition_id": {"required": True},
     }
 
     _attribute_map = {
-        "business_artifact_definition_ref": {
-            "key": "businessArtifactDefinitionRef",
-            "type": "BusinessArtifactDefinitionRef",
-        },
-        "value": {"key": "value", "type": "{object}"},
+        "process_definition_id": {"key": "processDefinitionId", "type": "str"},
+        "metadata": {"key": "metadata", "type": "{object}"},
     }
 
-    def __init__(
-        self,
-        *,
-        business_artifact_definition_ref: "_models.BusinessArtifactDefinitionRef",
-        value: Optional[dict[str, Any]] = None,
-        **kwargs: Any,
-    ) -> None:
+    def __init__(self, *, process_definition_id: str, metadata: Optional[dict[str, Any]] = None, **kwargs: Any) -> None:
         """
-        :keyword business_artifact_definition_ref: Required.
-        :paramtype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
-        :keyword value: Pre-filled form value computed from the action definition.
-        :paramtype value: dict[str, any]
+        :keyword process_definition_id: Process Definition the action will start. Required.
+        :paramtype process_definition_id: str
+        :keyword metadata: Pre-filled process metadata computed from the action definition.
+        :paramtype metadata: dict[str, any]
         """
         super().__init__(**kwargs)
-        self.business_artifact_definition_ref = business_artifact_definition_ref
-        self.value = value
+        self.process_definition_id = process_definition_id
+        self.metadata = metadata
 
 
-class BusinessArtifactCreateArtifactPrepareParams(_serialization.Model):  # pylint: disable=name-too-long
-    """Params identifying a CREATE_BUSINESS_ARTIFACT action to prepare.
+class BusinessArtifactActionStartProcessPrepareParams(_serialization.Model):  # pylint: disable=name-too-long
+    """Params identifying a START_PROCESS action to prepare.
 
     All required parameters must be populated in order to send to server.
 
@@ -949,6 +1077,26 @@ class BusinessArtifactCreateArtifactPrepareParams(_serialization.Model):  # pyli
         """
         super().__init__(**kwargs)
         self.business_artifact_action_definition_code = business_artifact_action_definition_code
+
+
+class BusinessArtifactActionStartWorkflow(_serialization.Model):
+    """Action details for actions of type START_WORKFLOW.
+
+    :ivar input: Json value.
+    :vartype input: ~kuflow.rest.models.JsonValue
+    """
+
+    _attribute_map = {
+        "input": {"key": "input", "type": "JsonValue"},
+    }
+
+    def __init__(self, *, input: Optional["_models.JsonValue"] = None, **kwargs: Any) -> None:
+        """
+        :keyword input: Json value.
+        :paramtype input: ~kuflow.rest.models.JsonValue
+        """
+        super().__init__(**kwargs)
+        self.input = input
 
 
 class BusinessArtifactCreateParams(_serialization.Model):
@@ -1130,7 +1278,7 @@ class BusinessArtifactPage(Page):
         self.content = content
 
 
-class BusinessArtifactPageItem(AbstractAudited):
+class BusinessArtifactPageItem(AbstractDeleted):
     """BusinessArtifactPageItem.
 
     All required parameters must be populated in order to send to server.
@@ -1143,8 +1291,15 @@ class BusinessArtifactPageItem(AbstractAudited):
     :vartype last_modified_by: str
     :ivar last_modified_at: When this model type was last updated.
     :vartype last_modified_at: ~datetime.datetime
+    :ivar deleted_by: Who deleted this model, present only when it is deleted.
+    :vartype deleted_by: str
+    :ivar deleted_at: When this model was deleted, present only when it is deleted.
+    :vartype deleted_at: ~datetime.datetime
     :ivar id: Business Artifact ID. Required.
     :vartype id: str
+    :ivar uri: Business Artifact resource URI, e.g. usable as ``targetUri`` of the
+     ``uploadDocument`` operation. Format ``ku:business-artifact/{id}``.
+    :vartype uri: str
     :ivar tenant_id: Tenant ID. Required.
     :vartype tenant_id: str
     :ivar business_artifact_definition_ref: Required.
@@ -1162,7 +1317,10 @@ class BusinessArtifactPageItem(AbstractAudited):
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "deleted_by": {"key": "deletedBy", "type": "str"},
+        "deleted_at": {"key": "deletedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
+        "uri": {"key": "uri", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
         "business_artifact_definition_ref": {
             "key": "businessArtifactDefinitionRef",
@@ -1180,6 +1338,9 @@ class BusinessArtifactPageItem(AbstractAudited):
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
+        deleted_by: Optional[str] = None,
+        deleted_at: Optional[datetime.datetime] = None,
+        uri: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -1191,8 +1352,15 @@ class BusinessArtifactPageItem(AbstractAudited):
         :paramtype last_modified_by: str
         :keyword last_modified_at: When this model type was last updated.
         :paramtype last_modified_at: ~datetime.datetime
+        :keyword deleted_by: Who deleted this model, present only when it is deleted.
+        :paramtype deleted_by: str
+        :keyword deleted_at: When this model was deleted, present only when it is deleted.
+        :paramtype deleted_at: ~datetime.datetime
         :keyword id: Business Artifact ID. Required.
         :paramtype id: str
+        :keyword uri: Business Artifact resource URI, e.g. usable as ``targetUri`` of the
+         ``uploadDocument`` operation. Format ``ku:business-artifact/{id}``.
+        :paramtype uri: str
         :keyword tenant_id: Tenant ID. Required.
         :paramtype tenant_id: str
         :keyword business_artifact_definition_ref: Required.
@@ -1203,9 +1371,12 @@ class BusinessArtifactPageItem(AbstractAudited):
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
+            deleted_by=deleted_by,
+            deleted_at=deleted_at,
             **kwargs,
         )
         self.id = id
+        self.uri = uri
         self.tenant_id = tenant_id
         self.business_artifact_definition_ref = business_artifact_definition_ref
 
@@ -1322,10 +1493,15 @@ class DocumentReference(_serialization.Model):
 
     All required parameters must be populated in order to send to server.
 
-    :ivar document_uri: JSON value representing the uploaded file.
+    :ivar document_uri: Reference to the uploaded file.
 
-     Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
-     Required.
+     Format: ``kuflow-file:uri=<ku-uri>;type=<media-type>;size=<bytes>;name=<file-name>;``
+
+     Example:
+     ``kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;``
+
+     Operations that receive a document uri accept both this full form and the inner ``ku:``
+     document uri. Required.
     :vartype document_uri: str
     """
 
@@ -1339,10 +1515,15 @@ class DocumentReference(_serialization.Model):
 
     def __init__(self, *, document_uri: str, **kwargs: Any) -> None:
         """
-        :keyword document_uri: JSON value representing the uploaded file.
+        :keyword document_uri: Reference to the uploaded file.
 
-         Example: ``kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;``.
-         Required.
+         Format: ``kuflow-file:uri=<ku-uri>;type=<media-type>;size=<bytes>;name=<file-name>;``
+
+         Example:
+         ``kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;``
+
+         Operations that receive a document uri accept both this full form and the inner ``ku:``
+         document uri. Required.
         :paramtype document_uri: str
         """
         super().__init__(**kwargs)
@@ -1496,8 +1677,6 @@ class JsonPatchOperation(_serialization.Model):
 class JsonValue(_serialization.Model):
     """Json value.
 
-    Variables are only populated by the server, and will be ignored when sending a request.
-
     All required parameters must be populated in order to send to server.
 
     :ivar valid: true if the data complain the related json schema.
@@ -1509,9 +1688,7 @@ class JsonValue(_serialization.Model):
     """
 
     _validation = {
-        "valid": {"readonly": True},
         "value": {"required": True},
-        "errors": {"readonly": True},
     }
 
     _attribute_map = {
@@ -1520,15 +1697,26 @@ class JsonValue(_serialization.Model):
         "errors": {"key": "errors", "type": "[JsonValueError]"},
     }
 
-    def __init__(self, *, value: dict[str, Any], **kwargs: Any) -> None:
+    def __init__(
+        self,
+        *,
+        value: dict[str, Any],
+        valid: Optional[bool] = None,
+        errors: Optional[list["_models.JsonValueError"]] = None,
+        **kwargs: Any,
+    ) -> None:
         """
+        :keyword valid: true if the data complain the related json schema.
+        :paramtype valid: bool
         :keyword value: json value filled that complain with the related json schema. Required.
         :paramtype value: dict[str, any]
+        :keyword errors:
+        :paramtype errors: list[~kuflow.rest.models.JsonValueError]
         """
         super().__init__(**kwargs)
-        self.valid: Optional[bool] = None
+        self.valid = valid
         self.value = value
-        self.errors: Optional[list[_models.JsonValueError]] = None
+        self.errors = errors
 
 
 class JsonValueError(_serialization.Model):
@@ -1832,7 +2020,7 @@ class PrincipalUser(_serialization.Model):
         self.email = email
 
 
-class Process(AbstractAudited):
+class Process(AbstractDeleted):
     """Process.
 
     All required parameters must be populated in order to send to server.
@@ -1845,8 +2033,15 @@ class Process(AbstractAudited):
     :vartype last_modified_by: str
     :ivar last_modified_at: When this model type was last updated.
     :vartype last_modified_at: ~datetime.datetime
+    :ivar deleted_by: Who deleted this model, present only when it is deleted.
+    :vartype deleted_by: str
+    :ivar deleted_at: When this model was deleted, present only when it is deleted.
+    :vartype deleted_at: ~datetime.datetime
     :ivar id: Process ID. Required.
     :vartype id: str
+    :ivar uri: Process resource URI, e.g. usable as ``targetUri`` of the ``uploadDocument``
+     operation. Format ``ku:process/{id}``.
+    :vartype uri: str
     :ivar state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
      "CANCELLED".
     :vartype state: str or ~kuflow.rest.models.ProcessState
@@ -1875,7 +2070,10 @@ class Process(AbstractAudited):
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "deleted_by": {"key": "deletedBy", "type": "str"},
+        "deleted_at": {"key": "deletedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
+        "uri": {"key": "uri", "type": "str"},
         "state": {"key": "state", "type": "str"},
         "process_definition_ref": {"key": "processDefinitionRef", "type": "ProcessDefinitionRef"},
         "metadata": {"key": "metadata", "type": "JsonValue"},
@@ -1895,6 +2093,9 @@ class Process(AbstractAudited):
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
+        deleted_by: Optional[str] = None,
+        deleted_at: Optional[datetime.datetime] = None,
+        uri: Optional[str] = None,
         process_definition_ref: Optional["_models.ProcessDefinitionRef"] = None,
         metadata: Optional["_models.JsonValue"] = None,
         entity: Optional["_models.JsonValue"] = None,
@@ -1911,8 +2112,15 @@ class Process(AbstractAudited):
         :paramtype last_modified_by: str
         :keyword last_modified_at: When this model type was last updated.
         :paramtype last_modified_at: ~datetime.datetime
+        :keyword deleted_by: Who deleted this model, present only when it is deleted.
+        :paramtype deleted_by: str
+        :keyword deleted_at: When this model was deleted, present only when it is deleted.
+        :paramtype deleted_at: ~datetime.datetime
         :keyword id: Process ID. Required.
         :paramtype id: str
+        :keyword uri: Process resource URI, e.g. usable as ``targetUri`` of the ``uploadDocument``
+         operation. Format ``ku:process/{id}``.
+        :paramtype uri: str
         :keyword state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
          "CANCELLED".
         :paramtype state: str or ~kuflow.rest.models.ProcessState
@@ -1934,9 +2142,12 @@ class Process(AbstractAudited):
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
+            deleted_by=deleted_by,
+            deleted_at=deleted_at,
             **kwargs,
         )
         self.id = id
+        self.uri = uri
         self.state = state
         self.process_definition_ref = process_definition_ref
         self.metadata = metadata
@@ -1944,6 +2155,547 @@ class Process(AbstractAudited):
         self.process_related = process_related
         self.initiator_id = initiator_id
         self.tenant_id = tenant_id
+
+
+class ProcessAction(AbstractAudited):
+    """A Process action invocation. The populated sub-field (\\ ``downloadable``\\ ,
+    ``startRelatedProcess``\\ , ``createTask``\\ , ``createProcessItemMessage``\\ ,
+    ``createProcessItemThread``\\ , ``sendWorkflowSignal``\\ ) is dictated by ``type``. Actions of
+    type START_WORKFLOW carry no additional details.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Required.
+    :vartype id: str
+    :ivar type: Type of a Process action. Required. Known values are: "DOWNLOADABLE",
+     "START_RELATED_PROCESS", "START_WORKFLOW", "CREATE_TASK", "CREATE_PROCESS_ITEM_MESSAGE",
+     "CREATE_PROCESS_ITEM_THREAD", and "SEND_WORKFLOW_SIGNAL".
+    :vartype type: str or ~kuflow.rest.models.ProcessActionType
+    :ivar status: Status of a Process action. Required. Known values are: "REQUESTED", "COMPLETED",
+     "CANCELED", and "ERROR".
+    :vartype status: str or ~kuflow.rest.models.ProcessActionStatus
+    :ivar process_action_definition_ref: Required.
+    :vartype process_action_definition_ref: ~kuflow.rest.models.ProcessActionDefinitionRef
+    :ivar downloadable: Action details for actions of type DOWNLOADABLE.
+    :vartype downloadable: ~kuflow.rest.models.ProcessActionDownloadable
+    :ivar start_related_process: Action details for actions of type START_RELATED_PROCESS. Actions
+     of this type complete synchronously, so all fields are present in the invoke response.
+    :vartype start_related_process: ~kuflow.rest.models.ProcessActionStartRelatedProcess
+    :ivar create_task: Action details for actions of type CREATE_TASK. Actions of this type
+     complete synchronously, so the created Process Item ID is present in the invoke response.
+    :vartype create_task: ~kuflow.rest.models.ProcessActionCreateTask
+    :ivar create_process_item_message: Action details for actions of type
+     CREATE_PROCESS_ITEM_MESSAGE. Actions of this type complete synchronously, so the created
+     Process Item ID is present in the invoke response.
+    :vartype create_process_item_message: ~kuflow.rest.models.ProcessActionCreateProcessItemMessage
+    :ivar create_process_item_thread: Action details for actions of type
+     CREATE_PROCESS_ITEM_THREAD. Actions of this type complete synchronously, so the created Process
+     Item ID is present in the invoke response.
+    :vartype create_process_item_thread: ~kuflow.rest.models.ProcessActionCreateProcessItemThread
+    :ivar send_workflow_signal: Action details for actions of type SEND_WORKFLOW_SIGNAL.
+    :vartype send_workflow_signal: ~kuflow.rest.models.ProcessActionSendWorkflowSignal
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "type": {"required": True},
+        "status": {"required": True},
+        "process_action_definition_ref": {"required": True},
+    }
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "status": {"key": "status", "type": "str"},
+        "process_action_definition_ref": {"key": "processActionDefinitionRef", "type": "ProcessActionDefinitionRef"},
+        "downloadable": {"key": "downloadable", "type": "ProcessActionDownloadable"},
+        "start_related_process": {"key": "startRelatedProcess", "type": "ProcessActionStartRelatedProcess"},
+        "create_task": {"key": "createTask", "type": "ProcessActionCreateTask"},
+        "create_process_item_message": {
+            "key": "createProcessItemMessage",
+            "type": "ProcessActionCreateProcessItemMessage",
+        },
+        "create_process_item_thread": {
+            "key": "createProcessItemThread",
+            "type": "ProcessActionCreateProcessItemThread",
+        },
+        "send_workflow_signal": {"key": "sendWorkflowSignal", "type": "ProcessActionSendWorkflowSignal"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        type: Union[str, "_models.ProcessActionType"],
+        status: Union[str, "_models.ProcessActionStatus"],
+        process_action_definition_ref: "_models.ProcessActionDefinitionRef",
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        downloadable: Optional["_models.ProcessActionDownloadable"] = None,
+        start_related_process: Optional["_models.ProcessActionStartRelatedProcess"] = None,
+        create_task: Optional["_models.ProcessActionCreateTask"] = None,
+        create_process_item_message: Optional["_models.ProcessActionCreateProcessItemMessage"] = None,
+        create_process_item_thread: Optional["_models.ProcessActionCreateProcessItemThread"] = None,
+        send_workflow_signal: Optional["_models.ProcessActionSendWorkflowSignal"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword type: Type of a Process action. Required. Known values are: "DOWNLOADABLE",
+         "START_RELATED_PROCESS", "START_WORKFLOW", "CREATE_TASK", "CREATE_PROCESS_ITEM_MESSAGE",
+         "CREATE_PROCESS_ITEM_THREAD", and "SEND_WORKFLOW_SIGNAL".
+        :paramtype type: str or ~kuflow.rest.models.ProcessActionType
+        :keyword status: Status of a Process action. Required. Known values are: "REQUESTED",
+         "COMPLETED", "CANCELED", and "ERROR".
+        :paramtype status: str or ~kuflow.rest.models.ProcessActionStatus
+        :keyword process_action_definition_ref: Required.
+        :paramtype process_action_definition_ref: ~kuflow.rest.models.ProcessActionDefinitionRef
+        :keyword downloadable: Action details for actions of type DOWNLOADABLE.
+        :paramtype downloadable: ~kuflow.rest.models.ProcessActionDownloadable
+        :keyword start_related_process: Action details for actions of type START_RELATED_PROCESS.
+         Actions of this type complete synchronously, so all fields are present in the invoke response.
+        :paramtype start_related_process: ~kuflow.rest.models.ProcessActionStartRelatedProcess
+        :keyword create_task: Action details for actions of type CREATE_TASK. Actions of this type
+         complete synchronously, so the created Process Item ID is present in the invoke response.
+        :paramtype create_task: ~kuflow.rest.models.ProcessActionCreateTask
+        :keyword create_process_item_message: Action details for actions of type
+         CREATE_PROCESS_ITEM_MESSAGE. Actions of this type complete synchronously, so the created
+         Process Item ID is present in the invoke response.
+        :paramtype create_process_item_message:
+         ~kuflow.rest.models.ProcessActionCreateProcessItemMessage
+        :keyword create_process_item_thread: Action details for actions of type
+         CREATE_PROCESS_ITEM_THREAD. Actions of this type complete synchronously, so the created Process
+         Item ID is present in the invoke response.
+        :paramtype create_process_item_thread: ~kuflow.rest.models.ProcessActionCreateProcessItemThread
+        :keyword send_workflow_signal: Action details for actions of type SEND_WORKFLOW_SIGNAL.
+        :paramtype send_workflow_signal: ~kuflow.rest.models.ProcessActionSendWorkflowSignal
+        """
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.type = type
+        self.status = status
+        self.process_action_definition_ref = process_action_definition_ref
+        self.downloadable = downloadable
+        self.start_related_process = start_related_process
+        self.create_task = create_task
+        self.create_process_item_message = create_process_item_message
+        self.create_process_item_thread = create_process_item_thread
+        self.send_workflow_signal = send_workflow_signal
+
+
+class ProcessActionCreateParams(_serialization.Model):
+    """Params to invoke an action on a Process. The populated sub-field (\\ ``createTask``\\ ,
+    ``createProcessItemMessage``\\ , ``startRelatedProcess``\\ , ``sendWorkflowSignal``\\ ) must
+    match the type of the action identified by ``processActionDefinitionCode``\\ ; the remaining
+    action types take no params.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id:
+    :vartype id: str
+    :ivar process_action_definition_code: Required.
+    :vartype process_action_definition_code: str
+    :ivar create_task: Params for invoking an action of type CREATE_TASK.
+    :vartype create_task: ~kuflow.rest.models.ProcessActionCreateParamsCreateTask
+    :ivar create_process_item_message: Params for invoking an action of type
+     CREATE_PROCESS_ITEM_MESSAGE. Messages are created through the built-in ``__KF_MESSAGE__``
+     action definition code.
+    :vartype create_process_item_message:
+     ~kuflow.rest.models.ProcessActionCreateParamsCreateProcessItemMessage
+    :ivar start_related_process: Params for invoking an action of type START_RELATED_PROCESS.
+    :vartype start_related_process:
+     ~kuflow.rest.models.ProcessActionCreateParamsStartRelatedProcess
+    :ivar send_workflow_signal: Params for invoking an action of type SEND_WORKFLOW_SIGNAL.
+    :vartype send_workflow_signal: ~kuflow.rest.models.ProcessActionCreateParamsSendWorkflowSignal
+    """
+
+    _validation = {
+        "process_action_definition_code": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "process_action_definition_code": {"key": "processActionDefinitionCode", "type": "str"},
+        "create_task": {"key": "createTask", "type": "ProcessActionCreateParamsCreateTask"},
+        "create_process_item_message": {
+            "key": "createProcessItemMessage",
+            "type": "ProcessActionCreateParamsCreateProcessItemMessage",
+        },
+        "start_related_process": {"key": "startRelatedProcess", "type": "ProcessActionCreateParamsStartRelatedProcess"},
+        "send_workflow_signal": {"key": "sendWorkflowSignal", "type": "ProcessActionCreateParamsSendWorkflowSignal"},
+    }
+
+    def __init__(
+        self,
+        *,
+        process_action_definition_code: str,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        create_task: Optional["_models.ProcessActionCreateParamsCreateTask"] = None,
+        create_process_item_message: Optional["_models.ProcessActionCreateParamsCreateProcessItemMessage"] = None,
+        start_related_process: Optional["_models.ProcessActionCreateParamsStartRelatedProcess"] = None,
+        send_workflow_signal: Optional["_models.ProcessActionCreateParamsSendWorkflowSignal"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id:
+        :paramtype id: str
+        :keyword process_action_definition_code: Required.
+        :paramtype process_action_definition_code: str
+        :keyword create_task: Params for invoking an action of type CREATE_TASK.
+        :paramtype create_task: ~kuflow.rest.models.ProcessActionCreateParamsCreateTask
+        :keyword create_process_item_message: Params for invoking an action of type
+         CREATE_PROCESS_ITEM_MESSAGE. Messages are created through the built-in ``__KF_MESSAGE__``
+         action definition code.
+        :paramtype create_process_item_message:
+         ~kuflow.rest.models.ProcessActionCreateParamsCreateProcessItemMessage
+        :keyword start_related_process: Params for invoking an action of type START_RELATED_PROCESS.
+        :paramtype start_related_process:
+         ~kuflow.rest.models.ProcessActionCreateParamsStartRelatedProcess
+        :keyword send_workflow_signal: Params for invoking an action of type SEND_WORKFLOW_SIGNAL.
+        :paramtype send_workflow_signal:
+         ~kuflow.rest.models.ProcessActionCreateParamsSendWorkflowSignal
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.process_action_definition_code = process_action_definition_code
+        self.create_task = create_task
+        self.create_process_item_message = create_process_item_message
+        self.start_related_process = start_related_process
+        self.send_workflow_signal = send_workflow_signal
+
+
+class ProcessActionCreateParamsCreateProcessItemMessage(_serialization.Model):  # pylint: disable=name-too-long
+    """Params for invoking an action of type CREATE_PROCESS_ITEM_MESSAGE. Messages are created through
+    the built-in ``__KF_MESSAGE__`` action definition code.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar text: Text of the message to create. Required.
+    :vartype text: str
+    :ivar process_item_thread_id: ID of the thread Process Item the created message is attached to.
+    :vartype process_item_thread_id: str
+    """
+
+    _validation = {
+        "text": {"required": True},
+    }
+
+    _attribute_map = {
+        "text": {"key": "text", "type": "str"},
+        "process_item_thread_id": {"key": "processItemThreadId", "type": "str"},
+    }
+
+    def __init__(self, *, text: str, process_item_thread_id: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        :keyword text: Text of the message to create. Required.
+        :paramtype text: str
+        :keyword process_item_thread_id: ID of the thread Process Item the created message is attached
+         to.
+        :paramtype process_item_thread_id: str
+        """
+        super().__init__(**kwargs)
+        self.text = text
+        self.process_item_thread_id = process_item_thread_id
+
+
+class ProcessActionCreateParamsCreateTask(_serialization.Model):
+    """Params for invoking an action of type CREATE_TASK.
+
+    :ivar process_item_thread_id: ID of the thread Process Item the created task is attached to.
+    :vartype process_item_thread_id: str
+    """
+
+    _attribute_map = {
+        "process_item_thread_id": {"key": "processItemThreadId", "type": "str"},
+    }
+
+    def __init__(self, *, process_item_thread_id: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        :keyword process_item_thread_id: ID of the thread Process Item the created task is attached to.
+        :paramtype process_item_thread_id: str
+        """
+        super().__init__(**kwargs)
+        self.process_item_thread_id = process_item_thread_id
+
+
+class ProcessActionCreateParamsSendWorkflowSignal(_serialization.Model):  # pylint: disable=name-too-long
+    """Params for invoking an action of type SEND_WORKFLOW_SIGNAL.
+
+    :ivar input: Input delivered inside the workflow signal. Validated against the action's input
+     schema; only accepted when the action definition declares one. The serialized input is limited
+     to 200 KB.
+    :vartype input: dict[str, any]
+    """
+
+    _attribute_map = {
+        "input": {"key": "input", "type": "{object}"},
+    }
+
+    def __init__(self, *, input: Optional[dict[str, Any]] = None, **kwargs: Any) -> None:
+        """
+        :keyword input: Input delivered inside the workflow signal. Validated against the action's
+         input schema; only accepted when the action definition declares one. The serialized input is
+         limited to 200 KB.
+        :paramtype input: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.input = input
+
+
+class ProcessActionCreateParamsStartRelatedProcess(_serialization.Model):  # pylint: disable=name-too-long
+    """Params for invoking an action of type START_RELATED_PROCESS.
+
+    :ivar metadata: Metadata applied to the process created by this action.
+    :vartype metadata: dict[str, any]
+    :ivar entity: Entity data applied to the process created by this action. Validated against the
+     process definition entity schema; validation errors are recorded on the process entity value.
+     Ignored if empty or if the process definition has no entity structure.
+    :vartype entity: dict[str, any]
+    """
+
+    _attribute_map = {
+        "metadata": {"key": "metadata", "type": "{object}"},
+        "entity": {"key": "entity", "type": "{object}"},
+    }
+
+    def __init__(
+        self, *, metadata: Optional[dict[str, Any]] = None, entity: Optional[dict[str, Any]] = None, **kwargs: Any
+    ) -> None:
+        """
+        :keyword metadata: Metadata applied to the process created by this action.
+        :paramtype metadata: dict[str, any]
+        :keyword entity: Entity data applied to the process created by this action. Validated against
+         the process definition entity schema; validation errors are recorded on the process entity
+         value. Ignored if empty or if the process definition has no entity structure.
+        :paramtype entity: dict[str, any]
+        """
+        super().__init__(**kwargs)
+        self.metadata = metadata
+        self.entity = entity
+
+
+class ProcessActionCreateProcessItemMessage(_serialization.Model):
+    """Action details for actions of type CREATE_PROCESS_ITEM_MESSAGE. Actions of this type complete
+    synchronously, so the created Process Item ID is present in the invoke response.
+
+    :ivar process_item_id: ID of the message Process Item created by this action.
+    :vartype process_item_id: str
+    """
+
+    _attribute_map = {
+        "process_item_id": {"key": "processItemId", "type": "str"},
+    }
+
+    def __init__(self, *, process_item_id: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        :keyword process_item_id: ID of the message Process Item created by this action.
+        :paramtype process_item_id: str
+        """
+        super().__init__(**kwargs)
+        self.process_item_id = process_item_id
+
+
+class ProcessActionCreateProcessItemThread(_serialization.Model):
+    """Action details for actions of type CREATE_PROCESS_ITEM_THREAD. Actions of this type complete
+    synchronously, so the created Process Item ID is present in the invoke response.
+
+    :ivar process_item_id: ID of the thread Process Item created by this action.
+    :vartype process_item_id: str
+    """
+
+    _attribute_map = {
+        "process_item_id": {"key": "processItemId", "type": "str"},
+    }
+
+    def __init__(self, *, process_item_id: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        :keyword process_item_id: ID of the thread Process Item created by this action.
+        :paramtype process_item_id: str
+        """
+        super().__init__(**kwargs)
+        self.process_item_id = process_item_id
+
+
+class ProcessActionCreateTask(_serialization.Model):
+    """Action details for actions of type CREATE_TASK. Actions of this type complete synchronously, so
+    the created Process Item ID is present in the invoke response.
+
+    :ivar process_item_id: ID of the task Process Item created by this action.
+    :vartype process_item_id: str
+    """
+
+    _attribute_map = {
+        "process_item_id": {"key": "processItemId", "type": "str"},
+    }
+
+    def __init__(self, *, process_item_id: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        :keyword process_item_id: ID of the task Process Item created by this action.
+        :paramtype process_item_id: str
+        """
+        super().__init__(**kwargs)
+        self.process_item_id = process_item_id
+
+
+class ProcessActionDefinitionRef(_serialization.Model):
+    """ProcessActionDefinitionRef.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id: Not present when the action definition was removed from the process definition after
+     the invocation.
+    :vartype id: str
+    :ivar code: Required.
+    :vartype code: str
+    """
+
+    _validation = {
+        "code": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "code": {"key": "code", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        code: str,
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id: Not present when the action definition was removed from the process definition
+         after the invocation.
+        :paramtype id: str
+        :keyword code: Required.
+        :paramtype code: str
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.code = code
+
+
+class ProcessActionDownloadable(_serialization.Model):
+    """Action details for actions of type DOWNLOADABLE.
+
+    :ivar document_uri: URI of the generated document. Only present when status is COMPLETED.
+    :vartype document_uri: str
+    :ivar document_expired: Whether the generated document has expired. Only present when status is
+     COMPLETED.
+    :vartype document_expired: bool
+    """
+
+    _attribute_map = {
+        "document_uri": {"key": "documentUri", "type": "str"},
+        "document_expired": {"key": "documentExpired", "type": "bool"},
+    }
+
+    def __init__(
+        self, *, document_uri: Optional[str] = None, document_expired: Optional[bool] = None, **kwargs: Any
+    ) -> None:
+        """
+        :keyword document_uri: URI of the generated document. Only present when status is COMPLETED.
+        :paramtype document_uri: str
+        :keyword document_expired: Whether the generated document has expired. Only present when status
+         is COMPLETED.
+        :paramtype document_expired: bool
+        """
+        super().__init__(**kwargs)
+        self.document_uri = document_uri
+        self.document_expired = document_expired
+
+
+class ProcessActionSendWorkflowSignal(_serialization.Model):
+    """Action details for actions of type SEND_WORKFLOW_SIGNAL.
+
+    :ivar signal_name: Name of the signal sent to the Process workflow.
+    :vartype signal_name: str
+    :ivar input: Json value.
+    :vartype input: ~kuflow.rest.models.JsonValue
+    """
+
+    _attribute_map = {
+        "signal_name": {"key": "signalName", "type": "str"},
+        "input": {"key": "input", "type": "JsonValue"},
+    }
+
+    def __init__(
+        self, *, signal_name: Optional[str] = None, input: Optional["_models.JsonValue"] = None, **kwargs: Any
+    ) -> None:
+        """
+        :keyword signal_name: Name of the signal sent to the Process workflow.
+        :paramtype signal_name: str
+        :keyword input: Json value.
+        :paramtype input: ~kuflow.rest.models.JsonValue
+        """
+        super().__init__(**kwargs)
+        self.signal_name = signal_name
+        self.input = input
+
+
+class ProcessActionStartRelatedProcess(_serialization.Model):
+    """Action details for actions of type START_RELATED_PROCESS. Actions of this type complete
+    synchronously, so all fields are present in the invoke response.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar process_definition_id: ID of the Process Definition that was instantiated. Required.
+    :vartype process_definition_id: str
+    :ivar process_id: ID of the Process created by this action. Required.
+    :vartype process_id: str
+    """
+
+    _validation = {
+        "process_definition_id": {"required": True},
+        "process_id": {"required": True},
+    }
+
+    _attribute_map = {
+        "process_definition_id": {"key": "processDefinitionId", "type": "str"},
+        "process_id": {"key": "processId", "type": "str"},
+    }
+
+    def __init__(self, *, process_definition_id: str, process_id: str, **kwargs: Any) -> None:
+        """
+        :keyword process_definition_id: ID of the Process Definition that was instantiated. Required.
+        :paramtype process_definition_id: str
+        :keyword process_id: ID of the Process created by this action. Required.
+        :paramtype process_id: str
+        """
+        super().__init__(**kwargs)
+        self.process_definition_id = process_definition_id
+        self.process_id = process_id
 
 
 class ProcessChangeInitiatorParams(_serialization.Model):
@@ -2131,7 +2883,7 @@ class ProcessEntityUpdateParams(_serialization.Model):
         self.entity = entity
 
 
-class ProcessItem(AbstractAudited):
+class ProcessItem(AbstractDeleted):
     """ProcessItem.
 
     All required parameters must be populated in order to send to server.
@@ -2144,12 +2896,20 @@ class ProcessItem(AbstractAudited):
     :vartype last_modified_by: str
     :ivar last_modified_at: When this model type was last updated.
     :vartype last_modified_at: ~datetime.datetime
+    :ivar deleted_by: Who deleted this model, present only when it is deleted.
+    :vartype deleted_by: str
+    :ivar deleted_at: When this model was deleted, present only when it is deleted.
+    :vartype deleted_at: ~datetime.datetime
     :ivar id: Required.
     :vartype id: str
+    :ivar uri: Process Item resource URI. Format ``ku:process-item/{id}``.
+    :vartype uri: str
     :ivar type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and "THREAD".
     :vartype type: str or ~kuflow.rest.models.ProcessItemType
     :ivar process_id: Required.
     :vartype process_id: str
+    :ivar process_item_thread_id: ID of the thread Process Item this item is attached to, if any.
+    :vartype process_item_thread_id: str
     :ivar owner_id: Owner Principal ID.
     :vartype owner_id: str
     :ivar tenant_id: Tenant ID.
@@ -2173,9 +2933,13 @@ class ProcessItem(AbstractAudited):
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "deleted_by": {"key": "deletedBy", "type": "str"},
+        "deleted_at": {"key": "deletedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
+        "uri": {"key": "uri", "type": "str"},
         "type": {"key": "type", "type": "str"},
         "process_id": {"key": "processId", "type": "str"},
+        "process_item_thread_id": {"key": "processItemThreadId", "type": "str"},
         "owner_id": {"key": "ownerId", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
         "process_item_definition_ref": {"key": "processItemDefinitionRef", "type": "ProcessItemDefinitionRef"},
@@ -2193,6 +2957,10 @@ class ProcessItem(AbstractAudited):
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
+        deleted_by: Optional[str] = None,
+        deleted_at: Optional[datetime.datetime] = None,
+        uri: Optional[str] = None,
+        process_item_thread_id: Optional[str] = None,
         owner_id: Optional[str] = None,
         tenant_id: Optional[str] = None,
         process_item_definition_ref: Optional["_models.ProcessItemDefinitionRef"] = None,
@@ -2209,12 +2977,21 @@ class ProcessItem(AbstractAudited):
         :paramtype last_modified_by: str
         :keyword last_modified_at: When this model type was last updated.
         :paramtype last_modified_at: ~datetime.datetime
+        :keyword deleted_by: Who deleted this model, present only when it is deleted.
+        :paramtype deleted_by: str
+        :keyword deleted_at: When this model was deleted, present only when it is deleted.
+        :paramtype deleted_at: ~datetime.datetime
         :keyword id: Required.
         :paramtype id: str
+        :keyword uri: Process Item resource URI. Format ``ku:process-item/{id}``.
+        :paramtype uri: str
         :keyword type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and "THREAD".
         :paramtype type: str or ~kuflow.rest.models.ProcessItemType
         :keyword process_id: Required.
         :paramtype process_id: str
+        :keyword process_item_thread_id: ID of the thread Process Item this item is attached to, if
+         any.
+        :paramtype process_item_thread_id: str
         :keyword owner_id: Owner Principal ID.
         :paramtype owner_id: str
         :keyword tenant_id: Tenant ID.
@@ -2231,11 +3008,15 @@ class ProcessItem(AbstractAudited):
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
+            deleted_by=deleted_by,
+            deleted_at=deleted_at,
             **kwargs,
         )
         self.id = id
+        self.uri = uri
         self.type = type
         self.process_id = process_id
+        self.process_item_thread_id = process_item_thread_id
         self.owner_id = owner_id
         self.tenant_id = tenant_id
         self.process_item_definition_ref = process_item_definition_ref
@@ -2401,6 +3182,10 @@ class ProcessItemCreateParams(_serialization.Model):
     :vartype type: str or ~kuflow.rest.models.ProcessItemType
     :ivar process_id: Required.
     :vartype process_id: str
+    :ivar process_item_thread_id: ID of the thread Process Item the created item is attached to.
+     Only allowed for items of type ``TASK`` or ``MESSAGE``\\ ; it must reference a Process Item of
+     type ``THREAD`` that belongs to the same Process. It is not part of the idempotency key.
+    :vartype process_item_thread_id: str
     :ivar owner_id:
     :vartype owner_id: str
     :ivar owner_email:
@@ -2422,6 +3207,7 @@ class ProcessItemCreateParams(_serialization.Model):
         "id": {"key": "id", "type": "str"},
         "type": {"key": "type", "type": "str"},
         "process_id": {"key": "processId", "type": "str"},
+        "process_item_thread_id": {"key": "processItemThreadId", "type": "str"},
         "owner_id": {"key": "ownerId", "type": "str"},
         "owner_email": {"key": "ownerEmail", "type": "str"},
         "process_item_definition_code": {"key": "processItemDefinitionCode", "type": "str"},
@@ -2435,6 +3221,7 @@ class ProcessItemCreateParams(_serialization.Model):
         type: Union[str, "_models.ProcessItemType"],
         process_id: str,
         id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        process_item_thread_id: Optional[str] = None,
         owner_id: Optional[str] = None,
         owner_email: Optional[str] = None,
         process_item_definition_code: Optional[str] = None,
@@ -2449,6 +3236,10 @@ class ProcessItemCreateParams(_serialization.Model):
         :paramtype type: str or ~kuflow.rest.models.ProcessItemType
         :keyword process_id: Required.
         :paramtype process_id: str
+        :keyword process_item_thread_id: ID of the thread Process Item the created item is attached to.
+         Only allowed for items of type ``TASK`` or ``MESSAGE``\\ ; it must reference a Process Item of
+         type ``THREAD`` that belongs to the same Process. It is not part of the idempotency key.
+        :paramtype process_item_thread_id: str
         :keyword owner_id:
         :paramtype owner_id: str
         :keyword owner_email:
@@ -2464,6 +3255,7 @@ class ProcessItemCreateParams(_serialization.Model):
         self.id = id
         self.type = type
         self.process_id = process_id
+        self.process_item_thread_id = process_item_thread_id
         self.owner_id = owner_id
         self.owner_email = owner_email
         self.process_item_definition_code = process_item_definition_code
@@ -2664,7 +3456,7 @@ class ProcessItemPage(Page):
         self.content = content
 
 
-class ProcessItemPageItem(AbstractAudited):
+class ProcessItemPageItem(AbstractDeleted):
     """ProcessItemPageItem.
 
     All required parameters must be populated in order to send to server.
@@ -2677,12 +3469,20 @@ class ProcessItemPageItem(AbstractAudited):
     :vartype last_modified_by: str
     :ivar last_modified_at: When this model type was last updated.
     :vartype last_modified_at: ~datetime.datetime
+    :ivar deleted_by: Who deleted this model, present only when it is deleted.
+    :vartype deleted_by: str
+    :ivar deleted_at: When this model was deleted, present only when it is deleted.
+    :vartype deleted_at: ~datetime.datetime
     :ivar id: Required.
     :vartype id: str
+    :ivar uri: Process Item resource URI. Format ``ku:process-item/{id}``.
+    :vartype uri: str
     :ivar type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and "THREAD".
     :vartype type: str or ~kuflow.rest.models.ProcessItemType
     :ivar process_id: Required.
     :vartype process_id: str
+    :ivar process_item_thread_id: ID of the thread Process Item this item is attached to, if any.
+    :vartype process_item_thread_id: str
     :ivar owner_id: Principal ID.
     :vartype owner_id: str
     :ivar tenant_id: Tenant ID. Required.
@@ -2707,9 +3507,13 @@ class ProcessItemPageItem(AbstractAudited):
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "deleted_by": {"key": "deletedBy", "type": "str"},
+        "deleted_at": {"key": "deletedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
+        "uri": {"key": "uri", "type": "str"},
         "type": {"key": "type", "type": "str"},
         "process_id": {"key": "processId", "type": "str"},
+        "process_item_thread_id": {"key": "processItemThreadId", "type": "str"},
         "owner_id": {"key": "ownerId", "type": "str"},
         "tenant_id": {"key": "tenantId", "type": "str"},
         "process_item_definition_ref": {"key": "processItemDefinitionRef", "type": "ProcessItemDefinitionRef"},
@@ -2728,6 +3532,10 @@ class ProcessItemPageItem(AbstractAudited):
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
+        deleted_by: Optional[str] = None,
+        deleted_at: Optional[datetime.datetime] = None,
+        uri: Optional[str] = None,
+        process_item_thread_id: Optional[str] = None,
         owner_id: Optional[str] = None,
         process_item_definition_ref: Optional["_models.ProcessItemDefinitionRef"] = None,
         task: Optional["_models.ProcessItemTaskPageItem"] = None,
@@ -2743,12 +3551,21 @@ class ProcessItemPageItem(AbstractAudited):
         :paramtype last_modified_by: str
         :keyword last_modified_at: When this model type was last updated.
         :paramtype last_modified_at: ~datetime.datetime
+        :keyword deleted_by: Who deleted this model, present only when it is deleted.
+        :paramtype deleted_by: str
+        :keyword deleted_at: When this model was deleted, present only when it is deleted.
+        :paramtype deleted_at: ~datetime.datetime
         :keyword id: Required.
         :paramtype id: str
+        :keyword uri: Process Item resource URI. Format ``ku:process-item/{id}``.
+        :paramtype uri: str
         :keyword type: Process Item Type. Required. Known values are: "TASK", "MESSAGE", and "THREAD".
         :paramtype type: str or ~kuflow.rest.models.ProcessItemType
         :keyword process_id: Required.
         :paramtype process_id: str
+        :keyword process_item_thread_id: ID of the thread Process Item this item is attached to, if
+         any.
+        :paramtype process_item_thread_id: str
         :keyword owner_id: Principal ID.
         :paramtype owner_id: str
         :keyword tenant_id: Tenant ID. Required.
@@ -2765,11 +3582,15 @@ class ProcessItemPageItem(AbstractAudited):
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
+            deleted_by=deleted_by,
+            deleted_at=deleted_at,
             **kwargs,
         )
         self.id = id
+        self.uri = uri
         self.type = type
         self.process_id = process_id
+        self.process_item_thread_id = process_item_thread_id
         self.owner_id = owner_id
         self.tenant_id = tenant_id
         self.process_item_definition_ref = process_item_definition_ref
@@ -3117,7 +3938,7 @@ class ProcessPage(Page):
         self.content = content
 
 
-class ProcessPageItem(AbstractAudited):
+class ProcessPageItem(AbstractDeleted):
     """ProcessPageItem.
 
     All required parameters must be populated in order to send to server.
@@ -3130,8 +3951,15 @@ class ProcessPageItem(AbstractAudited):
     :vartype last_modified_by: str
     :ivar last_modified_at: When this model type was last updated.
     :vartype last_modified_at: ~datetime.datetime
+    :ivar deleted_by: Who deleted this model, present only when it is deleted.
+    :vartype deleted_by: str
+    :ivar deleted_at: When this model was deleted, present only when it is deleted.
+    :vartype deleted_at: ~datetime.datetime
     :ivar id: Process ID. Required.
     :vartype id: str
+    :ivar uri: Process resource URI, e.g. usable as ``targetUri`` of the ``uploadDocument``
+     operation. Format ``ku:process/{id}``.
+    :vartype uri: str
     :ivar state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
      "CANCELLED".
     :vartype state: str or ~kuflow.rest.models.ProcessState
@@ -3155,7 +3983,10 @@ class ProcessPageItem(AbstractAudited):
         "created_at": {"key": "createdAt", "type": "iso-8601"},
         "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
         "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "deleted_by": {"key": "deletedBy", "type": "str"},
+        "deleted_at": {"key": "deletedAt", "type": "iso-8601"},
         "id": {"key": "id", "type": "str"},
+        "uri": {"key": "uri", "type": "str"},
         "state": {"key": "state", "type": "str"},
         "process_definition_ref": {"key": "processDefinitionRef", "type": "ProcessDefinitionRef"},
         "initiator_id": {"key": "initiatorId", "type": "str"},
@@ -3173,6 +4004,9 @@ class ProcessPageItem(AbstractAudited):
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
         last_modified_at: Optional[datetime.datetime] = None,
+        deleted_by: Optional[str] = None,
+        deleted_at: Optional[datetime.datetime] = None,
+        uri: Optional[str] = None,
         initiator_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
@@ -3185,8 +4019,15 @@ class ProcessPageItem(AbstractAudited):
         :paramtype last_modified_by: str
         :keyword last_modified_at: When this model type was last updated.
         :paramtype last_modified_at: ~datetime.datetime
+        :keyword deleted_by: Who deleted this model, present only when it is deleted.
+        :paramtype deleted_by: str
+        :keyword deleted_at: When this model was deleted, present only when it is deleted.
+        :paramtype deleted_at: ~datetime.datetime
         :keyword id: Process ID. Required.
         :paramtype id: str
+        :keyword uri: Process resource URI, e.g. usable as ``targetUri`` of the ``uploadDocument``
+         operation. Format ``ku:process/{id}``.
+        :paramtype uri: str
         :keyword state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
          "CANCELLED".
         :paramtype state: str or ~kuflow.rest.models.ProcessState
@@ -3202,9 +4043,12 @@ class ProcessPageItem(AbstractAudited):
             created_at=created_at,
             last_modified_by=last_modified_by,
             last_modified_at=last_modified_at,
+            deleted_by=deleted_by,
+            deleted_at=deleted_at,
             **kwargs,
         )
         self.id = id
+        self.uri = uri
         self.state = state
         self.process_definition_ref = process_definition_ref
         self.initiator_id = initiator_id
@@ -3716,8 +4560,6 @@ class TenantPageItem(_serialization.Model):
 class TenantUser(AbstractAudited):
     """TenantUser.
 
-    Variables are only populated by the server, and will be ignored when sending a request.
-
     All required parameters must be populated in order to send to server.
 
     :ivar created_by: Who create this model.
@@ -3741,7 +4583,7 @@ class TenantUser(AbstractAudited):
     _validation = {
         "id": {"required": True},
         "principal": {"required": True},
-        "tenant_id": {"required": True, "readonly": True},
+        "tenant_id": {"required": True},
     }
 
     _attribute_map = {
@@ -3760,6 +4602,7 @@ class TenantUser(AbstractAudited):
         *,
         id: str,  # pylint: disable=redefined-builtin
         principal: "_models.Principal",
+        tenant_id: str,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -3782,6 +4625,8 @@ class TenantUser(AbstractAudited):
         :paramtype metadata: ~kuflow.rest.models.JsonValue
         :keyword principal: Required.
         :paramtype principal: ~kuflow.rest.models.Principal
+        :keyword tenant_id: Required.
+        :paramtype tenant_id: str
         """
         super().__init__(
             created_by=created_by,
@@ -3793,7 +4638,7 @@ class TenantUser(AbstractAudited):
         self.id = id
         self.metadata = metadata
         self.principal = principal
-        self.tenant_id: Optional[str] = None
+        self.tenant_id = tenant_id
 
 
 class TenantUserPage(Page):
@@ -3833,8 +4678,6 @@ class TenantUserPage(Page):
 class TenantUserPageItem(AbstractAudited):
     """TenantUserPageItem.
 
-    Variables are only populated by the server, and will be ignored when sending a request.
-
     All required parameters must be populated in order to send to server.
 
     :ivar created_by: Who create this model.
@@ -3854,9 +4697,9 @@ class TenantUserPageItem(AbstractAudited):
     """
 
     _validation = {
-        "id": {"required": True, "readonly": True},
-        "principal_id": {"required": True, "readonly": True},
-        "tenant_id": {"required": True, "readonly": True},
+        "id": {"required": True},
+        "principal_id": {"required": True},
+        "tenant_id": {"required": True},
     }
 
     _attribute_map = {
@@ -3872,6 +4715,9 @@ class TenantUserPageItem(AbstractAudited):
     def __init__(
         self,
         *,
+        id: str,  # pylint: disable=redefined-builtin
+        principal_id: str,
+        tenant_id: str,
         created_by: Optional[str] = None,
         created_at: Optional[datetime.datetime] = None,
         last_modified_by: Optional[str] = None,
@@ -3887,6 +4733,12 @@ class TenantUserPageItem(AbstractAudited):
         :paramtype last_modified_by: str
         :keyword last_modified_at: When this model type was last updated.
         :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword principal_id: Required.
+        :paramtype principal_id: str
+        :keyword tenant_id: Required.
+        :paramtype tenant_id: str
         """
         super().__init__(
             created_by=created_by,
@@ -3895,9 +4747,9 @@ class TenantUserPageItem(AbstractAudited):
             last_modified_at=last_modified_at,
             **kwargs,
         )
-        self.id: Optional[str] = None
-        self.principal_id: Optional[str] = None
-        self.tenant_id: Optional[str] = None
+        self.id = id
+        self.principal_id = principal_id
+        self.tenant_id = tenant_id
 
 
 class WebhookEvent(_serialization.Model):

@@ -59,6 +59,20 @@ class BusinessArtifactActionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     CREATE_BUSINESS_ARTIFACT = "CREATE_BUSINESS_ARTIFACT"
 
 
+class DeletedQueryParam(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Soft-deleted records filtering mode:
+
+
+    * EXCLUDE: only records that are not deleted (default)
+    * INCLUDE: both deleted and non-deleted records
+    * ONLY: only deleted records.
+    """
+
+    EXCLUDE = "EXCLUDE"
+    INCLUDE = "INCLUDE"
+    ONLY = "ONLY"
+
+
 class JsonPatchOperationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """The operation to perform."""
 
@@ -76,6 +90,27 @@ class PrincipalType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     USER = "USER"
     APPLICATION = "APPLICATION"
     SYSTEM = "SYSTEM"
+
+
+class ProcessActionStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Status of a Process action."""
+
+    REQUESTED = "REQUESTED"
+    COMPLETED = "COMPLETED"
+    CANCELED = "CANCELED"
+    ERROR = "ERROR"
+
+
+class ProcessActionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Type of a Process action."""
+
+    DOWNLOADABLE = "DOWNLOADABLE"
+    START_RELATED_PROCESS = "START_RELATED_PROCESS"
+    START_WORKFLOW = "START_WORKFLOW"
+    CREATE_TASK = "CREATE_TASK"
+    CREATE_PROCESS_ITEM_MESSAGE = "CREATE_PROCESS_ITEM_MESSAGE"
+    CREATE_PROCESS_ITEM_THREAD = "CREATE_PROCESS_ITEM_THREAD"
+    SEND_WORKFLOW_SIGNAL = "SEND_WORKFLOW_SIGNAL"
 
 
 class ProcessItemAiAssistanceState(str, Enum, metaclass=CaseInsensitiveEnumMeta):

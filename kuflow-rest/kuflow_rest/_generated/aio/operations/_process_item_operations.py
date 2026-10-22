@@ -105,6 +105,7 @@ class ProcessItemOperations:
         process_definition_id: Optional[list[str]] = None,
         process_definition_code: Optional[list[str]] = None,
         tenant_id: Optional[list[str]] = None,
+        deleted: Optional[Union[str, _models.DeletedQueryParam]] = None,
         **kwargs: Any,
     ) -> _models.ProcessItemPage:
         """Find all accessible Process Items.
@@ -140,6 +141,19 @@ class ProcessItemOperations:
         :paramtype process_definition_code: list[str]
         :keyword tenant_id: Filter by tenantId. Default value is None.
         :paramtype tenant_id: list[str]
+        :keyword deleted: Deleted Process Items filtering mode; when omitted, ``EXCLUDE`` applies. The
+         Process Items of a deleted
+         Process are deleted with it. With ``INCLUDE`` or ``ONLY``\\ , deleted Process Items are
+         returned with their
+         ``deletedAt`` and ``deletedBy`` fields set. They are only returned when the request identifies
+         exactly one
+         Process Definition — by exactly one ``processDefinitionId``\\ , or by exactly one
+         ``processDefinitionCode``
+         together with exactly one ``tenantId`` (codes are unique per tenant) — and the credentials can
+         delete any
+         Process of that definition; otherwise they are silently left out. Known values are: "EXCLUDE",
+         "INCLUDE", and "ONLY". Default value is None.
+        :paramtype deleted: str or ~kuflow.rest.models.DeletedQueryParam
         :return: ProcessItemPage
         :rtype: ~kuflow.rest.models.ProcessItemPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -168,6 +182,7 @@ class ProcessItemOperations:
             process_definition_id=process_definition_id,
             process_definition_code=process_definition_code,
             tenant_id=tenant_id,
+            deleted=deleted,
             headers=_headers,
             params=_params,
         )
@@ -207,6 +222,10 @@ class ProcessItemOperations:
 
         Create a Process Item and optionally fill its value.
 
+        To create a ``TASK`` or a ``MESSAGE`` inside a thread, set ``processItemThreadId`` to the id of
+        a Process Item of
+        type ``THREAD`` that belongs to the same Process.
+
         If you want to add document type elements, you can pass a reference to an existing document
         type element
         indicating its 'uri'. This will copy that document into the element. In case you want to add a
@@ -233,6 +252,10 @@ class ProcessItemOperations:
 
         Create a Process Item and optionally fill its value.
 
+        To create a ``TASK`` or a ``MESSAGE`` inside a thread, set ``processItemThreadId`` to the id of
+        a Process Item of
+        type ``THREAD`` that belongs to the same Process.
+
         If you want to add document type elements, you can pass a reference to an existing document
         type element
         indicating its 'uri'. This will copy that document into the element. In case you want to add a
@@ -258,6 +281,10 @@ class ProcessItemOperations:
         """Create a new Process Item in the selected Process.
 
         Create a Process Item and optionally fill its value.
+
+        To create a ``TASK`` or a ``MESSAGE`` inside a thread, set ``processItemThreadId`` to the id of
+        a Process Item of
+        type ``THREAD`` that belongs to the same Process.
 
         If you want to add document type elements, you can pass a reference to an existing document
         type element
@@ -331,7 +358,8 @@ class ProcessItemOperations:
     async def retrieve_process_item(self, id: str, **kwargs: Any) -> _models.ProcessItem:
         """Get a process item given it ID.
 
-        Allow to get a process item by ID.
+        Allow to get a process item by ID. A deleted Process Item (the ones of a deleted Process) is
+        returned too, with its ``deletedAt`` and ``deletedBy`` fields set.
 
         :param id: The resource ID. Required.
         :type id: str

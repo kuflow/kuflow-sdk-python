@@ -187,6 +187,94 @@ class TestKuFlowModelRoundTrip:
         assert str(result.state) == str(original.state)
         assert str(result.process_definition_ref.id) == str(original.process_definition_ref.id)
 
+    def test_deleted_process_model_roundtrip_keeps_deleted_fields(self, converter):
+        """The deletion audit of a deleted Process must survive the round-trip, they are not read-only."""
+        original = models_rest.Process.deserialize(
+            {
+                "objectType": "PROCESS",
+                "id": "11111111-1111-1111-1111-111111111111",
+                "tenantId": "22222222-2222-2222-2222-222222222222",
+                "processDefinitionRef": {"id": "d", "version": "v", "code": "C"},
+                "state": "COMPLETED",
+                "deletedBy": "33333333-3333-3333-3333-333333333333",
+                "deletedAt": "2026-10-22T10:00:00Z",
+            }
+        )
+
+        payload = converter.to_payload(original)
+        result = converter.from_payload(payload, models_rest.Process)
+
+        assert json.loads(payload.data)["deletedBy"] == "33333333-3333-3333-3333-333333333333"
+        assert result.deleted_by == original.deleted_by
+        assert result.deleted_at == original.deleted_at
+
+    @pytest.mark.parametrize(
+        ("model", "data"),
+        [
+            (
+                models_rest.Process,
+                {
+                    "objectType": "PROCESS",
+                    "id": "11111111-1111-1111-1111-111111111111",
+                    "uri": "ku:process/11111111-1111-1111-1111-111111111111",
+                    "processDefinitionRef": {"id": "d", "version": "v", "code": "C"},
+                    "state": "RUNNING",
+                    "tenantId": "22222222-2222-2222-2222-222222222222",
+                    "entity": {"value": {}, "valid": False, "errors": [{"propertyPath": "/F", "type": "required"}]},
+                },
+            ),
+            (
+                models_rest.ProcessItem,
+                {
+                    "objectType": "PROCESS_ITEM",
+                    "id": "11111111-1111-1111-1111-111111111111",
+                    "uri": "ku:process-item/11111111-1111-1111-1111-111111111111",
+                    "type": "TASK",
+                    "processId": "33333333-3333-3333-3333-333333333333",
+                    "tenantId": "22222222-2222-2222-2222-222222222222",
+                },
+            ),
+            (
+                models_rest.BusinessArtifact,
+                {
+                    "objectType": "BUSINESS_ARTIFACT",
+                    "id": "11111111-1111-1111-1111-111111111111",
+                    "uri": "ku:business-artifact/11111111-1111-1111-1111-111111111111",
+                    "data": {"value": {}, "valid": True, "errors": []},
+                },
+            ),
+            (
+                models_rest.TenantUser,
+                {
+                    "objectType": "TENANT_USER",
+                    "id": "11111111-1111-1111-1111-111111111111",
+                    "tenantId": "22222222-2222-2222-2222-222222222222",
+                },
+            ),
+            (
+                models_rest.TenantUserPageItem,
+                {
+                    "objectType": "TENANT_USER_PAGE_ITEM",
+                    "id": "11111111-1111-1111-1111-111111111111",
+                    "principalId": "33333333-3333-3333-3333-333333333333",
+                    "tenantId": "22222222-2222-2222-2222-222222222222",
+                },
+            ),
+        ],
+    )
+    def test_server_written_fields_survive_the_roundtrip(self, converter, model, data):
+        """Fields only the server writes (uri, tenant ids, JSON value validity...) must survive the round-trip."""
+        original = model.deserialize(data)
+
+        payload = converter.to_payload(original)
+        result = converter.from_payload(payload, model)
+
+        encoded = json.loads(payload.data)
+        for key, value in data.items():
+            if key != "objectType":
+                assert encoded[key] == value
+        assert result.serialize(keep_readonly=True) == original.serialize(keep_readonly=True)
+
     @staticmethod
     def _build_process() -> "models_rest.Process":
         process_definition_ref = models_rest.ProcessDefinitionRef(
