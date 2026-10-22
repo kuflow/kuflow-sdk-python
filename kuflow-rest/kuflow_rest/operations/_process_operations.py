@@ -50,7 +50,11 @@ class ProcessOperations:
         tenant_id: Optional[Union[str, list[str]]] = None,
         process_definition_id: Optional[Union[str, list[str]]] = None,
         process_definition_code: Optional[Union[str, list[str]]] = None,
+        state: Optional[Union[str, _models.ProcessState, list[Union[str, _models.ProcessState]]]] = None,
+        initiator_id: Optional[Union[str, list[str]]] = None,
+        initiator_email: Optional[Union[str, list[str]]] = None,
         metadata: Optional[Union[str, list[str]]] = None,
+        deleted: Optional[Union[str, _models.DeletedQueryParam]] = None,
         **kwargs: Any,
     ) -> _models.ProcessPage:
         """Find all accessible Processes.
@@ -76,6 +80,12 @@ class ProcessOperations:
         :type process_definition_id: Optional[Union[str, List[str]]]
         :keyword process_definition_code: Filter by an array of process definition codes. Default value is None.
         :type process_definition_code: Optional[Union[str, List[str]]]
+        :keyword state: Filter by an array of process states. Default value is None.
+        :type state: Optional[Union[str, ProcessState, List[Union[str, ProcessState]]]]
+        :keyword initiator_id: Filter by an array of initiator ids, Principal ID. Default value is None.
+        :type initiator_id: Optional[Union[str, List[str]]]
+        :keyword initiator_email: Filter by an array of initiator emails. Default value is None.
+        :type initiator_email: Optional[Union[str, List[str]]]
         :keyword metadata: Filter by process metadata field values. Each value is an expression with
                            the format ``fieldCode operation value1 value2...`` (space-separated).
 
@@ -86,6 +96,14 @@ class ProcessOperations:
                            :func:`~kuflow.rest.utils.encode_filter_expression` to build each expression.
                            Default value is None.
         :type metadata: Optional[Union[str, List[str]]]
+        :keyword deleted: Deleted Processes filtering mode; when omitted, ``EXCLUDE`` applies. With ``INCLUDE``
+                          or ``ONLY``, deleted Processes are returned with their ``deleted_at`` and ``deleted_by``
+                          fields set. They are only returned when the request identifies exactly one Process
+                          Definition (exactly one ``process_definition_id``, or exactly one
+                          ``process_definition_code`` together with exactly one ``tenant_id``) and the credentials
+                          can delete any Process of that definition; otherwise they are silently left out.
+                          Default value is None.
+        :type deleted: Optional[Union[str, ~kuflow.rest.models.DeletedQueryParam]]
         :return: ProcessPage
         :rtype: ~kuflow.rest.models.ProcessPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -102,6 +120,15 @@ class ProcessOperations:
         if process_definition_code is not None and isinstance(process_definition_code, str):
             process_definition_code = [process_definition_code]
 
+        if state is not None and isinstance(state, str):
+            state = [state]
+
+        if initiator_id is not None and isinstance(initiator_id, str):
+            initiator_id = [initiator_id]
+
+        if initiator_email is not None and isinstance(initiator_email, str):
+            initiator_email = [initiator_email]
+
         if metadata is not None and isinstance(metadata, str):
             metadata = [metadata]
 
@@ -112,7 +139,11 @@ class ProcessOperations:
             tenant_id=tenant_id,
             process_definition_id=process_definition_id,
             process_definition_code=process_definition_code,
+            state=state,
+            initiator_id=initiator_id,
+            initiator_email=initiator_email,
             metadata=metadata,
+            deleted=deleted,
             **kwargs,
         )
 
@@ -144,7 +175,8 @@ class ProcessOperations:
     def retrieve_process(self, id: str, **kwargs: Any) -> _models.Process:
         """Get a Process by ID.
 
-        Returns the requested Process when has access to do it.
+        Returns the requested Process when has access to do it. A deleted Process is returned too, with its
+        ``deleted_at`` and ``deleted_by`` fields set.
 
         :param id: The resource ID. Required.
         :type id: str
@@ -153,6 +185,23 @@ class ProcessOperations:
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self._kuflow_client.process.retrieve_process(id=id, **kwargs)
+
+    def delete_process(self, id: str, **kwargs: Any) -> None:
+        """Delete a Process by ID.
+
+        Deletes the requested Process, and its Process Items with it. Only a finished Process (``COMPLETED`` or
+        ``CANCELLED``) with nothing in progress, neither tasks still to be done nor workflows of its actions still
+        running, can be deleted; otherwise it answers conflict. The deletion is soft: the Process is still returned
+        by id and with ``deleted=INCLUDE|ONLY``, with its ``deleted_at`` and ``deleted_by`` fields set, but it cannot
+        be restored. Deleting a Process that is already deleted does nothing.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: None
+        :rtype: None
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process.delete_process(id=id, **kwargs)
 
     def complete_process(self, id: str, **kwargs: Any) -> _models.Process:
         """Complete a Process.
@@ -236,37 +285,66 @@ class ProcessOperations:
             id=id, process_change_initiator_params=process_change_initiator_params, **kwargs
         )
 
-    def upload_process_user_action_document(
-        self,
-        id: str,
-        file: _models.Document,
-        user_action_value_id: str,
-        **kwargs: Any,
-    ) -> Optional[_models.Process]:
-        """Upload and save a document in a user action.
+    def create_process_action(
+        self, id: str, process_action_create_params: _models.ProcessActionCreateParams, **kwargs: Any
+    ) -> _models.ProcessAction:
+        """Invoke a Process action.
 
-        Allow saving a user action document uploading the content.
+        Invoke an action on a Process.
 
-        user_action_value_id:
+        Whether the call returns synchronously or asynchronously depends on the action type:
+
+        * ``START_WORKFLOW``, ``DOWNLOADABLE``: dispatched to a background worker. The response returns
+          immediately with ``status=REQUESTED``. Poll ``retrieve_process_action`` for the final state.
+        * ``START_RELATED_PROCESS``, ``CREATE_TASK``, ``CREATE_PROCESS_ITEM_MESSAGE``,
+          ``CREATE_PROCESS_ITEM_THREAD``, ``SEND_WORKFLOW_SIGNAL``: completed synchronously. The response
+          returns with ``status=COMPLETED`` (or an error status).
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
 
         :param id: The resource ID. Required.
         :type id: str
-        :param file: Document to save. Required.
-        :type file: _models.Document
-        :keyword user_action_value_id: User action value id. Required.
-        :type user_action_value_id: _models.ProcessUserActionUploadParams
-        :return: Process or None
-        :rtype: ~kuflow.rest.models.Process or None
+        :param process_action_create_params: Params identifying the action to invoke. Required.
+        :type process_action_create_params: ~kuflow.rest.models.ProcessActionCreateParams
+        :return: ProcessAction
+        :rtype: ~kuflow.rest.models.ProcessAction
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.process.upload_process_user_action_document(
-            id=id,
-            file=file.file_content,
-            file_content_type=file.content_type,
-            file_name=file.file_name,
-            user_action_value_id=user_action_value_id,
-            **kwargs,
+        return self._kuflow_client.process.create_process_action(
+            id=id, process_action_create_params=process_action_create_params, **kwargs
         )
+
+    def retrieve_process_action(self, id: str, action_id: str, **kwargs: Any) -> _models.ProcessAction:
+        """Get a Process action by ID.
+
+        Returns a Process action by its ID.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param action_id: The Process action ID. Required.
+        :type action_id: str
+        :return: ProcessAction
+        :rtype: ~kuflow.rest.models.ProcessAction
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process.retrieve_process_action(id=id, action_id=action_id, **kwargs)
+
+    def cancel_process_action(self, id: str, action_id: str, **kwargs: Any) -> _models.ProcessAction:
+        """Cancel a Process action.
+
+        Cancel a Process action. Only meaningful for asynchronous actions still in ``REQUESTED`` state. The
+        action's status is set to ``CANCELED``. If the action is already in a terminal state, no transition
+        occurs.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param action_id: The Process action ID. Required.
+        :type action_id: str
+        :return: ProcessAction
+        :rtype: ~kuflow.rest.models.ProcessAction
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.process.cancel_process_action(id=id, action_id=action_id, **kwargs)
 
     def update_process_metadata(
         self, id: str, process_metadata_update_params: _models.ProcessMetadataUpdateParams, **kwargs: Any

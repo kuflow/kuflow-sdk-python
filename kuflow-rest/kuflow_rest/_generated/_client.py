@@ -44,6 +44,7 @@ from ._utils.serialization import Deserializer, Serializer
 from .operations import (
     AuthenticationOperations,
     BusinessArtifactOperations,
+    DocumentOperations,
     GroupOperations,
     KmsOperations,
     PrincipalOperations,
@@ -104,6 +105,26 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
     this mechanism, your systems can implement retry logic without worrying about performing data
     tradeoffs.
 
+    Resource URIs
+    =============
+
+    Some operations identify resources and documents through URIs instead of plain IDs:
+
+
+    * ``ku:`` URIs identify KuFlow resources, e.g. ``ku:process/{processId}`` or
+      ``ku:business-artifact/{businessArtifactId}``. Resources that can be referenced this way
+    expose their
+      URI in a read-only ``uri`` field. Documents owned by a resource extend its URI, e.g.
+      ``ku:process/{processId}/document/{documentId}``.
+    * ``kuflow-file:`` values are document references: they wrap a ``ku:`` document URI together
+    with its
+      metadata using the format
+    ``kuflow-file:uri=<ku-uri>;type=<media-type>;size=<bytes>;name=<file-name>;``.
+
+    Operations that receive a document URI accept both the full ``kuflow-file:`` reference and the
+    inner
+    ``ku:`` document URI.
+
     OpenAPI Specification
     =====================
 
@@ -129,6 +150,8 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
     :vartype process_item: kuflow.rest.operations.ProcessItemOperations
     :ivar business_artifact: BusinessArtifactOperations operations
     :vartype business_artifact: kuflow.rest.operations.BusinessArtifactOperations
+    :ivar document: DocumentOperations operations
+    :vartype document: kuflow.rest.operations.DocumentOperations
     :ivar worker: WorkerOperations operations
     :vartype worker: kuflow.rest.operations.WorkerOperations
     :ivar robot: RobotOperations operations
@@ -178,6 +201,7 @@ class KuFlowRestClient:  # pylint: disable=client-accepts-api-version-keyword,to
         self.business_artifact = BusinessArtifactOperations(
             self._client, self._config, self._serialize, self._deserialize
         )
+        self.document = DocumentOperations(self._client, self._config, self._serialize, self._deserialize)
         self.worker = WorkerOperations(self._client, self._config, self._serialize, self._deserialize)
         self.robot = RobotOperations(self._client, self._config, self._serialize, self._deserialize)
 

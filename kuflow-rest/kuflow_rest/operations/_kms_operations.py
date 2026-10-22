@@ -35,7 +35,7 @@ class KmsOperations:
 
         Instead, you should access the following operations through
         :class:`~kuflow.rest.client.KuFlowRestClient`'s
-        :attr:`authentication` attribute.
+        :attr:`kms` attribute.
     """
 
     def __init__(self, kuflow_client: KuFlowRestClientGenerated):

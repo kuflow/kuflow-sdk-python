@@ -51,6 +51,7 @@ class BusinessArtifactOperations:
         business_artifact_definition_id: Optional[Union[str, list[str]]] = None,
         business_artifact_definition_code: Optional[Union[str, list[str]]] = None,
         value: Optional[Union[str, list[str]]] = None,
+        deleted: Optional[Union[str, _models.DeletedQueryParam]] = None,
         **kwargs: Any,
     ) -> _models.BusinessArtifactPage:
         """Find all accessible Business Artifacts.
@@ -78,6 +79,10 @@ class BusinessArtifactOperations:
         :type business_artifact_definition_code: Optional[Union[str, List[str]]]
         :keyword value: Filter by an array of values. Default value is None.
         :type value: Optional[Union[str, List[str]]]
+        :keyword deleted: Deleted Business Artifacts filtering mode; when omitted, ``EXCLUDE`` applies. With
+                          ``INCLUDE`` or ``ONLY``, deleted Business Artifacts are returned with their ``deleted_at``
+                          and ``deleted_by`` fields set. Default value is None.
+        :type deleted: Optional[Union[str, ~kuflow.rest.models.DeletedQueryParam]]
         :return: BusinessArtifactPage
         :rtype: ~kuflow.rest.models.BusinessArtifactPage
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -105,6 +110,7 @@ class BusinessArtifactOperations:
             business_artifact_definition_id=business_artifact_definition_id,
             business_artifact_definition_code=business_artifact_definition_code,
             value=value,
+            deleted=deleted,
             **kwargs,
         )
 
@@ -152,6 +158,20 @@ class BusinessArtifactOperations:
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         return self._kuflow_client.business_artifact.delete_business_artifact(id=id, **kwargs)
+
+    def restore_business_artifact(self, id: str, **kwargs: Any) -> _models.BusinessArtifact:
+        """Restore a deleted Business Artifact by ID.
+
+        Restore a previously deleted Business Artifact, the undo of the ``delete_business_artifact``
+        operation. If the Business Artifact is not deleted, no action is taken.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: BusinessArtifact
+        :rtype: ~kuflow.rest.models.BusinessArtifact
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.business_artifact.restore_business_artifact(id=id, **kwargs)
 
     def update_business_artifact_data(
         self, id: str, business_artifact_data_update_params: _models.BusinessArtifactDataUpdateParams, **kwargs: Any
@@ -250,12 +270,12 @@ class BusinessArtifactOperations:
             id=id, action_id=action_id, **kwargs
         )
 
-    def prepare_business_artifact_create_artifact(
+    def prepare_business_artifact_action_create_artifact(
         self,
         id: str,
-        business_artifact_create_artifact_prepare_params: _models.BusinessArtifactCreateArtifactPrepareParams,
+        business_artifact_action_create_artifact_prepare_params: _models.BusinessArtifactActionCreateArtifactPrepareParams,  # noqa: E501
         **kwargs: Any,
-    ) -> _models.BusinessArtifactCreateArtifactPrepare:
+    ) -> _models.BusinessArtifactActionCreateArtifactPrepare:
         """Prepare the data for a CREATE_BUSINESS_ARTIFACT action.
 
         Compute the pre-filled value that a ``CREATE_BUSINESS_ARTIFACT`` action would produce
@@ -263,17 +283,48 @@ class BusinessArtifactOperations:
 
         :param id: The resource ID. Required.
         :type id: str
-        :param business_artifact_create_artifact_prepare_params: Params identifying the
+        :param business_artifact_action_create_artifact_prepare_params: Params identifying the
          CREATE_BUSINESS_ARTIFACT action to prepare. Required.
-        :type business_artifact_create_artifact_prepare_params:
-         ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepareParams
-        :return: BusinessArtifactCreateArtifactPrepare
-        :rtype: ~kuflow.rest.models.BusinessArtifactCreateArtifactPrepare
+        :type business_artifact_action_create_artifact_prepare_params:
+         ~kuflow.rest.models.BusinessArtifactActionCreateArtifactPrepareParams
+        :return: BusinessArtifactActionCreateArtifactPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactActionCreateArtifactPrepare
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        return self._kuflow_client.business_artifact.prepare_business_artifact_create_artifact(
+        return self._kuflow_client.business_artifact.prepare_business_artifact_action_create_artifact(
             id=id,
-            business_artifact_create_artifact_prepare_params=business_artifact_create_artifact_prepare_params,
+            business_artifact_action_create_artifact_prepare_params=business_artifact_action_create_artifact_prepare_params,
+            **kwargs,
+        )
+
+    def prepare_business_artifact_action_start_process(
+        self,
+        id: str,
+        business_artifact_action_start_process_prepare_params: _models.BusinessArtifactActionStartProcessPrepareParams,  # noqa: E501
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactActionStartProcessPrepare:
+        """Prepare the metadata for a START_PROCESS action.
+
+        Compute the pre-filled metadata that a ``START_PROCESS`` action would apply to the
+        process it creates, without invoking the action or persisting any state.
+
+        Use it to populate a form that the user can review and edit. Once the user submits,
+        the filled metadata is sent back via ``create_business_artifact_action`` (in the
+        ``start_process.metadata`` field).
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param business_artifact_action_start_process_prepare_params: Params identifying the
+         START_PROCESS action to prepare. Required.
+        :type business_artifact_action_start_process_prepare_params:
+         ~kuflow.rest.models.BusinessArtifactActionStartProcessPrepareParams
+        :return: BusinessArtifactActionStartProcessPrepare
+        :rtype: ~kuflow.rest.models.BusinessArtifactActionStartProcessPrepare
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.business_artifact.prepare_business_artifact_action_start_process(
+            id=id,
+            business_artifact_action_start_process_prepare_params=business_artifact_action_start_process_prepare_params,
             **kwargs,
         )
 

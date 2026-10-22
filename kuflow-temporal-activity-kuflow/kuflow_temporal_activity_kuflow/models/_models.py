@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 from kuflow_rest import models as models_rest
 from kuflow_rest._generated._utils import serialization
@@ -72,7 +72,7 @@ class TenantUserRetrieveRequest(serialization.Model):
 
 class TenantUserRetrieveResponse(serialization.Model):
     _attribute_map = {
-        "tenant_user": {"key": "tenantUser", "type": "Principal"},
+        "tenant_user": {"key": "tenantUser", "type": "TenantUser"},
     }
 
     def __init__(self, tenant_user: models_rest.TenantUser, **kwargs: Any) -> None:
@@ -92,7 +92,11 @@ class ProcessFindRequest(serialization.Model):
         "tenant_ids": {"key": "tenantIds", "type": "[str]"},
         "process_definition_ids": {"key": "processDefinitionIds", "type": "[str]"},
         "process_definition_codes": {"key": "processDefinitionCodes", "type": "[str]"},
+        "states": {"key": "states", "type": "[ProcessState]"},
+        "initiator_ids": {"key": "initiatorIds", "type": "[str]"},
+        "initiator_emails": {"key": "initiatorEmails", "type": "[str]"},
         "metadata": {"key": "metadata", "type": "[str]"},
+        "deleted": {"key": "deleted", "type": "DeletedQueryParam"},
     }
 
     def __init__(
@@ -103,7 +107,11 @@ class ProcessFindRequest(serialization.Model):
         tenant_ids: Optional[list[str]] = None,
         process_definition_ids: Optional[list[str]] = None,
         process_definition_codes: Optional[list[str]] = None,
+        states: Optional[list[models_rest.ProcessState]] = None,
+        initiator_ids: Optional[list[str]] = None,
+        initiator_emails: Optional[list[str]] = None,
         metadata: Optional[list[str]] = None,
+        deleted: Optional[Union[str, models_rest.DeletedQueryParam]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -114,11 +122,16 @@ class ProcessFindRequest(serialization.Model):
             tenant_ids: Filter processes that exists in one of tenant ids
             process_definition_ids: Filter by an array of process definition ids
             process_definition_codes: Filter by an array of process definition codes
+            states: Filter by an array of process states
+            initiator_ids: Filter by an array of initiator ids (principal ids)
+            initiator_emails: Filter by an array of initiator emails
             metadata: Filter by process metadata field values. Each value is an expression with the
                 format "fieldCode operation value1 value2..." (space-separated). Supported operations:
                 eq, le, ge, between, contains, in. Filtering by metadata requires specifying exactly
                 one process_definition_id or process_definition_code. Use
                 kuflow_rest.utils.encode_filter_expression to build each expression.
+            deleted: Deleted Processes filtering mode; when omitted, EXCLUDE applies. With INCLUDE or ONLY, deleted
+                Processes are returned with their deleted_at and deleted_by fields set
         """
         super().__init__(**kwargs)
         self.page = page
@@ -127,7 +140,11 @@ class ProcessFindRequest(serialization.Model):
         self.tenant_ids = tenant_ids
         self.process_definition_ids = process_definition_ids
         self.process_definition_codes = process_definition_codes
+        self.states = states
+        self.initiator_ids = initiator_ids
+        self.initiator_emails = initiator_emails
         self.metadata = metadata
+        self.deleted = deleted
 
 
 class ProcessFindResponse(serialization.Model):
@@ -170,6 +187,27 @@ class ProcessRetrieveResponse(serialization.Model):
         """
         super().__init__(**kwargs)
         self.process = process
+
+
+class ProcessDeleteRequest(serialization.Model):
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+    }
+
+    def __init__(self, process_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_id: Process identifier to delete
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+
+
+class ProcessDeleteResponse(serialization.Model):
+    _attribute_map: dict[str, Any] = {}
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
 
 
 class ProcessEntityUpdateRequest(serialization.Model):
@@ -283,7 +321,7 @@ class ProcessMetadataUpdateResponse(serialization.Model):
 class ProcessMetadataPatchRequest(serialization.Model):
     _attribute_map = {
         "process_id": {"key": "processId", "type": "str"},
-        "json_patch": {"key": "params", "type": "[JsonPatchOperation]"},
+        "json_patch": {"key": "jsonPatch", "type": "[JsonPatchOperation]"},
     }
 
     def __init__(
@@ -354,6 +392,127 @@ class ProcessInitiatorChangeResponse(serialization.Model):
         self.process = process
 
 
+class ProcessActionCreateRequest(serialization.Model):
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "id": {"key": "id", "type": "str"},
+        "process_action_definition_code": {"key": "processActionDefinitionCode", "type": "str"},
+        "create_task": {"key": "createTask", "type": "ProcessActionCreateParamsCreateTask"},
+        "create_process_item_message": {
+            "key": "createProcessItemMessage",
+            "type": "ProcessActionCreateParamsCreateProcessItemMessage",
+        },
+        "start_related_process": {"key": "startRelatedProcess", "type": "ProcessActionCreateParamsStartRelatedProcess"},
+        "send_workflow_signal": {"key": "sendWorkflowSignal", "type": "ProcessActionCreateParamsSendWorkflowSignal"},
+    }
+
+    def __init__(
+        self,
+        process_id: str,
+        process_action_definition_code: str,
+        id: Optional[str] = None,
+        create_task: Optional[models_rest.ProcessActionCreateParamsCreateTask] = None,
+        create_process_item_message: Optional[models_rest.ProcessActionCreateParamsCreateProcessItemMessage] = None,
+        start_related_process: Optional[models_rest.ProcessActionCreateParamsStartRelatedProcess] = None,
+        send_workflow_signal: Optional[models_rest.ProcessActionCreateParamsSendWorkflowSignal] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            process_id: Process on which invoke the action
+            process_action_definition_code: Process action definition code
+            id: Process action id. Set it to make the call idempotent
+            create_task: Params for a CREATE_TASK action
+            create_process_item_message: Params for a CREATE_PROCESS_ITEM_MESSAGE action
+            start_related_process: Params for a START_RELATED_PROCESS action
+            send_workflow_signal: Params for a SEND_WORKFLOW_SIGNAL action
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.process_action_definition_code = process_action_definition_code
+        self.id = id
+        self.create_task = create_task
+        self.create_process_item_message = create_process_item_message
+        self.start_related_process = start_related_process
+        self.send_workflow_signal = send_workflow_signal
+
+
+class ProcessActionCreateResponse(serialization.Model):
+    _attribute_map = {
+        "process_action": {"key": "processAction", "type": "ProcessAction"},
+    }
+
+    def __init__(self, process_action: models_rest.ProcessAction, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_action: Process action invoked
+        """
+        super().__init__(**kwargs)
+        self.process_action = process_action
+
+
+class ProcessActionRetrieveRequest(serialization.Model):
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "process_action_id": {"key": "processActionId", "type": "str"},
+    }
+
+    def __init__(self, process_id: str, process_action_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_id: Process identifier
+            process_action_id: Process action identifier to retrieve
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.process_action_id = process_action_id
+
+
+class ProcessActionRetrieveResponse(serialization.Model):
+    _attribute_map = {
+        "process_action": {"key": "processAction", "type": "ProcessAction"},
+    }
+
+    def __init__(self, process_action: models_rest.ProcessAction, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_action: Process action data
+        """
+        super().__init__(**kwargs)
+        self.process_action = process_action
+
+
+class ProcessActionCancelRequest(serialization.Model):
+    _attribute_map = {
+        "process_id": {"key": "processId", "type": "str"},
+        "process_action_id": {"key": "processActionId", "type": "str"},
+    }
+
+    def __init__(self, process_id: str, process_action_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_id: Process identifier
+            process_action_id: Process action identifier to cancel
+        """
+        super().__init__(**kwargs)
+        self.process_id = process_id
+        self.process_action_id = process_action_id
+
+
+class ProcessActionCancelResponse(serialization.Model):
+    _attribute_map = {
+        "process_action": {"key": "processAction", "type": "ProcessAction"},
+    }
+
+    def __init__(self, process_action: models_rest.ProcessAction, **kwargs: Any) -> None:
+        """
+        Parameters:
+            process_action: Process action cancelled
+        """
+        super().__init__(**kwargs)
+        self.process_action = process_action
+
+
 class ProcessItemFindRequest(serialization.Model):
     _attribute_map = {
         "page": {"key": "page", "type": "int"},
@@ -366,6 +525,7 @@ class ProcessItemFindRequest(serialization.Model):
         "process_item_definition_codes": {"key": "processItemDefinitionCodes", "type": "[str]"},
         "process_definition_ids": {"key": "processDefinitionIds", "type": "[str]"},
         "process_definition_codes": {"key": "processDefinitionCodes", "type": "[str]"},
+        "deleted": {"key": "deleted", "type": "DeletedQueryParam"},
     }
 
     def __init__(
@@ -380,6 +540,7 @@ class ProcessItemFindRequest(serialization.Model):
         process_item_definition_codes: Optional[list[str]] = None,
         process_definition_ids: Optional[list[str]] = None,
         process_definition_codes: Optional[list[str]] = None,
+        deleted: Optional[Union[str, models_rest.DeletedQueryParam]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -394,6 +555,8 @@ class ProcessItemFindRequest(serialization.Model):
             process_item_definition_codes: Filter process items by the process item definition codes
             process_definition_ids: Filter process items by the process definition identifiers
             process_definition_codes: Filter process items by the process definition codes
+            deleted: Deleted Process Items filtering mode; when omitted, EXCLUDE applies. The Process Items of a
+                deleted Process are deleted with it
         """
         super().__init__(**kwargs)
         self.page = page
@@ -406,6 +569,7 @@ class ProcessItemFindRequest(serialization.Model):
         self.process_item_definition_codes = process_item_definition_codes
         self.process_definition_ids = process_definition_ids
         self.process_definition_codes = process_definition_codes
+        self.deleted = deleted
 
 
 class ProcessItemFindResponse(serialization.Model):
@@ -455,6 +619,7 @@ class ProcessItemCreateRequest(serialization.Model):
         "id": {"key": "id", "type": "str"},
         "type": {"key": "type", "type": "ProcessItemType"},
         "process_id": {"key": "processId", "type": "str"},
+        "process_item_thread_id": {"key": "processItemThreadId", "type": "str"},
         "owner_id": {"key": "ownerId", "type": "str"},
         "owner_email": {"key": "ownerEmail", "type": "str"},
         "process_item_definition_code": {"key": "processItemDefinitionCode", "type": "str"},
@@ -472,6 +637,7 @@ class ProcessItemCreateRequest(serialization.Model):
         process_item_definition_code: Optional[str] = None,
         task: Optional[models_rest.ProcessItemTaskCreateParams] = None,
         message: Optional[models_rest.ProcessItemMessageCreateParams] = None,
+        process_item_thread_id: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -484,11 +650,14 @@ class ProcessItemCreateRequest(serialization.Model):
             process_item_definition_code: Process Item Task details
             task: Process Item Task details
             message: Process Item Message details
+            process_item_thread_id: Thread Process Item the created item is attached to. Not allowed for thread
+                items, threads cannot be nested
         """
         super().__init__(**kwargs)
         self.id = id
         self.type = type
         self.process_id = process_id
+        self.process_item_thread_id = process_item_thread_id
         self.owner_id = owner_id
         self.owner_email = owner_email
         self.process_item_definition_code = process_item_definition_code
@@ -846,6 +1015,7 @@ class BusinessArtifactFindRequest(serialization.Model):
         "business_artifact_definition_ids": {"key": "businessArtifactDefinitionIds", "type": "[str]"},
         "business_artifact_definition_codes": {"key": "businessArtifactDefinitionCodes", "type": "[str]"},
         "values": {"key": "values", "type": "[str]"},
+        "deleted": {"key": "deleted", "type": "DeletedQueryParam"},
     }
 
     def __init__(
@@ -857,6 +1027,7 @@ class BusinessArtifactFindRequest(serialization.Model):
         business_artifact_definition_ids: Optional[list[str]] = None,
         business_artifact_definition_codes: Optional[list[str]] = None,
         values: Optional[list[str]] = None,
+        deleted: Optional[Union[str, models_rest.DeletedQueryParam]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -868,6 +1039,8 @@ class BusinessArtifactFindRequest(serialization.Model):
             business_artifact_definition_ids: Filter by an array of business artifact definition ids
             business_artifact_definition_codes: Filter by an array of business artifact definition codes
             values: Filter by an array of values
+            deleted: Deleted Business Artifacts filtering mode; when omitted, EXCLUDE applies. With INCLUDE or ONLY,
+                deleted Business Artifacts are returned with their deleted_at and deleted_by fields set
         """
         super().__init__(**kwargs)
         self.page = page
@@ -877,6 +1050,7 @@ class BusinessArtifactFindRequest(serialization.Model):
         self.business_artifact_definition_ids = business_artifact_definition_ids
         self.business_artifact_definition_codes = business_artifact_definition_codes
         self.values = values
+        self.deleted = deleted
 
 
 class BusinessArtifactFindResponse(serialization.Model):
@@ -1176,7 +1350,7 @@ class BusinessArtifactActionCancelResponse(serialization.Model):
         self.business_artifact_action = business_artifact_action
 
 
-class BusinessArtifactCreateArtifactPrepareRequest(serialization.Model):
+class BusinessArtifactActionCreateArtifactPrepareRequest(serialization.Model):
     _attribute_map = {
         "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
         "business_artifact_action_definition_code": {"key": "businessArtifactActionDefinitionCode", "type": "str"},
@@ -1193,22 +1367,60 @@ class BusinessArtifactCreateArtifactPrepareRequest(serialization.Model):
         self.business_artifact_action_definition_code = business_artifact_action_definition_code
 
 
-class BusinessArtifactCreateArtifactPrepareResponse(serialization.Model):
+class BusinessArtifactActionCreateArtifactPrepareResponse(serialization.Model):
     _attribute_map = {
-        "business_artifact_create_artifact_prepare": {
-            "key": "businessArtifactCreateArtifactPrepare",
-            "type": "BusinessArtifactCreateArtifactPrepare",
+        "business_artifact_action_create_artifact_prepare": {
+            "key": "businessArtifactActionCreateArtifactPrepare",
+            "type": "BusinessArtifactActionCreateArtifactPrepare",
         },
     }
 
     def __init__(
         self,
-        business_artifact_create_artifact_prepare: models_rest.BusinessArtifactCreateArtifactPrepare,
+        business_artifact_action_create_artifact_prepare: models_rest.BusinessArtifactActionCreateArtifactPrepare,
         **kwargs: Any,
     ) -> None:
         """
         Parameters:
-            business_artifact_create_artifact_prepare: Prepared data for the CREATE_BUSINESS_ARTIFACT action
+            business_artifact_action_create_artifact_prepare: Prepared data for the CREATE_BUSINESS_ARTIFACT action
         """
         super().__init__(**kwargs)
-        self.business_artifact_create_artifact_prepare = business_artifact_create_artifact_prepare
+        self.business_artifact_action_create_artifact_prepare = business_artifact_action_create_artifact_prepare
+
+
+class BusinessArtifactActionStartProcessPrepareRequest(serialization.Model):
+    _attribute_map = {
+        "business_artifact_id": {"key": "businessArtifactId", "type": "str"},
+        "business_artifact_action_definition_code": {"key": "businessArtifactActionDefinitionCode", "type": "str"},
+    }
+
+    def __init__(self, business_artifact_id: str, business_artifact_action_definition_code: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_id: Business Artifact identifier
+            business_artifact_action_definition_code: START_PROCESS action definition code to prepare
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_id = business_artifact_id
+        self.business_artifact_action_definition_code = business_artifact_action_definition_code
+
+
+class BusinessArtifactActionStartProcessPrepareResponse(serialization.Model):
+    _attribute_map = {
+        "business_artifact_action_start_process_prepare": {
+            "key": "businessArtifactActionStartProcessPrepare",
+            "type": "BusinessArtifactActionStartProcessPrepare",
+        },
+    }
+
+    def __init__(
+        self,
+        business_artifact_action_start_process_prepare: models_rest.BusinessArtifactActionStartProcessPrepare,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            business_artifact_action_start_process_prepare: Prepared metadata for the START_PROCESS action
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_action_start_process_prepare = business_artifact_action_start_process_prepare

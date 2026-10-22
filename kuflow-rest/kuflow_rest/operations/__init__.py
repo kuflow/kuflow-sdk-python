@@ -25,6 +25,7 @@
 
 from ._authentication_operations import AuthenticationOperations
 from ._business_artifact_operations import BusinessArtifactOperations
+from ._document_operations import DocumentOperations
 from ._group_operations import GroupOperations
 from ._kms_operations import KmsOperations
 from ._principal_operations import PrincipalOperations
@@ -39,6 +40,7 @@ from ._worker_operations import WorkerOperations
 __all__ = [
     "AuthenticationOperations",
     "BusinessArtifactOperations",
+    "DocumentOperations",
     "GroupOperations",
     "KmsOperations",
     "PrincipalOperations",

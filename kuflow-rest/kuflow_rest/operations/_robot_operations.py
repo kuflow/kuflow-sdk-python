@@ -50,7 +50,7 @@ class RobotOperations:
         tenant_id: Optional[Union[str, list[str]]] = None,
         filter_context: Optional[Union[str, _models.RobotFilterContext]] = None,
         **kwargs: Any,
-    ) -> _models.PrincipalPage:
+    ) -> _models.RobotPage:
         """Find all accessible Robots.
 
         List all the Robots that have been created and the credentials has access.
@@ -87,7 +87,7 @@ class RobotOperations:
             size=size, page=page, sort=sort, tenant_id=tenant_id, filter_context=filter_context, **kwargs
         )
 
-    def retrieve_robot(self, id: str, **kwargs: Any) -> _models.Principal:
+    def retrieve_robot(self, id: str, **kwargs: Any) -> _models.Robot:
         """Get a Robot by ID.
 
         Returns the requested Robot when has access to do it.
