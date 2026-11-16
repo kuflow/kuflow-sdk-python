@@ -1424,3 +1424,158 @@ class BusinessArtifactActionStartProcessPrepareResponse(serialization.Model):
         """
         super().__init__(**kwargs)
         self.business_artifact_action_start_process_prepare = business_artifact_action_start_process_prepare
+
+
+class BusinessArtifactFeedItemCreateRequest(serialization.Model):
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "type": {"key": "type", "type": "BusinessArtifactFeedItemType"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "business_artifact_definition_id": {"key": "businessArtifactDefinitionId", "type": "str"},
+        "business_artifact_definition_code": {"key": "businessArtifactDefinitionCode", "type": "str"},
+        "business_artifact_feed_item_thread_id": {"key": "businessArtifactFeedItemThreadId", "type": "str"},
+        "status": {"key": "status", "type": "BusinessArtifactFeedItemStatus"},
+        "progress": {"key": "progress", "type": "BusinessArtifactFeedItemProgress"},
+        "thread": {"key": "thread", "type": "BusinessArtifactFeedItemThreadParams"},
+        "message": {"key": "message", "type": "BusinessArtifactFeedItemMessageParams"},
+    }
+
+    def __init__(
+        self,
+        id: str,
+        type: models_rest.BusinessArtifactFeedItemType,
+        tenant_id: Optional[str] = None,
+        business_artifact_definition_id: Optional[str] = None,
+        business_artifact_definition_code: Optional[str] = None,
+        business_artifact_feed_item_thread_id: Optional[str] = None,
+        status: Optional[models_rest.BusinessArtifactFeedItemStatus] = None,
+        progress: Optional[models_rest.BusinessArtifactFeedItemProgress] = None,
+        thread: Optional[models_rest.BusinessArtifactFeedItemThreadParams] = None,
+        message: Optional[models_rest.BusinessArtifactFeedItemMessageParams] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            id: Business Artifact Feed Item id. Required, so that a retried activity does not create the item
+                twice: the item is created once, and a retry returns the existing one
+            type: Business Artifact Feed Item type, THREAD or MESSAGE
+            tenant_id: Tenant id. Required when using business_artifact_definition_code
+            business_artifact_definition_id: Business Artifact Definition id. Only one of
+                                             business_artifact_definition_id or
+                                             business_artifact_definition_code is allowed
+            business_artifact_definition_code: Business Artifact Definition code. Only one of
+                                               business_artifact_definition_id or
+                                               business_artifact_definition_code is allowed
+            business_artifact_feed_item_thread_id: Thread in which the message is created; without it, the message
+                                                   is created at the top level of the feed. Only allowed for
+                                                   MESSAGE items
+            status: Status of the item
+            progress: Progress of the item
+            thread: Thread details, for THREAD items
+            message: Message details, for MESSAGE items
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.type = type
+        self.tenant_id = tenant_id
+        self.business_artifact_definition_id = business_artifact_definition_id
+        self.business_artifact_definition_code = business_artifact_definition_code
+        self.business_artifact_feed_item_thread_id = business_artifact_feed_item_thread_id
+        self.status = status
+        self.progress = progress
+        self.thread = thread
+        self.message = message
+
+
+class BusinessArtifactFeedItemCreateResponse(serialization.Model):
+    _attribute_map = {
+        "business_artifact_feed_item": {"key": "businessArtifactFeedItem", "type": "BusinessArtifactFeedItem"},
+    }
+
+    def __init__(self, business_artifact_feed_item: models_rest.BusinessArtifactFeedItem, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_feed_item: Business Artifact Feed Item created
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_feed_item = business_artifact_feed_item
+
+
+class BusinessArtifactFeedItemRetrieveRequest(serialization.Model):
+    _attribute_map = {
+        "business_artifact_feed_item_id": {"key": "businessArtifactFeedItemId", "type": "str"},
+    }
+
+    def __init__(self, business_artifact_feed_item_id: str, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_feed_item_id: Business Artifact Feed Item identifier to retrieve
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_feed_item_id = business_artifact_feed_item_id
+
+
+class BusinessArtifactFeedItemRetrieveResponse(serialization.Model):
+    _attribute_map = {
+        "business_artifact_feed_item": {"key": "businessArtifactFeedItem", "type": "BusinessArtifactFeedItem"},
+    }
+
+    def __init__(self, business_artifact_feed_item: models_rest.BusinessArtifactFeedItem, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_feed_item: Business Artifact Feed Item data
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_feed_item = business_artifact_feed_item
+
+
+class BusinessArtifactFeedItemUpdateRequest(serialization.Model):
+    """Replaces the content, status and progress of a Business Artifact Feed Item: a field left out is cleared. The
+    populated sub-field (thread, message) must match the type of the item.
+    """
+
+    _attribute_map = {
+        "business_artifact_feed_item_id": {"key": "businessArtifactFeedItemId", "type": "str"},
+        "status": {"key": "status", "type": "BusinessArtifactFeedItemStatus"},
+        "progress": {"key": "progress", "type": "BusinessArtifactFeedItemProgress"},
+        "thread": {"key": "thread", "type": "BusinessArtifactFeedItemThreadParams"},
+        "message": {"key": "message", "type": "BusinessArtifactFeedItemMessageParams"},
+    }
+
+    def __init__(
+        self,
+        business_artifact_feed_item_id: str,
+        status: Optional[models_rest.BusinessArtifactFeedItemStatus] = None,
+        progress: Optional[models_rest.BusinessArtifactFeedItemProgress] = None,
+        thread: Optional[models_rest.BusinessArtifactFeedItemThreadParams] = None,
+        message: Optional[models_rest.BusinessArtifactFeedItemMessageParams] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Parameters:
+            business_artifact_feed_item_id: Business Artifact Feed Item identifier to update
+            status: Status of the item. It cannot be removed once set
+            progress: Progress of the item
+            thread: Thread details, for THREAD items
+            message: Message details, for MESSAGE items
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_feed_item_id = business_artifact_feed_item_id
+        self.status = status
+        self.progress = progress
+        self.thread = thread
+        self.message = message
+
+
+class BusinessArtifactFeedItemUpdateResponse(serialization.Model):
+    _attribute_map = {
+        "business_artifact_feed_item": {"key": "businessArtifactFeedItem", "type": "BusinessArtifactFeedItem"},
+    }
+
+    def __init__(self, business_artifact_feed_item: models_rest.BusinessArtifactFeedItem, **kwargs: Any) -> None:
+        """
+        Parameters:
+            business_artifact_feed_item: Business Artifact Feed Item updated
+        """
+        super().__init__(**kwargs)
+        self.business_artifact_feed_item = business_artifact_feed_item

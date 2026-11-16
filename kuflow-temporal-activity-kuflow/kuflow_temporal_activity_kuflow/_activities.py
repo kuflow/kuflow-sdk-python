@@ -73,6 +73,9 @@ class KuFlowActivities:
             self.cancel_business_artifact_action,
             self.prepare_business_artifact_action_create_artifact,
             self.prepare_business_artifact_action_start_process,
+            self.create_business_artifact_feed_item,
+            self.retrieve_business_artifact_feed_item,
+            self.update_business_artifact_feed_item,
         ]
 
     @activity.defn(name="KuFlow_Engine_retrievePrincipal")
@@ -752,6 +755,95 @@ class KuFlowActivities:
 
             return models_temporal.BusinessArtifactActionStartProcessPrepareResponse(
                 business_artifact_action_start_process_prepare=business_artifact_action_start_process_prepare
+            )
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_createBusinessArtifactFeedItem")
+    async def create_business_artifact_feed_item(
+        self,
+        request: models_temporal.BusinessArtifactFeedItemCreateRequest,
+    ) -> models_temporal.BusinessArtifactFeedItemCreateResponse:
+        """Create a Business Artifact Feed Item.
+
+        Creates a thread or a message in the activity feed of a Business Artifact Definition. A message goes to the
+        top level of the feed, or into a thread when ``business_artifact_feed_item_thread_id`` is set.
+
+        The ``id`` is required so that a retried activity does not create the item twice: the item is created once,
+        and a retry returns the existing one.
+        """
+        try:
+            validation.validate_business_artifact_feed_item_create_request(request)
+
+            params = models_rest.BusinessArtifactFeedItemCreateParams(
+                id=request.id,
+                type=request.type,
+                tenant_id=request.tenant_id,
+                business_artifact_definition_id=request.business_artifact_definition_id,
+                business_artifact_definition_code=request.business_artifact_definition_code,
+                business_artifact_feed_item_thread_id=request.business_artifact_feed_item_thread_id,
+                status=request.status,
+                progress=request.progress,
+                thread=request.thread,
+                message=request.message,
+            )
+
+            business_artifact_feed_item = self._kuflow_client.business_artifact.create_business_artifact_feed_item(
+                business_artifact_feed_item_create_params=params
+            )
+
+            return models_temporal.BusinessArtifactFeedItemCreateResponse(
+                business_artifact_feed_item=business_artifact_feed_item
+            )
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_retrieveBusinessArtifactFeedItem")
+    async def retrieve_business_artifact_feed_item(
+        self,
+        request: models_temporal.BusinessArtifactFeedItemRetrieveRequest,
+    ) -> models_temporal.BusinessArtifactFeedItemRetrieveResponse:
+        """Retrieve a Business Artifact Feed Item."""
+        try:
+            validation.validate_business_artifact_feed_item_retrieve_request(request)
+
+            business_artifact_feed_item = self._kuflow_client.business_artifact.retrieve_business_artifact_feed_item(
+                id=request.business_artifact_feed_item_id
+            )
+
+            return models_temporal.BusinessArtifactFeedItemRetrieveResponse(
+                business_artifact_feed_item=business_artifact_feed_item
+            )
+        except Exception as err:
+            raise create_application_error(err)  # noqa: B904
+
+    @activity.defn(name="KuFlow_Engine_updateBusinessArtifactFeedItem")
+    async def update_business_artifact_feed_item(
+        self,
+        request: models_temporal.BusinessArtifactFeedItemUpdateRequest,
+    ) -> models_temporal.BusinessArtifactFeedItemUpdateResponse:
+        """Update a Business Artifact Feed Item.
+
+        Replaces the content, status and progress of an existing item: a field left out is cleared. An item in a
+        terminal status (``COMPLETED``, ``FAILED``, ``CANCELED``) is closed, and so are the messages of a closed
+        thread: an update that leaves it as it is succeeds, and any other change is rejected.
+        """
+        try:
+            validation.validate_business_artifact_feed_item_update_request(request)
+
+            params = models_rest.BusinessArtifactFeedItemUpdateParams(
+                status=request.status,
+                progress=request.progress,
+                thread=request.thread,
+                message=request.message,
+            )
+
+            business_artifact_feed_item = self._kuflow_client.business_artifact.update_business_artifact_feed_item(
+                id=request.business_artifact_feed_item_id, business_artifact_feed_item_update_params=params
+            )
+
+            return models_temporal.BusinessArtifactFeedItemUpdateResponse(
+                business_artifact_feed_item=business_artifact_feed_item
             )
         except Exception as err:
             raise create_application_error(err)  # noqa: B904

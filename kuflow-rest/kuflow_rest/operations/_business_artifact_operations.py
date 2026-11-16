@@ -369,3 +369,71 @@ class BusinessArtifactOperations:
         return self._kuflow_client.business_artifact.download_business_artifact_document(
             id=id, document_uri=document_uri, **kwargs
         )
+
+    def create_business_artifact_feed_item(
+        self,
+        business_artifact_feed_item_create_params: _models.BusinessArtifactFeedItemCreateParams,
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactFeedItem:
+        """Create a Business Artifact Feed Item.
+
+        Creates a thread or a message in the activity feed of a Business Artifact Definition, the feed
+        shown next to its list of Business Artifacts. The credentials need to manage the Business
+        Artifact Definition.
+
+        A message goes to the top level of the feed, or into a thread when
+        ``business_artifact_feed_item_thread_id`` is set. Only the author of a thread adds messages to it.
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
+
+        :param business_artifact_feed_item_create_params: Business Artifact Feed Item to create. Required.
+        :type business_artifact_feed_item_create_params: ~kuflow.rest.models.BusinessArtifactFeedItemCreateParams
+        :return: BusinessArtifactFeedItem
+        :rtype: ~kuflow.rest.models.BusinessArtifactFeedItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.business_artifact.create_business_artifact_feed_item(
+            business_artifact_feed_item_create_params=business_artifact_feed_item_create_params, **kwargs
+        )
+
+    def retrieve_business_artifact_feed_item(self, id: str, **kwargs: Any) -> _models.BusinessArtifactFeedItem:
+        """Get a Business Artifact Feed Item by ID.
+
+        Returns the requested Business Artifact Feed Item when has access to do it.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: BusinessArtifactFeedItem
+        :rtype: ~kuflow.rest.models.BusinessArtifactFeedItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.business_artifact.retrieve_business_artifact_feed_item(id=id, **kwargs)
+
+    def update_business_artifact_feed_item(
+        self,
+        id: str,
+        business_artifact_feed_item_update_params: _models.BusinessArtifactFeedItemUpdateParams,
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactFeedItem:
+        """Update a Business Artifact Feed Item.
+
+        Replaces what can change of an existing Business Artifact Feed Item: its content, status and
+        progress. It never creates an item. Only its author updates it.
+
+        An item in a terminal status (``COMPLETED``, ``FAILED``, ``CANCELED``) is closed, and so are the
+        messages of a closed thread: an update that leaves it as it is succeeds, so a retried call is
+        harmless, and any other change is rejected with a conflict. The status of an item cannot be
+        removed once set.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param business_artifact_feed_item_update_params: Params used to update the Business Artifact Feed
+         Item. Required.
+        :type business_artifact_feed_item_update_params: ~kuflow.rest.models.BusinessArtifactFeedItemUpdateParams
+        :return: BusinessArtifactFeedItem
+        :rtype: ~kuflow.rest.models.BusinessArtifactFeedItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        return self._kuflow_client.business_artifact.update_business_artifact_feed_item(
+            id=id, business_artifact_feed_item_update_params=business_artifact_feed_item_update_params, **kwargs
+        )

@@ -287,6 +287,109 @@ def test_given_a_thread_item_with_a_thread_id_when_create_process_item_then_rais
     assert_validation_error(error, "process_item_thread_id")
 
 
+FEED_ITEM_ID = "0192b7a1-0000-7000-8000-000000000010"
+FEED_ITEM_THREAD_ID = "0192b7a1-0000-7000-8000-000000000011"
+BUSINESS_ARTIFACT_DEFINITION_ID = "0192b7a1-0000-7000-8000-000000000012"
+
+
+def business_artifact_feed_item_create_request(
+    item_type: models_rest.BusinessArtifactFeedItemType, **kwargs
+) -> models_temporal.BusinessArtifactFeedItemCreateRequest:
+    return models_temporal.BusinessArtifactFeedItemCreateRequest(
+        id=FEED_ITEM_ID, type=item_type, business_artifact_definition_id=BUSINESS_ARTIFACT_DEFINITION_ID, **kwargs
+    )
+
+
+def test_given_a_thread_when_create_business_artifact_feed_item_then_sends_the_thread_and_returns_the_item(
+    kuflow_activities, kuflow_client
+):
+    business_artifact_feed_item = MagicMock()
+    kuflow_client.business_artifact.create_business_artifact_feed_item.return_value = business_artifact_feed_item
+    thread = models_rest.BusinessArtifactFeedItemThreadParams(
+        title="Invoice import", description="Importing the invoices"
+    )
+    request = business_artifact_feed_item_create_request(models_rest.BusinessArtifactFeedItemType.THREAD, thread=thread)
+
+    response = asyncio.run(kuflow_activities.create_business_artifact_feed_item(request))
+
+    call = kuflow_client.business_artifact.create_business_artifact_feed_item.call_args
+    params = call.kwargs["business_artifact_feed_item_create_params"]
+    assert params.type == models_rest.BusinessArtifactFeedItemType.THREAD
+    assert params.thread is thread
+    assert params.message is None
+    assert response.business_artifact_feed_item is business_artifact_feed_item
+
+
+@pytest.mark.parametrize(
+    ("item_type", "kwargs", "field"),
+    [
+        (models_rest.BusinessArtifactFeedItemType.THREAD, {}, "thread.title"),
+        (
+            models_rest.BusinessArtifactFeedItemType.THREAD,
+            {"thread": models_rest.BusinessArtifactFeedItemThreadParams(title=None, description="A description")},
+            "thread.title",
+        ),
+        (
+            models_rest.BusinessArtifactFeedItemType.THREAD,
+            {
+                "thread": models_rest.BusinessArtifactFeedItemThreadParams(title="A thread"),
+                "business_artifact_feed_item_thread_id": FEED_ITEM_THREAD_ID,
+            },
+            "business_artifact_feed_item_thread_id",
+        ),
+        (models_rest.BusinessArtifactFeedItemType.MESSAGE, {}, "message.text"),
+        (
+            models_rest.BusinessArtifactFeedItemType.MESSAGE,
+            {
+                "message": models_rest.BusinessArtifactFeedItemMessageParams(
+                    text=None, level=models_rest.BusinessArtifactFeedItemMessageLevel.INFO
+                )
+            },
+            "message.text",
+        ),
+    ],
+    ids=[
+        "thread-without-thread",
+        "thread-without-title",
+        "thread-inside-a-thread",
+        "message-without-message",
+        "message-without-text",
+    ],
+)
+def test_given_an_item_not_matching_its_type_when_create_business_artifact_feed_item_then_raises_a_validation_error(
+    kuflow_activities, kuflow_client, item_type, kwargs, field
+):
+    request = business_artifact_feed_item_create_request(item_type, **kwargs)
+
+    with pytest.raises(ApplicationError) as error:
+        asyncio.run(kuflow_activities.create_business_artifact_feed_item(request))
+
+    assert_validation_error(error, field)
+    kuflow_client.business_artifact.create_business_artifact_feed_item.assert_not_called()
+
+
+def test_given_a_java_type_when_create_business_artifact_feed_item_then_the_type_checks_apply(
+    kuflow_activities, kuflow_client, converter
+):
+    request = from_json(
+        converter,
+        {
+            "id": FEED_ITEM_ID,
+            "type": "THREAD",
+            "businessArtifactDefinitionId": BUSINESS_ARTIFACT_DEFINITION_ID,
+            "businessArtifactFeedItemThreadId": FEED_ITEM_THREAD_ID,
+            "thread": {"title": "A thread"},
+        },
+        models_temporal.BusinessArtifactFeedItemCreateRequest,
+    )
+
+    with pytest.raises(ApplicationError) as error:
+        asyncio.run(kuflow_activities.create_business_artifact_feed_item(request))
+
+    assert_validation_error(error, "business_artifact_feed_item_thread_id")
+    kuflow_client.business_artifact.create_business_artifact_feed_item.assert_not_called()
+
+
 def test_given_a_metadata_patch_request_when_serialize_then_uses_the_java_json_patch_key(converter):
     request = models_temporal.ProcessMetadataPatchRequest(
         process_id=PROCESS_ID, json_patch=[models_rest.JsonPatchOperation(op="add", path="/FIELD", value="v")]

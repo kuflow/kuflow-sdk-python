@@ -424,6 +424,13 @@ def validate_business_artifact_create_request(
             non_retryable=True,
         )
 
+    if request.business_artifact_definition_code and not request.tenant_id:
+        raise ApplicationError(
+            "'tenant_id' is required when using 'business_artifact_definition_code'",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
 
 def validate_business_artifact_retrieve_request(
     request: models_temporal.BusinessArtifactRetrieveRequest,
@@ -568,6 +575,90 @@ def validate_business_artifact_action_start_process_prepare_request(
     if not request.business_artifact_action_definition_code:
         raise ApplicationError(
             "'business_artifact_action_definition_code' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_feed_item_create_request(
+    request: models_temporal.BusinessArtifactFeedItemCreateRequest,
+) -> None:
+    if not request.id:
+        raise ApplicationError(
+            "'id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.type:
+        raise ApplicationError(
+            "'type' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.business_artifact_definition_id and not request.business_artifact_definition_code:
+        raise ApplicationError(
+            "'business_artifact_definition_id' or 'business_artifact_definition_code' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if request.business_artifact_definition_code and not request.tenant_id:
+        raise ApplicationError(
+            "'tenant_id' is required when using 'business_artifact_definition_code'",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if request.type == models_rest.BusinessArtifactFeedItemType.THREAD:
+        if not request.thread or not request.thread.title:
+            raise ApplicationError(
+                "'thread.title' is required for thread items",
+                type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+                non_retryable=True,
+            )
+
+        if request.business_artifact_feed_item_thread_id:
+            raise ApplicationError(
+                "'business_artifact_feed_item_thread_id' is not allowed for thread items, threads cannot be nested",
+                type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+                non_retryable=True,
+            )
+
+    if request.type == models_rest.BusinessArtifactFeedItemType.MESSAGE:
+        if not request.message or not request.message.text:
+            raise ApplicationError(
+                "'message.text' is required for message items",
+                type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+                non_retryable=True,
+            )
+
+
+def validate_business_artifact_feed_item_retrieve_request(
+    request: models_temporal.BusinessArtifactFeedItemRetrieveRequest,
+) -> None:
+    if not request.business_artifact_feed_item_id:
+        raise ApplicationError(
+            "'business_artifact_feed_item_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+
+def validate_business_artifact_feed_item_update_request(
+    request: models_temporal.BusinessArtifactFeedItemUpdateRequest,
+) -> None:
+    if not request.business_artifact_feed_item_id:
+        raise ApplicationError(
+            "'business_artifact_feed_item_id' is required",
+            type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
+            non_retryable=True,
+        )
+
+    if not request.thread and not request.message:
+        raise ApplicationError(
+            "'thread' or 'message' is required",
             type=KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE,
             non_retryable=True,
         )

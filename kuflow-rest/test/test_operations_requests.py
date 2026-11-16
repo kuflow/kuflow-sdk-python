@@ -52,6 +52,13 @@ PROCESS = {"objectType": "PROCESS", "id": ID, "state": "RUNNING", "tenantId": TE
 PROCESS_ITEM = {"objectType": "PROCESS_ITEM", "id": ID, "type": "TASK", "processId": ID, "tenantId": TENANT_ID}
 BUSINESS_ARTIFACT = {"objectType": "BUSINESS_ARTIFACT", "id": ID}
 BUSINESS_ARTIFACT_ACTION = {"id": ACTION_ID, "type": "START_WORKFLOW", "status": "REQUESTED"}
+BUSINESS_ARTIFACT_FEED_ITEM = {
+    "id": ID,
+    "type": "MESSAGE",
+    "tenantId": TENANT_ID,
+    "businessArtifactDefinitionRef": {"id": ID, "code": "CODE"},
+    "message": {"text": "hello", "level": "INFO"},
+}
 PAGE = {"content": [], "metadata": {"size": 25, "page": 0, "totalElements": 0, "totalPages": 0}}
 JSON_VALUE = models.JsonValue(value={"FIELD": "v"})
 JSON_VALUE_BODY = {"value": {"FIELD": "v"}}
@@ -229,6 +236,49 @@ CASES = [
         response=b"hello",
         response_content_type="application/octet-stream",
         result=bytes,
+    ),
+    Case(
+        "create_business_artifact_feed_item",
+        ops.BusinessArtifactOperations,
+        lambda o: o.create_business_artifact_feed_item(
+            models.BusinessArtifactFeedItemCreateParams(
+                id=ID,
+                type=models.BusinessArtifactFeedItemType.MESSAGE,
+                business_artifact_definition_id=ID,
+                message=models.BusinessArtifactFeedItemMessageParams(text="hello"),
+            )
+        ),
+        "POST",
+        "/business-artifact-feed-items",
+        body={"id": ID, "type": "MESSAGE", "businessArtifactDefinitionId": ID, "message": {"text": "hello"}},
+        status=201,
+        response=BUSINESS_ARTIFACT_FEED_ITEM,
+        result=models.BusinessArtifactFeedItem,
+    ),
+    Case(
+        "retrieve_business_artifact_feed_item",
+        ops.BusinessArtifactOperations,
+        lambda o: o.retrieve_business_artifact_feed_item(ID),
+        "GET",
+        f"/business-artifact-feed-items/{ID}",
+        response=BUSINESS_ARTIFACT_FEED_ITEM,
+        result=models.BusinessArtifactFeedItem,
+    ),
+    Case(
+        "update_business_artifact_feed_item",
+        ops.BusinessArtifactOperations,
+        lambda o: o.update_business_artifact_feed_item(
+            ID,
+            models.BusinessArtifactFeedItemUpdateParams(
+                status=models.BusinessArtifactFeedItemStatus.COMPLETED,
+                message=models.BusinessArtifactFeedItemMessageParams(text="hello"),
+            ),
+        ),
+        "PUT",
+        f"/business-artifact-feed-items/{ID}",
+        body={"status": "COMPLETED", "message": {"text": "hello"}},
+        response=BUSINESS_ARTIFACT_FEED_ITEM,
+        result=models.BusinessArtifactFeedItem,
     ),
     # Principal
     Case(

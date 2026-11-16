@@ -1218,6 +1218,491 @@ class BusinessArtifactDefinitionRef(_serialization.Model):
         self.code = code
 
 
+class BusinessArtifactFeedItem(AbstractAudited):
+    """An item of the activity feed of a Business Artifact Definition. The populated sub-field (\\
+    ``thread``\\ , ``message``\\ ) is dictated by ``type``. ``createdBy`` is its author.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar created_by: Who create this model.
+    :vartype created_by: str
+    :ivar created_at: When this model was created.
+    :vartype created_at: ~datetime.datetime
+    :ivar last_modified_by: Who was last update this model.
+    :vartype last_modified_by: str
+    :ivar last_modified_at: When this model type was last updated.
+    :vartype last_modified_at: ~datetime.datetime
+    :ivar id: Required.
+    :vartype id: str
+    :ivar type: Type of a Business Artifact Feed Item. Required. Known values are: "THREAD" and
+     "MESSAGE".
+    :vartype type: str or ~kuflow.rest.models.BusinessArtifactFeedItemType
+    :ivar tenant_id: Tenant ID. Required.
+    :vartype tenant_id: str
+    :ivar business_artifact_definition_ref: Required.
+    :vartype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+    :ivar business_artifact_feed_item_thread_id: ID of the thread this message is in, if any.
+    :vartype business_artifact_feed_item_thread_id: str
+    :ivar status: Status of an item. ``COMPLETED``\\ , ``FAILED`` and ``CANCELED`` are terminal:
+     they close the item, and a closed thread closes its messages. Known values are: "PENDING",
+     "RUNNING", "COMPLETED", "FAILED", and "CANCELED".
+    :vartype status: str or ~kuflow.rest.models.BusinessArtifactFeedItemStatus
+    :ivar progress: Progress of an item. Without ``total``\\ , the progress is indeterminate.
+    :vartype progress: ~kuflow.rest.models.BusinessArtifactFeedItemProgress
+    :ivar started_at: First time the item went ``RUNNING``.
+    :vartype started_at: ~datetime.datetime
+    :ivar finished_at: When the item reached a terminal status.
+    :vartype finished_at: ~datetime.datetime
+    :ivar thread:
+    :vartype thread: ~kuflow.rest.models.BusinessArtifactFeedItemThread
+    :ivar message:
+    :vartype message: ~kuflow.rest.models.BusinessArtifactFeedItemMessage
+    """
+
+    _validation = {
+        "id": {"required": True},
+        "type": {"required": True},
+        "tenant_id": {"required": True},
+        "business_artifact_definition_ref": {"required": True},
+    }
+
+    _attribute_map = {
+        "created_by": {"key": "createdBy", "type": "str"},
+        "created_at": {"key": "createdAt", "type": "iso-8601"},
+        "last_modified_by": {"key": "lastModifiedBy", "type": "str"},
+        "last_modified_at": {"key": "lastModifiedAt", "type": "iso-8601"},
+        "id": {"key": "id", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "business_artifact_definition_ref": {
+            "key": "businessArtifactDefinitionRef",
+            "type": "BusinessArtifactDefinitionRef",
+        },
+        "business_artifact_feed_item_thread_id": {"key": "businessArtifactFeedItemThreadId", "type": "str"},
+        "status": {"key": "status", "type": "str"},
+        "progress": {"key": "progress", "type": "BusinessArtifactFeedItemProgress"},
+        "started_at": {"key": "startedAt", "type": "iso-8601"},
+        "finished_at": {"key": "finishedAt", "type": "iso-8601"},
+        "thread": {"key": "thread", "type": "BusinessArtifactFeedItemThread"},
+        "message": {"key": "message", "type": "BusinessArtifactFeedItemMessage"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,  # pylint: disable=redefined-builtin
+        type: Union[str, "_models.BusinessArtifactFeedItemType"],
+        tenant_id: str,
+        business_artifact_definition_ref: "_models.BusinessArtifactDefinitionRef",
+        created_by: Optional[str] = None,
+        created_at: Optional[datetime.datetime] = None,
+        last_modified_by: Optional[str] = None,
+        last_modified_at: Optional[datetime.datetime] = None,
+        business_artifact_feed_item_thread_id: Optional[str] = None,
+        status: Optional[Union[str, "_models.BusinessArtifactFeedItemStatus"]] = None,
+        progress: Optional["_models.BusinessArtifactFeedItemProgress"] = None,
+        started_at: Optional[datetime.datetime] = None,
+        finished_at: Optional[datetime.datetime] = None,
+        thread: Optional["_models.BusinessArtifactFeedItemThread"] = None,
+        message: Optional["_models.BusinessArtifactFeedItemMessage"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword created_by: Who create this model.
+        :paramtype created_by: str
+        :keyword created_at: When this model was created.
+        :paramtype created_at: ~datetime.datetime
+        :keyword last_modified_by: Who was last update this model.
+        :paramtype last_modified_by: str
+        :keyword last_modified_at: When this model type was last updated.
+        :paramtype last_modified_at: ~datetime.datetime
+        :keyword id: Required.
+        :paramtype id: str
+        :keyword type: Type of a Business Artifact Feed Item. Required. Known values are: "THREAD" and
+         "MESSAGE".
+        :paramtype type: str or ~kuflow.rest.models.BusinessArtifactFeedItemType
+        :keyword tenant_id: Tenant ID. Required.
+        :paramtype tenant_id: str
+        :keyword business_artifact_definition_ref: Required.
+        :paramtype business_artifact_definition_ref: ~kuflow.rest.models.BusinessArtifactDefinitionRef
+        :keyword business_artifact_feed_item_thread_id: ID of the thread this message is in, if any.
+        :paramtype business_artifact_feed_item_thread_id: str
+        :keyword status: Status of an item. ``COMPLETED``\\ , ``FAILED`` and ``CANCELED`` are terminal:
+         they close the item, and a closed thread closes its messages. Known values are: "PENDING",
+         "RUNNING", "COMPLETED", "FAILED", and "CANCELED".
+        :paramtype status: str or ~kuflow.rest.models.BusinessArtifactFeedItemStatus
+        :keyword progress: Progress of an item. Without ``total``\\ , the progress is indeterminate.
+        :paramtype progress: ~kuflow.rest.models.BusinessArtifactFeedItemProgress
+        :keyword started_at: First time the item went ``RUNNING``.
+        :paramtype started_at: ~datetime.datetime
+        :keyword finished_at: When the item reached a terminal status.
+        :paramtype finished_at: ~datetime.datetime
+        :keyword thread:
+        :paramtype thread: ~kuflow.rest.models.BusinessArtifactFeedItemThread
+        :keyword message:
+        :paramtype message: ~kuflow.rest.models.BusinessArtifactFeedItemMessage
+        """
+        super().__init__(
+            created_by=created_by,
+            created_at=created_at,
+            last_modified_by=last_modified_by,
+            last_modified_at=last_modified_at,
+            **kwargs,
+        )
+        self.id = id
+        self.type = type
+        self.tenant_id = tenant_id
+        self.business_artifact_definition_ref = business_artifact_definition_ref
+        self.business_artifact_feed_item_thread_id = business_artifact_feed_item_thread_id
+        self.status = status
+        self.progress = progress
+        self.started_at = started_at
+        self.finished_at = finished_at
+        self.thread = thread
+        self.message = message
+
+
+class BusinessArtifactFeedItemCreateParams(_serialization.Model):
+    """Params to create a Business Artifact Feed Item. Either ``businessArtifactDefinitionId`` or
+    ``businessArtifactDefinitionCode`` (with ``tenantId``\\ ) must be provided. The populated
+    sub-field (\\ ``thread``\\ , ``message``\\ ) is dictated by ``type``.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar id:
+    :vartype id: str
+    :ivar type: Type of a Business Artifact Feed Item. Required. Known values are: "THREAD" and
+     "MESSAGE".
+    :vartype type: str or ~kuflow.rest.models.BusinessArtifactFeedItemType
+    :ivar tenant_id:
+    :vartype tenant_id: str
+    :ivar business_artifact_definition_id:
+    :vartype business_artifact_definition_id: str
+    :ivar business_artifact_definition_code:
+    :vartype business_artifact_definition_code: str
+    :ivar business_artifact_feed_item_thread_id: ID of the thread in which the message is created;
+     without it, the message is created at the top level of the feed. Only allowed for items of type
+     ``MESSAGE``\\ ; it must reference a thread of the same Business Artifact Definition, written by
+     the same credentials and not closed. It is not part of the idempotency key.
+    :vartype business_artifact_feed_item_thread_id: str
+    :ivar status: Status of an item. ``COMPLETED``\\ , ``FAILED`` and ``CANCELED`` are terminal:
+     they close the item, and a closed thread closes its messages. Known values are: "PENDING",
+     "RUNNING", "COMPLETED", "FAILED", and "CANCELED".
+    :vartype status: str or ~kuflow.rest.models.BusinessArtifactFeedItemStatus
+    :ivar progress: Progress of an item. Without ``total``\\ , the progress is indeterminate.
+    :vartype progress: ~kuflow.rest.models.BusinessArtifactFeedItemProgress
+    :ivar thread:
+    :vartype thread: ~kuflow.rest.models.BusinessArtifactFeedItemThreadParams
+    :ivar message:
+    :vartype message: ~kuflow.rest.models.BusinessArtifactFeedItemMessageParams
+    """
+
+    _validation = {
+        "type": {"required": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "tenant_id": {"key": "tenantId", "type": "str"},
+        "business_artifact_definition_id": {"key": "businessArtifactDefinitionId", "type": "str"},
+        "business_artifact_definition_code": {"key": "businessArtifactDefinitionCode", "type": "str"},
+        "business_artifact_feed_item_thread_id": {"key": "businessArtifactFeedItemThreadId", "type": "str"},
+        "status": {"key": "status", "type": "str"},
+        "progress": {"key": "progress", "type": "BusinessArtifactFeedItemProgress"},
+        "thread": {"key": "thread", "type": "BusinessArtifactFeedItemThreadParams"},
+        "message": {"key": "message", "type": "BusinessArtifactFeedItemMessageParams"},
+    }
+
+    def __init__(
+        self,
+        *,
+        type: Union[str, "_models.BusinessArtifactFeedItemType"],
+        id: Optional[str] = None,  # pylint: disable=redefined-builtin
+        tenant_id: Optional[str] = None,
+        business_artifact_definition_id: Optional[str] = None,
+        business_artifact_definition_code: Optional[str] = None,
+        business_artifact_feed_item_thread_id: Optional[str] = None,
+        status: Optional[Union[str, "_models.BusinessArtifactFeedItemStatus"]] = None,
+        progress: Optional["_models.BusinessArtifactFeedItemProgress"] = None,
+        thread: Optional["_models.BusinessArtifactFeedItemThreadParams"] = None,
+        message: Optional["_models.BusinessArtifactFeedItemMessageParams"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword id:
+        :paramtype id: str
+        :keyword type: Type of a Business Artifact Feed Item. Required. Known values are: "THREAD" and
+         "MESSAGE".
+        :paramtype type: str or ~kuflow.rest.models.BusinessArtifactFeedItemType
+        :keyword tenant_id:
+        :paramtype tenant_id: str
+        :keyword business_artifact_definition_id:
+        :paramtype business_artifact_definition_id: str
+        :keyword business_artifact_definition_code:
+        :paramtype business_artifact_definition_code: str
+        :keyword business_artifact_feed_item_thread_id: ID of the thread in which the message is
+         created; without it, the message is created at the top level of the feed. Only allowed for
+         items of type ``MESSAGE``\\ ; it must reference a thread of the same Business Artifact
+         Definition, written by the same credentials and not closed. It is not part of the idempotency
+         key.
+        :paramtype business_artifact_feed_item_thread_id: str
+        :keyword status: Status of an item. ``COMPLETED``\\ , ``FAILED`` and ``CANCELED`` are terminal:
+         they close the item, and a closed thread closes its messages. Known values are: "PENDING",
+         "RUNNING", "COMPLETED", "FAILED", and "CANCELED".
+        :paramtype status: str or ~kuflow.rest.models.BusinessArtifactFeedItemStatus
+        :keyword progress: Progress of an item. Without ``total``\\ , the progress is indeterminate.
+        :paramtype progress: ~kuflow.rest.models.BusinessArtifactFeedItemProgress
+        :keyword thread:
+        :paramtype thread: ~kuflow.rest.models.BusinessArtifactFeedItemThreadParams
+        :keyword message:
+        :paramtype message: ~kuflow.rest.models.BusinessArtifactFeedItemMessageParams
+        """
+        super().__init__(**kwargs)
+        self.id = id
+        self.type = type
+        self.tenant_id = tenant_id
+        self.business_artifact_definition_id = business_artifact_definition_id
+        self.business_artifact_definition_code = business_artifact_definition_code
+        self.business_artifact_feed_item_thread_id = business_artifact_feed_item_thread_id
+        self.status = status
+        self.progress = progress
+        self.thread = thread
+        self.message = message
+
+
+class BusinessArtifactFeedItemMessage(_serialization.Model):
+    """BusinessArtifactFeedItemMessage.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar text: Message text in Markdown format according to the specification
+     https://spec.commonmark.org/.
+    :vartype text: str
+    :ivar level: Level of a message, ``INFO`` when not given. Required. Known values are: "INFO",
+     "WARN", and "ERROR".
+    :vartype level: str or ~kuflow.rest.models.BusinessArtifactFeedItemMessageLevel
+    """
+
+    _validation = {
+        "level": {"required": True},
+    }
+
+    _attribute_map = {
+        "text": {"key": "text", "type": "str"},
+        "level": {"key": "level", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        level: Union[str, "_models.BusinessArtifactFeedItemMessageLevel"],
+        text: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword text: Message text in Markdown format according to the specification
+         https://spec.commonmark.org/.
+        :paramtype text: str
+        :keyword level: Level of a message, ``INFO`` when not given. Required. Known values are:
+         "INFO", "WARN", and "ERROR".
+        :paramtype level: str or ~kuflow.rest.models.BusinessArtifactFeedItemMessageLevel
+        """
+        super().__init__(**kwargs)
+        self.text = text
+        self.level = level
+
+
+class BusinessArtifactFeedItemMessageParams(_serialization.Model):
+    """BusinessArtifactFeedItemMessageParams.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar text: Message text in Markdown format according to the specification
+     https://spec.commonmark.org/. Required.
+    :vartype text: str
+    :ivar level: Level of a message, ``INFO`` when not given. Known values are: "INFO", "WARN", and
+     "ERROR".
+    :vartype level: str or ~kuflow.rest.models.BusinessArtifactFeedItemMessageLevel
+    """
+
+    _validation = {
+        "text": {"required": True, "max_length": 4000, "min_length": 1},
+    }
+
+    _attribute_map = {
+        "text": {"key": "text", "type": "str"},
+        "level": {"key": "level", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        text: str,
+        level: Optional[Union[str, "_models.BusinessArtifactFeedItemMessageLevel"]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword text: Message text in Markdown format according to the specification
+         https://spec.commonmark.org/. Required.
+        :paramtype text: str
+        :keyword level: Level of a message, ``INFO`` when not given. Known values are: "INFO", "WARN",
+         and "ERROR".
+        :paramtype level: str or ~kuflow.rest.models.BusinessArtifactFeedItemMessageLevel
+        """
+        super().__init__(**kwargs)
+        self.text = text
+        self.level = level
+
+
+class BusinessArtifactFeedItemProgress(_serialization.Model):
+    """Progress of an item. Without ``total``\\ , the progress is indeterminate.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar completed: Required.
+    :vartype completed: int
+    :ivar total:
+    :vartype total: int
+    """
+
+    _validation = {
+        "completed": {"required": True, "minimum": 0},
+        "total": {"minimum": 1},
+    }
+
+    _attribute_map = {
+        "completed": {"key": "completed", "type": "int"},
+        "total": {"key": "total", "type": "int"},
+    }
+
+    def __init__(self, *, completed: int, total: Optional[int] = None, **kwargs: Any) -> None:
+        """
+        :keyword completed: Required.
+        :paramtype completed: int
+        :keyword total:
+        :paramtype total: int
+        """
+        super().__init__(**kwargs)
+        self.completed = completed
+        self.total = total
+
+
+class BusinessArtifactFeedItemThread(_serialization.Model):
+    """BusinessArtifactFeedItemThread.
+
+    :ivar title:
+    :vartype title: str
+    :ivar description: Description in Markdown format according to the specification
+     https://spec.commonmark.org/.
+    :vartype description: str
+    """
+
+    _attribute_map = {
+        "title": {"key": "title", "type": "str"},
+        "description": {"key": "description", "type": "str"},
+    }
+
+    def __init__(self, *, title: Optional[str] = None, description: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        :keyword title:
+        :paramtype title: str
+        :keyword description: Description in Markdown format according to the specification
+         https://spec.commonmark.org/.
+        :paramtype description: str
+        """
+        super().__init__(**kwargs)
+        self.title = title
+        self.description = description
+
+
+class BusinessArtifactFeedItemThreadParams(_serialization.Model):
+    """BusinessArtifactFeedItemThreadParams.
+
+    All required parameters must be populated in order to send to server.
+
+    :ivar title: Required.
+    :vartype title: str
+    :ivar description: Description in Markdown format according to the specification
+     https://spec.commonmark.org/.
+    :vartype description: str
+    """
+
+    _validation = {
+        "title": {"required": True, "max_length": 255, "min_length": 1},
+        "description": {"max_length": 4000},
+    }
+
+    _attribute_map = {
+        "title": {"key": "title", "type": "str"},
+        "description": {"key": "description", "type": "str"},
+    }
+
+    def __init__(self, *, title: str, description: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        :keyword title: Required.
+        :paramtype title: str
+        :keyword description: Description in Markdown format according to the specification
+         https://spec.commonmark.org/.
+        :paramtype description: str
+        """
+        super().__init__(**kwargs)
+        self.title = title
+        self.description = description
+
+
+class BusinessArtifactFeedItemUpdateParams(_serialization.Model):
+    """Params to update a Business Artifact Feed Item. The populated sub-field (\\ ``thread``\\ ,
+    ``message``\\ ) must match the ``type`` of the item. They replace what it had: a field left out
+    is cleared.
+
+    :ivar status: Status of an item. ``COMPLETED``\\ , ``FAILED`` and ``CANCELED`` are terminal:
+     they close the item, and a closed thread closes its messages. Known values are: "PENDING",
+     "RUNNING", "COMPLETED", "FAILED", and "CANCELED".
+    :vartype status: str or ~kuflow.rest.models.BusinessArtifactFeedItemStatus
+    :ivar progress: Progress of an item. Without ``total``\\ , the progress is indeterminate.
+    :vartype progress: ~kuflow.rest.models.BusinessArtifactFeedItemProgress
+    :ivar thread:
+    :vartype thread: ~kuflow.rest.models.BusinessArtifactFeedItemThreadParams
+    :ivar message:
+    :vartype message: ~kuflow.rest.models.BusinessArtifactFeedItemMessageParams
+    """
+
+    _attribute_map = {
+        "status": {"key": "status", "type": "str"},
+        "progress": {"key": "progress", "type": "BusinessArtifactFeedItemProgress"},
+        "thread": {"key": "thread", "type": "BusinessArtifactFeedItemThreadParams"},
+        "message": {"key": "message", "type": "BusinessArtifactFeedItemMessageParams"},
+    }
+
+    def __init__(
+        self,
+        *,
+        status: Optional[Union[str, "_models.BusinessArtifactFeedItemStatus"]] = None,
+        progress: Optional["_models.BusinessArtifactFeedItemProgress"] = None,
+        thread: Optional["_models.BusinessArtifactFeedItemThreadParams"] = None,
+        message: Optional["_models.BusinessArtifactFeedItemMessageParams"] = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        :keyword status: Status of an item. ``COMPLETED``\\ , ``FAILED`` and ``CANCELED`` are terminal:
+         they close the item, and a closed thread closes its messages. Known values are: "PENDING",
+         "RUNNING", "COMPLETED", "FAILED", and "CANCELED".
+        :paramtype status: str or ~kuflow.rest.models.BusinessArtifactFeedItemStatus
+        :keyword progress: Progress of an item. Without ``total``\\ , the progress is indeterminate.
+        :paramtype progress: ~kuflow.rest.models.BusinessArtifactFeedItemProgress
+        :keyword thread:
+        :paramtype thread: ~kuflow.rest.models.BusinessArtifactFeedItemThreadParams
+        :keyword message:
+        :paramtype message: ~kuflow.rest.models.BusinessArtifactFeedItemMessageParams
+        """
+        super().__init__(**kwargs)
+        self.status = status
+        self.progress = progress
+        self.thread = thread
+        self.message = message
+
+
 class Page(_serialization.Model):
     """Page.
 
