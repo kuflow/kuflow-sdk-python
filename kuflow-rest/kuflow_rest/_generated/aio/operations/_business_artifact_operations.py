@@ -54,6 +54,7 @@ from ..._utils.serialization import Deserializer, Serializer
 from ...operations._business_artifact_operations import (
     build_cancel_business_artifact_action_request,
     build_create_business_artifact_action_request,
+    build_create_business_artifact_feed_item_request,
     build_create_business_artifact_request,
     build_delete_business_artifact_request,
     build_download_business_artifact_document_request,
@@ -63,8 +64,10 @@ from ...operations._business_artifact_operations import (
     build_prepare_business_artifact_action_start_process_request,
     build_restore_business_artifact_request,
     build_retrieve_business_artifact_action_request,
+    build_retrieve_business_artifact_feed_item_request,
     build_retrieve_business_artifact_request,
     build_update_business_artifact_data_request,
+    build_update_business_artifact_feed_item_request,
     build_upload_business_artifact_document_request,
 )
 from .._configuration import KuFlowRestClientConfiguration
@@ -1446,6 +1449,370 @@ class BusinessArtifactOperations:
             raise HttpResponseError(response=response, model=error)
 
         deserialized = response.iter_bytes() if _decompress else response.iter_raw()
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @overload
+    async def create_business_artifact_feed_item(
+        self,
+        business_artifact_feed_item_create_params: _models.BusinessArtifactFeedItemCreateParams,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactFeedItem:
+        """Create a Business Artifact Feed Item.
+
+        Creates a thread or a message in the activity feed of a Business Artifact Definition, the feed
+        shown next to
+        its list of Business Artifacts. The credentials need to manage the Business Artifact
+        Definition.
+
+        A message goes to the top level of the feed, or into a thread when
+        ``businessArtifactFeedItemThreadId`` is set.
+        Only the author of a thread adds messages to it.
+
+        A thread or a message may have a ``status`` and a ``progress``\\ , to tell how the work it
+        describes goes.
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
+
+        :param business_artifact_feed_item_create_params: Business Artifact Feed Item to create.
+         Required.
+        :type business_artifact_feed_item_create_params:
+         ~kuflow.rest.models.BusinessArtifactFeedItemCreateParams
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: BusinessArtifactFeedItem
+        :rtype: ~kuflow.rest.models.BusinessArtifactFeedItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @overload
+    async def create_business_artifact_feed_item(
+        self,
+        business_artifact_feed_item_create_params: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactFeedItem:
+        """Create a Business Artifact Feed Item.
+
+        Creates a thread or a message in the activity feed of a Business Artifact Definition, the feed
+        shown next to
+        its list of Business Artifacts. The credentials need to manage the Business Artifact
+        Definition.
+
+        A message goes to the top level of the feed, or into a thread when
+        ``businessArtifactFeedItemThreadId`` is set.
+        Only the author of a thread adds messages to it.
+
+        A thread or a message may have a ``status`` and a ``progress``\\ , to tell how the work it
+        describes goes.
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
+
+        :param business_artifact_feed_item_create_params: Business Artifact Feed Item to create.
+         Required.
+        :type business_artifact_feed_item_create_params: IO[bytes]
+        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: BusinessArtifactFeedItem
+        :rtype: ~kuflow.rest.models.BusinessArtifactFeedItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @distributed_trace_async
+    async def create_business_artifact_feed_item(
+        self,
+        business_artifact_feed_item_create_params: Union[_models.BusinessArtifactFeedItemCreateParams, IO[bytes]],
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactFeedItem:
+        """Create a Business Artifact Feed Item.
+
+        Creates a thread or a message in the activity feed of a Business Artifact Definition, the feed
+        shown next to
+        its list of Business Artifacts. The credentials need to manage the Business Artifact
+        Definition.
+
+        A message goes to the top level of the feed, or into a thread when
+        ``businessArtifactFeedItemThreadId`` is set.
+        Only the author of a thread adds messages to it.
+
+        A thread or a message may have a ``status`` and a ``progress``\\ , to tell how the work it
+        describes goes.
+
+        If you want the method to be idempotent, please specify the ``id`` field in the request body.
+
+        :param business_artifact_feed_item_create_params: Business Artifact Feed Item to create. Is
+         either a BusinessArtifactFeedItemCreateParams type or a IO[bytes] type. Required.
+        :type business_artifact_feed_item_create_params:
+         ~kuflow.rest.models.BusinessArtifactFeedItemCreateParams or IO[bytes]
+        :return: BusinessArtifactFeedItem
+        :rtype: ~kuflow.rest.models.BusinessArtifactFeedItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        cls: ClsType[_models.BusinessArtifactFeedItem] = kwargs.pop("cls", None)
+
+        content_type = content_type or "application/json"
+        _json = None
+        _content = None
+        if isinstance(business_artifact_feed_item_create_params, (IOBase, bytes)):
+            _content = business_artifact_feed_item_create_params
+        else:
+            _json = self._serialize.body(
+                business_artifact_feed_item_create_params, "BusinessArtifactFeedItemCreateParams"
+            )
+
+        _request = build_create_business_artifact_feed_item_request(
+            content_type=content_type,
+            json=_json,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200, 201]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("BusinessArtifactFeedItem", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @distributed_trace_async
+    async def retrieve_business_artifact_feed_item(self, id: str, **kwargs: Any) -> _models.BusinessArtifactFeedItem:
+        """Get a Business Artifact Feed Item by ID.
+
+        Returns the requested Business Artifact Feed Item when has access to do it.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :return: BusinessArtifactFeedItem
+        :rtype: ~kuflow.rest.models.BusinessArtifactFeedItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.BusinessArtifactFeedItem] = kwargs.pop("cls", None)
+
+        _request = build_retrieve_business_artifact_feed_item_request(
+            id=id,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("BusinessArtifactFeedItem", pipeline_response.http_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})  # type: ignore
+
+        return deserialized  # type: ignore
+
+    @overload
+    async def update_business_artifact_feed_item(
+        self,
+        id: str,
+        business_artifact_feed_item_update_params: _models.BusinessArtifactFeedItemUpdateParams,
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactFeedItem:
+        """Update a Business Artifact Feed Item.
+
+        Replaces what can change of an existing Business Artifact Feed Item: its content, status and
+        progress. It never
+        creates an item. Only its author updates it.
+
+        An item in a terminal status (\\ ``COMPLETED``\\ , ``FAILED``\\ , ``CANCELED``\\ ) is closed,
+        and so are the messages of a closed
+        thread: an update that leaves it as it is succeeds, so a retried call is harmless, and any
+        other change is
+        rejected with a conflict. The status of an item cannot be removed once set.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param business_artifact_feed_item_update_params: Params used to update the Business Artifact
+         Feed Item. Required.
+        :type business_artifact_feed_item_update_params:
+         ~kuflow.rest.models.BusinessArtifactFeedItemUpdateParams
+        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: BusinessArtifactFeedItem
+        :rtype: ~kuflow.rest.models.BusinessArtifactFeedItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @overload
+    async def update_business_artifact_feed_item(
+        self,
+        id: str,
+        business_artifact_feed_item_update_params: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactFeedItem:
+        """Update a Business Artifact Feed Item.
+
+        Replaces what can change of an existing Business Artifact Feed Item: its content, status and
+        progress. It never
+        creates an item. Only its author updates it.
+
+        An item in a terminal status (\\ ``COMPLETED``\\ , ``FAILED``\\ , ``CANCELED``\\ ) is closed,
+        and so are the messages of a closed
+        thread: an update that leaves it as it is succeeds, so a retried call is harmless, and any
+        other change is
+        rejected with a conflict. The status of an item cannot be removed once set.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param business_artifact_feed_item_update_params: Params used to update the Business Artifact
+         Feed Item. Required.
+        :type business_artifact_feed_item_update_params: IO[bytes]
+        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
+         Default value is "application/json".
+        :paramtype content_type: str
+        :return: BusinessArtifactFeedItem
+        :rtype: ~kuflow.rest.models.BusinessArtifactFeedItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+
+    @distributed_trace_async
+    async def update_business_artifact_feed_item(
+        self,
+        id: str,
+        business_artifact_feed_item_update_params: Union[_models.BusinessArtifactFeedItemUpdateParams, IO[bytes]],
+        **kwargs: Any,
+    ) -> _models.BusinessArtifactFeedItem:
+        """Update a Business Artifact Feed Item.
+
+        Replaces what can change of an existing Business Artifact Feed Item: its content, status and
+        progress. It never
+        creates an item. Only its author updates it.
+
+        An item in a terminal status (\\ ``COMPLETED``\\ , ``FAILED``\\ , ``CANCELED``\\ ) is closed,
+        and so are the messages of a closed
+        thread: an update that leaves it as it is succeeds, so a retried call is harmless, and any
+        other change is
+        rejected with a conflict. The status of an item cannot be removed once set.
+
+        :param id: The resource ID. Required.
+        :type id: str
+        :param business_artifact_feed_item_update_params: Params used to update the Business Artifact
+         Feed Item. Is either a BusinessArtifactFeedItemUpdateParams type or a IO[bytes] type. Required.
+        :type business_artifact_feed_item_update_params:
+         ~kuflow.rest.models.BusinessArtifactFeedItemUpdateParams or IO[bytes]
+        :return: BusinessArtifactFeedItem
+        :rtype: ~kuflow.rest.models.BusinessArtifactFeedItem
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        error_map: MutableMapping = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _params = kwargs.pop("params", {}) or {}
+
+        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        cls: ClsType[_models.BusinessArtifactFeedItem] = kwargs.pop("cls", None)
+
+        content_type = content_type or "application/json"
+        _json = None
+        _content = None
+        if isinstance(business_artifact_feed_item_update_params, (IOBase, bytes)):
+            _content = business_artifact_feed_item_update_params
+        else:
+            _json = self._serialize.body(
+                business_artifact_feed_item_update_params, "BusinessArtifactFeedItemUpdateParams"
+            )
+
+        _request = build_update_business_artifact_feed_item_request(
+            id=id,
+            content_type=content_type,
+            json=_json,
+            content=_content,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize.failsafe_deserialize(
+                _models.DefaultError,
+                pipeline_response,
+            )
+            raise HttpResponseError(response=response, model=error)
+
+        deserialized = self._deserialize("BusinessArtifactFeedItem", pipeline_response.http_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})  # type: ignore

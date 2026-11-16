@@ -66,6 +66,15 @@ BUSINESS_ARTIFACT_ACTION = models_rest.BusinessArtifactAction.deserialize(
 )
 CREATE_ARTIFACT_PREPARE = models_rest.BusinessArtifactActionCreateArtifactPrepare.deserialize({"data": JSON_VALUE})
 START_PROCESS_PREPARE = models_rest.BusinessArtifactActionStartProcessPrepare.deserialize({"metadata": JSON_VALUE})
+BUSINESS_ARTIFACT_FEED_ITEM = models_rest.BusinessArtifactFeedItem.deserialize(
+    {
+        "id": OTHER_ID,
+        "type": "MESSAGE",
+        "tenantId": TENANT_ID,
+        "businessArtifactDefinitionRef": {"id": ID, "code": "BAD"},
+        "message": {"text": "hello", "level": "INFO"},
+    }
+)
 
 
 def json_value() -> models_rest.JsonValue:
@@ -489,7 +498,8 @@ CASES = [
             (
                 ("business_artifact_definition_id", "business_artifact_definition_code"),
                 "'business_artifact_definition_id' or 'business_artifact_definition_code'",
-            )
+            ),
+            (("tenant_id",), "'tenant_id' is required when using 'business_artifact_definition_code'"),
         ],
     ),
     Case(
@@ -610,6 +620,83 @@ CASES = [
         START_PROCESS_PREPARE,
         "businessArtifactActionStartProcessPrepare",
         required("business_artifact_id", "business_artifact_action_definition_code"),
+    ),
+    Case(
+        "create_business_artifact_feed_item",
+        "createBusinessArtifactFeedItem",
+        {
+            "id": OTHER_ID,
+            "type": "MESSAGE",
+            "tenantId": TENANT_ID,
+            "businessArtifactDefinitionId": ID,
+            "businessArtifactDefinitionCode": "BAD",
+            "businessArtifactFeedItemThreadId": ID,
+            "status": "RUNNING",
+            "progress": {"completed": 3, "total": 10},
+            "message": {"text": "hello", "level": "WARN"},
+        },
+        "business_artifact.create_business_artifact_feed_item",
+        {
+            "business_artifact_feed_item_create_params": models_rest.BusinessArtifactFeedItemCreateParams(
+                id=OTHER_ID,
+                type=models_rest.BusinessArtifactFeedItemType.MESSAGE,
+                tenant_id=TENANT_ID,
+                business_artifact_definition_id=ID,
+                business_artifact_definition_code="BAD",
+                business_artifact_feed_item_thread_id=ID,
+                status=models_rest.BusinessArtifactFeedItemStatus.RUNNING,
+                progress=models_rest.BusinessArtifactFeedItemProgress(completed=3, total=10),
+                message=models_rest.BusinessArtifactFeedItemMessageParams(
+                    text="hello", level=models_rest.BusinessArtifactFeedItemMessageLevel.WARN
+                ),
+            )
+        },
+        BUSINESS_ARTIFACT_FEED_ITEM,
+        "businessArtifactFeedItem",
+        [
+            *required("id", "type"),
+            (
+                ("business_artifact_definition_id", "business_artifact_definition_code"),
+                "'business_artifact_definition_id' or 'business_artifact_definition_code'",
+            ),
+            (("tenant_id",), "'tenant_id' is required when using 'business_artifact_definition_code'"),
+            (("message",), "'message.text' is required for message items"),
+        ],
+    ),
+    Case(
+        "retrieve_business_artifact_feed_item",
+        "retrieveBusinessArtifactFeedItem",
+        {"businessArtifactFeedItemId": ID},
+        "business_artifact.retrieve_business_artifact_feed_item",
+        {"id": ID},
+        BUSINESS_ARTIFACT_FEED_ITEM,
+        "businessArtifactFeedItem",
+        required("business_artifact_feed_item_id"),
+    ),
+    Case(
+        "update_business_artifact_feed_item",
+        "updateBusinessArtifactFeedItem",
+        {
+            "businessArtifactFeedItemId": ID,
+            "status": "COMPLETED",
+            "progress": {"completed": 10, "total": 10},
+            "thread": {"title": "Invoice import"},
+        },
+        "business_artifact.update_business_artifact_feed_item",
+        {
+            "id": ID,
+            "business_artifact_feed_item_update_params": models_rest.BusinessArtifactFeedItemUpdateParams(
+                status=models_rest.BusinessArtifactFeedItemStatus.COMPLETED,
+                progress=models_rest.BusinessArtifactFeedItemProgress(completed=10, total=10),
+                thread=models_rest.BusinessArtifactFeedItemThreadParams(title="Invoice import"),
+            ),
+        },
+        BUSINESS_ARTIFACT_FEED_ITEM,
+        "businessArtifactFeedItem",
+        [
+            *required("business_artifact_feed_item_id"),
+            (("thread",), "'thread' or 'message' is required"),
+        ],
     ),
 ]
 

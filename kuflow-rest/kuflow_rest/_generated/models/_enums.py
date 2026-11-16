@@ -59,6 +59,33 @@ class BusinessArtifactActionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     CREATE_BUSINESS_ARTIFACT = "CREATE_BUSINESS_ARTIFACT"
 
 
+class BusinessArtifactFeedItemMessageLevel(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Level of a message, ``INFO`` when not given."""
+
+    INFO = "INFO"
+    WARN = "WARN"
+    ERROR = "ERROR"
+
+
+class BusinessArtifactFeedItemStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Status of an item. ``COMPLETED``\\ , ``FAILED`` and ``CANCELED`` are terminal: they close the
+    item, and a closed thread closes its messages.
+    """
+
+    PENDING = "PENDING"
+    RUNNING = "RUNNING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+    CANCELED = "CANCELED"
+
+
+class BusinessArtifactFeedItemType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Type of a Business Artifact Feed Item."""
+
+    THREAD = "THREAD"
+    MESSAGE = "MESSAGE"
+
+
 class DeletedQueryParam(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Soft-deleted records filtering mode:
 
