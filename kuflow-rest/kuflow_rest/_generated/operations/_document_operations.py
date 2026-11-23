@@ -60,7 +60,7 @@ _SERIALIZER.client_side_validation = False
 
 
 def build_upload_document_request(
-    *, target_uri: str, file_content_type: str, file_name: str, content: IO[bytes], **kwargs: Any
+    *, file_content_type: str, file_name: str, content: IO[bytes], target_uri: Optional[str] = None, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
@@ -72,7 +72,8 @@ def build_upload_document_request(
     _url = "/documents/~actions/upload"
 
     # Construct parameters
-    _params["targetUri"] = _SERIALIZER.query("target_uri", target_uri, "str")
+    if target_uri is not None:
+        _params["targetUri"] = _SERIALIZER.query("target_uri", target_uri, "str")
     _params["fileContentType"] = _SERIALIZER.query("file_content_type", file_content_type, "str")
     _params["fileName"] = _SERIALIZER.query("file_name", file_name, "str")
 
@@ -123,34 +124,40 @@ class DocumentOperations:
 
     @distributed_trace
     def upload_document(
-        self, file: IO[bytes], *, target_uri: str, file_content_type: str, file_name: str, **kwargs: Any
+        self,
+        file: IO[bytes],
+        *,
+        file_content_type: str,
+        file_name: str,
+        target_uri: Optional[str] = None,
+        **kwargs: Any,
     ) -> _models.DocumentReference:
         """Upload a temporal document.
 
-        Upload a temporal document that later on must be linked with a domain resource of its target.
+        Upload a temporal document that later on must be linked with a domain resource.
 
-        The target resource is identified by ``targetUri``\\ :
+        The document belongs to the credentials that upload it, and its reference has the URI
+        ``ku:storage-staging/{id}``. Only those credentials can download it and link it, by sending its
+        reference in
+        the data of any resource they can update: the entity of a process, the data of a task, the
+        value of a
+        business artifact or the result of a downloadable action. The permission on that resource is
+        checked when the
+        data is saved. Linking copies the document into the resource, which gets a reference of its
+        own; the uploaded
+        document can be linked only once, and a save sent again with the same reference is accepted.
 
-
-        * ``ku:process/{processId}``\\ : the document is deleted after 2 hours as long as it has not
-        been
-          linked to the process or to one of its process items.
-        * ``ku:business-artifact/{businessArtifactId}``\\ : the document is deleted after 2 hours as
-        long
-          as it has not been linked to the business artifact.
-
-        A target the credentials cannot read answers ``404``.
+        Documents not linked are deleted after 2 hours.
 
         :param file: Document to save. Required.
         :type file: IO[bytes]
-        :keyword target_uri: URI of the resource the document is uploaded for. Supported forms are
-         ``ku:process/{id}``
-         and ``ku:business-artifact/{id}``. Required.
-        :paramtype target_uri: str
         :keyword file_content_type: Document content type. Required.
         :paramtype file_content_type: str
         :keyword file_name: Document name. Required.
         :paramtype file_name: str
+        :keyword target_uri: Ignored: the document can be linked to any resource the credentials can
+         update. Default value is None.
+        :paramtype target_uri: str
         :return: DocumentReference
         :rtype: ~kuflow.rest.models.DocumentReference
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -172,9 +179,9 @@ class DocumentOperations:
         _content = file
 
         _request = build_upload_document_request(
-            target_uri=target_uri,
             file_content_type=file_content_type,
             file_name=file_name,
+            target_uri=target_uri,
             content_type=content_type,
             content=_content,
             headers=_headers,

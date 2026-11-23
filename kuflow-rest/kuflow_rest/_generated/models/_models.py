@@ -393,8 +393,7 @@ class BusinessArtifact(AbstractDeleted):
     :vartype deleted_at: ~datetime.datetime
     :ivar id: Business Artifact ID. Required.
     :vartype id: str
-    :ivar uri: Business Artifact resource URI, e.g. usable as ``targetUri`` of the
-     ``uploadDocument`` operation. Format ``ku:business-artifact/{id}``.
+    :ivar uri: Business Artifact resource URI. Format ``ku:business-artifact/{id}``.
     :vartype uri: str
     :ivar tenant_id: Tenant ID. Required.
     :vartype tenant_id: str
@@ -458,8 +457,7 @@ class BusinessArtifact(AbstractDeleted):
         :paramtype deleted_at: ~datetime.datetime
         :keyword id: Business Artifact ID. Required.
         :paramtype id: str
-        :keyword uri: Business Artifact resource URI, e.g. usable as ``targetUri`` of the
-         ``uploadDocument`` operation. Format ``ku:business-artifact/{id}``.
+        :keyword uri: Business Artifact resource URI. Format ``ku:business-artifact/{id}``.
         :paramtype uri: str
         :keyword tenant_id: Tenant ID. Required.
         :paramtype tenant_id: str
@@ -1782,8 +1780,7 @@ class BusinessArtifactPageItem(AbstractDeleted):
     :vartype deleted_at: ~datetime.datetime
     :ivar id: Business Artifact ID. Required.
     :vartype id: str
-    :ivar uri: Business Artifact resource URI, e.g. usable as ``targetUri`` of the
-     ``uploadDocument`` operation. Format ``ku:business-artifact/{id}``.
+    :ivar uri: Business Artifact resource URI. Format ``ku:business-artifact/{id}``.
     :vartype uri: str
     :ivar tenant_id: Tenant ID. Required.
     :vartype tenant_id: str
@@ -1843,8 +1840,7 @@ class BusinessArtifactPageItem(AbstractDeleted):
         :paramtype deleted_at: ~datetime.datetime
         :keyword id: Business Artifact ID. Required.
         :paramtype id: str
-        :keyword uri: Business Artifact resource URI, e.g. usable as ``targetUri`` of the
-         ``uploadDocument`` operation. Format ``ku:business-artifact/{id}``.
+        :keyword uri: Business Artifact resource URI. Format ``ku:business-artifact/{id}``.
         :paramtype uri: str
         :keyword tenant_id: Tenant ID. Required.
         :paramtype tenant_id: str
@@ -1983,7 +1979,7 @@ class DocumentReference(_serialization.Model):
      Format: ``kuflow-file:uri=<ku-uri>;type=<media-type>;size=<bytes>;name=<file-name>;``
 
      Example:
-     ``kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;``
+     ``kuflow-file:uri=ku:storage-staging/xxx;type=application/json;size=500;name=file.json;``
 
      Operations that receive a document uri accept both this full form and the inner ``ku:``
      document uri. Required.
@@ -2005,7 +2001,7 @@ class DocumentReference(_serialization.Model):
          Format: ``kuflow-file:uri=<ku-uri>;type=<media-type>;size=<bytes>;name=<file-name>;``
 
          Example:
-         ``kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;``
+         ``kuflow-file:uri=ku:storage-staging/xxx;type=application/json;size=500;name=file.json;``
 
          Operations that receive a document uri accept both this full form and the inner ``ku:``
          document uri. Required.
@@ -2524,8 +2520,7 @@ class Process(AbstractDeleted):
     :vartype deleted_at: ~datetime.datetime
     :ivar id: Process ID. Required.
     :vartype id: str
-    :ivar uri: Process resource URI, e.g. usable as ``targetUri`` of the ``uploadDocument``
-     operation. Format ``ku:process/{id}``.
+    :ivar uri: Process resource URI. Format ``ku:process/{id}``.
     :vartype uri: str
     :ivar state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
      "CANCELLED".
@@ -2603,8 +2598,7 @@ class Process(AbstractDeleted):
         :paramtype deleted_at: ~datetime.datetime
         :keyword id: Process ID. Required.
         :paramtype id: str
-        :keyword uri: Process resource URI, e.g. usable as ``targetUri`` of the ``uploadDocument``
-         operation. Format ``ku:process/{id}``.
+        :keyword uri: Process resource URI. Format ``ku:process/{id}``.
         :paramtype uri: str
         :keyword state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
          "CANCELLED".
@@ -4442,8 +4436,7 @@ class ProcessPageItem(AbstractDeleted):
     :vartype deleted_at: ~datetime.datetime
     :ivar id: Process ID. Required.
     :vartype id: str
-    :ivar uri: Process resource URI, e.g. usable as ``targetUri`` of the ``uploadDocument``
-     operation. Format ``ku:process/{id}``.
+    :ivar uri: Process resource URI. Format ``ku:process/{id}``.
     :vartype uri: str
     :ivar state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
      "CANCELLED".
@@ -4510,8 +4503,7 @@ class ProcessPageItem(AbstractDeleted):
         :paramtype deleted_at: ~datetime.datetime
         :keyword id: Process ID. Required.
         :paramtype id: str
-        :keyword uri: Process resource URI, e.g. usable as ``targetUri`` of the ``uploadDocument``
-         operation. Format ``ku:process/{id}``.
+        :keyword uri: Process resource URI. Format ``ku:process/{id}``.
         :paramtype uri: str
         :keyword state: Process state. Required. Known values are: "RUNNING", "COMPLETED", and
          "CANCELLED".
