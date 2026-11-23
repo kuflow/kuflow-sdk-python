@@ -431,15 +431,13 @@ class ProcessOperations:
         return self._kuflow_client.process.patch_process_entity(id=id, json_patch=json_patch, **kwargs)
 
     def upload_process_document(self, id: str, document: _models.Document, **kwargs: Any) -> _models.DocumentReference:
-        """Upload a temporal document into the process that later on must be linked with a process domain
-        resource.
+        """Upload a temporal document that later on must be linked with a domain resource.
 
-        Upload a temporal document into the process that later on must be linked with a process domain
-        resource.
+        It behaves as :meth:`DocumentOperations.upload_document`: the process of the path must be readable
+        by the credentials, but the document is not bound to it and can be linked to any resource the
+        credentials can update.
 
-        Documents uploaded with this API will be deleted after 24 hours as long as they have not been
-        linked to a
-        process or process item.
+        **Deprecated:** use :meth:`DocumentOperations.upload_document` instead.
 
         :param id: The resource ID. Required.
         :type id: str

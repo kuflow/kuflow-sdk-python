@@ -26,6 +26,8 @@ import io
 import json
 from urllib.parse import parse_qs, urlparse
 
+import pytest
+
 from kuflow_rest import models
 from kuflow_rest.operations import BusinessArtifactOperations, DocumentOperations, GroupOperations, KmsOperations
 
@@ -101,15 +103,36 @@ def test_given_a_start_process_action_when_prepare_then_posts_the_params_and_ret
     assert isinstance(prepare, models.BusinessArtifactActionStartProcessPrepare)
 
 
-def test_given_a_document_when_upload_document_then_sends_its_content_and_metadata_for_the_target(stub_client):
+def test_given_a_document_when_upload_document_then_sends_its_content_and_metadata_without_a_target(stub_client):
     kuflow_client, transport = stub_client(
         status_code=200, content=json.dumps({"documentUri": DOCUMENT_REFERENCE}).encode()
     )
     document = models.Document(file_name="hello.txt", content_type="text/plain", file_content=io.BytesIO(b"hello"))
 
-    document_reference = DocumentOperations(kuflow_client).upload_document(
-        document, target_uri=f"ku:process/{PROCESS_ID}"
+    document_reference = DocumentOperations(kuflow_client).upload_document(document)
+
+    request = transport.requests[0]
+    query = parse_qs(urlparse(request.url).query)
+    assert request.method == "POST"
+    assert urlparse(request.url).path == "/v2024-06-14/documents/~actions/upload"
+    assert query == {
+        "fileContentType": ["text/plain"],
+        "fileName": ["hello.txt"],
+    }
+    assert request.headers["Content-Type"] == "application/octet-stream"
+    assert document_reference.document_uri == DOCUMENT_REFERENCE
+
+
+def test_given_a_target_uri_when_upload_document_then_warns_it_is_deprecated_and_still_sends_it(stub_client):
+    kuflow_client, transport = stub_client(
+        status_code=200, content=json.dumps({"documentUri": DOCUMENT_REFERENCE}).encode()
     )
+    document = models.Document(file_name="hello.txt", content_type="text/plain", file_content=io.BytesIO(b"hello"))
+
+    with pytest.warns(DeprecationWarning, match="target_uri is deprecated"):
+        document_reference = DocumentOperations(kuflow_client).upload_document(
+            document, target_uri=f"ku:process/{PROCESS_ID}"
+        )
 
     request = transport.requests[0]
     query = parse_qs(urlparse(request.url).query)

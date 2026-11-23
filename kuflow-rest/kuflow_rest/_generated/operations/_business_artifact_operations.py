@@ -1707,20 +1707,15 @@ class BusinessArtifactOperations:
     def upload_business_artifact_document(
         self, id: str, file: IO[bytes], *, file_content_type: str, file_name: str, **kwargs: Any
     ) -> _models.DocumentReference:
-        """Upload a temporal document into the business artifact that later on must be linked with a
-        business artifact domain resource.
+        """Upload a temporal document that later on must be linked with a domain resource.
 
-        Upload a temporal document into the business artifact that later on must be linked with a
-        business artifact
-        domain resource.
+        Upload a temporal document that later on must be linked with a domain resource. It behaves as
+        the
+        ``uploadDocument`` operation: the business artifact of the path must be readable by the
+        credentials, but the
+        document is not bound to it and can be linked to any resource the credentials can update.
 
-        Documents uploaded with this API will be deleted after 2 hours as long as they have not been
-        linked to a
-        business artifact.
-
-        **Deprecated:** use the ``uploadDocument`` operation with
-        ``targetUri=ku:business-artifact/{businessArtifactId}``
-        instead.
+        **Deprecated:** use the ``uploadDocument`` operation instead.
 
         :param id: The resource ID. Required.
         :type id: str

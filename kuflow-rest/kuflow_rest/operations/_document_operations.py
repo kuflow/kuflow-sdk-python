@@ -22,8 +22,9 @@
 # SOFTWARE.
 #
 
+import warnings
 from collections.abc import Iterator
-from typing import Any
+from typing import Any, Optional
 
 from .. import models as _models
 from .._generated import KuFlowRestClient as KuFlowRestClientGenerated
@@ -43,30 +44,36 @@ class DocumentOperations:
         self._kuflow_client = kuflow_client
 
     def upload_document(
-        self, document: _models.Document, *, target_uri: str, **kwargs: Any
+        self, document: _models.Document, *, target_uri: Optional[str] = None, **kwargs: Any
     ) -> _models.DocumentReference:
         """Upload a temporal document.
 
-        Upload a temporal document that later on must be linked with a domain resource of its target.
+        Upload a temporal document that later on must be linked with a domain resource.
 
-        The target resource is identified by ``target_uri``:
+        The document belongs to the credentials that upload it, and its reference has the URI
+        ``ku:storage-staging/{id}``. Only those credentials can download it and link it, by sending its
+        reference in the data of any resource they can update; the permission on that resource is checked
+        when the data is saved.
 
-        * ``ku:process/{processId}``: the document is deleted after 2 hours as long as it has not been
-          linked to the process or to one of its process items.
-        * ``ku:business-artifact/{businessArtifactId}``: the document is deleted after 2 hours as long
-          as it has not been linked to the business artifact.
-
-        Resources expose their URI in their ``uri`` field. A target the credentials cannot read answers ``404``.
+        Documents not linked are deleted after 2 hours.
 
         :param document: Document to save. Required.
         :type document: ~kuflow.rest.models.Document
-        :keyword target_uri: URI of the resource the document is uploaded for. Supported forms are
-                             ``ku:process/{id}`` and ``ku:business-artifact/{id}``. Required.
+        :keyword target_uri: Deprecated and ignored: the document can be linked to any resource the
+                             credentials can update. Still sent when given.
         :type target_uri: str
         :return: DocumentReference
         :rtype: ~kuflow.rest.models.DocumentReference
         :raises ~azure.core.exceptions.HttpResponseError:
         """
+        if target_uri is not None:
+            warnings.warn(
+                "target_uri is deprecated and ignored: the document can be linked to any resource the credentials "
+                "can update",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+
         return self._kuflow_client.document.upload_document(
             file=document.file_content,
             target_uri=target_uri,
